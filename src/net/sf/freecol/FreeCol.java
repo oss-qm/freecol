@@ -299,7 +299,6 @@ public final class FreeCol {
     private static void handleArgs(String[] args) {
         // create the command line parser
         CommandLineParser parser = new PosixParser();
-        final Class dummy = null;
 
         /**
          * Ugly hack: try to determine language first, so that usage,
@@ -339,7 +338,7 @@ public final class FreeCol {
         options.addOption(OptionBuilder.withLongOpt("home-directory")
                           .withDescription(Messages.message("cli.home-directory"))
                           .withArgName(Messages.message("cli.arg.directory"))
-                          .withType(dummy)
+                          .withType(new File("dummy"))
                           .hasArg()
                           .create());
         options.addOption(OptionBuilder.withLongOpt("log-console")
