@@ -101,9 +101,10 @@
     <!-- Compiles the java source files. -->
     <target name="compile" depends="init">
         <mkdir dir="${freecol.build.dir}"/>
+	<!-- Classpath is provided by debian/rules, so commenting this -->
+	<!--             classpathref="freecol.build.classpath" -->
         <javac srcdir="${freecol.src.dir}"
             destdir="${freecol.build.dir}"
-            classpathref="freecol.build.classpath"
             debug="on"
             optimize="on"
             deprecation="off"
@@ -173,7 +174,7 @@
 
     <!-- Compiles the source files and creates a JAR-file. -->
     <target name="package" depends="init,build,manifest" description="Compiles the source files and creates a JAR-file.">
-        <jar jarfile="${freecol.jar.file}"
+        <jar jarfile="freecol.jar"
             basedir="${freecol.build.dir}"
             manifest="${basedir}/src/MANIFEST.MF"
             includes="net/**, org/**"
