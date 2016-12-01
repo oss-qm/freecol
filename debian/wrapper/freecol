@@ -4,7 +4,7 @@
 . /usr/lib/java-wrappers/java-wrappers.sh
 
 # We need openjdk, icedtea  or Sun 6
-find_java_runtime openjdk java6
+find_java_runtime openjdk java7
 
 find_jars miglayout freecol cortado commons-cli
 
@@ -24,5 +24,6 @@ else
     disablenet="-Djava.net.preferIPv4Stack=true"
 fi
 
-run_java $disablenet -Xincgc -Xmx512M net.sf.freecol.FreeCol --freecol-data \
-    /usr/share/games/freecol $lang_argument "$@"
+run_java $disablenet -Dsun.java2d.pmoffscreen=false \
+    -Xincgc -Xmx512M net.sf.freecol.FreeCol --freecol-data \
+    /usr/share/games/freecol $lang_argument "$@" --no-sound --no-intro
