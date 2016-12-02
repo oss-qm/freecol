@@ -55,7 +55,7 @@ public class SaveGameValidator {
             if (file.exists()) {
                 if (file.isDirectory()) {
                     allFiles.addAll(FreeColDirectories.getSavegameFileList(file));
-                } else if (FreeColDirectories.saveGameFilter.test(file)) {
+                } else if (FreeColDirectories.checkSavegameFile(file)) {
                     allFiles.add(file);
                 }
             }

@@ -52,9 +52,6 @@ public class FreeColDirectories {
     // No logger!  Many of these routines are called before logging is
     // initialized.
 
-    private static final Comparator<File> fileModificationComparator
-        = Comparator.comparingLong(File::lastModified);
-
     private static final Comparator<File> fileNameComparator
         = Comparator.comparing(File::getName);
 
@@ -142,14 +139,6 @@ public class FreeColDirectories {
     private static final Predicate<File> modFileFilter = f ->
         Utils.fileAnySuffix(f, MOD_FILE_SUFFIX, ZIP_FILE_SUFFIX)
             || Utils.directoryAllPresent(f, MOD_DESCRIPTOR_FILE_NAME);
-
-    /**
-     * Predicate to select readable files that look like saved games.
-     * Public for SaveGameValidator.
-     */
-    public static final Predicate<File> saveGameFilter = f ->
-        f.isFile() && f.canRead()
-            && f.getName().endsWith(SAVE_GAME_SUFFIX);
 
     /** Predicate to filter suitable candidates to be made into TCs. */
     private static final Predicate<File> tcFileFilter = f ->
@@ -1005,15 +994,18 @@ public class FreeColDirectories {
         return new File(getDataDirectory(), MAPS_DIRECTORY);
     }
 
+    public static boolean checkSavegameFile(File f) {
+        return f.isFile() && f.canRead()
+            && f.getName().endsWith(SAVE_GAME_SUFFIX);
+    }
+
     /**
      * Get the map files.
      *
      * @return A list of map files, or null on error.
      */
     public static List<File> getMapFileList() {
-        final File mapsDirectory = getMapsDirectory();
-        return (mapsDirectory == null || !mapsDirectory.isDirectory()) ? null
-            : collectFiles(mapsDirectory, saveGameFilter);
+        return getSavegameFileList(getMapsDirectory());
     }
 
     /**
@@ -1121,24 +1113,19 @@ public class FreeColDirectories {
      * Gets the save game files in a given directory.
      *
      * @param directory The base directory, or the default locations if null.
-     * @return A stream of save game {@code File}s.
-     */
-    public static Stream<File> getSavegameFiles(File directory) {
-        return (directory == null)
-            ? flatten(Stream.of(FreeColDirectories.getSaveDirectory(),
-                                FreeColDirectories.getAutosaveDirectory()),
-                      d -> fileStream(d, saveGameFilter))
-            : fileStream(directory, saveGameFilter);
-    }
-
-    /**
-     * Gets the save game files in a given directory.
-     *
-     * @param directory The base directory, or the default locations if null.
      * @return A list of save game {@code File}s.
      */
     public static List<File> getSavegameFileList(File directory) {
-        return toList(getSavegameFiles(directory));
+        if ((directory == null) || (!directory.isDirectory()))
+            return Collections.<File>emptyList();
+
+        List<File> result = new ArrayList<>();
+        for (File walk : directory.listFiles())
+            if (checkSavegameFile(walk))
+                result.add(walk);
+
+        Collections.sort(result);
+        return result;
     }
 
     /**
@@ -1169,8 +1156,30 @@ public class FreeColDirectories {
      * @return The recent save game {@code File}, or null if not found.
      */
     public static File getLastSaveGameFile() {
-        return maximize(getSavegameFiles(null),
-                        fileModificationComparator);
+        long last_mtime = -1;
+        File last_file = null;
+
+        for (File walk : getSaveDirectory().listFiles()) {
+            if (checkSavegameFile(walk)) {
+                long mtime = walk.lastModified();
+                if (mtime > last_mtime) {
+                    last_mtime = mtime;
+                    last_file = walk;
+                }
+            }
+        }
+
+        for (File walk : getAutosaveDirectory().listFiles()) {
+            if (checkSavegameFile(walk)) {
+                long mtime = walk.lastModified();
+                if (mtime > last_mtime) {
+                    last_mtime = mtime;
+                    last_file = walk;
+                }
+            }
+        }
+
+        return last_file;
     }
 
     /**
