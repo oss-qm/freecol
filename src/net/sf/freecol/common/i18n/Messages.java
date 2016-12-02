@@ -468,16 +468,6 @@ public class Messages {
     }
 
     /**
-     * A predicate maker to match by message name.
-     *
-     * @param key The name of the message.
-     * @return A suitable {@code Predicate}.
-     */
-    public static final Predicate<String> matchesName(String key) {
-        return matchKeyEquals(key, (String k) -> Messages.getName(k));
-    }
-
-    /**
      * A predicate maker to match named types.
      *
      * @param key The name of the type.
