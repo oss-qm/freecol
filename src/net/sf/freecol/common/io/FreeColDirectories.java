@@ -23,8 +23,6 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.StandardCopyOption;
 
-import java.util.Comparator;
-import java.util.stream.Stream;
 import javax.swing.filechooser.FileSystemView;
 
 import net.sf.freecol.FreeCol;
@@ -40,9 +38,6 @@ public class FreeColDirectories {
 
     // No logger!  Many of these routines are called before logging is
     // initialized.
-
-    private static final Comparator<File> fileModificationComparator
-        = Comparator.comparingLong(File::lastModified);
 
     private static final String AUTOSAVE_DIRECTORY = "autosave";
 
@@ -842,10 +837,26 @@ public class FreeColDirectories {
      * @return The recent save game {@code File}, or null if not found.
      */
     public static File getLastSaveGameFile() {
-        return maximize(flatten(Stream.of(FreeColDirectories.getSaveDirectory(),
-                                          FreeColDirectories.getAutosaveDirectory()),
-                                FreeColSavegameFile::getFiles),
-                        fileModificationComparator);
+        long last_mtime = -1;
+        File last_file = null;
+
+        for (File walk : toList(FreeColSavegameFile.getFiles(FreeColDirectories.getSaveDirectory()))) {
+            long mtime = walk.lastModified();
+            if (mtime > last_mtime) {
+                last_mtime = mtime;
+                last_file = walk;
+            }
+        }
+
+        for (File walk : toList(FreeColSavegameFile.getFiles(FreeColDirectories.getAutosaveDirectory()))) {
+            long mtime = walk.lastModified();
+            if (mtime > last_mtime) {
+                last_mtime = mtime;
+                last_file = walk;
+            }
+        }
+
+        return last_file;
     }
 
     /**
