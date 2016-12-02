@@ -195,6 +195,17 @@ public final class FreeCol {
         logLevels.add(new LogLevel("", LOGLEVEL_DEFAULT));
     }
 
+    private static class ThreadExceptionHandler implements Thread.UncaughtExceptionHandler {
+        Logger logger;
+        public ThreadExceptionHandler(Logger l) {
+            logger = l;
+        }
+
+        public void uncaughtException(Thread t, Throwable e) {
+            logger.log(Level.WARNING, "Uncaught exception from thread: " + t, e);
+        }
+    }
+
     /** The client player name. */
     private static String name = null;
 
@@ -314,9 +325,8 @@ public final class FreeCol {
                 + e.getMessage());
             e.printStackTrace();
         }
-        Thread.setDefaultUncaughtExceptionHandler((Thread thread, Throwable e) -> {
-                baseLogger.log(Level.WARNING, "Uncaught exception from thread: " + thread, e);
-            });
+
+        Thread.setDefaultUncaughtExceptionHandler(new ThreadExceptionHandler(baseLogger));
 
         // Now we can find the client options, allow the options
         // setting to override the locale, if no command line option
