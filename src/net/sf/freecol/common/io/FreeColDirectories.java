@@ -840,7 +840,7 @@ public class FreeColDirectories {
         long last_mtime = -1;
         File last_file = null;
 
-        for (File walk : toList(FreeColSavegameFile.getFiles(FreeColDirectories.getSaveDirectory()))) {
+        for (File walk : FreeColSavegameFile.getFiles(FreeColDirectories.getSaveDirectory())) {
             long mtime = walk.lastModified();
             if (mtime > last_mtime) {
                 last_mtime = mtime;
@@ -848,7 +848,7 @@ public class FreeColDirectories {
             }
         }
 
-        for (File walk : toList(FreeColSavegameFile.getFiles(FreeColDirectories.getAutosaveDirectory()))) {
+        for (File walk : FreeColSavegameFile.getFiles(FreeColDirectories.getAutosaveDirectory())) {
             long mtime = walk.lastModified();
             if (mtime > last_mtime) {
                 last_mtime = mtime;

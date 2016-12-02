@@ -169,7 +169,17 @@ public class FreeColSavegameFile extends FreeColDataFile {
      * @param directory The directory to look in.
      * @return A stream of the saved game files found in the directory.
      */
-    public static Stream<File> getFiles(File directory) {
-        return fileStream(directory, FreeColSavegameFile::fileFilter);
+    public static List<File> getFiles(File dir) {
+        List<File> list = new List<File>();
+
+        if ((dir == null) || !dir.isDirectory())
+            return list;
+
+        for (File walk : dir.listFiles()) {
+            if (fileFilter(f))
+                list.add(f);
+        }
+
+        return list;
     }
 }

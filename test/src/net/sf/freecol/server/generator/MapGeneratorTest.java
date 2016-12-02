@@ -192,7 +192,7 @@ public class MapGeneratorTest extends FreeColTestCase {
         Game game = new ServerGame(spec());
         MapGenerator gen = new SimpleMapGenerator(game, new Random(1));
         File mapDir = new File("data/maps/");
-        for (File importFile : toList(FreeColSavegameFile.getFiles(mapDir))) {
+        for (File importFile : FreeColSavegameFile.getFiles(mapDir)) {
             ((FileOption)spec().getOption(MapGeneratorOptions.IMPORT_FILE))
                 .setValue(importFile);
             assertNotNull(gen.createMap(new LogBuilder(-1)));
