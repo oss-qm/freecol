@@ -37,7 +37,6 @@ import java.util.jar.Manifest;
 import java.util.logging.Handler;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import java.util.stream.Collectors;
 import java.util.zip.ZipEntry;
 
 import net.sf.freecol.client.ClientOptions;
@@ -86,9 +85,14 @@ public final class FreeCol {
     /** The FreeCol protocol version number. */
     private static final String FREECOL_PROTOCOL_VERSION = "0.1.6";
 
-    /** The difficulty levels. */
-    private static final String[] DIFFICULTIES = {
-        "veryEasy", "easy", "medium", "hard", "veryHard"
+    /** The difficulty levels w/ prefix -- save CPU cycles and code complexity
+        by not transforming over and over again. **/
+    private static final String[] DIFFICULTIES_PREFIXED = {
+        "model.difficulty.veryEasy",
+        "model.difficulty.easy",
+        "model.difficulty.medium",
+        "model.difficulty.hard",
+        "model.difficulty.veryHard"
     };
 
     /** The extension for FreeCol saved games. */
@@ -1018,11 +1022,14 @@ public final class FreeCol {
      * @return The name of the selected difficulty, or null if none.
      */
     public static String selectDifficulty(String arg) {
-        String difficulty
-            = find(map(DIFFICULTIES, d -> "model.difficulty." + d),
-                   Messages.matchesName(arg));
-        if (difficulty != null) setDifficulty(difficulty);
-        return difficulty;
+        if (arg != null)
+            for (String difficulty : DIFFICULTIES_PREFIXED)
+                if (arg.equals(Messages.getName(difficulty))) {
+                    setDifficulty(difficulty);
+                    return difficulty;
+                }
+
+        return null;
     }
 
     /**
@@ -1050,9 +1057,11 @@ public final class FreeCol {
      * @return The valid difficulty levels, comma separated.
      */
     public static String getValidDifficulties() {
-        return transform(DIFFICULTIES, alwaysTrue(),
-                         d -> Messages.getName("model.difficulty." + d),
-                         Collectors.joining(","));
+        StrCat cat = new StrCat(",");
+        for (String s : DIFFICULTIES_PREFIXED)
+            cat.add(s);
+
+        return cat.toString();
     }
 
     /**
