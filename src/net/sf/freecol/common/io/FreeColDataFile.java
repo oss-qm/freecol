@@ -314,12 +314,21 @@ public class FreeColDataFile {
      */
     public static boolean fileFilter(File f, String requiredFile,
                                      String... endings) {
+        if (f == null)
+            return false;
+
         final String name = f.getName();
-        return (name.startsWith("."))
-            ? false
-            : (requiredFile != null && f.isDirectory())
-            ? new File(f, requiredFile).exists()
-            : any(endings, e -> name.endsWith("." + e)
-                && name.length() > e.length());
+
+        if (name.startsWith("."))
+            return false;
+
+        if (requiredFile != null && f.isDirectory())
+            return (new File(f, requiredFile)).exists();
+
+        for (String e : endings)
+            if (name.endsWith("." + e) && (name.length() > e.length()))
+                return true;
+
+        return false;
     }
 }
