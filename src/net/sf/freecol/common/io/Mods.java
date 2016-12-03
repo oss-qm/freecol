@@ -104,7 +104,20 @@ public class Mods {
      * @return A list of {@code FreeColModFile}s containing rulesets.
      */
     public static List<FreeColTcFile> getRuleSets() {
-        return transform(fileStream(FreeColDirectories.getRulesDirectory()),
-                         FreeColTcFile::fileFilter, FreeColTcFile::make);
+        final File dir = FreeColDirectories.getRulesDirectory();
+
+        if ((dir == null) || !dir.isDirectory())
+            return;
+
+        List<File> list = new List<File>();
+
+        for (File walk : dir.listFiles()) {
+            if (!FreeColTcFile.fileFilter(f))
+                continue;
+
+            list.add(FreeColTcFile.make(f));
+        }
+
+        return list;
     }
 }
