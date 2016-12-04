@@ -51,28 +51,51 @@ public final class PreGameInputHandler extends ServerInputHandler {
         super(freeColServer);
 
         register(ReadyMessage.TAG,
-            (Connection conn, Element e) -> handler(false, conn,
-                new ReadyMessage(getGame(), e)));
+            new ServerInputHandler.NetworkRequestHandler() {
+                public Element handle(final Connection conn, final Element e) {
+                    return handler(false, conn, new ReadyMessage(getGame(), e));
+                }});
+
         register(TrivialMessage.REQUEST_LAUNCH_TAG,
-            (Connection conn, Element e) -> handler(false, conn,
-                TrivialMessage.REQUEST_LAUNCH_MESSAGE));
+            new ServerInputHandler.NetworkRequestHandler() {
+                public Element handle(final Connection conn, final Element e) {
+                    return handler(false, conn, TrivialMessage.REQUEST_LAUNCH_MESSAGE);
+                }});
+
         register(SetAvailableMessage.TAG,
-            (Connection conn, Element e) -> handler(false, conn,
-                new SetAvailableMessage(getGame(), e)));
+            new ServerInputHandler.NetworkRequestHandler() {
+                public Element handle(final Connection conn, final Element e) {
+                    return handler(false, conn, new SetAvailableMessage(getGame(), e));
+                }});
+
         register(SetColorMessage.TAG,
-            (Connection conn, Element e) -> handler(false, conn,
-                new SetColorMessage(getGame(), e)));
+            new ServerInputHandler.NetworkRequestHandler() {
+                public Element handle(final Connection conn, final Element e) {
+                    return handler(false, conn, new SetColorMessage(getGame(), e));
+                }});
+
         register(SetNationMessage.TAG,
-            (Connection conn, Element e) -> handler(false, conn,
-                new SetNationMessage(getGame(), e)));
+            new ServerInputHandler.NetworkRequestHandler() {
+                public Element handle(final Connection conn, final Element e) {
+                    return handler(false, conn, new SetNationMessage(getGame(), e));
+                }});
+
         register(SetNationTypeMessage.TAG,
-            (Connection conn, Element e) -> handler(false, conn,
-                new SetNationTypeMessage(getGame(), e)));
+            new ServerInputHandler.NetworkRequestHandler() {
+                public Element handle(final Connection conn, final Element e) {
+                    return handler(false, conn, new SetNationTypeMessage(getGame(), e));
+                }});
+
         register(UpdateGameOptionsMessage.TAG,
-            (Connection conn, Element e) -> handler(false, conn,
-                new UpdateGameOptionsMessage(getGame(), e)));
+            new ServerInputHandler.NetworkRequestHandler() {
+                public Element handle(final Connection conn, final Element e) {
+                    return handler(false, conn, new UpdateGameOptionsMessage(getGame(), e));
+                }});
+
         register(UpdateMapGeneratorOptionsMessage.TAG,
-            (Connection conn, Element e) -> handler(false, conn,
-                new UpdateMapGeneratorOptionsMessage(getGame(), e)));
+            new ServerInputHandler.NetworkRequestHandler() {
+                public Element handle(final Connection conn, final Element e) {
+                    return handler(false, conn, new UpdateMapGeneratorOptionsMessage(getGame(), e));
+                }});
     }
 }

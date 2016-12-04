@@ -24,6 +24,7 @@ import java.util.List;
 import java.util.logging.Logger;
 
 import net.sf.freecol.client.FreeColClient;
+import net.sf.freecol.client.control.ClientInputHandler.ClientNetworkRequestHandler;
 import net.sf.freecol.common.debug.FreeColDebugger;
 import net.sf.freecol.common.model.Ability;
 import net.sf.freecol.common.model.Colony;
@@ -136,75 +137,214 @@ public final class InGameInputHandler extends ClientInputHandler {
         super(freeColClient);
 
         register(AddPlayerMessage.TAG,
-            (Connection c, Element e) -> addPlayer(e));
+            new ClientNetworkRequestHandler() {
+                public void handle(Connection c, Element e) {
+                    addPlayer(e);
+                }});
+
         register(AnimateAttackMessage.TAG,
-            (Connection c, Element e) -> animateAttack(e));
+            new ClientNetworkRequestHandler() {
+                public void handle(Connection c, Element e) {
+                    animateAttack(e);
+                }});
+
         register(AnimateMoveMessage.TAG,
-            (Connection c, Element e) -> animateMove(e));
+            new ClientNetworkRequestHandler() {
+                public void handle(Connection c, Element e) {
+                    animateMove(e);
+                }});
+
         register(ChatMessage.TAG,
-            (Connection c, Element e) -> chat(e));
+            new ClientNetworkRequestHandler() {
+                public void handle(Connection c, Element e) {
+                    chat(e);
+                }});
+
         register(ChooseFoundingFatherMessage.TAG,
-            (Connection c, Element e) -> chooseFoundingFather(e));
+            new ClientNetworkRequestHandler() {
+                public void handle(Connection c, Element e) {
+                    chooseFoundingFather(e);
+                }});
+
         register(TrivialMessage.CLOSE_MENUS_TAG,
-            (Connection c, Element e) -> closeMenus());
+            new ClientNetworkRequestHandler() {
+                public void handle(Connection c, Element e) {
+                    closeMenus();
+                }});
+
         register(DiplomacyMessage.TAG,
-            (Connection c, Element e) -> diplomacy(e));
+            new ClientNetworkRequestHandler() {
+                public void handle(Connection c, Element e) {
+                    diplomacy(e);
+                }});
+
         register(TrivialMessage.DISCONNECT_TAG,
-            (Connection c, Element e) -> disconnect(e));
+            new ClientNetworkRequestHandler() {
+                public void handle(Connection c, Element e) {
+                    disconnect(e);
+                }});
+
         register(ErrorMessage.TAG,
-            (Connection c, Element e) -> error(e));
+            new ClientNetworkRequestHandler() {
+                public void handle(Connection c, Element e) {
+                    error(e);
+                }});
+
         register(FeatureChangeMessage.TAG,
-            (Connection c, Element e) -> featureChange(e));
+            new ClientNetworkRequestHandler() {
+                public void handle(Connection c, Element e) {
+                    featureChange(e);
+                }});
+
         register(FirstContactMessage.TAG,
-            (Connection c, Element e) -> firstContact(e));
+            new ClientNetworkRequestHandler() {
+                public void handle(Connection c, Element e) {
+                    firstContact(e);
+                }});
+
         register(FountainOfYouthMessage.TAG,
-            (Connection c, Element e) -> fountainOfYouth(e));
+            new ClientNetworkRequestHandler() {
+                public void handle(Connection c, Element e) {
+                    fountainOfYouth(e);
+                }});
+
         register(GameEndedMessage.TAG,
-            (Connection c, Element e) -> gameEnded(e));
+            new ClientNetworkRequestHandler() {
+                public void handle(Connection c, Element e) {
+                    gameEnded(e);
+                }});
+
         register(HighScoreMessage.TAG,
-            (Connection c, Element e) -> highScore(e));
+            new ClientNetworkRequestHandler() {
+                public void handle(Connection c, Element e) {
+                    highScore(e);
+                }});
+
         register(InciteMessage.TAG,
-            (Connection c, Element e) -> incite(e));
+            new ClientNetworkRequestHandler() {
+                public void handle(Connection c, Element e) {
+                    incite(e);
+                }});
+
         register(IndianDemandMessage.TAG,
-            (Connection c, Element e) -> indianDemand(e));
+            new ClientNetworkRequestHandler() {
+                public void handle(Connection c, Element e) {
+                    indianDemand(e);
+                }});
+
         register(LogoutMessage.TAG,
-            (Connection c, Element e) -> logout(e));
+            new ClientNetworkRequestHandler() {
+                public void handle(Connection c, Element e) {
+                    logout(e);
+                }});
+
         register(LootCargoMessage.TAG,
-            (Connection c, Element e) -> lootCargo(e));
+            new ClientNetworkRequestHandler() {
+                public void handle(Connection c, Element e) {
+                    lootCargo(e);
+                }});
+
         register(MonarchActionMessage.TAG,
-            (Connection c, Element e) -> monarchAction(e));
+            new ClientNetworkRequestHandler() {
+                public void handle(Connection c, Element e) {
+                    monarchAction(e);
+                }});
+
         register(MultipleMessage.TAG,
-            (Connection c, Element e) -> multiple(c, e));
+            new ClientNetworkRequestHandler() {
+                public void handle(Connection c, Element e) {
+                    multiple(c, e);
+                }});
+
         register(NationSummaryMessage.TAG,
-            (Connection c, Element e) -> nationSummary(e));
+            new ClientNetworkRequestHandler() {
+                public void handle(Connection c, Element e) {
+                    nationSummary(e);
+                }});
+
         register(NativeTradeMessage.TAG,
-            (Connection c, Element e) -> nativeTrade(e));
+            new ClientNetworkRequestHandler() {
+                public void handle(Connection c, Element e) {
+                    nativeTrade(e);
+                }});
+
         register(NewLandNameMessage.TAG,
-            (Connection c, Element e) -> newLandName(e));
+            new ClientNetworkRequestHandler() {
+                public void handle(Connection c, Element e) {
+                    newLandName(e);
+                }});
+
         register(NewRegionNameMessage.TAG,
-            (Connection c, Element e) -> newRegionName(e));
+            new ClientNetworkRequestHandler() {
+                public void handle(Connection c, Element e) {
+                    newRegionName(e);
+                }});
+
         register(NewTurnMessage.TAG,
-            (Connection c, Element e) -> newTurn(e));
+            new ClientNetworkRequestHandler() {
+                public void handle(Connection c, Element e) {
+                    newTurn(e);
+                }});
+
         register(NewTradeRouteMessage.TAG,
-            (Connection c, Element e) -> newTradeRoute(e));
+            new ClientNetworkRequestHandler() {
+                public void handle(Connection c, Element e) {
+                    newTradeRoute(e);
+                }});
+
         register(TrivialMessage.RECONNECT_TAG,
-            (Connection c, Element e) -> reconnect());
+            new ClientNetworkRequestHandler() {
+                public void handle(Connection c, Element e) {
+                    reconnect();
+                }});
+
         register(RemoveMessage.TAG,
-            (Connection c, Element e) -> remove(e));
+            new ClientNetworkRequestHandler() {
+                public void handle(Connection c, Element e) {
+                    remove(e);
+                }});
+
         register(ScoutSpeakToChiefMessage.TAG,
-            (Connection c, Element e) -> scoutSpeakToChief(e));
+            new ClientNetworkRequestHandler() {
+                public void handle(Connection c, Element e) {
+                    scoutSpeakToChief(e);
+                }});
+
         register(SetAIMessage.TAG,
-            (Connection c, Element e) -> setAI(e));
+            new ClientNetworkRequestHandler() {
+                public void handle(Connection c, Element e) {
+                    setAI(e);
+                }});
+
         register(SetCurrentPlayerMessage.TAG,
-            (Connection c, Element e) -> setCurrentPlayer(e));
+            new ClientNetworkRequestHandler() {
+                public void handle(Connection c, Element e) {
+                    setCurrentPlayer(e);
+                }});
+
         register(SetDeadMessage.TAG,
-            (Connection c, Element e) -> setDead(e));
+            new ClientNetworkRequestHandler() {
+                public void handle(Connection c, Element e) {
+                    setDead(e);
+                }});
+
         register(SetStanceMessage.TAG,
-            (Connection c, Element e) -> setStance(e));
+            new ClientNetworkRequestHandler() {
+                public void handle(Connection c, Element e) {
+                    setStance(e);
+                }});
+
         register(SpySettlementMessage.TAG,
-            (Connection c, Element e) -> spySettlement(e));
+            new ClientNetworkRequestHandler() {
+                public void handle(Connection c, Element e) {
+                    spySettlement(e);
+                }});
+
         register(UpdateMessage.TAG,
-            (Connection c, Element e) -> update(e));
+            new ClientNetworkRequestHandler() {
+                public void handle(Connection c, Element e) {
+                    update(e);
+                }});
     }
 
 

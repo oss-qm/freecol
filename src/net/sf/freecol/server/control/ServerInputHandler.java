@@ -85,16 +85,22 @@ public abstract class ServerInputHandler extends FreeColServerHolder
         super(freeColServer);
 
         register(ChatMessage.TAG,
-            (Connection conn, Element e) -> handler(false, conn,
-                new ChatMessage(getGame(), e)));
+            new NetworkRequestHandler() {
+                public Element handle(Connection conn, Element e) {
+                    return handler(false, conn, new ChatMessage(getGame(), e));
+                }});
 
         register(TrivialMessage.DISCONNECT_TAG,
-            (Connection conn, Element e) -> handler(false, conn,
-                TrivialMessage.DISCONNECT_MESSAGE));
+            new NetworkRequestHandler() {
+                public Element handle(Connection conn, Element e) {
+                    return handler(false, conn, TrivialMessage.DISCONNECT_MESSAGE);
+                }});
 
         register(LogoutMessage.TAG,
-            (Connection conn, Element e) -> handler(false, conn,
-                new LogoutMessage(getGame(), e)));
+            new NetworkRequestHandler() {
+                public Element handle(Connection conn, Element e) {
+                    return handler(false, conn, new LogoutMessage(getGame(), e));
+                }});
     }
 
 
