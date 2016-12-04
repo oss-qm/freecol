@@ -49,8 +49,7 @@ public interface BaseProduction {
                     getAvailableProductionTypes(unitType == null));
         }
         if (productionType == null) return 0;
-        AbstractGoods best = productionType.getOutput(goodsType);
-        return (best == null) ? 0 : best.getAmount();
+        return productionType.getOutputAmount(goodsType);
     }
 
     /**
