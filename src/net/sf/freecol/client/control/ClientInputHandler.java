@@ -45,46 +45,45 @@ public abstract class ClientInputHandler extends FreeColClientHolder
     private static final Logger logger = Logger.getLogger(ClientInputHandler.class.getName());
 
     /**
-     * Handle a request to a client.
-     *
-     */
-    public interface DOMClientNetworkRequestHandler {
-        void handle(Connection connection, Element element);
-    }
-
-    /**
-     * The handler map provides named handlers for network
-     * requests.  Each handler deals with a given request type.
-     */
-    private final Map<String, DOMClientNetworkRequestHandler> handlerMap
-        = Collections.synchronizedMap(new HashMap<String, DOMClientNetworkRequestHandler>());
-
-
-    /**
      * The constructor to use.
      *
      * @param freeColClient The {@code FreeColClient} for the game.
      */
     public ClientInputHandler(FreeColClient freeColClient) {
         super(freeColClient);
-
-        register(TrivialMessage.DISCONNECT_TAG,
-            (Connection c, Element e) -> disconnect(e));
-        register(GameStateMessage.TAG,
-            (Connection c, Element e) -> gameState(e));
-        register(VacantPlayersMessage.TAG,
-            (Connection c, Element e) -> vacantPlayers(e));
     }
 
-
     /**
-     * Register a network request handler.
+     * Do the actual message handling.
      *
-     * @param name The handler name.
-     * @param handler The {@code DOMClientNetworkRequestHandler} to register.
+     * Common messages (applying to all game states) are handled here.
+     * Subclasses for individual game states will override it, but still call this
+     * one (super), in order to get the common messages handled.
+     *
+     * @param connection   The connection, where the messages coming in
+     * @param element      The message Element
+     * @return             True if the message was handled
      */
-    protected final void register(String name, DOMClientNetworkRequestHandler handler) {
-        this.handlerMap.put(name, handler);
+    protected boolean handleElement(Connection connection, Element element) {
+        String tag = element.getTagName();
+
+        switch (tag) {
+            case TrivialMessage.DISCONNECT_TAG:
+                disconnect(element);
+            break;
+
+            case GameStateMessage.TAG:
+                gameState(element);
+            break;
+
+            case VacantPlayersMessage.TAG:
+                vacantPlayers(element);
+            break;
+
+            default:
+                return false;
+        }
+        return true;
     }
 
     // Useful handlers
@@ -134,14 +133,11 @@ public abstract class ClientInputHandler extends FreeColClientHolder
     public Element handle(Connection connection, Element element) {
         if (element == null) return null;
         final String tag = element.getTagName();
-        DOMClientNetworkRequestHandler handler = handlerMap.get(tag);
         try {
-            if (handler == null) {
-                logger.warning("Client ignored: " + tag);
-            } else {
-                handler.handle(connection, element);
+            if (handleElement(connection, element))
                 logger.log(Level.FINEST, "Client handled: " + tag);
-            }
+            else
+                logger.warning("unhandled tag: "+tag);
         } catch (Exception ex) {
             logger.log(Level.WARNING, "Client failed: " + tag, ex);
         }
