@@ -19,6 +19,8 @@
 
 package net.sf.freecol.server.control;
 
+import java.net.UnknownServiceException;
+
 import net.sf.freecol.common.networking.AbandonColonyMessage;
 import net.sf.freecol.common.networking.AskSkillMessage;
 import net.sf.freecol.common.networking.AssignTeacherMessage;
@@ -105,200 +107,204 @@ public final class InGameInputHandler extends ServerInputHandler {
      */
     public InGameInputHandler(final FreeColServer freeColServer) {
         super(freeColServer);
+    }
 
-        register(AbandonColonyMessage.TAG,
-            (Connection conn, Element e) -> handler(true, conn,
-                new AbandonColonyMessage(getGame(), e)));
-        register(AskSkillMessage.TAG,
-            (Connection conn, Element e) -> handler(true, conn,
-                new AskSkillMessage(getGame(), e)));
-        register(AssignTeacherMessage.TAG,
-            (Connection conn, Element e) -> handler(true, conn,
-                new AssignTeacherMessage(getGame(), e)));
-        register(AssignTradeRouteMessage.TAG,
-            (Connection conn, Element e) -> handler(true, conn,
-                new AssignTradeRouteMessage(getGame(), e)));
-        register(AttackMessage.TAG,
-            (Connection conn, Element e) -> handler(true, conn,
-                new AttackMessage(getGame(), e)));
-        register(BuildColonyMessage.TAG,
-            (Connection conn, Element e) -> handler(true, conn,
-                new BuildColonyMessage(getGame(), e)));
-        register(CashInTreasureTrainMessage.TAG,
-            (Connection conn, Element e) -> handler(true, conn,
-                new CashInTreasureTrainMessage(getGame(), e)));
-        register(ChangeStateMessage.TAG,
-            (Connection conn, Element e) -> handler(true, conn,
-                new ChangeStateMessage(getGame(), e)));
-        register(ChangeWorkImprovementTypeMessage.TAG,
-            (Connection conn, Element e) -> handler(true, conn,
-                new ChangeWorkImprovementTypeMessage(getGame(), e)));
-        register(ChangeWorkTypeMessage.TAG,
-            (Connection conn, Element e) -> handler(true, conn,
-                new ChangeWorkTypeMessage(getGame(), e)));
-        register(ChooseFoundingFatherMessage.TAG,
-            (Connection conn, Element e) -> handler(true, conn,
-                new ChooseFoundingFatherMessage(getGame(), e)));
-        register(ClaimLandMessage.TAG,
-            (Connection conn, Element e) -> handler(true, conn,
-                new ClaimLandMessage(getGame(), e)));
-        register(ClearSpecialityMessage.TAG,
-            (Connection conn, Element e) -> handler(true, conn,
-                new ClearSpecialityMessage(getGame(), e)));
-        register(TrivialMessage.CONTINUE_TAG,
-            (Connection conn, Element e) -> handler(false, conn,
-                TrivialMessage.CONTINUE_MESSAGE));
-        register(DeclareIndependenceMessage.TAG,
-            (Connection conn, Element e) -> handler(true, conn,
-                new DeclareIndependenceMessage(getGame(), e)));
-        register(DeclineMoundsMessage.TAG,
-            (Connection conn, Element e) -> handler(true, conn,
-                new DeclineMoundsMessage(getGame(), e)));
-        register(DeliverGiftMessage.TAG,
-            (Connection conn, Element e) -> handler(true, conn,
-                new DeliverGiftMessage(getGame(), e)));
-        register(DeleteTradeRouteMessage.TAG,
-            (Connection conn, Element e) -> handler(true, conn,
-                new DeleteTradeRouteMessage(getGame(), e)));
-        register(DemandTributeMessage.TAG,
-            (Connection conn, Element e) -> handler(true, conn,
-                new DemandTributeMessage(getGame(), e)));
-        register(DiplomacyMessage.TAG,
-            (Connection conn, Element e) -> handler(false, conn,
-                new DiplomacyMessage(getGame(), e)));
-        register(DisbandUnitMessage.TAG,
-            (Connection conn, Element e) -> handler(true, conn,
-                new DisbandUnitMessage(getGame(), e)));
-        register(DisembarkMessage.TAG,
-            (Connection conn, Element e) -> handler(true, conn,
-                new DisembarkMessage(getGame(), e)));
-        register(EmbarkMessage.TAG,
-            (Connection conn, Element e) -> handler(true, conn,
-                new EmbarkMessage(getGame(), e)));
-        register(EmigrateUnitMessage.TAG,
-            (Connection conn, Element e) -> handler(true, conn,
-                new EmigrateUnitMessage(getGame(), e)));
-        register(TrivialMessage.END_TURN_TAG,
-            (Connection conn, Element e) -> handler(true, conn,
-                TrivialMessage.END_TURN_MESSAGE));
-        register(TrivialMessage.ENTER_REVENGE_MODE_TAG,
-            (Connection conn, Element e) -> handler(false, conn,
-                TrivialMessage.ENTER_REVENGE_MODE_MESSAGE));
-        register(EquipForRoleMessage.TAG,
-            (Connection conn, Element e) -> handler(true, conn,
-                new EquipForRoleMessage(getGame(), e)));
-        register(FirstContactMessage.TAG,
-            (Connection conn, Element e) -> handler(false, conn,
-                new FirstContactMessage(getGame(), e)));
-        register(InciteMessage.TAG,
-            (Connection conn, Element e) -> handler(true, conn,
-                new InciteMessage(getGame(), e)));
-        register(IndianDemandMessage.TAG,
-            (Connection conn, Element e) -> handler(false, conn,
-                new IndianDemandMessage(getGame(), e)));
-        register(HighScoreMessage.TAG,
-            (Connection conn, Element e) -> handler(false, conn,
-                new HighScoreMessage(getGame(), e)));
-        register(JoinColonyMessage.TAG,
-            (Connection conn, Element e) -> handler(true, conn,
-                new JoinColonyMessage(getGame(), e)));
-        register(LearnSkillMessage.TAG,
-            (Connection conn, Element e) -> handler(true, conn,
-                new LearnSkillMessage(getGame(), e)));
-        register(LoadGoodsMessage.TAG,
-            (Connection conn, Element e) -> handler(true, conn,
-                new LoadGoodsMessage(getGame(), e)));
-        register(LootCargoMessage.TAG,
-            (Connection conn, Element e) -> handler(false, conn,
-                new LootCargoMessage(getGame(), e)));
-        register(MissionaryMessage.TAG,
-            (Connection conn, Element e) -> handler(true, conn,
-                new MissionaryMessage(getGame(), e)));
-        register(MonarchActionMessage.TAG,
-            (Connection conn, Element e) -> handler(true, conn,
-                new MonarchActionMessage(getGame(), e)));
-        register(MoveMessage.TAG,
-            (Connection conn, Element e) -> handler(true, conn,
-                new MoveMessage(getGame(), e)));
-        register(MoveToMessage.TAG,
-            (Connection conn, Element e) -> handler(true, conn,
-                new MoveToMessage(getGame(), e)));
-        //register(MultipleMessage.TAG,
-        //    (Connection conn, Element e) -> handler(false, conn,
-        //        new MultipleMessage(getGame(), e)));
-        register(NationSummaryMessage.TAG,
-            (Connection conn, Element e) -> handler(false, conn,
-                new NationSummaryMessage(getGame(), e)));
-        register(NativeGiftMessage.TAG,
-            (Connection conn, Element e) -> handler(true, conn,
-                new NativeGiftMessage(getGame(), e)));
-        register(NativeTradeMessage.TAG,
-            (Connection conn, Element e) -> handler(false, conn,
-                new NativeTradeMessage(getGame(), e)));
-        register(NewLandNameMessage.TAG,
-            (Connection conn, Element e) -> handler(false, conn,
-                new NewLandNameMessage(getGame(), e)));
-        register(NewRegionNameMessage.TAG,
-            (Connection conn, Element e) -> handler(false, conn,
-                new NewRegionNameMessage(getGame(), e)));
-        register(NewTradeRouteMessage.TAG,
-            (Connection conn, Element e) -> handler(true, conn,
-                new NewTradeRouteMessage(getGame(), e)));
-        register(PayArrearsMessage.TAG,
-            (Connection conn, Element e) -> handler(true, conn,
-                new PayArrearsMessage(getGame(), e)));
-        register(PayForBuildingMessage.TAG,
-            (Connection conn, Element e) -> handler(true, conn,
-                new PayForBuildingMessage(getGame(), e)));
-        register(PutOutsideColonyMessage.TAG,
-            (Connection conn, Element e) -> handler(true, conn,
-                new PutOutsideColonyMessage(getGame(), e)));
-        register(RearrangeColonyMessage.TAG,
-            (Connection conn, Element e) -> handler(true, conn,
-                new RearrangeColonyMessage(getGame(), e)));
-        register(RenameMessage.TAG,
-            (Connection conn, Element e) -> handler(true, conn,
-                new RenameMessage(getGame(), e)));
-        register(TrivialMessage.RETIRE_TAG,
-            (Connection conn, Element e) -> handler(false, conn,
-                TrivialMessage.RETIRE_MESSAGE));
-        register(ScoutIndianSettlementMessage.TAG,
-            (Connection conn, Element e) -> handler(true, conn,
-                new ScoutIndianSettlementMessage(getGame(), e)));
-        register(ScoutSpeakToChiefMessage.TAG,
-            (Connection conn, Element e) -> handler(true, conn,
-                new ScoutSpeakToChiefMessage(getGame(), e)));
-        register(SetBuildQueueMessage.TAG,
-            (Connection conn, Element e) -> handler(true, conn,
-                new SetBuildQueueMessage(getGame(), e)));
-        register(SetCurrentStopMessage.TAG,
-            (Connection conn, Element e) -> handler(false, conn,
-                new SetCurrentStopMessage(getGame(), e)));
-        register(SetDestinationMessage.TAG,
-            (Connection conn, Element e) -> handler(false, conn,
-                new SetDestinationMessage(getGame(), e)));
-        register(SetGoodsLevelsMessage.TAG,
-            (Connection conn, Element e) -> handler(true, conn,
-                new SetGoodsLevelsMessage(getGame(), e)));
-        register(SpySettlementMessage.TAG,
-            (Connection conn, Element e) -> handler(false, conn,
-                new SpySettlementMessage(getGame(), e)));
-        register(TrainUnitInEuropeMessage.TAG,
-            (Connection conn, Element e) -> handler(true, conn,
-                new TrainUnitInEuropeMessage(getGame(), e)));
-        register(UnloadGoodsMessage.TAG,
-            (Connection conn, Element e) -> handler(true, conn,
-                new UnloadGoodsMessage(getGame(), e)));
-        register(UpdateTradeRouteMessage.TAG,
-            (Connection conn, Element e) -> handler(false, conn,
-                new UpdateTradeRouteMessage(getGame(), e)));
-        register(WorkMessage.TAG,
-            (Connection conn, Element e) -> handler(true, conn,
-                new WorkMessage(getGame(), e)));
+    @Override
+    public Element handleElement(Connection c, Element e)
+            throws UnknownServiceException {
+        String tag = e.getTagName().intern();
+        switch (tag) {
+            case AbandonColonyMessage.TAG:
+                return handler(true, c, new AbandonColonyMessage(getGame(), e));
 
-        register(MultipleMessage.TAG,
-            (Connection connection, Element element) ->
-                new MultipleMessage(getGame(), element)
-                    .handle(freeColServer, connection));
+            case AskSkillMessage.TAG:
+                return handler(true, c, new AskSkillMessage(getGame(), e));
+
+            case AssignTeacherMessage.TAG:
+                return handler(true, c, new AssignTeacherMessage(getGame(), e));
+
+            case AssignTradeRouteMessage.TAG:
+                return handler(true, c, new AssignTradeRouteMessage(getGame(), e));
+
+            case AttackMessage.TAG:
+                return handler(true, c, new AttackMessage(getGame(), e));
+
+            case BuildColonyMessage.TAG:
+                return handler(true, c, new BuildColonyMessage(getGame(), e));
+
+            case CashInTreasureTrainMessage.TAG:
+                return handler(true, c, new CashInTreasureTrainMessage(getGame(), e));
+
+            case ChangeStateMessage.TAG:
+                return handler(true, c, new ChangeStateMessage(getGame(), e));
+
+            case ChangeWorkImprovementTypeMessage.TAG:
+                return handler(true, c, new ChangeWorkImprovementTypeMessage(getGame(), e));
+
+            case ChangeWorkTypeMessage.TAG:
+                return handler(true, c, new ChangeWorkTypeMessage(getGame(), e));
+
+            case ChooseFoundingFatherMessage.TAG:
+                return handler(true, c, new ChooseFoundingFatherMessage(getGame(), e));
+
+            case ClaimLandMessage.TAG:
+                return handler(true, c, new ClaimLandMessage(getGame(), e));
+
+            case ClearSpecialityMessage.TAG:
+                return handler(true, c, new ClearSpecialityMessage(getGame(), e));
+
+            case TrivialMessage.CONTINUE_TAG:
+                return handler(false, c, TrivialMessage.CONTINUE_MESSAGE);
+
+            case DeclareIndependenceMessage.TAG:
+                return handler(true, c, new DeclareIndependenceMessage(getGame(), e));
+
+            case DeclineMoundsMessage.TAG:
+                return handler(true, c, new DeclineMoundsMessage(getGame(), e));
+
+            case DeliverGiftMessage.TAG:
+                return handler(true, c, new DeliverGiftMessage(getGame(), e));
+
+            case DeleteTradeRouteMessage.TAG:
+                return handler(true, c, new DeleteTradeRouteMessage(getGame(), e));
+
+            case DemandTributeMessage.TAG:
+                return handler(true, c, new DemandTributeMessage(getGame(), e));
+
+            case DiplomacyMessage.TAG:
+                return handler(false, c, new DiplomacyMessage(getGame(), e));
+
+            case DisbandUnitMessage.TAG:
+                return handler(true, c, new DisbandUnitMessage(getGame(), e));
+
+            case DisembarkMessage.TAG:
+                return handler(true, c, new DisembarkMessage(getGame(), e));
+
+            case EmbarkMessage.TAG:
+                return handler(true, c, new EmbarkMessage(getGame(), e));
+
+            case EmigrateUnitMessage.TAG:
+                return handler(true, c, new EmigrateUnitMessage(getGame(), e));
+
+            case TrivialMessage.END_TURN_TAG:
+                return handler(true, c, TrivialMessage.END_TURN_MESSAGE);
+
+            case TrivialMessage.ENTER_REVENGE_MODE_TAG:
+                return handler(false, c, TrivialMessage.ENTER_REVENGE_MODE_MESSAGE);
+
+            case EquipForRoleMessage.TAG:
+                return handler(true, c, new EquipForRoleMessage(getGame(), e));
+
+            case FirstContactMessage.TAG:
+                return handler(false, c, new FirstContactMessage(getGame(), e));
+
+            case InciteMessage.TAG:
+                return handler(true, c, new InciteMessage(getGame(), e));
+
+            case IndianDemandMessage.TAG:
+                return handler(false, c, new IndianDemandMessage(getGame(), e));
+
+            case HighScoreMessage.TAG:
+                return handler(false, c, new HighScoreMessage(getGame(), e));
+
+            case JoinColonyMessage.TAG:
+                return handler(true, c, new JoinColonyMessage(getGame(), e));
+
+            case LearnSkillMessage.TAG:
+                return handler(true, c, new LearnSkillMessage(getGame(), e));
+
+            case LoadGoodsMessage.TAG:
+                return handler(true, c, new LoadGoodsMessage(getGame(), e));
+
+            case LootCargoMessage.TAG:
+                return handler(false, c, new LootCargoMessage(getGame(), e));
+
+            case MissionaryMessage.TAG:
+                return handler(true, c, new MissionaryMessage(getGame(), e));
+
+            case MonarchActionMessage.TAG:
+                return handler(true, c, new MonarchActionMessage(getGame(), e));
+
+            case MoveMessage.TAG:
+                return handler(true, c, new MoveMessage(getGame(), e));
+
+            case MoveToMessage.TAG:
+                return handler(true, c, new MoveToMessage(getGame(), e));
+
+            case NationSummaryMessage.TAG:
+                return handler(false, c, new NationSummaryMessage(getGame(), e));
+
+            case NativeGiftMessage.TAG:
+                return handler(true, c, new NativeGiftMessage(getGame(), e));
+
+            case NativeTradeMessage.TAG:
+                return handler(false, c, new NativeTradeMessage(getGame(), e));
+
+            case NewLandNameMessage.TAG:
+                return handler(false, c, new NewLandNameMessage(getGame(), e));
+
+            case NewRegionNameMessage.TAG:
+                return handler(false, c, new NewRegionNameMessage(getGame(), e));
+
+            case NewTradeRouteMessage.TAG:
+                return handler(true, c, new NewTradeRouteMessage(getGame(), e));
+
+            case PayArrearsMessage.TAG:
+                return handler(true, c, new PayArrearsMessage(getGame(), e));
+
+            case PayForBuildingMessage.TAG:
+                return handler(true, c, new PayForBuildingMessage(getGame(), e));
+
+            case PutOutsideColonyMessage.TAG:
+                return handler(true, c, new PutOutsideColonyMessage(getGame(), e));
+
+            case RearrangeColonyMessage.TAG:
+                return handler(true, c, new RearrangeColonyMessage(getGame(), e));
+
+            case RenameMessage.TAG:
+                return handler(true, c, new RenameMessage(getGame(), e));
+
+            case TrivialMessage.RETIRE_TAG:
+                return handler(false, c, TrivialMessage.RETIRE_MESSAGE);
+
+            case ScoutIndianSettlementMessage.TAG:
+                return handler(true, c, new ScoutIndianSettlementMessage(getGame(), e));
+
+            case ScoutSpeakToChiefMessage.TAG:
+                return handler(true, c, new ScoutSpeakToChiefMessage(getGame(), e));
+
+            case SetBuildQueueMessage.TAG:
+                return handler(true, c, new SetBuildQueueMessage(getGame(), e));
+
+            case SetCurrentStopMessage.TAG:
+                return handler(false, c, new SetCurrentStopMessage(getGame(), e));
+
+            case SetDestinationMessage.TAG:
+                return handler(false, c, new SetDestinationMessage(getGame(), e));
+
+            case SetGoodsLevelsMessage.TAG:
+                return handler(true, c, new SetGoodsLevelsMessage(getGame(), e));
+
+            case SpySettlementMessage.TAG:
+                return handler(false, c, new SpySettlementMessage(getGame(), e));
+
+            case TrainUnitInEuropeMessage.TAG:
+                return handler(true, c, new TrainUnitInEuropeMessage(getGame(), e));
+
+            case UnloadGoodsMessage.TAG:
+                return handler(true, c, new UnloadGoodsMessage(getGame(), e));
+
+            case UpdateTradeRouteMessage.TAG:
+                return handler(false, c, new UpdateTradeRouteMessage(getGame(), e));
+
+            case WorkMessage.TAG:
+                return handler(true, c, new WorkMessage(getGame(), e));
+
+            case MultipleMessage.TAG:
+                return (new MultipleMessage(getGame(), e).handle(getFreeColServer(), c));
+
+            default:
+                return super.handleElement(c, e);
+        }
     }
 }
