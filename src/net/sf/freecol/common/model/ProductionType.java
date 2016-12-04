@@ -279,6 +279,20 @@ public class ProductionType extends FreeColSpecObject {
     }
 
     /**
+     * Get the amount of goods of the given goods type in this production type.
+     *
+     * @param goodsType The {@code GoodsType} to check.
+     * @return The {@code AbstractGoods} output amount if any, otherwise 0
+     */
+    public final int getOutputAmount(GoodsType goodsType) {
+        if (outputs == null)
+            return 0;
+
+        AbstractGoods g = AbstractGoods.findByType(outputs, goodsType);
+        return (g == null ? 0 : g.getAmount());
+    }
+
+    /**
      * Get the type of the most productive output.
      *
      * @return The {@code GoodsType} of the most productive output.
