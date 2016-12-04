@@ -75,37 +75,73 @@ public final class PreGameInputHandler extends ClientInputHandler {
      */
     public PreGameInputHandler(FreeColClient freeColClient) {
         super(freeColClient);
-
-        register(AddPlayerMessage.TAG,
-            (Connection c, Element e) -> addPlayer(e));
-        register(ChatMessage.TAG,
-            (Connection c, Element e) -> chat(e));
-        register(ErrorMessage.TAG,
-            (Connection c, Element e) -> error(e));
-        register(LoginMessage.TAG,
-            (Connection c, Element e) -> login(e));
-        register(LogoutMessage.TAG,
-            (Connection c, Element e) -> logout(e));
-        register(MultipleMessage.TAG,
-            (Connection c, Element e) -> multiple(c, e));
-        register(ReadyMessage.TAG,
-            (Connection c, Element e) -> ready(e));
-        register(SetAvailableMessage.TAG,
-            (Connection c, Element e) -> setAvailable(e));
-        register(SetColorMessage.TAG,
-            (Connection c, Element e) -> setColor(e));
-        register(SetNationMessage.TAG,
-            (Connection c, Element e) -> setNation(e));
-        register(TrivialMessage.START_GAME_TAG,
-            (Connection c, Element e) -> startGame(e));
-        register(UpdateMessage.TAG,
-            (Connection c, Element e) -> update(e));
-        register(UpdateGameOptionsMessage.TAG,
-            (Connection c, Element e) -> updateGameOptions(e));
-        register(UpdateMapGeneratorOptionsMessage.TAG,
-            (Connection c, Element e) -> updateMapGeneratorOptions(e));
     }
 
+    @Override
+    protected boolean handleElement(Connection connection, Element element) {
+        String tag = element.getTagName();
+        switch (tag) {
+            case AddPlayerMessage.TAG:
+                addPlayer(element);
+            break;
+
+            case ChatMessage.TAG:
+                chat(element);
+            break;
+
+            case ErrorMessage.TAG:
+                error(element);
+            break;
+
+            case LoginMessage.TAG:
+                login(element);
+            break;
+
+            case LogoutMessage.TAG:
+                logout(element);
+            break;
+
+            case MultipleMessage.TAG:
+                multiple(connection, element);
+            break;
+
+            case ReadyMessage.TAG:
+                ready(element);
+            break;
+
+            case SetAvailableMessage.TAG:
+                setAvailable(element);
+            break;
+
+            case SetColorMessage.TAG:
+                setColor(element);
+            break;
+
+            case SetNationMessage.TAG:
+                setNation(element);
+            break;
+
+            case TrivialMessage.START_GAME_TAG:
+                startGame(element);
+            break;
+
+            case UpdateMessage.TAG:
+                update(element);
+            break;
+
+            case UpdateGameOptionsMessage.TAG:
+                updateGameOptions(element);
+            break;
+
+            case UpdateMapGeneratorOptionsMessage.TAG:
+                updateMapGeneratorOptions(element);
+            break;
+
+            default:
+                return super.handleElement(connection, element);
+        }
+        return true;
+    }
 
     // Individual handlers
 

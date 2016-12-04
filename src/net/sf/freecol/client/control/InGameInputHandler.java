@@ -134,114 +134,157 @@ public final class InGameInputHandler extends ClientInputHandler {
      */
     public InGameInputHandler(FreeColClient freeColClient) {
         super(freeColClient);
-
-        register(AddPlayerMessage.TAG,
-            (Connection c, Element e) ->
-                addPlayer(new AddPlayerMessage(getGame(), e)));
-        register(AnimateAttackMessage.TAG,
-            (Connection c, Element e) ->
-                animateAttack(new AnimateAttackMessage(getGame(), e)));
-        register(AnimateMoveMessage.TAG,
-            (Connection c, Element e) ->
-                animateMove(new AnimateMoveMessage(getGame(), e)));
-        register(ChatMessage.TAG,
-            (Connection c, Element e) ->
-                chat(new ChatMessage(getGame(), e)));
-        register(ChooseFoundingFatherMessage.TAG,
-            (Connection c, Element e) ->
-                chooseFoundingFather(new ChooseFoundingFatherMessage(getGame(), e)));
-        register(TrivialMessage.CLOSE_MENUS_TAG,
-            (Connection c, Element e) ->
-                closeMenus());
-        register(DiplomacyMessage.TAG,
-            (Connection c, Element e) ->
-                diplomacy(new DiplomacyMessage(getGame(), e)));
-        register(TrivialMessage.DISCONNECT_TAG,
-            (Connection c, Element e) ->
-                disconnect(TrivialMessage.DISCONNECT_MESSAGE));
-        register(ErrorMessage.TAG,
-            (Connection c, Element e) ->
-                error(new ErrorMessage(getGame(), e)));
-        register(FeatureChangeMessage.TAG,
-            (Connection c, Element e) ->
-                featureChange(new FeatureChangeMessage(getGame(), e)));
-        register(FirstContactMessage.TAG,
-            (Connection c, Element e) ->
-                firstContact(new FirstContactMessage(getGame(), e)));
-        register(FountainOfYouthMessage.TAG,
-            (Connection c, Element e) ->
-                fountainOfYouth(new FountainOfYouthMessage(getGame(), e)));
-        register(GameEndedMessage.TAG,
-            (Connection c, Element e) ->
-                gameEnded(new GameEndedMessage(getGame(), e)));
-        register(HighScoreMessage.TAG,
-            (Connection c, Element e) ->
-                highScore(new HighScoreMessage(getGame(), e)));
-        register(InciteMessage.TAG,
-            (Connection c, Element e) ->
-                incite(new InciteMessage(getGame(), e)));
-        register(IndianDemandMessage.TAG,
-            (Connection c, Element e) ->
-                indianDemand(new IndianDemandMessage(getGame(), e)));
-        register(LogoutMessage.TAG,
-            (Connection c, Element e) ->
-                logout(new LogoutMessage(getGame(), e)));
-        register(LootCargoMessage.TAG,
-            (Connection c, Element e) ->
-                lootCargo(new LootCargoMessage(getGame(), e)));
-        register(MonarchActionMessage.TAG,
-            (Connection c, Element e) ->
-                monarchAction(new MonarchActionMessage(getGame(), e)));
-        register(MultipleMessage.TAG,
-            (Connection c, Element e) ->
-                multiple(c, e));
-        register(NationSummaryMessage.TAG,
-            (Connection c, Element e) ->
-                nationSummary(new NationSummaryMessage(getGame(), e)));
-        register(NativeTradeMessage.TAG,
-            (Connection c, Element e) ->
-                nativeTrade(new NativeTradeMessage(getGame(), e)));
-        register(NewLandNameMessage.TAG,
-            (Connection c, Element e) ->
-                newLandName(new NewLandNameMessage(getGame(), e)));
-        register(NewRegionNameMessage.TAG,
-            (Connection c, Element e) ->
-                newRegionName(new NewRegionNameMessage(getGame(), e)));
-        register(NewTurnMessage.TAG,
-            (Connection c, Element e) ->
-                newTurn(new NewTurnMessage(getGame(), e)));
-        register(NewTradeRouteMessage.TAG,
-            (Connection c, Element e) ->
-                newTradeRoute(new NewTradeRouteMessage(getGame(), e)));
-        register(TrivialMessage.RECONNECT_TAG,
-            (Connection c, Element e) ->
-                reconnect());
-        register(RemoveMessage.TAG,
-            (Connection c, Element e) ->
-                remove(new RemoveMessage(getGame(), e)));
-        register(ScoutSpeakToChiefMessage.TAG,
-            (Connection c, Element e) ->
-                scoutSpeakToChief(new ScoutSpeakToChiefMessage(getGame(), e)));
-        register(SetAIMessage.TAG,
-            (Connection c, Element e) ->
-                setAI(new SetAIMessage(getGame(), e)));
-        register(SetCurrentPlayerMessage.TAG,
-            (Connection c, Element e) ->
-                setCurrentPlayer(new SetCurrentPlayerMessage(getGame(), e)));
-        register(SetDeadMessage.TAG,
-            (Connection c, Element e) ->
-                setDead(new SetDeadMessage(getGame(), e)));
-        register(SetStanceMessage.TAG,
-            (Connection c, Element e) ->
-                setStance(new SetStanceMessage(getGame(), e)));
-        register(SpySettlementMessage.TAG,
-            (Connection c, Element e) ->
-                spySettlement(new SpySettlementMessage(getGame(), e)));
-        register(UpdateMessage.TAG,
-            (Connection c, Element e) ->
-                update(new UpdateMessage(getGame(), e)));
     }
 
+    @Override
+    protected boolean handleElement(Connection connection, Element element) {
+        String tag = element.getTagName();
+        switch (tag) {
+            case AddPlayerMessage.TAG:
+                addPlayer(new AddPlayerMessage(getGame(), element));
+            break;
+
+            case AnimateAttackMessage.TAG:
+                animateAttack(new AnimateAttackMessage(getGame(), element));
+            break;
+
+            case AnimateMoveMessage.TAG:
+                animateMove(new AnimateMoveMessage(getGame(), element));
+            break;
+
+            case ChatMessage.TAG:
+                chat(new ChatMessage(getGame(), element));
+            break;
+
+            case ChooseFoundingFatherMessage.TAG:
+                chooseFoundingFather(new ChooseFoundingFatherMessage(getGame(), element));
+            break;
+
+            case TrivialMessage.CLOSE_MENUS_TAG:
+                closeMenus();
+            break;
+
+            case DiplomacyMessage.TAG:
+                diplomacy(new DiplomacyMessage(getGame(), element));
+            break;
+
+            case TrivialMessage.DISCONNECT_TAG:
+                disconnect(TrivialMessage.DISCONNECT_MESSAGE);
+            break;
+
+            case ErrorMessage.TAG:
+                error(new ErrorMessage(getGame(), element));
+            break;
+
+            case FeatureChangeMessage.TAG:
+                featureChange(new FeatureChangeMessage(getGame(), element));
+            break;
+
+            case FirstContactMessage.TAG:
+                firstContact(new FirstContactMessage(getGame(), element));
+            break;
+
+            case FountainOfYouthMessage.TAG:
+                fountainOfYouth(new FountainOfYouthMessage(getGame(), element));
+            break;
+
+            case GameEndedMessage.TAG:
+                gameEnded(new GameEndedMessage(getGame(), element));
+            break;
+
+            case HighScoreMessage.TAG:
+                highScore(new HighScoreMessage(getGame(), element));
+            break;
+
+            case InciteMessage.TAG:
+                incite(new InciteMessage(getGame(), element));
+            break;
+
+            case IndianDemandMessage.TAG:
+                indianDemand(new IndianDemandMessage(getGame(), element));
+            break;
+
+            case LogoutMessage.TAG:
+                logout(new LogoutMessage(getGame(), element));
+            break;
+
+            case LootCargoMessage.TAG:
+                lootCargo(new LootCargoMessage(getGame(), element));
+            break;
+
+            case MonarchActionMessage.TAG:
+                monarchAction(new MonarchActionMessage(getGame(), element));
+            break;
+
+            case MultipleMessage.TAG:
+                multiple(connection, element);
+            break;
+
+            case NationSummaryMessage.TAG:
+                nationSummary(new NationSummaryMessage(getGame(), element));
+            break;
+
+            case NativeTradeMessage.TAG:
+                nativeTrade(new NativeTradeMessage(getGame(), element));
+            break;
+
+            case NewLandNameMessage.TAG:
+                newLandName(new NewLandNameMessage(getGame(), element));
+            break;
+
+            case NewRegionNameMessage.TAG:
+                newRegionName(new NewRegionNameMessage(getGame(), element));
+            break;
+
+            case NewTurnMessage.TAG:
+                newTurn(new NewTurnMessage(getGame(), element));
+            break;
+
+            case NewTradeRouteMessage.TAG:
+                newTradeRoute(new NewTradeRouteMessage(getGame(), element));
+            break;
+
+            case TrivialMessage.RECONNECT_TAG:
+                reconnect();
+            break;
+
+            case RemoveMessage.TAG:
+                remove(new RemoveMessage(getGame(), element));
+            break;
+
+            case ScoutSpeakToChiefMessage.TAG:
+                scoutSpeakToChief(new ScoutSpeakToChiefMessage(getGame(), element));
+            break;
+
+            case SetAIMessage.TAG:
+                setAI(new SetAIMessage(getGame(), element));
+            break;
+
+            case SetCurrentPlayerMessage.TAG:
+                setCurrentPlayer(new SetCurrentPlayerMessage(getGame(), element));
+            break;
+
+            case SetDeadMessage.TAG:
+                setDead(new SetDeadMessage(getGame(), element));
+            break;
+
+            case SetStanceMessage.TAG:
+                setStance(new SetStanceMessage(getGame(), element));
+            break;
+
+            case SpySettlementMessage.TAG:
+                spySettlement(new SpySettlementMessage(getGame(), element));
+            break;
+
+            case UpdateMessage.TAG:
+                update(new UpdateMessage(getGame(), element));
+            break;
+
+            default:
+                return super.handleElement(connection, element);
+        }
+        return true;
+    }
 
     /**
      * Shorthand to run in the EDT and wait.
