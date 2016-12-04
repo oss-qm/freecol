@@ -107,195 +107,380 @@ public final class InGameInputHandler extends ServerInputHandler {
         super(freeColServer);
 
         register(AbandonColonyMessage.TAG,
-            (Connection conn, Element e) -> handler(true, conn,
-                new AbandonColonyMessage(getGame(), e)));
+            new ServerInputHandler.NetworkRequestHandler() {
+                public Element handle(Connection conn, Element e) {
+                    return handler(true, conn, new AbandonColonyMessage(getGame(), e));
+                }});
+
         register(AskSkillMessage.TAG,
-            (Connection conn, Element e) -> handler(true, conn,
-                new AskSkillMessage(getGame(), e)));
+            new ServerInputHandler.NetworkRequestHandler() {
+                public Element handle(Connection conn, Element e) {
+                    return handler(true, conn, new AskSkillMessage(getGame(), e));
+                }});
+
         register(AssignTeacherMessage.TAG,
-            (Connection conn, Element e) -> handler(true, conn,
-                new AssignTeacherMessage(getGame(), e)));
+            new ServerInputHandler.NetworkRequestHandler() {
+                public Element handle(Connection conn, Element e) {
+                    return handler(true, conn, new AssignTeacherMessage(getGame(), e));
+                }});
+
         register(AssignTradeRouteMessage.TAG,
-            (Connection conn, Element e) -> handler(true, conn,
-                new AssignTradeRouteMessage(getGame(), e)));
+            new ServerInputHandler.NetworkRequestHandler() {
+                public Element handle(Connection conn, Element e) {
+                    return handler(true, conn, new AssignTradeRouteMessage(getGame(), e));
+                }});
+
         register(AttackMessage.TAG,
-            (Connection conn, Element e) -> handler(true, conn,
-                new AttackMessage(getGame(), e)));
+            new ServerInputHandler.NetworkRequestHandler() {
+                public Element handle(Connection conn, Element e) {
+                    return handler(true, conn, new AttackMessage(getGame(), e));
+                }});
+
         register(BuildColonyMessage.TAG,
-            (Connection conn, Element e) -> handler(true, conn,
-                new BuildColonyMessage(getGame(), e)));
+            new ServerInputHandler.NetworkRequestHandler() {
+                public Element handle(Connection conn, Element e) {
+                    return handler(true, conn, new BuildColonyMessage(getGame(), e));
+                }});
+
         register(CashInTreasureTrainMessage.TAG,
-            (Connection conn, Element e) -> handler(true, conn,
-                new CashInTreasureTrainMessage(getGame(), e)));
+            new ServerInputHandler.NetworkRequestHandler() {
+                public Element handle(Connection conn, Element e) {
+                    return handler(true, conn, new CashInTreasureTrainMessage(getGame(), e));
+                }});
+
         register(ChangeStateMessage.TAG,
-            (Connection conn, Element e) -> handler(true, conn,
-                new ChangeStateMessage(getGame(), e)));
+            new ServerInputHandler.NetworkRequestHandler() {
+                public Element handle(Connection conn, Element e) {
+                    return handler(true, conn, new ChangeStateMessage(getGame(), e));
+                }});
+
         register(ChangeWorkImprovementTypeMessage.TAG,
-            (Connection conn, Element e) -> handler(true, conn,
-                new ChangeWorkImprovementTypeMessage(getGame(), e)));
+            new ServerInputHandler.NetworkRequestHandler() {
+                public Element handle(Connection conn, Element e) {
+                    return handler(true, conn, new ChangeWorkImprovementTypeMessage(getGame(), e));
+                }});
+
         register(ChangeWorkTypeMessage.TAG,
-            (Connection conn, Element e) -> handler(true, conn,
-                new ChangeWorkTypeMessage(getGame(), e)));
+            new ServerInputHandler.NetworkRequestHandler() {
+                public Element handle(Connection conn, Element e) {
+                    return handler(true, conn, new ChangeWorkTypeMessage(getGame(), e));
+                }});
+
         register(ChooseFoundingFatherMessage.TAG,
-            (Connection conn, Element e) -> handler(true, conn,
-                new ChooseFoundingFatherMessage(getGame(), e)));
+            new ServerInputHandler.NetworkRequestHandler() {
+                public Element handle(Connection conn, Element e) {
+                    return handler(true, conn, new ChooseFoundingFatherMessage(getGame(), e));
+                }});
+
         register(ClaimLandMessage.TAG,
-            (Connection conn, Element e) -> handler(true, conn,
-                new ClaimLandMessage(getGame(), e)));
+            new ServerInputHandler.NetworkRequestHandler() {
+                public Element handle(Connection conn, Element e) {
+                    return handler(true, conn, new ClaimLandMessage(getGame(), e));
+                }});
+
         register(ClearSpecialityMessage.TAG,
-            (Connection conn, Element e) -> handler(true, conn,
-                new ClearSpecialityMessage(getGame(), e)));
+            new ServerInputHandler.NetworkRequestHandler() {
+                public Element handle(Connection conn, Element e) {
+                    return handler(true, conn, new ClearSpecialityMessage(getGame(), e));
+                }});
+
         register(TrivialMessage.CONTINUE_TAG,
-            (Connection conn, Element e) -> handler(false, conn,
-                TrivialMessage.CONTINUE_MESSAGE));
+            new ServerInputHandler.NetworkRequestHandler() {
+                public Element handle(Connection conn, Element e) {
+                    return handler(false, conn, TrivialMessage.CONTINUE_MESSAGE);
+                }});
+
         register(DeclareIndependenceMessage.TAG,
-            (Connection conn, Element e) -> handler(true, conn,
-                new DeclareIndependenceMessage(getGame(), e)));
+            new ServerInputHandler.NetworkRequestHandler() {
+                public Element handle(Connection conn, Element e) {
+                    return handler(true, conn, new DeclareIndependenceMessage(getGame(), e));
+                }});
+
         register(DeclineMoundsMessage.TAG,
-            (Connection conn, Element e) -> handler(true, conn,
-                new DeclineMoundsMessage(getGame(), e)));
+            new ServerInputHandler.NetworkRequestHandler() {
+                public Element handle(Connection conn, Element e) {
+                    return handler(true, conn, new DeclineMoundsMessage(getGame(), e));
+                }});
+
         register(DeliverGiftMessage.TAG,
-            (Connection conn, Element e) -> handler(true, conn,
-                new DeliverGiftMessage(getGame(), e)));
+            new ServerInputHandler.NetworkRequestHandler() {
+                public Element handle(Connection conn, Element e) {
+                    return handler(true, conn, new DeliverGiftMessage(getGame(), e));
+                }});
+
         register(DeleteTradeRouteMessage.TAG,
-            (Connection conn, Element e) -> handler(true, conn,
-                new DeleteTradeRouteMessage(getGame(), e)));
+            new ServerInputHandler.NetworkRequestHandler() {
+                public Element handle(Connection conn, Element e) {
+                    return handler(true, conn, new DeleteTradeRouteMessage(getGame(), e));
+                }});
+
         register(DemandTributeMessage.TAG,
-            (Connection conn, Element e) -> handler(true, conn,
-                new DemandTributeMessage(getGame(), e)));
+            new ServerInputHandler.NetworkRequestHandler() {
+                public Element handle(Connection conn, Element e) {
+                    return handler(true, conn, new DemandTributeMessage(getGame(), e));
+                }});
+
         register(DiplomacyMessage.TAG,
-            (Connection conn, Element e) -> handler(false, conn,
-                new DiplomacyMessage(getGame(), e)));
+            new ServerInputHandler.NetworkRequestHandler() {
+                public Element handle(Connection conn, Element e) {
+                    return handler(false, conn, new DiplomacyMessage(getGame(), e));
+                }});
+
         register(DisbandUnitMessage.TAG,
-            (Connection conn, Element e) -> handler(true, conn,
-                new DisbandUnitMessage(getGame(), e)));
+            new ServerInputHandler.NetworkRequestHandler() {
+                public Element handle(Connection conn, Element e) {
+                    return handler(true, conn, new DisbandUnitMessage(getGame(), e));
+                }});
+
         register(DisembarkMessage.TAG,
-            (Connection conn, Element e) -> handler(true, conn,
-                new DisembarkMessage(getGame(), e)));
+            new ServerInputHandler.NetworkRequestHandler() {
+                public Element handle(Connection conn, Element e) {
+                    return handler(true, conn, new DisembarkMessage(getGame(), e));
+                }});
+
         register(EmbarkMessage.TAG,
-            (Connection conn, Element e) -> handler(true, conn,
-                new EmbarkMessage(getGame(), e)));
+            new ServerInputHandler.NetworkRequestHandler() {
+                public Element handle(Connection conn, Element e) {
+                    return handler(true, conn, new EmbarkMessage(getGame(), e));
+                }});
+
         register(EmigrateUnitMessage.TAG,
-            (Connection conn, Element e) -> handler(true, conn,
-                new EmigrateUnitMessage(getGame(), e)));
+            new ServerInputHandler.NetworkRequestHandler() {
+                public Element handle(Connection conn, Element e) {
+                    return handler(true, conn, new EmigrateUnitMessage(getGame(), e));
+                }});
+
         register(TrivialMessage.END_TURN_TAG,
-            (Connection conn, Element e) -> handler(true, conn,
-                TrivialMessage.END_TURN_MESSAGE));
+            new ServerInputHandler.NetworkRequestHandler() {
+                public Element handle(Connection conn, Element e) {
+                    return handler(true, conn, TrivialMessage.END_TURN_MESSAGE);
+                }});
+
         register(TrivialMessage.ENTER_REVENGE_MODE_TAG,
-            (Connection conn, Element e) -> handler(false, conn,
-                TrivialMessage.ENTER_REVENGE_MODE_MESSAGE));
+            new ServerInputHandler.NetworkRequestHandler() {
+                public Element handle(Connection conn, Element e) {
+                    return handler(false, conn, TrivialMessage.ENTER_REVENGE_MODE_MESSAGE);
+                }});
+
         register(EquipForRoleMessage.TAG,
-            (Connection conn, Element e) -> handler(true, conn,
-                new EquipForRoleMessage(getGame(), e)));
+            new ServerInputHandler.NetworkRequestHandler() {
+                public Element handle(Connection conn, Element e) {
+                    return handler(true, conn, new EquipForRoleMessage(getGame(), e));
+                }});
+
         register(FirstContactMessage.TAG,
-            (Connection conn, Element e) -> handler(false, conn,
-                new FirstContactMessage(getGame(), e)));
+            new ServerInputHandler.NetworkRequestHandler() {
+                public Element handle(Connection conn, Element e) {
+                    return handler(false, conn, new FirstContactMessage(getGame(), e));
+                }});
+
         register(InciteMessage.TAG,
-            (Connection conn, Element e) -> handler(true, conn,
-                new InciteMessage(getGame(), e)));
+            new ServerInputHandler.NetworkRequestHandler() {
+                public Element handle(Connection conn, Element e) {
+                    return handler(true, conn, new InciteMessage(getGame(), e));
+                }});
+
         register(IndianDemandMessage.TAG,
-            (Connection conn, Element e) -> handler(false, conn,
-                new IndianDemandMessage(getGame(), e)));
+            new ServerInputHandler.NetworkRequestHandler() {
+                public Element handle(Connection conn, Element e) {
+                    return handler(false, conn, new IndianDemandMessage(getGame(), e));
+                }});
+
         register(HighScoreMessage.TAG,
-            (Connection conn, Element e) -> handler(false, conn,
-                new HighScoreMessage(getGame(), e)));
+            new ServerInputHandler.NetworkRequestHandler() {
+                public Element handle(Connection conn, Element e) {
+                    return handler(false, conn, new HighScoreMessage(getGame(), e));
+                }});
+
         register(JoinColonyMessage.TAG,
-            (Connection conn, Element e) -> handler(true, conn,
-                new JoinColonyMessage(getGame(), e)));
+            new ServerInputHandler.NetworkRequestHandler() {
+                public Element handle(Connection conn, Element e) {
+                    return handler(true, conn, new JoinColonyMessage(getGame(), e));
+                }});
+
         register(LearnSkillMessage.TAG,
-            (Connection conn, Element e) -> handler(true, conn,
-                new LearnSkillMessage(getGame(), e)));
+            new ServerInputHandler.NetworkRequestHandler() {
+                public Element handle(Connection conn, Element e) {
+                    return handler(true, conn, new LearnSkillMessage(getGame(), e));
+                }});
+
         register(LoadGoodsMessage.TAG,
-            (Connection conn, Element e) -> handler(true, conn,
-                new LoadGoodsMessage(getGame(), e)));
+            new ServerInputHandler.NetworkRequestHandler() {
+                public Element handle(Connection conn, Element e) {
+                    return handler(true, conn, new LoadGoodsMessage(getGame(), e));
+                }});
+
         register(LootCargoMessage.TAG,
-            (Connection conn, Element e) -> handler(false, conn,
-                new LootCargoMessage(getGame(), e)));
+            new ServerInputHandler.NetworkRequestHandler() {
+                public Element handle(Connection conn, Element e) {
+                    return handler(false, conn, new LootCargoMessage(getGame(), e));
+
         register(MissionaryMessage.TAG,
-            (Connection conn, Element e) -> handler(true, conn,
-                new MissionaryMessage(getGame(), e)));
+            new ServerInputHandler.NetworkRequestHandler() {
+                public Element handle(Connection conn, Element e) {
+                    return handler(true, conn, new MissionaryMessage(getGame(), e));
+                }});
+
         register(MonarchActionMessage.TAG,
-            (Connection conn, Element e) -> handler(true, conn,
-                new MonarchActionMessage(getGame(), e)));
+            new ServerInputHandler.NetworkRequestHandler() {
+                public Element handle(Connection conn, Element e) {
+                    return handler(true, conn, new MonarchActionMessage(getGame(), e));
+                }});
+
         register(MoveMessage.TAG,
-            (Connection conn, Element e) -> handler(true, conn,
-                new MoveMessage(getGame(), e)));
+            new ServerInputHandler.NetworkRequestHandler() {
+                public Element handle(Connection conn, Element e) {
+                    return handler(true, conn, new MoveMessage(getGame(), e));
+                }});
+
         register(MoveToMessage.TAG,
-            (Connection conn, Element e) -> handler(true, conn,
-                new MoveToMessage(getGame(), e)));
+            new ServerInputHandler.NetworkRequestHandler() {
+                public Element handle(Connection conn, Element e) {
+                    return handler(true, conn, new MoveToMessage(getGame(), e));
+                }});
+
         register(NationSummaryMessage.TAG,
-            (Connection conn, Element e) -> handler(false, conn,
-                new NationSummaryMessage(getGame(), e)));
+            new ServerInputHandler.NetworkRequestHandler() {
+                public Element handle(Connection conn, Element e) {
+                    return handler(false, conn, new NationSummaryMessage(getGame(), e));
+                }});
+
         register(NativeGiftMessage.TAG,
-            (Connection conn, Element e) -> handler(true, conn,
-                new NativeGiftMessage(getGame(), e)));
+            new ServerInputHandler.NetworkRequestHandler() {
+                public Element handle(Connection conn, Element e) {
+                    return handler(true, conn, new NativeGiftMessage(getGame(), e));
+                }});
+
         register(NativeTradeMessage.TAG,
-            (Connection conn, Element e) -> handler(false, conn,
-                new NativeTradeMessage(getGame(), e)));
+            new ServerInputHandler.NetworkRequestHandler() {
+                public Element handle(Connection conn, Element e) {
+                    return handler(false, conn, new NativeTradeMessage(getGame(), e));
+                }});
+
         register(NewLandNameMessage.TAG,
-            (Connection conn, Element e) -> handler(true, conn,
-                new NewLandNameMessage(getGame(), e)));
+            new ServerInputHandler.NetworkRequestHandler() {
+                public Element handle(Connection conn, Element e) {
+                    return handler(true, conn, new NewLandNameMessage(getGame(), e));
+                }});
+
         register(NewRegionNameMessage.TAG,
-            (Connection conn, Element e) -> handler(true, conn,
-                new NewRegionNameMessage(getGame(), e)));
+            new ServerInputHandler.NetworkRequestHandler() {
+                public Element handle(Connection conn, Element e) {
+                    return handler(true, conn, new NewRegionNameMessage(getGame(), e));
+                }});
+
         register(NewTradeRouteMessage.TAG,
-            (Connection conn, Element e) -> handler(true, conn,
-                new NewTradeRouteMessage(getGame(), e)));
+            new ServerInputHandler.NetworkRequestHandler() {
+                public Element handle(Connection conn, Element e) {
+                    return handler(true, conn, new NewTradeRouteMessage(getGame(), e));
+                }});
+
         register(PayArrearsMessage.TAG,
-            (Connection conn, Element e) -> handler(true, conn,
-                new PayArrearsMessage(getGame(), e)));
+            new ServerInputHandler.NetworkRequestHandler() {
+                public Element handle(Connection conn, Element e) {
+                    return handler(true, conn, new PayArrearsMessage(getGame(), e));
+                }});
+
         register(PayForBuildingMessage.TAG,
-            (Connection conn, Element e) -> handler(true, conn,
-                new PayForBuildingMessage(getGame(), e)));
+            new ServerInputHandler.NetworkRequestHandler() {
+                public Element handle(Connection conn, Element e) {
+                    return handler(true, conn, new PayForBuildingMessage(getGame(), e));
+                }});
+
         register(PutOutsideColonyMessage.TAG,
-            (Connection conn, Element e) -> handler(true, conn,
-                new PutOutsideColonyMessage(getGame(), e)));
+            new ServerInputHandler.NetworkRequestHandler() {
+                public Element handle(Connection conn, Element e) {
+                    return handler(true, conn, new PutOutsideColonyMessage(getGame(), e));
+                }});
+
         register(RearrangeColonyMessage.TAG,
-            (Connection conn, Element e) -> handler(true, conn,
-                new RearrangeColonyMessage(getGame(), e)));
+            new ServerInputHandler.NetworkRequestHandler() {
+                public Element handle(Connection conn, Element e) {
+                    return handler(true, conn, new RearrangeColonyMessage(getGame(), e));
+                }});
+
         register(RenameMessage.TAG,
-            (Connection conn, Element e) -> handler(true, conn,
-                new RenameMessage(getGame(), e)));
+            new ServerInputHandler.NetworkRequestHandler() {
+                public Element handle(Connection conn, Element e) {
+                    return handler(true, conn, new RenameMessage(getGame(), e));
+                }});
+
         register(TrivialMessage.RETIRE_TAG,
-            (Connection conn, Element e) -> handler(false, conn,
-                TrivialMessage.RETIRE_MESSAGE));
+            new ServerInputHandler.NetworkRequestHandler() {
+                public Element handle(Connection conn, Element e) {
+                    return handler(false, conn, TrivialMessage.RETIRE_MESSAGE);
+                }});
+
         register(ScoutIndianSettlementMessage.TAG,
-            (Connection conn, Element e) -> handler(true, conn,
-                new ScoutIndianSettlementMessage(getGame(), e)));
+            new ServerInputHandler.NetworkRequestHandler() {
+                public Element handle(Connection conn, Element e) {
+                    return handler(true, conn, new ScoutIndianSettlementMessage(getGame(), e));
+                }});
+
         register(ScoutSpeakToChiefMessage.TAG,
-            (Connection conn, Element e) -> handler(true, conn,
-                new ScoutSpeakToChiefMessage(getGame(), e)));
+            new ServerInputHandler.NetworkRequestHandler() {
+                public Element handle(Connection conn, Element e) {
+                    return handler(true, conn, new ScoutSpeakToChiefMessage(getGame(), e));
+                }});
+
         register(SetBuildQueueMessage.TAG,
-            (Connection conn, Element e) -> handler(true, conn,
-                new SetBuildQueueMessage(getGame(), e)));
+            new ServerInputHandler.NetworkRequestHandler() {
+                public Element handle(Connection conn, Element e) {
+                    return handler(true, conn, new SetBuildQueueMessage(getGame(), e));
+                }});
+
         register(SetCurrentStopMessage.TAG,
-            (Connection conn, Element e) -> handler(false, conn,
-                new SetCurrentStopMessage(getGame(), e)));
+            new ServerInputHandler.NetworkRequestHandler() {
+                public Element handle(Connection conn, Element e) {
+                    return handler(false, conn, new SetCurrentStopMessage(getGame(), e));
+                }});
+
         register(SetDestinationMessage.TAG,
-            (Connection conn, Element e) -> handler(false, conn,
-                new SetDestinationMessage(getGame(), e)));
+            new ServerInputHandler.NetworkRequestHandler() {
+                public Element handle(Connection conn, Element e) {
+                    return handler(false, conn, new SetDestinationMessage(getGame(), e));
+                }});
+
         register(SetGoodsLevelsMessage.TAG,
-            (Connection conn, Element e) -> handler(true, conn,
-                new SetGoodsLevelsMessage(getGame(), e)));
+            new ServerInputHandler.NetworkRequestHandler() {
+                public Element handle(Connection conn, Element e) {
+                    return handler(true, conn, new SetGoodsLevelsMessage(getGame(), e));
+                }});
+
         register(SpySettlementMessage.TAG,
-            (Connection conn, Element e) -> handler(false, conn,
-                new SpySettlementMessage(getGame(), e)));
+            new ServerInputHandler.NetworkRequestHandler() {
+                public Element handle(Connection conn, Element e) {
+                    return handler(false, conn, new SpySettlementMessage(getGame(), e));
+                }});
+
         register(TrainUnitInEuropeMessage.TAG,
-            (Connection conn, Element e) -> handler(true, conn,
-                new TrainUnitInEuropeMessage(getGame(), e)));
+            new ServerInputHandler.NetworkRequestHandler() {
+                public Element handle(Connection conn, Element e) {
+                    return handler(true, conn, new TrainUnitInEuropeMessage(getGame(), e));
+                }});
+
         register(UnloadGoodsMessage.TAG,
-            (Connection conn, Element e) -> handler(true, conn,
-                new UnloadGoodsMessage(getGame(), e)));
+            new ServerInputHandler.NetworkRequestHandler() {
+                public Element handle(Connection conn, Element e) {
+                    return handler(true, conn, new UnloadGoodsMessage(getGame(), e));
+                }});
+
         register(UpdateTradeRouteMessage.TAG,
-            (Connection conn, Element e) -> handler(false, conn,
-                new UpdateTradeRouteMessage(getGame(), e)));
+            new ServerInputHandler.NetworkRequestHandler() {
+                public Element handle(Connection conn, Element e) {
+                    return handler(false, conn, new UpdateTradeRouteMessage(getGame(), e));
+                }});
+
         register(WorkMessage.TAG,
-            (Connection conn, Element e) -> handler(true, conn,
-                new WorkMessage(getGame(), e)));
+            new ServerInputHandler.NetworkRequestHandler() {
+                public Element handle(Connection conn, Element e) {
+                    return handler(true, conn, new WorkMessage(getGame(), e));
+                }});
 
         register(MultipleMessage.TAG,
-            (Connection connection, Element element) ->
-                new MultipleMessage(getGame(), element)
-                    .handle(freeColServer, connection));
+            new ServerInputHandler.NetworkRequestHandler() {
+                public Element handle(Connection conn, Element e) {
+                    return (new MultipleMessage(getGame(), e).handle(freeColServer, conn));
+                }});
     }
 }

@@ -76,33 +76,88 @@ public final class PreGameInputHandler extends ClientInputHandler {
         super(freeColClient);
 
         register(AddPlayerMessage.TAG,
-            (Connection c, Element e) -> addPlayer(e));
+            new ClientNetworkRequestHandler() {
+                public void handle(Connection c, Element e) {
+                    addPlayer(e);
+            }});
+
         register(ChatMessage.TAG,
-            (Connection c, Element e) -> chat(e));
+            new ClientNetworkRequestHandler() {
+                public void handle(Connection c, Element e) {
+                    chat(e);
+            }});
+
         register(ErrorMessage.TAG,
-            (Connection c, Element e) -> error(e));
+            new ClientNetworkRequestHandler() {
+                public void handle(Connection c, Element e) {
+                    error(e);
+            }});
+
         register(LoginMessage.TAG,
-            (Connection c, Element e) -> login(e));
+            new ClientNetworkRequestHandler() {
+                public void handle(Connection c, Element e) {
+                    login(e);
+            }});
+
         register(LogoutMessage.TAG,
-            (Connection c, Element e) -> logout(e));
+            new ClientNetworkRequestHandler() {
+                public void handle(Connection c, Element e) {
+                    logout(e);
+            }});
+
         register(MultipleMessage.TAG,
-            (Connection c, Element e) -> multiple(c, e));
+            new ClientNetworkRequestHandler() {
+                public void handle(Connection c, Element e) {
+                    multiple(c, e);
+            }});
+
         register(ReadyMessage.TAG,
-            (Connection c, Element e) -> ready(e));
+            new ClientNetworkRequestHandler() {
+                public void handle(Connection c, Element e) {
+                    ready(e);
+            }});
+
         register(SetAvailableMessage.TAG,
-            (Connection c, Element e) -> setAvailable(e));
+            new ClientNetworkRequestHandler() {
+                public void handle(Connection c, Element e) {
+                    setAvailable(e);
+            }});
+
         register(SetColorMessage.TAG,
-            (Connection c, Element e) -> setColor(e));
+            new ClientNetworkRequestHandler() {
+                public void handle(Connection c, Element e) {
+                    setColor(e);
+            }});
+
         register(SetNationMessage.TAG,
-            (Connection c, Element e) -> setNation(e));
+            new ClientNetworkRequestHandler() {
+                public void handle(Connection c, Element e) {
+                    setNation(e);
+            }});
+
         register(TrivialMessage.START_GAME_TAG,
-            (Connection c, Element e) -> startGame(e));
+            new ClientNetworkRequestHandler() {
+                public void handle(Connection c, Element e) {
+                    startGame(e);
+            }});
+
         register(UpdateMessage.TAG,
-            (Connection c, Element e) -> update(e));
+            new ClientNetworkRequestHandler() {
+                public void handle(Connection c, Element e) {
+                    update(e);
+            }});
+
         register(UpdateGameOptionsMessage.TAG,
-            (Connection c, Element e) -> updateGameOptions(e));
+            new ClientNetworkRequestHandler() {
+                public void handle(Connection c, Element e) {
+                    updateGameOptions(e);
+            }});
+
         register(UpdateMapGeneratorOptionsMessage.TAG,
-            (Connection c, Element e) -> updateMapGeneratorOptions(e));
+            new ClientNetworkRequestHandler() {
+                public void handle(Connection c, Element e) {
+                    updateMapGeneratorOptions(e);
+            }});
     }
 
 
