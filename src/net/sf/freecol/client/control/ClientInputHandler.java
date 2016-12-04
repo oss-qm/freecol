@@ -69,11 +69,22 @@ public abstract class ClientInputHandler extends FreeColClientHolder
         super(freeColClient);
 
         register(TrivialMessage.DISCONNECT_TAG,
-            (Connection c, Element e) -> disconnect(e));
+            new NetworkRequestHandler() {
+                public Element handle(Connection c, Element c) {
+                    return disconnect(e);
+                }});
+
         register(GameStateMessage.TAG,
-            (Connection c, Element e) -> gameState(e));
+            new NetworkRequestHandler() {
+                public Element handle(Connection c, Element c) {
+                    return gameState(e);
+                }});
+
         register(VacantPlayersMessage.TAG,
-            (Connection c, Element e) -> vacantPlayers(e));
+            new NetworkRequestHandler() {
+                public Element handle(Connection c, Element c) {
+                    return vacantPlayers(e);
+                }});
     }
 
 
