@@ -28,6 +28,7 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -482,7 +483,8 @@ public final class Specification {
         logger.finest("Cleaning up specification following " + why + ".");
 
         // Drop all abstract types
-        removeInPlace(allTypes, e -> e.getValue().isAbstractType());
+        for (Iterator<FreeColSpecObjectType> it = allTypes.values().iterator(); it.hasNext();)
+            if (it.next().isAbstractType()) it.remove();
 
         // Fix up the GoodsType derived attributes.  Several GoodsType
         // predicates are likely to fail until this is done.

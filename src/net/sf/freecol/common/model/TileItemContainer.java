@@ -20,6 +20,7 @@
 package net.sf.freecol.common.model;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.logging.Logger;
 
@@ -226,7 +227,9 @@ public class TileItemContainer extends FreeColGameObject {
      */
     public final <T extends TileItem> void removeAll(Class<T> c) {
         synchronized (tileItems) {
-            removeInPlace(tileItems, ti -> c.isInstance(ti));
+            for (Iterator<TileItem> it = tileItems.iterator(); it.hasNext();)
+                if (c.isInstance(it.next()))
+                    it.remove();
         }
     }
 
@@ -383,8 +386,9 @@ public class TileItemContainer extends FreeColGameObject {
                 && !tileType.isWater()) {
                 river.updateRiverConnections(null);
             }
-            removed = removeInPlace(tileItems,
-                                    ti -> !ti.isTileTypeAllowed(tileType));
+            for (Iterator<TileItem> it = tileItems.iterator(); it.hasNext();)
+                if (!(it.next().isTileTypeAllowed(tileType)))
+                    it.remove();
         }
         if (removed) invalidateCache();
     }
