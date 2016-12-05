@@ -1918,49 +1918,6 @@ public class CollectionUtils {
     }
 
     /**
-     * Special case to remove objects from a collection.
-     *
-     * @param <T> The collection member type.
-     * @param c The {@code Collection} to remove from.
-     * @param predicate A {@code Predicate} to match with.
-     * @return True if anything was removed.
-     */
-    public static <T> boolean removeInPlace(Collection<T> c,
-                                            Predicate<? super T> predicate) {
-        boolean ret = false;
-        Iterator<T> iterator = c.iterator();
-        while (iterator.hasNext()) {
-            if (predicate.test(iterator.next())) {
-                iterator.remove();
-                ret = true;
-            }
-        }
-        return ret;
-    }
-
-    /**
-     * Special case to remove objects from a map.
-     *
-     * @param <K> The map key type.
-     * @param <V> The map value type.
-     * @param map The {@code Map} to remove entries from.
-     * @param predicate A {@code Predicate} to match map entries with.
-     * @return True if anything was removed.
-     */
-    public static <K,V> boolean removeInPlace(Map<K,V> map,
-                                              Predicate<Entry<K,V>> predicate) {
-        boolean ret = false;
-        Iterator<Entry<K,V>> iterator = map.entrySet().iterator();
-        while (iterator.hasNext()) {
-            if (predicate.test(iterator.next())) {
-                iterator.remove();
-                ret = true;
-            }
-        }
-        return ret;
-    }
-
-    /**
      * Convenience function to convert an array to a sorted list.
      *
      * @param <T> The array member type.

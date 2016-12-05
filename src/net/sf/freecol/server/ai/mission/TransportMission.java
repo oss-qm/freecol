@@ -757,8 +757,10 @@ public class TransportMission extends Mission {
             } else if (t instanceof AIGoods) {
                 Goods goods = ((AIGoods)t).getGoods();
                 if (goods != null) {
-                    removeInPlace(goodsPresent,
-                                  AbstractGoods.matches(goods.getType()));
+                    GoodsType gt = goods.getType();
+                    for (Iterator<Goods> it = goods.iterator(); it.hasNext(); )
+                        if (it.next().getType() == gt)
+                            it.remove();
                 }
             }
         }

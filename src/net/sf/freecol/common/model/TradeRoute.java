@@ -181,8 +181,9 @@ public class TradeRoute extends FreeColGameObject
      * @return True if any stop was removed.
      */
     public boolean removeMatchingStops(Location loc) {
-        return removeInPlace(stops,
-                             trs -> Map.isSameLocation(trs.getLocation(), loc));
+        for (Iterator<TradeRouteStop> it = stops.iterator(); it.hasNext();)
+            if (Map.isSameLocation(it.next().getLocation(), loc))
+                it.remove();
     }
 
     /**

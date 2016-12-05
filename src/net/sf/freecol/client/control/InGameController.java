@@ -648,7 +648,12 @@ public final class InGameController extends FreeColClientHolder {
      * @param turn The {@code Turn} value to test against.
      */
     private synchronized void reapIgnoredMessages(Turn turn) {
-        removeInPlace(messagesToIgnore, e -> e.getValue() < turn.getNumber());
+        int turn_num = turn.getNumber();
+        Iterator<Entry<String, Integer>> it = messagesToIgnore.entrySet().iterator();
+        while (it.hasNext()) {
+            if (it.next().getValue() < turn_num)
+                it.remove();
+        }
     }
 
     /**

@@ -719,7 +719,10 @@ public class ServerUnit extends Unit implements ServerModelObject {
         serverPlayer.invalidateCanSeeTiles();//+vis(serverPlayer)
 
         // Update tiles that are now invisible.
-        removeInPlace(oldTiles, t -> serverPlayer.canSee(t));
+        for (Iterator<Tile> it = oldTiles.iterator(); it.hasNext();)
+            if (serverPlayer.canSee(t))
+                it.remove();
+
         if (!oldTiles.isEmpty()) cs.add(See.only(serverPlayer), oldTiles);
 
         // Unless moving in from off-map, update the old location and

@@ -155,14 +155,17 @@ public final class FeatureContainer {
             synchronized (abilitiesLock) {
                 if (id == null) {
                     for (Set<Ability> aset : abilities.values()) {
-                        result.addAll(aset);
+                        for (Ability a : aset)
+                            if (a.appliesTo(fcgot, turn))
+                                result.add(a);
                     }
                 } else {
                     Set<Ability> aset = abilities.get(id);
-                    if (aset != null) result.addAll(aset);
+                    if (aset != null)
+                        for (Ability a : aset)
+                            result.add(a);
                 }
             }
-            removeInPlace(result, a -> !a.appliesTo(fcgot, turn));
         }
         return result.stream();
     }
@@ -235,13 +238,17 @@ public final class FeatureContainer {
         Set<Modifier> mset = new HashSet<>();
         synchronized (modifiersLock) {
             if (id == null) {
-                for (Set<Modifier> ms : modifiers.values()) mset.addAll(ms);
+                for (Set<Modifier> ms : modifiers.values())
+                    for (Modifier m : ms)
+                        if (m.appliesTo(fcgot, turn))
+                            mset.add(m);
             } else {
                 Set<Modifier> ms = modifiers.get(id);
-                if (ms != null) mset.addAll(ms);
+                if (ms != null)
+                    for (Modifier m : ms)
+                        mset.add(m);
             }
         }
-        removeInPlace(mset, m -> !m.appliesTo(fcgot, turn));
         return (mset.isEmpty()) ? Stream.<Modifier>empty() : mset.stream();
     }
 

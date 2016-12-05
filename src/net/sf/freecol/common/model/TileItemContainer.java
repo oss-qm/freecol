@@ -228,7 +228,9 @@ public class TileItemContainer extends FreeColGameObject {
      */
     public final <T extends TileItem> void removeAll(Class<T> c) {
         synchronized (tileItems) {
-            removeInPlace(tileItems, ti -> c.isInstance(ti));
+            for (Iterator<TileItem> it = tileItems.iterator(); it.hasNext();)
+                if (c.isInstance(ti))
+                    it.remove();
         }
     }
 
@@ -367,8 +369,11 @@ public class TileItemContainer extends FreeColGameObject {
         TileType tileType = tile.getType();
         boolean removed = false;
         synchronized (tileItems) {
-            removed = removeInPlace(tileItems,
-                                    ti -> !ti.isTileTypeAllowed(tileType));
+            for (Iterator<TileItem> it = tileItems.iterator(); it.hasNext();)
+                if (!ti.isTileTypeAllowed(tileType)) {
+                    it.remove();
+                    removed = true;
+                }
         }
         if (removed) invalidateCache();
     }

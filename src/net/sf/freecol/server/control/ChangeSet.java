@@ -1406,7 +1406,9 @@ public class ChangeSet {
      *     change for.
      */
     public void remove(FreeColGameObject fcgo) {
-        removeInPlace(changes, c -> c.matches(fcgo));
+        for (Iterator<Change> it = changes.iterator(); it.hasNext();)
+            if (c.matches(fcgo))
+                it.remove();
     }
 
     /**

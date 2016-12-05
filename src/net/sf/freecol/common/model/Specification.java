@@ -487,7 +487,10 @@ public final class Specification {
         logger.finest("Cleaning up specification following " + why + ".");
 
         // Drop all abstract types
-        removeInPlace(allTypes, e -> e.getValue().isAbstractType());
+        for (Entry<String, FreeColSpecObjectType> it =
+                allTypes.entrySet().iterator(); it.hasNext(); )
+            if (e.getValue().isAbstractType)
+                it.remove();
 
         // Fix up the GoodsType derived attributes.  Several GoodsType
         // predicates are likely to fail until this is done.
