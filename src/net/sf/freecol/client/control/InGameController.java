@@ -1287,6 +1287,13 @@ public final class InGameController extends FreeColClientHolder {
         }
     }
 
+    private List<ChoiceItem<Player>> getEnemyChoices(Player me) {
+        List<ChoiceItem<Player>> result = new ArrayList<>();
+        for (Player p : getGame().getLiveEuropeanPlayers(me))
+            result.add(new ChoiceItem<Player>(Messages.message(p.getCountryLabel()), p));
+        return result;
+    }
+
     /**
      * Check the carrier for passengers to disembark, possibly
      * snatching a useful result from the jaws of a
@@ -1779,8 +1786,8 @@ public final class InGameController extends FreeColClientHolder {
             Player enemy = getGUI().getChoice(unit.getTile(),
                 Messages.message("missionarySettlement.inciteQuestion"),
                 unit, "missionarySettlement.cancel",
-                transform(getGame().getLiveEuropeanPlayers(player), alwaysTrue(),
-                    p -> new ChoiceItem<>(Messages.message(p.getCountryLabel()), p)));
+                getEnemyChoices(player));
+
             if (enemy == null) return true;
             askServer().incite(unit, is, enemy, -1);
             break;
