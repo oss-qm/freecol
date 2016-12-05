@@ -34,6 +34,7 @@ import net.sf.freecol.FreeCol;
 import net.sf.freecol.client.ClientOptions;
 import net.sf.freecol.client.FreeColClient;
 import net.sf.freecol.client.gui.ChoiceItem;
+import net.sf.freecol.client.gui.DialogHandler;
 import net.sf.freecol.client.gui.option.FreeColActionUI;
 import net.sf.freecol.common.debug.DebugUtils;
 import net.sf.freecol.common.debug.FreeColDebugger;
@@ -175,6 +176,13 @@ public final class InGameController extends FreeColClientHolder {
 
 
     // Simple utilities
+
+    /**
+     * helper for picking default for string if empty
+     */
+    private static String strdef(String a, String d) {
+        return ((a == null || a.isEmpty()) ? d : a);
+    }
 
     /**
      * Play a sound.
@@ -402,7 +410,8 @@ public final class InGameController extends FreeColClientHolder {
      * @param n The number of units known to be eligible to emigrate.
      * @param fountainOfYouth True if this migration if due to a FoY.
      */
-    private void emigration(Player player, int n, boolean fountainOfYouth) {
+    private void emigration(final Player player, int n,
+                            final boolean fountainOfYouth) {
         final Europe europe = player.getEurope();
         if (europe == null) return;
 
@@ -410,10 +419,13 @@ public final class InGameController extends FreeColClientHolder {
             if (!allSame(europe.getRecruitables())) {
                 final int nf = n;
                 getGUI().showEmigrationDialog(player, fountainOfYouth,
-                    (Integer value) -> { // Value is a valid slot
-                        emigrate(player,
-                            Europe.MigrationType.convertToMigrantSlot(value),
-                            nf-1, fountainOfYouth);
+                    new DialogHandler<Integer>() {
+                        public void handle(Integer value) {
+                            // Value is a valid slot
+                            emigrate(player,
+                                Europe.MigrationType.convertToMigrantSlot(value),
+                                nf-1, fountainOfYouth);
+                        }
                     });
                 return;
             }
@@ -797,9 +809,10 @@ public final class InGameController extends FreeColClientHolder {
             if (!units.isEmpty()) {
                 // Modal dialog takes over
                 getGUI().showEndTurnDialog(units,
-                    (Boolean value) -> {
-                        if (value != null && value) {
-                            endTurn(false);
+                    new DialogHandler<Boolean>() {
+                        public void handle(Boolean value) {
+                            if (value != null && value)
+                                endTurn(false);
                         }
                     });
                 return false;
@@ -2816,11 +2829,16 @@ public final class InGameController extends FreeColClientHolder {
      *
      * @param ffs A list of {@code FoundingFather}s to choose from.
      */
-    public void chooseFoundingFather(List<FoundingFather> ffs) {
+    public void chooseFoundingFather(final List<FoundingFather> ffs) {
         if (ffs == null || ffs.isEmpty()) return;
 
         getGUI().showChooseFoundingFatherDialog(ffs,
-            (FoundingFather ff) -> chooseFoundingFather(ffs, ff));
+            new DialogHandler<FoundingFather>() {
+                public void handle(FoundingFather ff) {
+                    chooseFoundingFather(ffs, ff);
+                }
+            }
+        );
     }
 
     /**
@@ -3296,9 +3314,15 @@ public final class InGameController extends FreeColClientHolder {
      *     they have made a first landing.
      * @param n The number of settlements claimed by the native player.
      */
-    public void firstContact(Player player, Player other, Tile tile, int n) {
+    public void firstContact(final Player player, final Player other,
+                             final Tile tile, final int n) {
         getGUI().showFirstContactDialog(player, other, tile, n,
-            (Boolean b) -> firstContact(player, other, tile, b));
+            new DialogHandler<Boolean>() {
+                public void handle(Boolean b) {
+                    firstContact(player, other, tile, b);
+                }
+            }
+        );
     }
 
     /**
@@ -3308,14 +3332,17 @@ public final class InGameController extends FreeColClientHolder {
      *
      * @param n The number of migrants available for selection.
      */
-    public void fountainOfYouth(int n) {
+    public void fountainOfYouth(final int n) {
         final Player player = getMyPlayer();
         final boolean fountainOfYouth = true;
         getGUI().showEmigrationDialog(player, fountainOfYouth,
-            (Integer value) -> { // Value is a valid slot
-                emigrate(player,
+            new DialogHandler<Integer>() {
+                public void handle(Integer value) {
+                    // Value is a valid slot
+                    emigrate(player,
                          Europe.MigrationType.convertToMigrantSlot(value),
                          n-1, fountainOfYouth);
+                }
             });
     }
 
@@ -3697,9 +3724,14 @@ public final class InGameController extends FreeColClientHolder {
      * @param goods A list of {@code Goods} to choose from.
      * @param defenderId The identifier of the defender unit (may have sunk).
      */
-    public void loot(Unit unit, List<Goods> goods, String defenderId) {
+    public void loot(final Unit unit, final List<Goods> goods,
+                     final String defenderId) {
         getGUI().showCaptureGoodsDialog(unit, goods,
-            (List<Goods> gl) -> lootCargo(unit, gl, defenderId));
+            new DialogHandler<List<Goods>>() {
+                public void handle(List<Goods> gl) {
+                    lootCargo(unit, gl, defenderId);
+                }
+            });
     }
 
     /**
@@ -3738,10 +3770,15 @@ public final class InGameController extends FreeColClientHolder {
      * @param template A {@code StringTemplate} describing the action.
      * @param monarchKey A key for the monarch involved.
      */
-    public void monarch(MonarchAction action, StringTemplate template,
-                        String monarchKey) {
+    public void monarch(final MonarchAction action,
+                        final StringTemplate template,
+                        final String monarchKey) {
         getGUI().showMonarchDialog(action, template, monarchKey,
-            (Boolean b) -> monarchAction(action, b));
+            new DialogHandler<Boolean>() {
+                public void handle(Boolean b) {
+                    monarchAction(action, b);
+                }
+            });
     }
 
     /**
@@ -4071,11 +4108,14 @@ public final class InGameController extends FreeColClientHolder {
      * @param defaultName The default name to use.
      * @param unit The {@code Unit} that has landed.
      */
-    public void newLandName(String defaultName, Unit unit) {
+    public void newLandName(final String defaultName, final Unit unit) {
         getGUI().showNamingDialog(
             StringTemplate.key("newLand.text"), defaultName, unit,
-            (String name) -> nameNewLand(unit,
-                (name == null || name.isEmpty()) ? defaultName : name));
+            new DialogHandler<String>() {
+                public void handle(String name) {
+                    nameNewLand(unit, strdef(name, defaultName));
+                }
+            });
     }
 
     /**
@@ -4088,8 +4128,8 @@ public final class InGameController extends FreeColClientHolder {
      * @param tile The {@code Tile} the unit landed at.
      * @param unit The {@code Unit} that has landed.
      */
-    public void newRegionName(Region region, String defaultName, Tile tile,
-                              Unit unit) {
+    public void newRegionName(final Region region, final String defaultName,
+                              final Tile tile, final Unit unit) {
         if (region.hasName()) {
             if (region.isPacific()) {
                 getGUI().showEventPanel(Messages.message("event.discoverPacific"),
@@ -4101,8 +4141,11 @@ public final class InGameController extends FreeColClientHolder {
                 StringTemplate.template("nameRegion.text")
                               .addStringTemplate("%type%", region.getLabel()),
                 defaultName, unit,
-                (String name) -> nameNewRegion(tile, unit, region,
-                    (name == null || name.isEmpty()) ? defaultName : name));
+                new DialogHandler<String>() {
+                    public void handle(String name) {
+                        nameNewRegion(tile, unit, region, strdef(name, defaultName));
+                    }
+                });
         }
     }
 
@@ -4855,8 +4898,11 @@ public final class InGameController extends FreeColClientHolder {
             }
             if (unit.hasGoodsCargo()) { // Goods left here must be dumped.
                 getGUI().showDumpCargoDialog(unit,
-                    (List<Goods> goodsList) -> {
-                        for (Goods g : goodsList) unloadCargo(g, true);
+                    new DialogHandler<List<Goods>>() {
+                        public void handle(List<Goods> goodsList) {
+                            for (Goods g : goodsList)
+                                unloadCargo(g, true);
+                        }
                     });
                 return false;
             }
@@ -4930,7 +4976,12 @@ public final class InGameController extends FreeColClientHolder {
      */
     public void victory(String score) {
         displayHighScores("true".equalsIgnoreCase(score));
-        getGUI().showVictoryDialog((Boolean result) -> victory(result));
+        getGUI().showVictoryDialog(
+            new DialogHandler<Boolean>() {
+                public void handle(Boolean result) {
+                    victory(result);
+                }
+            });
     }
 
     /**
