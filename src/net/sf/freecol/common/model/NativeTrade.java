@@ -20,6 +20,7 @@
 package net.sf.freecol.common.model;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.function.Function;
 import java.util.logging.Logger;
@@ -426,7 +427,10 @@ public class NativeTrade extends FreeColGameObject {
      * @param nti The {@code NativeTradeItem} to remove.
      */
     public void removeFromUnit(NativeTradeItem nti) {
-        removeInPlace(this.unitToSettlement, nti.goodsMatcher());
+        Iterator<NativeTradeItem> it = this.unitToSettlement.iterator();
+        while (it.hasNext())
+            if (it.next().equals(nti))
+                it.remove();
     }
 
     /**

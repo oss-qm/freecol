@@ -33,7 +33,6 @@ import java.util.Map.Entry;
 import java.util.Random;
 import java.util.Set;
 import java.util.function.Function;
-import java.util.function.Predicate;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -2648,8 +2647,9 @@ public class Player extends FreeColGameObject implements Nameable {
      */
     public void refilterModelMessages(OptionGroup options) {
         synchronized (this.modelMessages) {
-            removeInPlace(this.modelMessages, m ->
-                !options.getBoolean(m.getMessageType().getOptionName()));
+            for (Iterator<ModelMessage> it = this.modelMessages.iterator(); it.hasNext();)
+                if (!options.getBoolean(it.next().getMessageType().getOptionName()))
+                    it.remove();
         }
     }
 
@@ -2658,7 +2658,9 @@ public class Player extends FreeColGameObject implements Nameable {
      */
     public void removeDisplayedModelMessages() {
         synchronized (this.modelMessages) {
-            removeInPlace(this.modelMessages, ModelMessage::hasBeenDisplayed);
+            for (Iterator<ModelMessage> it = this.modelMessages.iterator(); it.hasNext();)
+                if (it.next().hasBeenDisplayed())
+                    it.remove();
         }
     }
 
@@ -2682,16 +2684,15 @@ public class Player extends FreeColGameObject implements Nameable {
      */
     public void divertModelMessages(FreeColGameObject source,
                                     FreeColGameObject newSource) {
-        final Predicate<ModelMessage> sourcePred = m ->
-            Utils.equals(m.getSourceId(), source.getId());
         synchronized (this.modelMessages) {
             if (newSource == null) {
-                removeInPlace(this.modelMessages, sourcePred);
+                for (Iterator<ModelMessage> it = this.modelMessages.iterator(); it.hasNext();)
+                    if (Utils.equals(it.next().getSourceId(), source.getId()))
+                        it.remove();
             } else {
-                for (ModelMessage m : transform(this.modelMessages,
-                                                sourcePred)) {
-                    m.divert(newSource);
-                }
+                for (ModelMessage m : this.modelMessages)
+                    if (Utils.equals(m.getSourceId(), source.getId()))
+                        m.divert(newSource);
             }
         }
     }
