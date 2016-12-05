@@ -1293,6 +1293,23 @@ public final class InGameController extends FreeColClientHolder {
         return result;
     }
 
+    private List<ChoiceItem<NativeTradeItem>> getNativeTradeItemChoices(List<NativeTradeItem> items) {
+        List<ChoiceItem<NativeTradeItem>> result = new ArrayList<>();
+        for (NativeTradeItem nti : items)
+            result.add(new ChoiceItem<NativeTradeItem>(
+                Messages.message(nti.getGoods().getLabel(true)),nti));
+        return result;
+    }
+
+    private List<ChoiceItem<NativeTradeItem>> getNativeTradeItemChoicesPriceValid(List<NativeTradeItem> items) {
+        List<ChoiceItem<NativeTradeItem>> result = new ArrayList<>();
+        for (NativeTradeItem nti : items)
+            if (nti.priceIsValid())
+                result.add(new ChoiceItem<NativeTradeItem>(
+                    Messages.message(nti.getGoods().getLabel(true)),nti));
+        return result;
+    }
+
     /**
      * Check the carrier for passengers to disembark, possibly
      * snatching a useful result from the jaws of a
@@ -3958,11 +3975,6 @@ public final class InGameController extends FreeColClientHolder {
         // "enhanced trade" mode.
         nt.limitSettlementToUnit(3);
 
-        final Function<NativeTradeItem, ChoiceItem<NativeTradeItem>>
-            goodsMapper = i -> {
-            String label = Messages.message(i.getGoods().getLabel(true));
-            return new ChoiceItem<>(label, i);
-        };
         while (!nt.getDone()) {
             if (act == null) {
                 if (prompt == null) prompt = base;
@@ -3977,8 +3989,7 @@ public final class InGameController extends FreeColClientHolder {
                 if (nti == null) {
                     nti = getGUI().getChoice(unit.getTile(),
                         Messages.message("buyProposition.text"), is, "nothing",
-                        transform(nt.getSettlementToUnit(),
-                                  NativeTradeItem::priceIsValid, goodsMapper));
+                            getNativeTradeItemChoicesPriceValid(nt.getSettlementToUnit()));
                     if (nti == null) break;
                     nt.setItem(nti);
                 }
@@ -3998,8 +4009,7 @@ public final class InGameController extends FreeColClientHolder {
                 if (nti == null) {
                     nti = getGUI().getChoice(unit.getTile(),
                         Messages.message("sellProposition.text"), is, "nothing",
-                        transform(nt.getUnitToSettlement(),
-                                  NativeTradeItem::priceIsValid, goodsMapper));
+                            getNativeTradeItemChoicesPriceValid(nt.getUnitToSettlement()));
                     if (nti == null) break;
                     nt.setItem(nti);
                 }
@@ -4018,8 +4028,7 @@ public final class InGameController extends FreeColClientHolder {
                 act = null;
                 nti = getGUI().getChoice(unit.getTile(),
                     Messages.message("gift.text"), is, "cancel",
-                    transform(nt.getUnitToSettlement(), alwaysTrue(),
-                              goodsMapper));
+                    getNativeTradeItemChoices(nt.getUnitToSettlement()));
                 if (nti != null) {
                     nt.setItem(nti);
                     askServer().nativeTrade(NativeTradeAction.GIFT, nt);
