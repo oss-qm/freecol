@@ -1280,6 +1280,13 @@ public final class InGameController extends FreeColClientHolder {
         return false;
     }
 
+    private class UnitChoiceList extends ArrayList<ChoiceItem<Unit>>
+    {
+        public void addUnit(Unit u) {
+            add(new ChoiceItem<Unit>(u.getDescription(Unit.UnitLabelType.NATIONAL), u));
+        }
+    }
+
     /**
      * Check the carrier for passengers to disembark, possibly
      * snatching a useful result from the jaws of a
@@ -1310,9 +1317,11 @@ public final class InGameController extends FreeColClientHolder {
                 moveDirection(disembarkable.get(0), direction, false);
             }
         } else {
-            List<ChoiceItem<Unit>> choices
-                = transform(disembarkable, alwaysTrue(), u ->
-                    new ChoiceItem<Unit>(u.getDescription(Unit.UnitLabelType.NATIONAL), u));
+            UnitChoiceList choices = new UnitChoiceList();
+
+            for (Unit u : disembarkable)
+                choices.addUnit(u);
+
             choices.add(new ChoiceItem<>(Messages.message("all"), unit));
 
             // Use moveDirection() to disembark units as while the
@@ -1358,10 +1367,12 @@ public final class InGameController extends FreeColClientHolder {
         Tile sourceTile = unit.getTile();
         Tile destinationTile = sourceTile.getNeighbourOrNull(direction);
         Unit carrier = null;
-        List<ChoiceItem<Unit>> choices
-            = transform(destinationTile.getUnits(),
-                        u -> u.canAdd(unit),
-                        u -> new ChoiceItem<>(u.getDescription(Unit.UnitLabelType.NATIONAL), u));
+
+        UnitChoiceList choices = new UnitChoiceList();
+        for (Unit u : destinationTile.getUnits())
+            if (u.canAdd(unit))
+                choices.addUnit(u);
+
         if (choices.isEmpty()) {
             throw new RuntimeException("Unit " + unit.getId()
                 + " found no carrier to embark upon.");
