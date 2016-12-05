@@ -217,8 +217,10 @@ public class ColonyTile extends WorkLocation {
         if (productionType.getUnattended()) {
             if (newType == null) {
                 // Tile type stays the same, return the sum of any food bonues.
-                return sum(getSpecification().getFoodGoodsTypeList(),
-                           gt -> ti.getBonus(gt));
+                int n = 0;
+                for (GoodsType gt : getSpecification().getFoodGoodsTypeList())
+                    n += ti.getBonus(gt);
+                return n;
             }
 
             // Tile type change.
@@ -272,9 +274,11 @@ public class ColonyTile extends WorkLocation {
      */
     @Override
     public int evaluateFor(Player player) {
-        return super.evaluateFor(player)
-            + sum(getProductionInfo().getProduction(),
-                  ag -> ag.evaluateFor(player));
+        int n = super.evaluateFor(player);
+        for (GoodsType gt : getProductionInfo().getProduction())
+            n += gt.evaluateFor(player);
+
+        return n;
     }
 
 

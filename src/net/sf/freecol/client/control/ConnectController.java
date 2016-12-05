@@ -528,12 +528,16 @@ public final class ConnectController extends FreeColClientHolder {
                 ? ((VacantPlayersMessage)msg).getVacantPlayers()
                 : null;
             if (names == null || names.isEmpty()) return false;
+
+            List<ChoiceItem> ch = new ArrayList<ChoiceItem>();
+            for (String n : names) {
+                ch.add(new ChoiceItem(
+                    Messages.message(StringTemplate.template("countryName").add("%nation%", Messages.nameKey(n))),n));
+            }
+
             String choice = getGUI().getChoice(null,
-                Messages.message("client.choicePlayer"), "cancel",
-                transform(names, alwaysTrue(), n ->
-                    new ChoiceItem<>(Messages.message(StringTemplate
-                            .template("countryName")
-                            .add("%nation%", Messages.nameKey(n))), n)));
+                Messages.message("client.choicePlayer"), "cancel", ch);
+
             if (choice == null) return false; // User cancelled
 
             if (!login(Messages.getRulerName(choice), host, port)) return false;

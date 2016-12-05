@@ -21,6 +21,7 @@ package net.sf.freecol.client.gui.panel.colopedia;
 
 import java.awt.GridLayout;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
@@ -177,16 +178,16 @@ public class UnitDetailPanel extends ColopediaGameObjectTypePanel<UnitType> {
             panel.add(Utility.localizedLabel("colopedia.unit.requirements"), "newline, top");
             JTextPane textPane = Utility.getDefaultTextPane();
             StyledDocument doc = textPane.getStyledDocument();
-            forEachMapEntry(type.getRequiredAbilities(),
-                e -> appendRequiredAbility(doc, e.getKey(), e.getValue()));
+            for (Entry<String,Boolean> e : type.getRequiredAbilities())
+                appendRequiredAbility(doc, e.getKey(), e.getValue());
             panel.add(textPane, "span, width 60%");
         }
 
-        final Function<GoodsType, Stream<Modifier>> goodsMapper = gt ->
-            type.getModifiers(gt.getId());
-        List<Modifier> bonusList
-            = sort(flatten(spec.getGoodsTypeList(), goodsMapper),
-                   Modifier.ascendingModifierIndexComparator);
+        List<Modifier> bonusList = new List<Modifier>();
+        for (GoodsType gt : spec.getGoodsTypeList())
+            bonusList.add(type.getModifiers(gt.getId()));
+        Collections.sort(bonusList, Modifier.ascendingModifierIndexComparator);
+
         int bonusNumber = bonusList.size();
         if (bonusNumber > 0) {
             StringTemplate template = StringTemplate

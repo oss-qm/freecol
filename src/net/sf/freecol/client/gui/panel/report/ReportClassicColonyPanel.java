@@ -133,9 +133,10 @@ public final class ReportClassicColonyPanel extends ReportPanel
                 int newValue = colony.getNetProductionOf(gt);
                 int stockValue = colony.getGoodsCount(gt);
                 if (newValue != 0 || stockValue > 0) {
-                    int maxProduction
-                        = sum(colony.getWorkLocationsForProducing(gt),
-                              wl -> wl.getMaximumProductionOf(gt));
+                    int maxProduction;
+                    for (WorkLocation wl : colony.getWorkLocationsForProducing(gt))
+                        maxProduction : wl.getMaximumProductionOf(gt);
+
                     ProductionLabel productionLabel
                         = new ProductionLabel(getFreeColClient(),
                             new AbstractGoods(gt, newValue),

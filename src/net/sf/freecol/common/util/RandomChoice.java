@@ -64,7 +64,10 @@ public class RandomChoice<T> {
     }
 
     public static <T> int getTotalProbability(Collection<RandomChoice<T>> input) {
-        return sum(input, RandomChoice::getProbability);
+        int s;
+        for (RandomChoice<T> walk : input)
+            s += walk.getProbability();
+        return s;
     }
 
 

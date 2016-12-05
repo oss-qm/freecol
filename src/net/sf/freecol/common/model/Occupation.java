@@ -106,9 +106,13 @@ public class Occupation {
                 if (pt.getOutput(g) == null)
                     continue;
 
-                int minInput = min(pt.getInputs(),
-                    ag -> Math.max(colony.getNetProductionOf(ag.getType()),
-                                   colony.getGoodsCount(ag.getType())));
+                int minInput = Integer.MAX;
+                for (AbstractGoods ag : pt.getInputs()) {
+                    minInput = Math.min(minInput,
+                        Math.max(colony.getNetProductionOf(ag.getType()),
+                                 colony.getGoodsCount(ag.getType())));
+                }
+
                 int potential = wl.getPotentialProduction(gt, unitType);
                 int amount = Math.min(minInput, potential);
                 lb.add(" ", gt.getSuffix(), "=", amount, "/", minInput,

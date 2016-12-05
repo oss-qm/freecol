@@ -19,13 +19,10 @@
 
 package net.sf.freecol.common.networking;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.function.Predicate;
 
 import net.sf.freecol.common.model.Game;
 import net.sf.freecol.common.model.Player;
-import static net.sf.freecol.common.util.CollectionUtils.*;
 import net.sf.freecol.server.FreeColServer;
 import net.sf.freecol.server.control.ChangeSet;
 import net.sf.freecol.server.model.ServerPlayer;
@@ -81,10 +78,14 @@ public class VacantPlayersMessage extends AttributeMessage {
      */
     public VacantPlayersMessage setVacantPlayers(Game game) {
         if (game == null) return this;
-        final Predicate<Player> vacantPred = p ->
-            !p.isREF() && (p.isAI() || !((ServerPlayer)p).isConnected());
-        setArrayAttributes(transform(game.getLiveEuropeanPlayers(),
-                                     vacantPred, Player::getNationId));
+
+        List<String> list = new List<String>();
+        for (Player p : game.getLiveEuropeanPlayers())
+            if (!p.isREF() && (p.isAI() || !((ServerPlayer)p).isConnected()))
+                list.add(p.getNationId());
+
+        setArrayAttributes(list);
+
         return this;
     }
 

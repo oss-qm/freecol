@@ -100,9 +100,11 @@ public class TypeCountMap<T extends FreeColSpecObjectType> {
     public String toString() {
         StringBuilder sb = new StringBuilder(64);
         sb.append('[').append(getClass().getName());
-        forEachMapEntry(values, e ->
+
+        for (Entry<T,Integer> e : values)
             sb.append(" [").append(e.getKey().getIndex())
-              .append(',').append(e.getValue()).append(']'));
+              .append(',').append(e.getValue()).append(']');
+
         sb.append(']');
         return sb.toString();
     }

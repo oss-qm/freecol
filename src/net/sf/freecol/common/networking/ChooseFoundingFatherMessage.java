@@ -71,9 +71,13 @@ public class ChooseFoundingFatherMessage extends AttributeMessage {
         super(TAG, FOUNDING_FATHER_TAG, getStringAttribute(element, FOUNDING_FATHER_TAG));
 
         final Specification spec = game.getSpecification();
-        setFatherAttributes(transform(FoundingFatherType.allKeys,
-                k -> element.hasAttribute(k),
-                k -> spec.getFoundingFather(getStringAttribute(element, k))));
+
+        List<FoundingFather> ffl = new List<FoundingFather>();
+        for (String k : FoundingFatherType.allKeys)
+            if (element.hasAttribute(k))
+                ffl.add(spec.getFoundingFather(getStringAttribute(element, k)));
+
+        setFatherAttributes(ffl);
     }
 
 
@@ -83,9 +87,11 @@ public class ChooseFoundingFatherMessage extends AttributeMessage {
      * @param fathers A list of {@code FoundingFather}.
      */
     private void setFatherAttributes(List<FoundingFather> fathers) {
-        setAttributes(transform(fathers, alwaysTrue(), Function.identity(),
-                Collectors.toMap(ff -> ff.getType().getKey(),
-                                 FoundingFather::getId)));
+        Map<String, String> ffm = new Map<String, String>();
+        for (FoundingFather ff : fathers)
+            map.add(ff.getType().getKey(), ff.getId());
+
+        setAttributes(ff);
     }
 
 
@@ -122,8 +128,13 @@ public class ChooseFoundingFatherMessage extends AttributeMessage {
      */
     public final List<FoundingFather> getFathers(Game game) {
         final Specification spec = game.getSpecification();
-        return transform(FoundingFatherType.allKeys, tid -> hasAttribute(tid),
-                         tid -> spec.getFoundingFather(getAttribute(tid)));
+
+        List<FoundingFather> ffl = new List<FoundingFather>();
+        for (String id : FoundingFatherType.allKeys)
+            if (hasAttribute(id))
+                ffl.add(spec.getFoundingFather(getAttribute(id)));
+
+        return ffl;
     }
 
 

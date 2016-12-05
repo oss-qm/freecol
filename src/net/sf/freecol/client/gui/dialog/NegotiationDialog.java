@@ -499,10 +499,9 @@ public final class NegotiationDialog extends FreeColDialog<DiplomaticTrade> {
             setLayout(new MigLayout("wrap 1", "", ""));
 
             available.clear();
-            final Predicate<Player> incitablePred = p ->
-                    p != this.other && this.source.getStance(p).isIncitable();
-            available.addAll(transform(getGame().getLivePlayers(this.source),
-                    incitablePred));
+            for (Player p : getGame().getLivePlayers(this.source))
+                if (p != this.other && this.source.getStance(p).isIncitable())
+                    available.add(p);
 
             add(this.label);
             add(this.victimBox);
@@ -1052,8 +1051,9 @@ public final class NegotiationDialog extends FreeColDialog<DiplomaticTrade> {
     private List<Goods> getAnyGoods() {
         final Game game = getGame();
         final Specification spec = getSpecification();
-        return transform(spec.getStorableGoodsTypeList(), alwaysTrue(),
-                gt -> new Goods(game, null, gt, GoodsContainer.CARGO_SIZE));
+        List<Goods> list = new ArrayList<Goods>();
+        for (GoodsType gt : spec.getStorableGoodsTypeList())
+            list.add(new Goods(game, null, gt, GoodsContainer.CARGO_SIZE));
     }
 
     /**

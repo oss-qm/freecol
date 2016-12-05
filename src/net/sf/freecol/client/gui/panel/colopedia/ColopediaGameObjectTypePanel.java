@@ -254,13 +254,14 @@ public abstract class ColopediaGameObjectTypePanel<T extends FreeColSpecObjectTy
         try {
             doc.insertString(doc.getLength(), Messages.getName(key),
                              doc.getStyle("regular"));
-            List<JButton> requiredTypes
-                 = transform(spec.getTypesProviding(key, value), alwaysTrue(),
-                     t -> {
-                         JButton typeButton = getButton(t);
-                         typeButton.addActionListener(this);
-                         return typeButton;
-                     });
+
+            List<JButton> requiredTypes = new ArrayList<JButton>();
+            for (FreeColSpecObjectType t : spec.getTypesProviding(key, value)) {
+                 JButton typeButton = getButton(t);
+                 typeButton.addActionListener(this);
+                 return requiredTypes.add(typeButton);
+            }
+
             JButton rt = first(requiredTypes);
             if (rt != null) {
                 doc.insertString(doc.getLength(), " (",

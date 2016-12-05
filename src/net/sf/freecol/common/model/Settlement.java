@@ -315,8 +315,11 @@ public abstract class Settlement extends GoodsLocation
      * @return True if the settlement is connected to the high seas.
      */
     public boolean isConnectedPort() {
-        return any(getTile().getSurroundingTiles(1, 1),
-                   t -> !t.isLand() && t.isHighSeasConnected());
+        for (Tile t : getTile().getSurroundingTiles(1, 1))
+            if (!t.isLand() && t.isHighSeasConnected())
+                return true;
+
+        return false;
     }
 
     /**
@@ -339,8 +342,12 @@ public abstract class Settlement extends GoodsLocation
      * @return an {@code int} value
      */
     public int getConsumptionOf(GoodsType goodsType) {
-        return Math.max(0, sum(getUnits(),
-                               u -> u.getType().getConsumptionOf(goodsType)));
+        int s = 0;
+
+        for (Unit u : getUnits())
+            s += u.getType().getConsumptionOf(goodsType);
+
+        return Math.max(0, s);
     }
 
     /**
@@ -351,8 +358,12 @@ public abstract class Settlement extends GoodsLocation
      * @return an {@code int} value
      */
     public int getConsumptionOf(List<GoodsType> goodsTypes) {
-        return (goodsTypes == null) ? 0
-            : sum(goodsTypes, gt -> getConsumptionOf(gt));
+        int s = 0;
+
+        for (GoodsType gt : goodsType)
+            s += getConsumptionOf(gt);
+
+        return s;
     }
 
     /**
@@ -373,14 +384,17 @@ public abstract class Settlement extends GoodsLocation
      * @return True if the settlement can provide the equipment.
      */
     public boolean canProvideGoods(List<AbstractGoods> goods) {
-        return all(goods, ag -> {
-                int available = getGoodsCount(ag.getType());
-                int breedingNumber = ag.getType().getBreedingNumber();
-                if (breedingNumber != GoodsType.INFINITY) {
-                    available -= breedingNumber;
-                }
-                return available >= ag.getAmount();
-            });
+        for (AbstractGoods ag : goods) {
+            int available = getGoodsCount(ag.getType());
+            int breedingNumber = ag.getType().getBreedingNumber();
+            if (breedingNumber != GoodsType.INFINITY)
+                available -= breedingNumber;
+
+            if (available < ag.getAmount())
+                return false;
+        }
+
+        return true;
     }
 
     /**
@@ -423,8 +437,11 @@ public abstract class Settlement extends GoodsLocation
 
         // To succeed, there must exist an available role for the unit
         // where the extra equipment for the role is present.
-        return find(unit.getAvailableRoles(military),
-                    r -> canProvideGoods(unit.getGoodsDifference(r, 1)));
+        for (Role r : unit.getAvailableRoles(military))
+            if (canProvideGoods(unit.getGoodsDifference(r, 1)))
+                return r;
+
+        return null;
     }
 
     /**
@@ -620,8 +637,11 @@ public abstract class Settlement extends GoodsLocation
      */
     @Override
     public int priceGoods(List<AbstractGoods> goods) {
-        return (any(goods, ag -> getGoodsCount(ag.getType()) < ag.getAmount()))
-            ? -1 : 0;
+        for (AbstractGoods ag : goods)
+            if (getGoodsCount(ag.getType()) < ag.getAmount())
+                return -1;
+
+        return 0;
     }
 
     /**

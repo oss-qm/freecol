@@ -147,12 +147,16 @@ public class TerrainDetailPanel
 
     private void addProduction(JPanel panel, Stream<AbstractGoods> production) {
         // Positive production only
-        List<AbstractGoods> pro = transform(production, AbstractGoods::isPositive);
+        List<AbstractGoods> pro = new ArrayList<AbstractGoods>();
+        for (AbstractGoods ag : production)
+            if (ag.isPositive())
+                pro.add(ag);
+
         String tag = null;
         switch (pro.size()) {
         case 0:
             panel.add(new JLabel(), "wrap");
-            break;
+            return; // skip the list walk at the end - we know its empty anyways
         case 1:
             tag = "span";
             break;

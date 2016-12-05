@@ -472,20 +472,20 @@ public final class SelectDestinationDialog extends FreeColDialog<Location>
         MultipleAdjacentDecider md = new MultipleAdjacentDecider(locs);
         unit.search(unit.getLocation(), md.getGoalDecider(), null,
                     FreeColObject.INFINITY, null);
-        final Function<Entry<Location, PathNode>, Destination> dmapper = e -> {
+
+        // Drop inaccessible destinations and sort as specified.
+        for (Entry<Location, PathNode> e : md.getResults().entrySet()) {
             Settlement s = e.getKey().getTile().getSettlement();
             PathNode p = e.getValue();
             int turns = p.getTotalTurns();
             if (unit.isInEurope()) turns += unit.getSailTurns();
             if (p.getMovesLeft() < unit.getInitialMovesLeft()) turns++;
-            return new Destination(s, turns, unit, goodsTypes);
-        };
-        td.addAll(transform(md.getResults().entrySet(), alwaysTrue(), dmapper));
 
-        // Drop inaccessible destinations and sort as specified.
-        this.destinations.addAll(transform(td, d -> d.turns < Unit.MANY_TURNS,
-                                           Function.identity(),
-                                           this.destinationComparator));
+            if (turns < Unit.MANY_TURNS)
+                this.destinations(new Destination(s, turns, unit, goodsTypes));
+        };
+
+        Collections.sort(this.destinations, this.destinationComparator);
     }
 
     /**

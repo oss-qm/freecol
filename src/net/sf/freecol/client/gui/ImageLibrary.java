@@ -555,8 +555,11 @@ public final class ImageLibrary {
                                                 Dimension size,
                                                 Set<String> overlayCache) {
         final String prefix = "image.tileoverlay." + type.getId() + ".r";
-        final List<String> keys = transform(overlayCache,
-                                            k -> k.startsWith(prefix));
+        List<String> keys = new ArrayList<String>();
+        for (String k : overlayCache)
+            if (k.startsWith(prefix))
+                keys.add(k);
+
         return getRandomizedImage(keys, id, size);
     }
 

@@ -664,7 +664,17 @@ public class Colony extends Settlement implements Nameable, TradeLocation {
      *     {@code Ability}, or null if not found.
      */
     public WorkLocation getWorkLocationWithAbility(String ability) {
-        return find(getCurrentWorkLocations(), wl -> wl.hasAbility(ability));
+        synchronized (this.colonyTiles) {
+            for (WorkLocation walk : this.colonyTiles)
+                if (walk.isCurrent() && wl.hasAbility(ability))
+                    return walk;
+        }
+        synchronized (this.buildingMap) {
+            for (WorkLocation walk : this.buildingMap)
+                if (walk.isCurrent() && wl.hasAbility(ability))
+                    return walk;
+        }
+        return null;
     }
 
     /**
@@ -693,7 +703,17 @@ public class Colony extends Settlement implements Nameable, TradeLocation {
      *     {@code Modifier}, or null if not found.
      */
     public WorkLocation getWorkLocationWithModifier(String modifier) {
-        return find(getCurrentWorkLocations(), wl -> wl.hasModifier(modifier));
+        synchronized (this.colonyTiles) {
+            for (WorkLocation walk : this.colonyTiles)
+                if (walk.isCurrent() && wl.hasModifier(modifier))
+                    return walk;
+        }
+        synchronized (this.buildingMap) {
+            for (WorkLocation walk : this.buildingMap)
+                if (walk.isCurrent() && wl.hasModifier(modifier))
+                    return walk;
+        }
+        return null;
     }
 
     /**
@@ -1604,12 +1624,20 @@ public class Colony extends Settlement implements Nameable, TradeLocation {
      * @return The best available defender type.
      */
     public UnitType getBestDefenderType() {
-        final Predicate<UnitType> defenderPred = ut ->
-                ut.getDefence() > 0
-                        && !ut.isNaval()
-                        && ut.isAvailableTo(getOwner());
-        return maximize(getSpecification().getUnitTypeList(), defenderPred,
-                UnitType.defenceComparator);
+        UnitType max_ut;
+        int max_def;
+
+        for (UnitType ut : getSpecification().getUnitTypeList()) {
+            int defence = ut.getDefence();
+            if (defence > 0 && !ut.isNaval() && ut.isAvailableTo(getOwner())) {
+                if (defence > max_def) {
+                    max_ut = ut;
+                    max_def = defence;
+                }
+            }
+        }
+
+        return max_ut;
     }
 
     /**

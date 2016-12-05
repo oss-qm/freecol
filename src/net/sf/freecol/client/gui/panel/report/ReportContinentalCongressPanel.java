@@ -85,8 +85,10 @@ public final class ReportContinentalCongressPanel extends ReportPanel {
                 Messages.getDescription(currentFather));
             recruitingPanel.add(currentFatherLabel);
             for (GoodsType gt : getSpecification().getLibertyGoodsTypeList()) {
-                int total = sum(player.getColonies(),
-                                c -> c.getNetProductionOf(gt));
+                int total;
+                for (Player p : player.getColonies())
+                    total += c.getNetProductionOf(gt);
+
                 FreeColProgressBar progressBar = new FreeColProgressBar(gt, 0,
                     player.getTotalFoundingFatherCost(), player.getLiberty(),
                     total);

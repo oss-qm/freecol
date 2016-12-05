@@ -444,8 +444,12 @@ public class LabourData {
     }
 
     public static List<UnitType> getLabourTypes(Player player) {
-        return transform(player.getSpecification().getUnitTypeList(),
-                         ut -> ut.hasSkill() && ut.isAvailableTo(player));
+        List<UnitType> list = new ArrayList<UnitType>();
+        for (UnitType ut : player.getSpecification().getUnitTypeList())
+            if (ut.hasSkill() && ut.isAvailableTo(player))
+                list.add(ut);
+
+        return list;
     }
 
     private void summarize() {

@@ -713,7 +713,8 @@ public class BuildQueuePanel extends FreeColPanel implements ItemListener {
     private boolean checkAbilities(BuildableType bt, List<String> lockReason) {
         final Specification spec = getSpecification();
         final int oldSize = lockReason.size();
-        forEachMapEntry(bt.getRequiredAbilities(), e -> {
+
+        for (Entry<String,Boolean> e : bt.getRequiredAbilities().entrySet()) {
                 final String id = e.getKey();
                 final boolean value = e.getValue();
                 if (this.featureContainer.hasAbility(id, null, null) != value
@@ -724,7 +725,7 @@ public class BuildQueuePanel extends FreeColPanel implements ItemListener {
                         ? Messages.getName(source)
                         : Messages.getName(bt));
                 }
-            });
+        };
         return lockReason.size() == oldSize;
     }
 
@@ -847,11 +848,16 @@ public class BuildQueuePanel extends FreeColPanel implements ItemListener {
             // Missing unit build ability?
             if (!this.featureContainer.hasAbility(Ability.BUILD, ut, null)
                 && !this.colony.hasAbility(Ability.BUILD, ut, turn)) {
-                Ability buildAbility = find(spec.getAbilities(Ability.BUILD),
-                    a -> (a.appliesTo(ut)
+
+                Ability buildAbility;
+                for (Ability a : spec.getAbilities(Ability.BUILD)) {
+                    if (a.appliesTo(ut)
                         && a.getValue()
                         && a.getSource() != null
-                        && !unbuildableTypes.contains(a.getSource())));
+                        && !unbuildableTypes.contains(a.getSource()))
+                        break;
+                }
+
                 reasons.add((buildAbility != null)
                     ? ((buildAbility.getSource() instanceof Named)
                         ? Messages.getName((Named)buildAbility.getSource())

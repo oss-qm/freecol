@@ -328,14 +328,18 @@ public class LandMap {
      */
     private List<Position> newPositions(Position position,
                                         int distanceToEdge) {
-        final Predicate<Position> landPred = p ->
-            (p.isValid(getWidth(), getHeight())
-                && !hasAdjacentLand(p.getX(), p.getY())
-                && p.getX() > distanceToEdge
-                && p.getX() < getWidth() - distanceToEdge);
-        final Function<Direction, Position> positionMapper = d ->
-            new Position(position, d);
-        return transform(map(Direction.longSides, positionMapper), landPred);
+        List<Position> l = new ArrayList<Position>();
+
+        for (Direction d : Direction.longSides) {
+            Position p = new Position(position, d);
+            if (p.isValid(getWidth(), getHeight())
+                    && !hasAdjacentLand(p.getX(), p.getY())
+                    && p.getX() > distanceToEdge
+                    && p.getX() < getWidth() - distanceToEdge)
+                l.add(p);
+        }
+
+        return l;
     }
 
     /**

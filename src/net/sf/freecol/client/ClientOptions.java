@@ -599,12 +599,15 @@ public class ClientOptions extends OptionGroup {
         ModListOption mlo = (ModListOption)getOption(ClientOptions.USER_MODS);
         if (mlo == null) return Collections.<FreeColModFile>emptyList();
 
-        final Predicate<FreeColModFile> validModPred = m ->
-            m != null && m.getId() != null;
-        final Function<FreeColModFile, FreeColModFile> modFileMapper = m ->
-            Mods.getFreeColModFile(m.getId());
-        return transform(mlo.getOptionValues(), validModPred, modFileMapper,
-                         toListNoNulls());
+        List<FreeColModFile> l = new List<FreeColModFile>();
+        for (FreeColModFile f : mlo) {
+            if ((m == null) || (m.getId() == null))
+                continue;
+
+            l.put(Mods.getFreeColModFile(m.getId()));
+        }
+
+        return l;
     }
 
     /**

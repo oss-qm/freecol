@@ -230,8 +230,12 @@ public class NativeTrade extends FreeColGameObject {
      *     be made and space available.
      */
     public boolean canBuy() {
-        return getBuy() && !atWar() && this.unit.getSpaceLeft() > 0
-            && any(getSettlementToUnit(), NativeTradeItem::priceIsValid);
+        if (getBuy() && !atWar() && this.unit.getSpaceLeft() > 0)
+            for (NativeTradeItem i : getSettlementToUnit())
+                if (i.priceIsValid())
+                    return true;
+
+        return false;
     }
 
     /**
@@ -258,8 +262,12 @@ public class NativeTrade extends FreeColGameObject {
      * @return True if not blocked, at peace, and there are sales to be made.
      */
     public boolean canSell() {
-        return getSell() && !atWar()
-            && any(getUnitToSettlement(), NativeTradeItem::priceIsValid);
+        if (getSell() && !atWar())
+            for (NativeTradeItem i : getUnitToSettlement())
+                if (i.priceIsValid())
+                    return true;
+
+        return false;
     }
 
     /**
@@ -453,13 +461,24 @@ public class NativeTrade extends FreeColGameObject {
      * @param n The number of items to offer.
      */
     public void limitSettlementToUnit(int n) {
-        List<NativeTradeItem> best = transform(this.settlementToUnit,
-            NativeTradeItem::priceIsValid, Function.identity(),
-            NativeTradeItem.descendingPriceComparator);
-        if (best.size() <= n) return;
-        for (NativeTradeItem nti : best.subList(n, best.size())) {
-            nti.setPrice(NativeTradeItem.PRICE_INVALID);
+        /** create a list of valid items -- sorted by price **/
+        NativeTradeItem[] best = new NativeTradeItem[settlementToUnit.length()];
+        int idx = 0;
+        for (NativeTradeItem i : this.settlementToUnit) {
+            if (i.priceIsValid()) {
+                best.add(i);
+                idx++;
+            }
         }
+        Arrays.sort(best, NativeTradeItem.descendingPriceComparator);
+
+        /** if less then limit, there's nothing to do **/
+        if (idx <= n)
+            return;
+
+        /** mark the remaining as invalid **/
+        for (int x=n; x<idx; x++)
+            best[x].setPrice(NativeTradeItem.PRICE_INVALID);
     }
 
     /**

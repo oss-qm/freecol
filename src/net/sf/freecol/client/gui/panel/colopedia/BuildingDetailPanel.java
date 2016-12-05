@@ -154,8 +154,9 @@ public class BuildingDetailPanel
                                  Messages.message(template) + "\n",
                                  doc.getStyle("regular"));
             }
-            forEachMapEntry(buildingType.getRequiredAbilities(),
-                e -> appendRequiredAbility(doc, e.getKey(), e.getValue()));
+
+            for (Entry<String,Boolean> e : buildingType.getRequiredAbilities().entrySet())
+                appendRequiredAbility(doc, e.getKey(), e.getValue());
 
             panel.add(Utility.localizedLabel("colopedia.buildings.requires"), "top");
             panel.add(textPane, "span, growx");
@@ -234,14 +235,14 @@ public class BuildingDetailPanel
         }
 
         List<JComponent> labels = new ArrayList<>();
-        forEach(buildingType.getModifiers(), m -> {
+        for (Modifier m : buildingType.getModifiers()) {
                 JComponent component = getModifierComponent(m);
                 if (component instanceof JButton) {
                     labels.add(0, component);
                 } else {
                     labels.add(component);
                 }
-            });
+        }
 
         for (Ability ability : iterable(buildingType.getAbilities())) {
             JComponent component = getAbilityComponent(ability);

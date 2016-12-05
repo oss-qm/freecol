@@ -218,7 +218,12 @@ public abstract class UnitLocation extends FreeColGameObject implements Location
      *     {@code Location}.
      */
     public int getTotalUnitCount() {
-        return sum(getUnits(), u -> 1 + u.getUnitCount());
+        int s;
+        synchronized (this.units) {
+            for (Unit u : this.units)
+                s += 1 + u.getUnitCount();
+        }
+        return s;
     }
 
     /**
@@ -240,7 +245,14 @@ public abstract class UnitLocation extends FreeColGameObject implements Location
      * @return A list of naval {@code Unit}s present.
      */
     public List<Unit> getNavalUnits() {
-        return transform(getUnits(), Unit::isNaval);
+        List<Unit> l = new ArrayList<Unit>();
+
+        if (this.units != null)
+            for (Unit u : this.units)
+                if (u != null && u.isNaval())
+                    l.add(u);
+
+        return l;
     }
 
     /**
@@ -455,7 +467,12 @@ public abstract class UnitLocation extends FreeColGameObject implements Location
      * @return The sum of the space taken by the units in this location.
      */
     public int getSpaceTaken() {
-        return sum(getUnits(), Unit::getSpaceTaken);
+        int s = 0;
+        synchronized (this.units) {
+            for (Unit u : this.units)
+                s += u.getSpaceTaken();
+        }
+        return s;
     }
 
     /**

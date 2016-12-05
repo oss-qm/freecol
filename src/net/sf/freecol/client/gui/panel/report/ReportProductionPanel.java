@@ -71,10 +71,15 @@ public final class ReportProductionPanel extends ReportPanel {
     public ReportProductionPanel(FreeColClient freeColClient) {
         super(freeColClient, "reportProductionAction");
 
-        this.goodsTypes = transform(getSpecification().getGoodsTypeList(),
-                                    gt -> !gt.isFarmed());
-        List<String> goodsNames = transform(this.goodsTypes, alwaysTrue(),
-                                            gt -> Messages.getName(gt));
+        this.goodsTypes = new List<GoodsType>();
+        List<String> goodsNames = new List<String>();
+        for (GoodsType gt : getSpecification().getGoodsTypeList()) {
+            if (!gt.isFarmed()) {
+                this.goodsTypes.add(gt);
+                goodsNames.add(Messages.getName(gt));
+            }
+        }
+
         goodsNames.add(0, Messages.message("nothing"));
         String[] model = goodsNames.toArray(new String[0]);
         for (int index = 0; index < NUMBER_OF_GOODS; index++) {
@@ -112,13 +117,15 @@ public final class ReportProductionPanel extends ReportPanel {
         if (!selectedTypes.isEmpty()) {
             final Specification spec = getSpecification();
             final FreeColClient fcc = getFreeColClient();
-            final Function<GoodsType, Set<BuildingType>> mapper = gt ->
-                transform(spec.getBuildingTypeList(),
-                          bt -> (gt == bt.getProducedGoodsType()
-                              || bt.hasModifier(gt.getId())),
-                          BuildingType::getFirstLevel, Collectors.toSet());
-            List<Set<BuildingType>> basicBuildingTypes
-                = transform(selectedTypes, alwaysTrue(), mapper);
+
+            List<Set<BuildingType>> basicBuildingTypes = new List<Set<BuildingType>>();
+            for (GoodsType gt : selectedTypes) {
+                Set<BuildingType> bts = new Set<BuildingType>();
+                for (BuildingType bt : spec.getBuildingTypeList()) {
+                    if (gt == bt.getProducedGoodsType() || bt.hasModifier(gt.getId()))
+                        bts.add(bt.getFirstLevel());
+                }
+            }
 
             // labels
             JLabel newLabel;

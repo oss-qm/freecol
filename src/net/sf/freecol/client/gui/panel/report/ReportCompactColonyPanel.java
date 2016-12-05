@@ -228,27 +228,26 @@ public final class ReportCompactColonyPanel extends ReportPanel
                 }
 
                 // Check if the units are working.
-                this.notWorking.addAll(transform(wl.getUnits(),
-                                       u -> (u.getTeacher() == null
-                                           && u.getWorkType() == null)));
+                for (Unit u : wl.getUnits())
+                    if (u.getTeacher() == null && u.getWorkType() == null)
+                        this.notWorking.add(u);
 
                 // Add work location suggestions.
-                forEachMapEntry(wl.getSuggestions(),
-                    e -> addSuggestion(((e.getKey() == null) ? this.want
-                            : this.improve),
+                for (Entry<Unit, Suggestion> e : wl.getSuggestions())
+                    addSuggestion(
+                        ((e.getKey() == null) ? this.want : this.improve),
                         spec.getExpertForProducing(e.getValue().goodsType),
-                        e.getValue()));
+                        e.getValue());
             }
 
             // Make a list of unit types that are not working at their
             // speciality, including the units just standing around.
-            final Predicate<Unit> couldWorkPred = u -> {
+            for (Unit u : this.notWorking) {
                 WorkLocation wl = u.getWorkLocation();
-                return wl != null && (wl.getWorkFor(u) == null
-                        || wl.getWorkFor(u) != u.getWorkType());
-            };
-            this.couldWork.addAll(transform(this.notWorking, couldWorkPred,
-                                            Unit::getType));
+                if (wl != null && (wl.getWorkFor(u) == null
+                        || wl.getWorkFor(u) != u.getWorkType()))
+                    this.couldWork.add(u);
+            }
 
             this.build = colony.getCurrentlyBuilding();
             if (this.build == null) {
@@ -341,8 +340,6 @@ public final class ReportCompactColonyPanel extends ReportPanel
     };
 
     /** Predicate to select the goods to report on. */
-    private static final Predicate<GoodsType> reportGoodsPred = gt ->
-        gt.isStorable() && !gt.isTradeGoods();
     private static final String BUILDQUEUE = "buildQueue.";
     private static final String cAlarmKey = "color.report.colony.alarm";
     private static final String cWarnKey = "color.report.colony.warning";
@@ -393,9 +390,11 @@ public final class ReportCompactColonyPanel extends ReportPanel
 
         this.colonies.addAll(sort(continents.values(), firstColonyComparator));
 
-        this.goodsTypes.addAll(transform(spec.getGoodsTypeList(),
-                                         reportGoodsPred, Function.identity(),
-                                         GoodsType.goodsTypeComparator));
+        List<GoodsType> gtl = spec.getGoodsTypeList();
+        Collections.sort(gtl, GoodsType.goodsTypeComparator);
+        for (GoodsType gt : gtl)
+            if (gt.isStorable() && !gt.isTradeGoods())
+                this.goodsTypes.add(gt);
 
         loadResources();
         update();
@@ -551,8 +550,10 @@ public final class ReportCompactColonyPanel extends ReportPanel
         // Field: The number of potential colony tiles that need
         // exploring.
         // Colour: Always cAlarm
-        int n = count(s.tileSuggestions,
-                      TileImprovementSuggestion::isExploration);
+        int n;
+        for (TileImprovementSuggestion tis : s.tileSuggestions)
+            n += tis.isExploration();
+
         if (n > 0) {
             t = stpld("report.colony.exploring")
                     .addName("%colony%", s.colony.getName())
@@ -589,6 +590,7 @@ public final class ReportCompactColonyPanel extends ReportPanel
                             break;
                         }
                     }
+
                     t = stpld("report.colony.tile." + ti.getSuffix()
                               + ".specific")
                         .addName("%colony%", s.colony.getName())
@@ -857,6 +859,13 @@ public final class ReportCompactColonyPanel extends ReportPanel
         return result;
     }
 
+    private static Comparator<Entry<GoodsType, Double>> goodsComparator =
+        new Comparator<Entry<GoodsType, Double>>() {
+            public int compare(Entry<GoodsType, Double> a, Entry<GoodsType, Double> a) {
+                double diff = b.getValue() - a.getValue(); // descending
+                return (diff == 0 ? 0 : (diff < 0 ? -1 : 1));
+            }};
+
     /**
      * Update several colonies.
      *
@@ -931,9 +940,11 @@ public final class ReportCompactColonyPanel extends ReportPanel
         // Field: The number of potential colony tiles that need
         // exploring.
         // Colour: cAlarm
-        Set<Tile> tiles = transform(rTileSuggestions,
-                                    TileImprovementSuggestion::isExploration,
-                                    ts -> ts.tile, Collectors.toSet());
+        Set<Tile> tiles = new Set<Tile>();
+        for (TileImprovementSuggestion tis : rTileSuggestions)
+            if (tis.isExploration())
+                tiles.add(tis.tile);
+
         reportPanel.add((tiles.isEmpty()) ? new JLabel()
             : newLabel(Integer.toString(tiles.size()), null, cAlarm,
                        stpld("report.colony.exploring.summary")));
@@ -944,9 +955,10 @@ public final class ReportCompactColonyPanel extends ReportPanel
         for (TileImprovementType ti : spec.getTileImprovementTypeList()) {
             if (ti.isNatural()) continue;
             tiles.clear();
-            tiles.addAll(transform(rTileSuggestions,
-                                   matchKey(ti, ts -> ts.tileImprovementType),
-                                   ts -> ts.tile, Collectors.toSet()));
+            for (TileImprovementSuggestion ts : rTileSuggestions)
+                if (ti == ts.tileImprovementType)
+                    tiles.add(ts.tile);
+
             reportPanel.add((tiles.isEmpty()) ? new JLabel()
                 : newLabel(Integer.toString(tiles.size()), null, cAlarm,
                            stpld("report.colony.tile." + ti.getSuffix()
@@ -989,13 +1001,16 @@ public final class ReportCompactColonyPanel extends ReportPanel
 
         // Field: The required goods rates.
         // Colour: cPlain
-        List<JLabel> labels = transform(mapEntriesByValue(rNeeded, descendingDoubleComparator),
-            alwaysTrue(),
-            e -> newLabel(String.format("%4.1f %s", e.getValue(),
-                                        Messages.getName(e.getKey())),
+        List<Entry<GoodsType, Double>> entries = rNeeded.entrySet();
+        Collections.sort(entries, goodsComparator);
+
+        List<JLabel> labels = new List<JLabel>();
+        for (Entry<GoodsType, Double> e : entries)
+            labels.add(newLabel(
+                String.format("%4.1f %s", e.getValue(), Messages.getName(e.getKey())),
                 null, cPlain,
-                stpld("report.colony.making.summary")
-                    .addNamed("%goods%", e.getKey())));
+                stpld("report.colony.making.summary").addNamed("%goods%", e.getKey())
+            ));
 
         // Field: What is being trained (attached to previous)
         // Colour: cPlain.

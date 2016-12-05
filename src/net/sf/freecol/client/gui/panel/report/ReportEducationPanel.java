@@ -63,9 +63,13 @@ public final class ReportEducationPanel extends ReportPanel {
                     bp.initialize();
                     reportPanel.add(bp);
                     JPanel teacherPanel = getPanel("report.education.teachers");
-                    List<Unit> teachers = transform(colony.getUnits(),
-                        u -> building.canAdd(u), Function.identity(),
-                        Unit.increasingSkillComparator);
+
+                    for (Unit u : colony.getUnits())
+                        if (building.canAdd(u))
+                            teachers.add(u);
+
+                    Collections.sort(teachers, Unit.increasingSkillComparator);
+
                     for (Unit u : teachers) {
                         teacherPanel.add(new UnitLabel(freeColClient, u,
                                                        true, true));
@@ -73,7 +77,13 @@ public final class ReportEducationPanel extends ReportPanel {
                     reportPanel.add(teacherPanel, "split 2, flowy, grow");
                     JPanel studentPanel = getPanel("report.education.students");
                     for (Unit unit : colony.getUnitList()) {
-                        Unit teacher = find(teachers, u -> unit.canBeStudent(u));
+                        for (Unit u : teachers) {
+                            if (unit.canBeStudent(u)) {
+                                teacher = u;
+                                break;
+                            }
+                        }
+
                         if (teacher != null) {
                             UnitLabel ul = new UnitLabel(freeColClient, unit,
                                                          true, true);

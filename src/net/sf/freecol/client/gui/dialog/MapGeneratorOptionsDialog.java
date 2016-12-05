@@ -115,9 +115,15 @@ public final class MapGeneratorOptionsDialog extends OptionsDialog {
      * @return A list of potential map files.
      */
     private List<File> loadMapFiles(File dir) {
-        final Comparator<File> comp = Comparator.comparing(File::getName);
-        return transform(fileStream(dir), FreeColSavegameFile::fileFilter,
-                         Function.identity(), comp);
+        File[] files = dir.list();
+        List<File> list = new ArrayList<File>();
+        // do we really need it sorted ?
+        Arrays.sort(files);
+        for (File f : files)
+            if (FreeColSavegameFile.fileFilter(f))
+                list.add(f);
+
+        return list;
     }
 
     /**

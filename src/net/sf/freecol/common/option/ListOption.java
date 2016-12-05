@@ -101,7 +101,12 @@ public abstract class ListOption<T> extends AbstractOption<List<AbstractOption<T
      * @return A list of option values.
      */
     public List<T> getOptionValues() {
-        return transform(value, isNotNull(), o -> o.getValue());
+        List<T> l = new List<T>();
+        for (AbstractOption<T> o : value)
+            if (o != null)
+                l.add(o.getValue());
+
+        return l;
     }
 
     /**

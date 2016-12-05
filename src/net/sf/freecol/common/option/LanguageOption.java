@@ -233,7 +233,11 @@ public class LanguageOption extends AbstractOption<LanguageOption.Language> {
      * @return The corresponding language, or null if none found.
      */
     private Language getLanguage(String key) {
-        return find(languages, l -> key.equals(l.getKey()));
+        for (Language walk : this.languages)
+            if (key.equals(l.getKey()))
+                return walk;
+
+        return null;
     }
 
     /**

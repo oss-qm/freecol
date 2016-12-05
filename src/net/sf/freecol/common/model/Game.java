@@ -563,7 +563,16 @@ public class Game extends FreeColGameObject {
      *     not found.
      */
     public Player getPlayerByNationId(String nationId) {
-        return find(this.players, matchKeyEquals(nationId, Player::getNationId));
+        if ((players != null) || (nationId != null))
+        {
+            for (Player walk : players) {
+                if (walk == null)
+                    continue;
+                if (nationId.equals(walk.getNationId))
+                    return walk;
+            }
+        }
+        return null;
     }
 
     /**

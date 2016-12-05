@@ -1764,12 +1764,6 @@ public final class Tile extends UnitLocation implements Named, Ownable {
         // Defend against calls while partially read.
         if (getType() == null) return Collections.<AbstractGoods>emptyList();
 
-        final ToIntFunction<GoodsType> productionMapper = cacheInt(gt ->
-            getPotentialProduction(gt, unitType));
-        final Predicate<GoodsType> productionPred = gt ->
-            productionMapper.applyAsInt(gt) > 0;
-        final Function<GoodsType, AbstractGoods> goodsMapper = gt ->
-            new AbstractGoods(gt, productionMapper.applyAsInt(gt));
         final Comparator<AbstractGoods> goodsComp
             = ((owner == null || owner.getMarket() == null)
                 ? AbstractGoods.descendingAmountComparator
@@ -1777,8 +1771,14 @@ public final class Tile extends UnitLocation implements Named, Ownable {
         // It is necessary to consider all farmed goods, since the
         // tile might have a resource that produces goods not produced
         // by the tile type.
-        return transform(getSpecification().getFarmedGoodsTypeList(),
-                         productionPred, goodsMapper, goodsComp);
+        List<AbstractGoods> result = new ArrayList<>();
+        for (GoodsType gt : getSpecification().getFarmedGoodsTypeList()) {
+            int i = getPotentialProduction(gt, unitType);
+            if (i > 0)
+                result.add(new AbstractGoods(gt, i));
+        }
+
+        Collections.sort(result, goodsComp);
     }
 
     /**

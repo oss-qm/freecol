@@ -130,8 +130,9 @@ public class Building extends WorkLocation
             colony.addFeatures(buildingType);
 
             // Colonists which can't work here must be put outside
-            eject.addAll(transform(getUnits(),
-                                   u -> !canAddType(u.getType())));
+            for (Unit u : getUnits())
+                if (!canAddType(u.getType()))
+                    eject.add(u);
         }
 
         // Colonists exceding units limit must be put outside

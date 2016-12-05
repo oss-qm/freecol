@@ -54,7 +54,11 @@ public class SetBuildQueueMessage extends AttributeMessage {
     public SetBuildQueueMessage(Colony colony, List<BuildableType> queue) {
         super(TAG, COLONY_TAG, colony.getId());
 
-        setArrayAttributes(transform(queue, alwaysTrue(), BuildableType::getId));
+        List<String> list = new List<String>();
+        for (BuildableType walk : queue)
+            list.add(walk.getId());
+
+        setArrayAttributes(list);
     }
 
     /**
@@ -90,9 +94,14 @@ public class SetBuildQueueMessage extends AttributeMessage {
      * @return A list of {@code BuildableType}s.
      */
     public List<BuildableType> getQueue(Specification spec) {
-        return transform(getArrayAttributes(), alwaysTrue(),
-                         id -> spec.getType(id, BuildableType.class),
-                         toListNoNulls());
+        List<BuildableType> list = new List<BuildableType>();
+        for (String id : getArrayAttributes()) {
+            if (id == null) continue;
+            BuildableType bt = spec.getType(id, BuildableType.class);
+            if (bt == null) continue;
+            list.add(bt);
+        }
+        return list;
     }
 
 

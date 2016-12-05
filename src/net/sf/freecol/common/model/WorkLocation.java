@@ -334,9 +334,11 @@ public abstract class WorkLocation extends UnitLocation
             delta -= getPotentialProduction(goodsType, unit.getType());
         }
         // Do we have a chance of satisfying the inputs?
-        final ToIntFunction<AbstractGoods> prod = ag ->
-            colony.getNetProductionOf(ag.getType());
-        delta = Math.min(delta, min(productionType.getInputs(), prod));
+        for (AbstractGoods ag : productionType.getInputs()) {
+            int v = colony.getNetProductionOf(ag.getType());
+            if (v < delta) delta = v;
+        }
+
         if (delta <= 0) return null;
 
         // Is the production actually a good idea?  Not if we are independent
@@ -543,10 +545,17 @@ public abstract class WorkLocation extends UnitLocation
     public UnitType getExpertUnitType() {
         final Specification spec = getSpecification();
         ProductionType pt = getBestProductionType(false, null);
-        return (pt == null) ? null
-            : find(map(pt.getOutputs(),
-                       ag -> spec.getExpertForProducing(ag.getType())),
-                   isNotNull());
+
+        if (pt == null)
+            return null;
+
+        for (AbstractGoods ag : pt.getOutputs()) {
+            UnitType ut = spec.getExpertForProducing(ag.getType());
+            if (ut != null)
+                return ut;
+        }
+
+        return null;
     }
 
     /**

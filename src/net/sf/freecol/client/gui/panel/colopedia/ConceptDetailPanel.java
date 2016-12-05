@@ -39,7 +39,6 @@ import net.sf.freecol.client.gui.action.ColopediaAction.PanelType;
 import net.sf.freecol.client.gui.panel.*;
 import net.sf.freecol.client.gui.panel.colopedia.*;
 import net.sf.freecol.common.i18n.Messages;
-import static net.sf.freecol.common.util.CollectionUtils.*;
 
 
 /**
@@ -101,16 +100,18 @@ public class ConceptDetailPanel extends FreeColPanel
      */
     @Override
     public void addSubTrees(DefaultMutableTreeNode root) {
-        final Function<String, DefaultMutableTreeNode> mapper = concept -> {
+        List<DefaultMutableTreeNode> nodes = new List<DefaultMutableTreeNode>();
+        for (String concept : concepts) {
             String nodeId = "colopedia.concepts." + concept;
             String nodeName = Messages.getName(nodeId);
-            return new DefaultMutableTreeNode(new ColopediaTreeItem(this,
-                                              nodeId, nodeName, null));
-        };
-        for (DefaultMutableTreeNode n : transform(concepts, alwaysTrue(),
-                                                  mapper, nodeComparator)) {
-            root.add(n);
+            nodes.add(new DefaultMutableTreeNode(
+                new ColopediaTreeItem(this, nodeId, nodeName, null)));
         }
+        Collections.sort(nodes, nodeComparator);
+
+        for (DefaultMutableTreeNode n : nodes)
+            root.add(n);
+
         root.add(new DefaultMutableTreeNode(new ColopediaTreeItem(this, id,
                     getName(), null)));
     }

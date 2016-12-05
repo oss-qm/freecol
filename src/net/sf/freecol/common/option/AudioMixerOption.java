@@ -31,7 +31,6 @@ import javax.xml.stream.XMLStreamException;
 import net.sf.freecol.common.i18n.Messages;
 import net.sf.freecol.common.io.FreeColXMLWriter;
 import net.sf.freecol.common.model.Specification;
-import static net.sf.freecol.common.util.CollectionUtils.*;
 
 
 /**
@@ -132,9 +131,8 @@ public class AudioMixerOption extends AbstractOption<AudioMixerOption.MixerWrapp
     /** The available audio mixers. */
     private static final List<MixerWrapper> audioMixers = new ArrayList<>();
     static {
-        audioMixers.addAll(transform(AudioSystem.getMixerInfo(),
-                alwaysTrue(), mi -> new MixerWrapper(mi.getName(), mi),
-                Comparator.naturalOrder()));
+        for (Mixer.Info mi : AudioSystem.getMixerInfo())
+            audioMixers.add(new MixerWrapper(mi.getName(), mi));
         audioMixers.add(0, DEFAULT_MIXER_WRAPPER);
     }
 
@@ -160,7 +158,11 @@ public class AudioMixerOption extends AbstractOption<AudioMixerOption.MixerWrapp
      * @return The mixer wrapper with the name given, or null if none.
      */
     private MixerWrapper getMixerWrapperByName(String name) {
-        return find(audioMixers, mw -> mw.getKey().equals(name));
+        for (MixerWrapper mw : audioMixers)
+            if (mw.getKey().equals(name))
+                return mw;
+
+        return null;
     }
 
     /**

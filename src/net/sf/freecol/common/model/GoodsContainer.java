@@ -295,13 +295,12 @@ public class GoodsContainer extends FreeColGameObject implements Ownable {
                 this.storedGoods.clear();
                 return;
             }
-            final Predicate<Entry<GoodsType, Integer>> hiPred = e -> {
+
+            for (Entry<GoodsType, Integer> e : this.storeGoods) {
                 final GoodsType gt = e.getKey();
-                return gt.isStorable() && !gt.limitIgnored()
-                    && e.getValue() > newAmount;
-            };
-            forEachMapEntry(this.storedGoods, hiPred,
-                            e -> this.storedGoods.put(e.getKey(), newAmount));
+                if (gt.isStorable() && !gt.limitIgnored() && e.getValue() > newAmount)
+                    this.storeGoods.put(e.getKey(), newAmount);
+            }
         }
     }
 

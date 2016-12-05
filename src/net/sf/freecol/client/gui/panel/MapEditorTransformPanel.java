@@ -197,12 +197,14 @@ public final class MapEditorTransformPanel extends FreeColPanel {
      * @return The chosen {@code ResourceType}.
      */
     private ResourceType getResourceChoice(List<ResourceType> resources) {
-        final Function<ResourceType, ChoiceItem<ResourceType>> mapper
-            = rt -> new ChoiceItem<ResourceType>(Messages.getName(rt), rt);
+        List<ChoiceItem<ResourceType>> il = new ArrayList<ChoiceItem<ResourceType>>();
+        for (ResourceType rt : resources)
+            il.add(new ChoiceItem<ResourceType>(Messages.getName(rt), rt));
+
         return getGUI().getChoice(null,
             Messages.message("mapEditorTransformPanel.chooseResource"),
             "cancel",
-            transform(resources, alwaysTrue(), mapper));
+            il);
     }
 
     /**

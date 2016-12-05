@@ -770,9 +770,12 @@ public final class Canvas extends JDesktopPane {
         Point p = new Point(x, y);
         todo.add(p);
 
-        List<Component> allComponents
-            = transform(this.getComponents(),
-                        c -> !(c instanceof GrayLayer) && c.isValid());
+        List<Component> allComponents = new ArrayList<Component>();
+
+        for (Component c: this.getComponents())
+            if (!(c instanceof GrayLayer) && c.isValid())
+                allComponents.add(c);
+
         for (FreeColDialog<?> fcd : dialogs) allComponents.add(fcd);
 
         // Find the position with the least overlap

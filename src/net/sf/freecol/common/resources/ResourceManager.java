@@ -127,22 +127,18 @@ public class ResourceManager {
      * Clean up easily replaced modified copies in caches.
      */
     public static synchronized void clean() {
-        if (baseMapping != null) {
-            forEachMapEntry(baseMapping.getImageResources(),
-                            e -> e.getValue().clean());
-        }
-        if (tcMapping != null) {
-            forEachMapEntry(tcMapping.getImageResources(),
-                            e -> e.getValue().clean());
-        }
-        if (scenarioMapping != null) {
-            forEachMapEntry(scenarioMapping.getImageResources(),
-                            e -> e.getValue().clean());
-        }
-        if (modMapping != null) {
-            forEachMapEntry(modMapping.getImageResources(),
-                            e -> e.getValue().clean());
-        }
+        if (baseMapping != null)
+            baseMapping.cleanImageResources();
+
+        if (tcMapping != null)
+            tcMapping.cleanImageResources();
+
+        if (scenarioMapping != null)
+            scenarioMapping.cleanImageResources();
+
+        if (modMapping != null)
+            modMapping.cleanImageResources();
+
         System.gc();
     }
 

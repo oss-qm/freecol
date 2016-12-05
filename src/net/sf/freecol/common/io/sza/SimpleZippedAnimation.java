@@ -118,13 +118,6 @@ public final class SimpleZippedAnimation implements Iterable<AnimationEvent> {
         }
     }
 
-    private static final Predicate<AnimationEvent> isIAEI = ae ->
-        ae instanceof ImageAnimationEvent;
-    private static final ToIntFunction<AnimationEvent> ifIAEIWidth = ae ->
-        ((ImageAnimationEventImpl)ae).getWidth();
-    private static final ToIntFunction<AnimationEvent> ifIAEIHeight = ae ->
-        ((ImageAnimationEventImpl)ae).getHeight();
-
     /** The descriptor file to find in the zip files. */
     private static final String ANIMATION_DESCRIPTOR_FILE = "animation.txt";
 
@@ -175,7 +168,16 @@ public final class SimpleZippedAnimation implements Iterable<AnimationEvent> {
      * @param evl The list of {@code AnimationEvent}s.
      */
     private SimpleZippedAnimation(final List<AnimationEvent> evl) {
-        this(evl, max(evl, isIAEI, ifIAEIWidth), max(evl, isIAEI, ifIAEIHeight));
+        int width = 0;
+        int height = 0;
+        for (AnimationEvent ae : evl) {
+            if (ae instanceof ImageAnimationEvent) {
+                width = max(width, ((ImageAnimationEventImpl)ae).getWidth());
+                height = max(height, ((ImageAnimationEventImpl)ae).getHeight());
+            }
+        }
+
+        this(evl, width, height);
     }
 
     /**
@@ -260,13 +262,17 @@ public final class SimpleZippedAnimation implements Iterable<AnimationEvent> {
      * @return The scaled animation.
      */
     public SimpleZippedAnimation createScaledVersion(final float scale) {
-        final Function<AnimationEvent, AnimationEvent> scaleEvent = ae ->
-            (ae instanceof ImageAnimationEventImpl)
+        List<AnimationEvent> el = new List<AnimationEvent>();
+        for (AnimationEvent ae : this.events) {
+            el.add(
+                (ae instanceof ImageAnimationEventImpl)
                 ? ((ImageAnimationEventImpl)ae).createScaledVersion(scale)
-                : ae;
-        return new SimpleZippedAnimation(transform(this.events, alwaysTrue(),
-                                                   scaleEvent),
-            (int)(this.width * scale), (int)(this.height * scale));
+                : ae
+            );
+        }
+
+        return new SimpleZippedAnimation(
+            el, (int)(this.width * scale), (int)(this.height * scale));
     }
 
     /**

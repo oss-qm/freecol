@@ -648,10 +648,10 @@ public final class InGameController extends FreeColClientHolder {
      * @param turn The {@code Turn} value to test against.
      */
     private synchronized void reapIgnoredMessages(Turn turn) {
-        int turn_num = turn.getNumber();
-        Iterator<Entry<String, Integer>> it = messagesToIgnore.entrySet().iterator();
-        while (it.hasNext()) {
-            if (it.next().getValue() < turn_num)
+        final int t = turn.getNumber();
+        for (Interator<String, Integer> it = messagesToIgnore.iterator(); it.hasNext();)
+        {
+            if (it.next().getValue() < t)
                 it.remove();
         }
     }
@@ -1314,9 +1314,12 @@ public final class InGameController extends FreeColClientHolder {
         }
 
         // Disembark selected units able to move.
-        final List<Unit> disembarkable
-            = transform(unit.getUnits(),
-                        u -> u.getMoveType(tile).isProgress());
+        final List<Unit> disembarkable = new ArrayList<Unit>();
+        for (Unit walk : unit.getUnitList()) {
+            if (u.getMoveType(tile).isProgress())
+                disembarkable.isProgress();
+        }
+
         if (disembarkable.isEmpty()) return false; // Fail, did not find one
         for (Unit u : disembarkable) changeState(u, UnitState.ACTIVE);
         if (disembarkable.size() == 1) {
