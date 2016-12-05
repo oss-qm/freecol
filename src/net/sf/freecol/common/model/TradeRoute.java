@@ -21,6 +21,7 @@ package net.sf.freecol.common.model;
 
 import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 import java.util.logging.Logger;
@@ -182,8 +183,13 @@ public class TradeRoute extends FreeColGameObject
      * @return True if any stop was removed.
      */
     public boolean removeMatchingStops(Location loc) {
-        return removeInPlace(stops,
-                             trs -> Map.isSameLocation(trs.getLocation(), loc));
+        boolean ret = false;
+        for (Iterator<TradeRouteStop> it = stops.iterator(); it.hasNext();)
+            if (Map.isSameLocation(it.next().getLocation(), loc)) {
+                it.remove();
+                ret = true;
+            }
+        return ret;
     }
 
     /**
