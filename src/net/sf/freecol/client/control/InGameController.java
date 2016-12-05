@@ -776,7 +776,13 @@ public final class InGameController extends FreeColClientHolder {
     private boolean doEndTurn(boolean showDialog) {
         final Player player = getMyPlayer();
         if (showDialog) {
-            List<Unit> units = transform(player.getUnits(), Unit::couldMove);
+            /** we could check for movable units first, before retrieving
+                a list of them - that would save unnecessary list allocation
+                in case there none left, but at the cost of having to loop
+                through the list twice, if there are some. the worst case
+                would be just the last unit in the list is movable - then
+                we'd end up w/ two full list scans instead of just one. **/
+            List<Units> units = player.getMovableUnits();
             if (!units.isEmpty()) {
                 // Modal dialog takes over
                 getGUI().showEndTurnDialog(units,
