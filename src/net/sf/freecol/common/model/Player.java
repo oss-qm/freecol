@@ -1923,6 +1923,17 @@ public class Player extends FreeColGameObject implements Nameable {
     }
 
     /**
+     * Retrieve a list of still movable units
+     */
+    public final List<Unit> getMovableUnits() {
+        List<Unit> result = new ArrayList<>();
+        for (Unit u : this.units)
+            if (u.couldMove())
+                result.add(u);
+        return result;
+    }
+
+    /**
      * Get the number of units a player has.
      *
      * @return The number of units.
