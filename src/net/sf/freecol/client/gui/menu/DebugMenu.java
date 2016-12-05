@@ -34,6 +34,7 @@ import javax.swing.JRadioButtonMenuItem;
 import javax.swing.KeyStroke;
 
 import net.sf.freecol.client.FreeColClient;
+import net.sf.freecol.client.gui.DialogHandler;
 import net.sf.freecol.client.gui.GUI;
 import net.sf.freecol.client.gui.panel.Utility;
 import net.sf.freecol.common.debug.DebugUtils;
@@ -262,8 +263,10 @@ public class DebugMenu extends JMenu {
         monarchDialog.addActionListener((ActionEvent ae) -> {
                 gui.showMonarchDialog(
                     Monarch.MonarchAction.RAISE_TAX_WAR, null, player.getMonarchKey(),
-                    (Boolean b) ->
-                        freeColClient.getInGameController().monarchAction(Monarch.MonarchAction.RAISE_TAX_WAR, b));
+                    new DialogHandler<Boolean>() {
+                        public void handle(Boolean b) {
+                            freeColClient.getInGameController().monarchAction(Monarch.MonarchAction.RAISE_TAX_WAR, b);
+                    }});
             });
         panelMenu.add(monarchDialog);
 
