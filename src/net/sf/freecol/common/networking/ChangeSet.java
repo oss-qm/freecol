@@ -26,6 +26,7 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -1174,7 +1175,9 @@ public class ChangeSet {
      *     change for.
      */
     public void remove(FreeColGameObject fcgo) {
-        removeInPlace(changes, c -> c.matches(fcgo));
+        for (Iterator<Change> it = changes.iterator(); it.hasNext();)
+            if (it.next().matches(fcgo))
+                it.remove();
     }
 
     /**

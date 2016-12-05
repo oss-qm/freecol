@@ -22,6 +22,7 @@ package net.sf.freecol.client.gui.panel;
 import java.awt.Component;
 import java.awt.event.ActionEvent;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.logging.Logger;
 
@@ -136,8 +137,10 @@ public final class ServerListPanel extends FreeColPanel {
     public void initialize(List<ServerInfo> servers) {
         // FIXME: This should be added as a filtering rule:
         // Remove servers with an incorrect version from the list:
-        removeInPlace(servers,
-                      si -> !si.getVersion().equals(FreeCol.getVersion()));
+
+        for (Iterator<ServerInfo> it = servers.listIterator(); it.hasNext(); )
+            if (!it.next().getVersion().equals(FreeCol.getVersion()))
+                it.remove();
 
         tableModel.setItems(servers);
         setEnabled(true);
