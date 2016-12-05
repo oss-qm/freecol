@@ -20,6 +20,7 @@
 package net.sf.freecol.server.ai.mission;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.logging.Logger;
 
@@ -763,8 +764,10 @@ public class TransportMission extends Mission {
             } else if (t instanceof AIGoods) {
                 Goods goods = ((AIGoods)t).getGoods();
                 if (goods != null) {
-                    removeInPlace(goodsPresent,
-                                  AbstractGoods.matches(goods.getType()));
+                    GoodsType gt = goods.getType();
+                    for (Iterator<Goods> it = goodsPresent.iterator(); it.hasNext(); )
+                        if (it.next().getType() == gt)
+                            it.remove();
                 }
             }
         }

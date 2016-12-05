@@ -20,6 +20,7 @@
 package net.sf.freecol.common.model;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 import javax.xml.stream.XMLStreamException;
@@ -279,7 +280,10 @@ public class DiplomaticTrade extends FreeColGameObject {
      *     {@code TradeItem} to remove.
      */
     public void removeType(Class<? extends TradeItem> itemClass) {
-        removeInPlace(this.items, matchKey(itemClass, TradeItem::getClass));
+        Iterator<TradeItem> it = this.items.iterator();
+        while (it.hasNext())
+            if (it.next().getClass() == itemClass)
+                it.remove();
     }
 
     /**
