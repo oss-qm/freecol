@@ -162,6 +162,16 @@ public final class InGameController extends FreeColClientHolder {
 
 
     /**
+     * Runnable that just displays turn report messages
+     * Stateless, so can be reused
+     */
+    private final Runnable runDisplayTurnReportMessages = new Runnable() {
+        public void run() {
+            displayTurnReportMessages();
+        }
+    };
+
+    /**
      * The constructor to use.
      *
      * @param freeColClient The {@code FreeColClient} for the game.
@@ -711,9 +721,13 @@ public final class InGameController extends FreeColClientHolder {
             Runnable uiTask;
             if (endOfTurn) {
                 turnReportMessages.addAll(messages);
-                uiTask = () -> { displayTurnReportMessages(); };
+                uiTask = runDisplayTurnReportMessages;
             } else {
-                uiTask = () -> { getGUI().showModelMessages(messages); };
+                uiTask = new Runnable() {
+                    public void run() {
+                        getGUI().showModelMessages(messages);
+                    }
+                };
             }
             getGUI().invokeNowOrWait(uiTask);
         }
