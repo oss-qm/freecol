@@ -28,10 +28,10 @@ import net.sf.freecol.client.FreeColClient;
 import net.sf.freecol.client.control.FreeColClientHolder;
 import net.sf.freecol.client.gui.ImageLibrary;
 import net.sf.freecol.client.gui.SwingGUI;
+import net.sf.freecol.client.gui.OutForAnimationCallback;
 import net.sf.freecol.common.model.Tile;
 import net.sf.freecol.common.model.Unit;
 import net.sf.freecol.common.util.Utils;
-
 
 /**
  * Class for the animation of units movement.
@@ -85,8 +85,8 @@ final class UnitMoveAnimation extends FreeColClientHolder {
         final Rectangle r2 = gui.getTileBounds(destinationTile);
         final Rectangle bounds = r1.union(r2);
 
-        gui.executeWithUnitOutForAnimation(unit, sourceTile,
-            (JLabel unitLabel) -> {
+        gui.executeWithUnitOutForAnimation(unit, sourceTile, new OutForAnimationCallback() {
+            public void executeWithUnitOutForAnimation(JLabel unitLabel) {
                 final int labelWidth = unitLabel.getWidth();
                 final int labelHeight = unitLabel.getHeight();
                 final Point srcPoint = gui.calculateUnitLabelPositionInTile(labelWidth, labelHeight, srcP);
@@ -133,6 +133,6 @@ final class UnitMoveAnimation extends FreeColClientHolder {
                             dropFrames--;
                     }
                 }
-            });
+            }});
     }
 }
