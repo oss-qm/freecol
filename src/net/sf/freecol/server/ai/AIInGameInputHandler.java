@@ -276,9 +276,11 @@ public final class AIInGameInputHandler implements MessageHandler {
 
         if (ff != null) {
             logger.finest(aiPlayer.getId() + " chose founding father: " + ff);
-            aiPlayer.invoke(() -> {
+            aiPlayer.invoke(new Runnable() {
+                @Override
+                public void run() {
                     AIMessage.askChooseFoundingFather(aiPlayer, fathers, ff);
-                });
+                }});
         }
     }
 
@@ -308,11 +310,12 @@ public final class AIInGameInputHandler implements MessageHandler {
             return;
         }
 
-        aiPlayer.invoke(() -> {
+        aiPlayer.invoke(new Runnable() {
+            public void run() {
                 // Note: transposing {our,other} here, the message is
                 // in sender sense.
                 AIMessage.askDiplomacy(aiPlayer, our, other, agreement);
-            });
+            }});
     }
 
     /**
@@ -327,10 +330,12 @@ public final class AIInGameInputHandler implements MessageHandler {
         final Player contactee = message.getOtherPlayer(game);
         final Tile tile = message.getTile(game);
 
-        aiPlayer.invoke(() -> {
+        aiPlayer.invoke(new Runnable() {
+            @Override
+            public void run() {
                 AIMessage.askFirstContact(aiPlayer, contactor, contactee,
                                           tile, true);
-            });
+            }});
     }
 
     /**
@@ -342,9 +347,11 @@ public final class AIInGameInputHandler implements MessageHandler {
         final AIPlayer aiPlayer = getAIPlayer();
         final int n = message.getMigrants();
 
-        getAIPlayer().invoke(() -> {
+        getAIPlayer().invoke(new Runnable() {
+            @Override
+            public void run() {
                 for (int i = 0; i < n; i++) AIMessage.askEmigrate(aiPlayer, 0);
-            });
+            }});
     }
 
     /**
@@ -361,15 +368,16 @@ public final class AIInGameInputHandler implements MessageHandler {
         final int amount = message.getAmount();
         final Boolean initialResult = message.getResult();
 
-        Boolean result = aiPlayer.indianDemand(unit, colony, type, amount,
+        final Boolean result = aiPlayer.indianDemand(unit, colony, type, amount,
                                                initialResult);
         logger.finest("AI handling native demand by " + unit
             + " at " + colony + " result: " + initialResult + " -> " + result);
         if (result != null) {
-            aiPlayer.invoke(() -> {
+            aiPlayer.invoke(new Runnable() {
+                public void run() {
                     AIMessage.askIndianDemand(aiPlayer, unit, colony,
                                               type, amount, result);
-                });
+                }});
         }
     }
 
@@ -385,7 +393,9 @@ public final class AIInGameInputHandler implements MessageHandler {
         final List<Goods> initialGoods = message.getGoods();
         final String defenderId = message.getDefenderId();
 
-        getAIPlayer().invoke(() -> {
+        getAIPlayer().invoke(new Runnable() {
+            @Override
+            public void run() {
                 List<Goods> goods = sort(initialGoods,
                                          market.getSalePriceComparator());
                 List<Goods> loot = new ArrayList<>();
@@ -397,7 +407,7 @@ public final class AIInGameInputHandler implements MessageHandler {
                     space -= g.getSpaceTaken();
                 }
                 AIMessage.askLoot(getAIUnit(unit), defenderId, loot);
-            });
+            }});
     }
 
     /**
@@ -428,9 +438,12 @@ public final class AIInGameInputHandler implements MessageHandler {
             return;
         }
 
-        aiPlayer.invoke(() -> {
-                AIMessage.askMonarchAction(aiPlayer, action, accept);
-            });
+        final boolean acc = accept;
+        aiPlayer.invoke(new Runnable() {
+            @Override
+            public void run() {
+                AIMessage.askMonarchAction(aiPlayer, action, acc);
+            }});
     }
 
     /**
@@ -469,10 +482,12 @@ public final class AIInGameInputHandler implements MessageHandler {
         final NativeTrade nt = message.getNativeTrade();
         final NativeTradeAction action = message.getAction();
 
-        NativeTradeAction result = aiPlayer.handleTrade(action, nt);
-        aiPlayer.invoke(() -> {
+        final NativeTradeAction result = aiPlayer.handleTrade(action, nt);
+        aiPlayer.invoke(new Runnable() {
+            @Override
+            public void run() {
                 AIMessage.askNativeTrade(aiPlayer, result, nt);
-            });
+            }});
     }
 
     /**
@@ -485,9 +500,11 @@ public final class AIInGameInputHandler implements MessageHandler {
         final Unit unit = message.getUnit(aiPlayer.getPlayer());
         final String name = message.getNewLandName();
 
-        aiPlayer.invoke(() -> {
+        aiPlayer.invoke(new Runnable() {
+            @Override
+            public void run() {
                 AIMessage.askNewLandName(aiPlayer, unit, name);
-            });
+            }});
     }
 
     /**
@@ -503,9 +520,11 @@ public final class AIInGameInputHandler implements MessageHandler {
         final Unit unit = message.getUnit(aiPlayer.getPlayer());
         final String name = message.getNewRegionName();
 
-        aiPlayer.invoke(() -> {
+        aiPlayer.invoke(new Runnable() {
+            @Override
+            public void run() {
                 AIMessage.askNewRegionName(aiPlayer, region, tile, unit, name);
-            });
+            }});
     }
 
     /**
@@ -530,10 +549,12 @@ public final class AIInGameInputHandler implements MessageHandler {
 
         if (currentPlayer != null
             && getMyPlayer().getId().equals(currentPlayer.getId())) {
-            getAIPlayer().invoke(() -> {
+            getAIPlayer().invoke(new Runnable() {
+                @Override
+                public void run() {
                     getAIPlayer().startWorking();
                     AIMessage.askEndTurn(getAIPlayer());
-                });
+                }});
         }
     }
 }
