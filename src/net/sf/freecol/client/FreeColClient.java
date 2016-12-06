@@ -242,9 +242,19 @@ public final class FreeColClient {
      * @return A {@code Runnable} for the main panel.
      */
     public Runnable invokeMainPanel(final String userMsg) {
-        return () -> SwingUtilities.invokeLater(() -> {
+        return new Runnable() {
+            public void run() {
+                doInvokeMainPanel(userMsg);
+            }
+        };
+    }
+
+    public void doInvokeMainPanel(final String userMsg) {
+        SwingUtilities.invokeLater(new Runnable() {
+            public void run() {
                 gui.showMainPanel(userMsg);
-            });
+            }
+        });
     }
 
     /**
@@ -301,32 +311,40 @@ public final class FreeColClient {
         //
         if (savedGame != null) { // Restore from saved
             soundController.playSound("sound.intro.general");
-            SwingUtilities.invokeLater(() ->
-                getGUI().showStatusPanel(Messages.message("status.loadingGame")));
+            SwingUtilities.invokeLater(new Runnable() {
+                public void run() {
+                    getGUI().showStatusPanel(Messages.message("status.loadingGame"));
+                }});
+
             if (connectController.startSavedGame(savedGame)) {
-                SwingUtilities.invokeLater(() -> {
+                SwingUtilities.invokeLater(new Runnable() {
+                    public void run() {
                         gui.closeStatusPanel();
                         if (userMsg != null) {
                             gui.showInformationMessage(userMsg);
                         }
-                    });
+                    }});
             } else {
                 invokeMainPanel(userMsg).run();
             }
         } else if (spec != null) { // Debug or fast start
             soundController.playSound("sound.intro.general");
-            SwingUtilities.invokeLater(() -> {
+            SwingUtilities.invokeLater(new Runnable() {
+                public void run() {
                     if (!connectController.startSinglePlayerGame(spec)) {
                         gui.showMainPanel(userMsg);
                     }
-                });
+                }
+            });
         } else if (showOpeningVideo) { // Video first
-            SwingUtilities.invokeLater(() -> {
+            SwingUtilities.invokeLater(new Runnable() {
+                public void run() {
                     gui.showOpeningVideo(userMsg);
-                });
+                }
+            });
         } else { // Start main panel
             soundController.playSound("sound.intro.general");
-            invokeMainPanel(userMsg).run();
+            doInvokeMainPanel(userMsg);
         }
 
         String quit = FreeCol.CLIENT_THREAD + "Quit Game";

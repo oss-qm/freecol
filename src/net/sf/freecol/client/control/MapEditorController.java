@@ -102,11 +102,12 @@ public final class MapEditorController extends FreeColClientHolder {
     }
 
     private void reloadMainPanel () {
-        SwingUtilities.invokeLater(() -> {
+        SwingUtilities.invokeLater(new Runnable() {
+            public void run() {
                 getGUI().closeMainPanel();
                 getGUI().showMainPanel(null);
                 getSoundController().playSound("sound.intro.general");
-            });
+            }});
     }
 
 
@@ -236,16 +237,18 @@ public final class MapEditorController extends FreeColClientHolder {
                 try {
                     BufferedImage thumb = gui.createMiniMapThumbNail();
                     getFreeColServer().saveMapEditorGame(file, thumb);
-                    SwingUtilities.invokeLater(() -> {
+                    SwingUtilities.invokeLater(new Runnable() {
+                        public void run() {
                             gui.closeStatusPanel();
                             gui.requestFocusInWindow();
-                        });
-                } catch (IOException e) {
-                    SwingUtilities.invokeLater(() -> {
+                        }});
+                } catch (final IOException e) {
+                    SwingUtilities.invokeLater(new Runnable() {
+                        public void run() {
                             gui.closeStatusPanel();
                             gui.showErrorMessage(FreeCol.badFile("error.couldNotSave", file),
                                 (e == null) ? null : e.getMessage());
-                        });
+                        }});
                 }
             }
         }.start();
@@ -280,16 +283,17 @@ public final class MapEditorController extends FreeColClientHolder {
                 GUI.ErrorJob ej = null;
                 try {
                     Specification spec = getDefaultSpecification();
-                    Game game = FreeColServer.readGame(new FreeColSavegameFile(theFile),
+                    final Game game = FreeColServer.readGame(new FreeColSavegameFile(theFile),
                                                        spec, freeColServer);
                     fcc.setGame(game);
                     requireNativeNations(game);
-                    SwingUtilities.invokeLater(() -> {
+                    SwingUtilities.invokeLater(new Runnable() {
+                        public void run() {
                             gui.closeStatusPanel();
                             gui.setFocus(game.getMap().getTile(1,1));
                             gui.updateMenuBar();
                             gui.refresh();
-                        });
+                        }});
                 } catch (FileNotFoundException fnfe) {
                     ej = gui.errorJob(fnfe,
                         FreeCol.badFile("error.couldNotFind", theFile));

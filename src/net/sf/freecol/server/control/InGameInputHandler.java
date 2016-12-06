@@ -314,6 +314,7 @@ public final class InGameInputHandler extends ServerInputHandler {
             new ServerInputHandler.NetworkRequestHandler() {
                 public Element handle(Connection conn, Element e) {
                     return handler(false, conn, new LootCargoMessage(getGame(), e));
+                }});
 
         register(MissionaryMessage.TAG,
             new ServerInputHandler.NetworkRequestHandler() {
