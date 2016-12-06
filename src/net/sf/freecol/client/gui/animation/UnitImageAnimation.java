@@ -33,6 +33,7 @@ import net.sf.freecol.common.io.sza.SimpleZippedAnimation;
 import net.sf.freecol.common.model.Tile;
 import net.sf.freecol.common.model.Unit;
 
+import net.sf.freecol.client.gui.OutForAnimationCallback;
 
 /**
  * Class for in-place animation of units.
@@ -71,7 +72,8 @@ public final class UnitImageAnimation {
 
         // Painting the whole screen once to get rid of disposed dialog-boxes.
         gui.paintImmediatelyCanvasInItsBounds();
-        gui.executeWithUnitOutForAnimation(unit, tile, (JLabel unitLabel) -> {
+        gui.executeWithUnitOutForAnimation(unit, tile, new OutForAnimationCallback() {
+            public void executeWithUnitOutForAnimation(JLabel unitLabel) {
                 for (AnimationEvent event : animation) {
                     long time = System.nanoTime();
                     if (event instanceof ImageAnimationEvent) {
@@ -96,7 +98,7 @@ public final class UnitImageAnimation {
                         }
                     }
                 }
-            });
+            }});
     }
 
     protected Rectangle getDirtyAnimationArea() {
