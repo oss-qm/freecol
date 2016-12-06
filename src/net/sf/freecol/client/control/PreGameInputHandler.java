@@ -392,9 +392,10 @@ public final class PreGameInputHandler extends ClientInputHandler {
                         }
                     }
 
-                    SwingUtilities.invokeLater(() -> {
+                    SwingUtilities.invokeLater(new Runnable() {
+                        public void run() {
                             pgc().startGame();
-                        });
+                        }});
                 }
             }.start();
         return null;

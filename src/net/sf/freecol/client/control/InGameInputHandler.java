@@ -109,14 +109,20 @@ public final class InGameInputHandler extends ClientInputHandler {
     private static final Logger logger = Logger.getLogger(InGameInputHandler.class.getName());
 
     // A bunch of predefined non-closure runnables.
-    private final Runnable closeMenusRunnable = () -> {
-        igc().closeMenus();
+    private final Runnable closeMenusRunnable = new Runnable() {
+        public void run() {
+            igc().closeMenus();
+        }
     };
-    private final Runnable displayModelMessagesRunnable = () -> {
-        igc().displayModelMessages(false);
+    private final Runnable displayModelMessagesRunnable = new Runnable() {
+        public void run() {
+            igc().displayModelMessages(false);
+        }
     };
-    private final Runnable reconnectRunnable = () -> {
-        igc().reconnect();
+    private final Runnable reconnectRunnable = new Runnable() {
+        public void run() {
+            igc().reconnect();
+        }
     };
 
 
@@ -362,10 +368,11 @@ public final class InGameInputHandler extends ClientInputHandler {
             = Boolean.parseBoolean(element.getAttribute("success"));
 
         // All is well, do the animation.
-        invokeAndWait(() -> {
-                igc().animateAttack(attacker, defender,
-                                    attackerTile, defenderTile, success);
-            });
+        invokeAndWait(new Runnable() {
+            public void run() {
+                igc().animateAttack(attacker, defender, attackerTile, defenderTile, success);
+            }});
+
         return null;
     }
 
@@ -425,7 +432,11 @@ public final class InGameInputHandler extends ClientInputHandler {
             return null;
         }
 
-        invokeAndWait(() -> { igc().animateMove(unit, oldTile, newTile); });
+        invokeAndWait(new Runnable() {
+            public void run() {
+                igc().animateMove(unit, oldTile, newTile);
+            }});
+
         return null;
     }
 
@@ -439,9 +450,12 @@ public final class InGameInputHandler extends ClientInputHandler {
         final Game game = getGame();
         final ChatMessage chatMessage = new ChatMessage(game, element);
 
-        invokeLater(() ->
-            igc().chat(chatMessage.getPlayer(game), chatMessage.getMessage(),
-                       chatMessage.isPrivate()));
+        invokeLater(new Runnable() {
+            public void run() {
+                igc().chat(chatMessage.getPlayer(game), chatMessage.getMessage(),
+                       chatMessage.isPrivate());
+            }});
+
         return null;
     }
 
@@ -456,8 +470,11 @@ public final class InGameInputHandler extends ClientInputHandler {
         final ChooseFoundingFatherMessage message
             = new ChooseFoundingFatherMessage(game, element);
 
-        invokeLater(() ->
-            igc().chooseFoundingFather(message.getFathers(game)));
+        invokeLater(new Runnable() {
+            public void run() {
+                igc().chooseFoundingFather(message.getFathers(game));
+            }});
+
         return null;
     }
 
@@ -504,9 +521,11 @@ public final class InGameInputHandler extends ClientInputHandler {
             return null;
         }
 
-        invokeLater(() -> {
+        invokeLater(new Runnable() {
+            public void run() {
                 igc().diplomacy(our, other, agreement);
-            });
+            }});
+
         return null;
     }
 
@@ -544,8 +563,12 @@ public final class InGameInputHandler extends ClientInputHandler {
      */
     private Element error(Element element) {
         final ErrorMessage errorMessage = new ErrorMessage(getGame(), element);
-        invokeLater(() -> igc().error(errorMessage.getTemplate(),
-                                      errorMessage.getMessage()));
+        invokeLater(new Runnable() {
+            public void run() {
+                igc().error(errorMessage.getTemplate(), errorMessage.getMessage());
+            }
+        });
+
         return null;
     }
 
@@ -673,7 +696,11 @@ public final class InGameInputHandler extends ClientInputHandler {
         }
         final int n = message.getSettlementCount();
 
-        invokeLater(() -> { igc().firstContact(player, other, tile, n); });
+        invokeLater(new Runnable() {
+            public void run() {
+                igc().firstContact(player, other, tile, n);
+            }});
+
         return null;
     }
 
@@ -694,7 +721,11 @@ public final class InGameInputHandler extends ClientInputHandler {
             return null;
         }
 
-        invokeLater(() -> { igc().fountainOfYouth(n); });
+        invokeLater(new Runnable() {
+            public void run() {
+                igc().fountainOfYouth(n);
+            }});
+
         return null;
     }
 
@@ -716,9 +747,12 @@ public final class InGameInputHandler extends ClientInputHandler {
         }
         final String highScore = message.getScore();
 
-        if (winner == getMyPlayer()) {
-            invokeLater(() -> { igc().victory(highScore); });
-        }
+        if (winner == getMyPlayer())
+            invokeLater(new Runnable() {
+                public void run() {
+                    igc().victory(highScore);
+                }});
+
         return null;
     }
 
@@ -732,8 +766,10 @@ public final class InGameInputHandler extends ClientInputHandler {
         final Game game = getGame();
         final HighScoreMessage message
             = new HighScoreMessage(game, element);
-        invokeLater(() -> { igc().displayHighScores(message.getKey(),
-                                                    message.getScores()); });
+        invokeLater(new Runnable() {
+            public void run() {
+                igc().displayHighScores(message.getKey(), message.getScores());
+            }});
         return null;
     }
 
@@ -752,7 +788,11 @@ public final class InGameInputHandler extends ClientInputHandler {
         final Player enemy = message.getEnemy(game);
         final int gold = message.getGold();
 
-        invokeLater(() -> { igc().incite(unit, is, enemy, gold); });
+        invokeLater(new Runnable() {
+            public void run() {
+                igc().incite(unit, is, enemy, gold);
+            }});
+
         return null;
     }
 
@@ -783,10 +823,12 @@ public final class InGameInputHandler extends ClientInputHandler {
             throw new IllegalArgumentException("Demand to anothers colony");
         }
 
-        invokeLater(() -> {
+        invokeLater(new Runnable() {
+            public void run() {
                 igc().indianDemand(unit, colony, message.getType(game),
                                    message.getAmount());
-            });
+            }});
+
         return null;
     }
 
@@ -823,7 +865,11 @@ public final class InGameInputHandler extends ClientInputHandler {
         final List<Goods> goods = message.getGoods();
         if (unit == null || goods == null) return null;
 
-        invokeLater(() -> igc().loot(unit, goods, defenderId));
+        invokeLater(new Runnable() {
+            public void run() {
+                igc().loot(unit, goods, defenderId);
+            }});
+
         return null;
     }
 
@@ -838,8 +884,11 @@ public final class InGameInputHandler extends ClientInputHandler {
         final MonarchActionMessage message
             = new MonarchActionMessage(game, element);
 
-        invokeLater(() -> igc().monarch(message.getAction(),
-                message.getTemplate(), message.getMonarchKey()));
+        invokeLater(new Runnable() {
+            public void run() {
+                igc().monarch(message.getAction(), message.getTemplate(), message.getMonarchKey());
+            }});
+
         return null;
     }
 
@@ -886,7 +935,10 @@ public final class InGameInputHandler extends ClientInputHandler {
             = new NativeTradeMessage(game, element);
         final NativeTradeAction action = message.getAction();
         final NativeTrade nt = message.getNativeTrade();
-        invokeLater(() -> igc().nativeTrade(action, nt));
+        invokeLater(new Runnable() {
+            public void run() {
+                igc().nativeTrade(action, nt);
+            }});
         return null;
     }
 
@@ -904,7 +956,11 @@ public final class InGameInputHandler extends ClientInputHandler {
         if (unit == null || defaultName == null
             || !unit.hasTile()) return null;
 
-        invokeLater(() -> igc().newLandName(defaultName, unit));
+        invokeLater(new Runnable() {
+            public void run() {
+                igc().newLandName(defaultName, unit);
+            }});
+
         return null;
     }
 
@@ -923,7 +979,11 @@ public final class InGameInputHandler extends ClientInputHandler {
         final String defaultName = message.getNewRegionName();
         if (defaultName == null || region == null) return null;
 
-        invokeLater(() -> igc().newRegionName(region, defaultName, tile, unit));
+        invokeLater(new Runnable() {
+            public void run() {
+                igc().newRegionName(region, defaultName, tile, unit);
+            }});
+
         return null;
     }
 
@@ -959,7 +1019,11 @@ public final class InGameInputHandler extends ClientInputHandler {
             return null;
         }
 
-        invokeLater(() -> igc().newTurn(n));
+        invokeLater(new Runnable() {
+            public void run() {
+                igc().newTurn(n);
+            }});
+
         return null;
     }
 
@@ -1001,9 +1065,14 @@ public final class InGameInputHandler extends ClientInputHandler {
                 }
                 return fcgo;
             });
+
         if (!objects.isEmpty()) {
-            invokeLater(() -> igc().remove(objects, divert));
+            invokeLater(new Runnable() {
+                public void run() {
+                    igc().remove(objects, divert);
+                }});
         }
+
         return null;
     }
 
@@ -1021,8 +1090,11 @@ public final class InGameInputHandler extends ClientInputHandler {
             final Unit unit = message.getUnit(game);
             final IndianSettlement is = message.getSettlement(game);
             final String result = message.getResult();
-            invokeLater(() ->
-                igc().scoutSpeakToChief(unit, is, result));
+
+            invokeLater(new Runnable() {
+                public void run() {
+                    igc().scoutSpeakToChief(unit, is, result);
+                }});
         }
         return null;
     }
@@ -1081,7 +1153,11 @@ public final class InGameInputHandler extends ClientInputHandler {
             return null;
         }
 
-        invokeLater(() -> igc().setDead(player));
+        invokeLater(new Runnable() {
+            public void run() {
+                igc().setDead(player);
+            }});
+
         return null;
     }
 
@@ -1107,7 +1183,11 @@ public final class InGameInputHandler extends ClientInputHandler {
             return null;
         }
 
-        invokeLater(() -> igc().setStance(stance, p1, p2));
+        invokeLater(new Runnable() {
+            public void run() {
+                igc().setStance(stance, p1, p2);
+            }});
+
         return null;
     }
 
@@ -1122,7 +1202,11 @@ public final class InGameInputHandler extends ClientInputHandler {
         final SpySettlementMessage message
             = new SpySettlementMessage(game, element);
         final Tile spyTile = message.getSpyTile();
-        invokeLater(() -> igc().spyColony(spyTile));
+        invokeLater(new Runnable() {
+            public void run() {
+                igc().spyColony(spyTile);
+            }});
+
         return null;
     }
 

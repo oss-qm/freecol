@@ -1255,10 +1255,11 @@ public final class Canvas extends JDesktopPane {
                         T ret = type.cast(c2);
                         if (ret != null) {
                             final JInternalFrame jif = (JInternalFrame)c1;
-                            SwingUtilities.invokeLater(() -> {
+                            SwingUtilities.invokeLater(new Runnable() {
+                                public void run() {
                                     jif.toFront();
                                     jif.repaint();
-                                });
+                                }});
                             return ret;
                         }
                     } catch (ClassCastException cce) {}
@@ -1996,7 +1997,8 @@ public final class Canvas extends JDesktopPane {
         EuropePanel panel = getExistingFreeColPanel(EuropePanel.class);
         if (panel == null) {
             panel = new EuropePanel(freeColClient, (getHeight() > 780));
-            panel.addClosingCallback(() -> { removeEuropeanSubpanels(); });
+            panel.addClosingCallback(new Runnable() {
+                public void run() { removeEuropeanSubpanels(); }});
             showSubPanel(panel, true);
         }
     }

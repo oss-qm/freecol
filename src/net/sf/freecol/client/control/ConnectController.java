@@ -391,7 +391,7 @@ public final class ConnectController extends FreeColClientHolder {
         getGUI().showStatusPanel(Messages.message("status.loadingGame"));
 
         final File theFile = file;
-        Runnable loadGameJob = () -> {
+        Runnable loadGameJob = new Runnable() { public void run() {
             FreeColServer freeColServer = null;
             StringTemplate err = null;
             try {
@@ -405,13 +405,15 @@ public final class ConnectController extends FreeColClientHolder {
                 igc().setGameConnected();
                 if (login(FreeCol.getName(), freeColServer.getHost(),
                           freeColServer.getPort())) {
-                    SwingUtilities.invokeLater(() -> {
+                    SwingUtilities.invokeLater(new Runnable() {
+                        public void run() {
                             ResourceManager.setScenarioMapping(saveGame.getResourceMapping());
                             if (userMsg != null) {
                                 getGUI().showInformationMessage(userMsg);
                             }
                             getGUI().closeStatusPanel();
-                        });
+                        }
+                    });
                     return; // Success!
                 }
                 err = StringTemplate.template("server.couldNotLogin");
@@ -437,12 +439,12 @@ public final class ConnectController extends FreeColClientHolder {
                 }
                 // login may have received an error message from the server,
                 // which is already being displayed.  Do not override it.
-                if (!getGUI().onClosingErrorPanel(fcc.invokeMainPanel(null))) {
+                if (!getGUI().onClosingErrorPanel(fcc.invokeMainPanel())) {
                     SwingUtilities.invokeLater(new ErrorJob(err,
-                            fcc.invokeMainPanel(null)));
+                            fcc.invokeMainPanel()));
                 }
             }
-        };
+        }};
         fcc.setWork(loadGameJob);
         return true;
     }

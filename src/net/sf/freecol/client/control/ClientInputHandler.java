@@ -97,7 +97,8 @@ public abstract class ClientInputHandler extends FreeColClientHolder
      */
     protected Element disconnect(Element element) {
         // Updating the GUI should always be done in the EDT:
-        javax.swing.SwingUtilities.invokeLater(() -> {
+        javax.swing.SwingUtilities.invokeLater(new Runnable() {
+            public void run() {
                 if (getGUI().containsInGameComponents()) {
                     if (getFreeColServer() == null) {
                         getGUI().returnToTitle();
@@ -105,7 +106,8 @@ public abstract class ClientInputHandler extends FreeColClientHolder
                         getGUI().removeInGameComponents();
                     }
                 }
-            });
+            }
+        });
 
         return null;
     }
