@@ -27,17 +27,16 @@ import java.awt.RenderingHints;
 import java.awt.Stroke;
 import java.awt.geom.GeneralPath;
 import java.awt.geom.Point2D;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.EnumMap;
 import java.util.List;
-import java.util.function.Predicate;
 
 import net.sf.freecol.common.model.Direction;
 import net.sf.freecol.common.model.Map;
 import net.sf.freecol.common.model.Tile;
 import net.sf.freecol.common.model.TileImprovement;
 import net.sf.freecol.common.resources.ResourceManager;
-import static net.sf.freecol.common.util.CollectionUtils.*;
 
 
 /**
@@ -122,16 +121,23 @@ public final class RoadPainter {
         final Map map = tile.getMap();
         final int x = tile.getX();
         final int y = tile.getY();
-        final Predicate<Direction> borderPred = d -> {
+
+        List<Direction> directions = new ArrayList<>();
+        List<Point2D.Float> points = new ArrayList<>();
+
+        // do it in one pass instead of two subsequent ones
+        for (Direction d : Direction.allDirections) {
             Tile borderingTile = map.getTile(d.step(x, y));
             TileImprovement r;
-            return borderingTile != null
+            if (borderingTile != null
                 && (r = borderingTile.getRoad()) != null
-                && r.isComplete();
-        };
-        List<Direction> directions = transform(Direction.allDirections, borderPred);
-        List<Point2D.Float> points = transform(directions, alwaysTrue(),
-                                               d -> corners.get(d));
+                && r.isComplete())
+            {
+                directions.add(d);
+                points.add(corners.get(d));
+            }
+        }
+
         GeneralPath path = new GeneralPath();
         switch (points.size()) {
         case 0:
