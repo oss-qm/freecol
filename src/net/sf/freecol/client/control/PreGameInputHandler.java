@@ -356,9 +356,10 @@ public final class PreGameInputHandler extends ClientInputHandler {
                         Utils.delay(200, "Starting a game has been interupted.");
                     }
 
-                    SwingUtilities.invokeLater(() -> {
+                    SwingUtilities.invokeLater(new Runnable() {
+                        public void run() {
                             pgc().startGame();
-                        });
+                        }});
                 }
             }.start();
     }
