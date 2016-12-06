@@ -136,7 +136,8 @@ public final class TradeRoutePanel extends FreeColPanel {
             public void actionPerformed(ActionEvent ae) {
                 final TradeRoute selected = tradeRoutes.getSelectedValue();
                 final String name = selected.getName();
-                getGUI().showTradeRouteInputPanel(selected, () -> {
+                getGUI().showTradeRouteInputPanel(selected, new Runnable() {
+                    public void run() {
                         StringTemplate template = null;
                         if (selected.getName() == null) { // Cancelled
                             selected.setName(name);
@@ -147,7 +148,7 @@ public final class TradeRoutePanel extends FreeColPanel {
                         } else {
                             getGUI().showInformationMessage(template);
                         }
-                    });
+                    }});
             }});
 
         this.deleteRouteButton = Utility.localizedButton("tradeRoutePanel.deleteRoute");
@@ -226,7 +227,8 @@ public final class TradeRoutePanel extends FreeColPanel {
         final Player player = getMyPlayer();
         final Unit u = this.unit;
         final TradeRoute newRoute = igc().newTradeRoute(player);
-        getGUI().showTradeRouteInputPanel(newRoute, () -> {
+        getGUI().showTradeRouteInputPanel(newRoute, new Runnable() {
+            public void run() {
                 StringTemplate template = null;
                 String name = newRoute.getName();
                 if (name == null) { // Cancelled
@@ -241,7 +243,7 @@ public final class TradeRoutePanel extends FreeColPanel {
                     if (u != null) igc().assignTradeRoute(u, newRoute);
                     updateList(newRoute);
                 }
-            });
+            }});
     }
 
     /**

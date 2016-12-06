@@ -74,9 +74,10 @@ public class ScrollThread extends Thread {
     public void run() {
         while (direction != null) {
             try {
-                SwingUtilities.invokeAndWait(() -> {
+                SwingUtilities.invokeAndWait(new Runnable() {
+                    public void run() {
                         if (!canvas.scrollMap(direction)) direction = null;
-                    });
+                    }});
             } catch (InvocationTargetException e) {
                 logger.log(Level.WARNING, "Scroll thread caught error", e);
                 break;
