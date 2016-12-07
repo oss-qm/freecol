@@ -20,6 +20,7 @@
 package net.sf.freecol.client.gui.panel.report;
 
 import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -100,7 +101,10 @@ public final class ReportProductionPanel extends ReportPanel {
 
         JButton selectButton
             = Utility.localizedButton("report.production.update");
-        selectButton.addActionListener((ActionEvent ae) -> update());
+        selectButton.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent ae) {
+                update();
+            }});
         reportPanel.add(selectButton, "wrap");
 
         List<GoodsType> selectedTypes = new ArrayList<>();

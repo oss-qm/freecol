@@ -185,18 +185,24 @@ public final class NewPanel extends FreeColPanel implements ItemListener {
                                      false),
             meta = new JRadioButton(Messages.message("newPanel.getServerList")
                 + " (" + FreeCol.META_SERVER_ADDRESS + ")", false);
+
+        ActionListener enableComponentsAction = new ActionListener() {
+            public void actionPerformed(ActionEvent ae) {
+                enableComponents();
+            }};
+
         this.buttonGroup.add(single);
         single.setActionCommand(String.valueOf(NewPanelAction.SINGLE));
-        single.addActionListener(ae -> enableComponents());
+        single.addActionListener(enableComponentsAction);
         this.buttonGroup.add(join);
         join.setActionCommand(String.valueOf(NewPanelAction.JOIN));
-        join.addActionListener(ae -> enableComponents());
+        join.addActionListener(enableComponentsAction);
         this.buttonGroup.add(start);
         start.setActionCommand(String.valueOf(NewPanelAction.START));
-        start.addActionListener(ae -> enableComponents());
+        start.addActionListener(enableComponentsAction);
         this.buttonGroup.add(meta);
         meta.setActionCommand(String.valueOf(NewPanelAction.META_SERVER));
-        meta.addActionListener(ae -> enableComponents());
+        meta.addActionListener(enableComponentsAction);
         single.setSelected(true);
 
         String name = getClientOptions().getText(ClientOptions.NAME);
@@ -216,9 +222,10 @@ public final class NewPanel extends FreeColPanel implements ItemListener {
         this.serverPortLabel = Utility.localizedLabel("newPanel.startServerOnPort");
         this.serverPortField
             = new JTextField(Integer.toString(FreeCol.getServerPort()));
-        this.serverPortField.addActionListener((ActionEvent ae) -> {
+        this.serverPortField.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent ae) {
                 getSelectedPort(NewPanel.this.serverPortField);
-            });
+            }});
 
         this.rulesLabel = Utility.localizedLabel("rules");
         this.rulesBox = new JComboBox<>();
@@ -258,30 +265,33 @@ public final class NewPanel extends FreeColPanel implements ItemListener {
             .setRenderer(new FreeColComboBoxRenderer<OptionGroup>());
         this.difficultyBox.addItemListener(this);
         this.difficultyButton = Utility.localizedButton("newPanel.showDifficulty");
-        this.difficultyButton.addActionListener(ae -> {
-                this.difficulty = getGUI()
-                    .showDifficultyDialog(this.specification, this.difficulty);
+        this.difficultyButton.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent ae) {
+                NewPanel.this.difficulty = getGUI()
+                    .showDifficultyDialog(NewPanel.this.specification, NewPanel.this.difficulty);
                 update(); // Brings in new difficulty if edited
-            });
+            }});
 
         this.joinNameLabel = Utility.localizedLabel("host");
         this.joinNameField = new JTextField(FreeCol.getServerHost());
         this.joinPortLabel = Utility.localizedLabel("port");
         this.joinPortField
             = new JTextField(Integer.toString(FreeCol.getServerPort()));
-        this.joinPortField.addActionListener((ActionEvent ae) -> {
+        this.joinPortField.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent ae) {
                 getSelectedPort(NewPanel.this.joinPortField);
-            });
+            }});
 
         okButton.setActionCommand(String.valueOf(NewPanelAction.OK));
 
         JButton cancel = Utility.localizedButton("cancel");
         cancel.setActionCommand(String.valueOf(NewPanelAction.CANCEL));
-        cancel.addActionListener(ae -> {
+        cancel.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent ae) {
                 final SwingGUI gui = getGUI();
-                gui.removeFromCanvas(this);
+                gui.removeFromCanvas(NewPanel.this);
                 gui.showMainPanel(null);
-            });
+            }});
         setCancelComponent(cancel);
 
         // Add all the components

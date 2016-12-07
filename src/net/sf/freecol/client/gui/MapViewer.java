@@ -29,6 +29,7 @@ import java.awt.Rectangle;
 import java.awt.RenderingHints;
 import java.awt.Stroke;
 import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.font.TextLayout;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Ellipse2D;
@@ -558,13 +559,14 @@ public final class MapViewer extends FreeColClientHolder {
      */
     void startCursorBlinking() {
         cursor = new TerrainCursor();
-        cursor.addActionListener((ActionEvent ae) -> {
+        cursor.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
                 Unit unit = activeUnit;
                 if (unit != null) {
                     Tile tile = unit.getTile();
                     if (isTileVisible(tile)) gui.refreshTile(tile);
                 }
-            });
+            }});
         cursor.startBlinking();
     }
 

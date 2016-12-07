@@ -26,6 +26,7 @@ import java.awt.datatransfer.DataFlavor;
 import java.awt.datatransfer.Transferable;
 import java.awt.datatransfer.UnsupportedFlavorException;
 import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseListener;
@@ -598,19 +599,22 @@ public final class TradeRouteInputPanel extends FreeColPanel
         this.messagesBox
             = new JCheckBox(Messages.message("tradeRouteInputPanel.silence"));
         this.messagesBox.setSelected(tradeRoute.isSilent());
-        this.messagesBox.addActionListener((ActionEvent ae) -> {
+        this.messagesBox.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent ae) {
                 tradeRoute.setSilent(messagesBox.isSelected());
-            });
+            }});
 
         this.addStopButton = Utility.localizedButton("tradeRouteInputPanel.addStop");
-        this.addStopButton.addActionListener((ActionEvent ae) -> {
+        this.addStopButton.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent ae) {
                 addSelectedStops();
-            });
+            }});
 
         this.removeStopButton = Utility.localizedButton("tradeRouteInputPanel.removeStop");
-        this.removeStopButton.addActionListener((ActionEvent ae) -> {
+        this.removeStopButton.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent ae) {
                 deleteCurrentlySelectedStops();
-            });
+            }});
 
         this.goodsPanel = new GoodsPanel();
         this.goodsPanel.setTransferHandler(this.cargoHandler);
