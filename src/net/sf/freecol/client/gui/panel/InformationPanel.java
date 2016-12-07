@@ -22,6 +22,7 @@ package net.sf.freecol.client.gui.panel;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
 
 import javax.swing.ImageIcon;
@@ -122,9 +123,10 @@ public class InformationPanel extends FreeColPanel {
                 .template("informationPanel.display")
                 .addStringTemplate("%object%", disp));
             final FreeColObject fco = fcos[i];
-            button.addActionListener((ActionEvent ae) -> {
+            button.addActionListener(new ActionListener() {
+                public void actionPerformed(ActionEvent ae) {
                     gui.displayObject(fco);
-                });
+                }});
             /*
             If there is another text to display, we need to add
                 "gapbottom 25" into the .add(), which gives some

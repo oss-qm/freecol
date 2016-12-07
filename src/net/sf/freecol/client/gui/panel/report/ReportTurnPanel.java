@@ -22,6 +22,7 @@ package net.sf.freecol.client.gui.panel.report;
 import java.awt.Font;
 import java.awt.Image;
 import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.Hashtable;
@@ -181,12 +182,13 @@ public final class ReportTurnPanel extends ReportPanel {
                 Utility.localizeToolTip(ignoreButton,
                     StringTemplate.copy("report.turn.ignore", message));
                 final ModelMessage m = message;
-                ignoreButton.addActionListener((ActionEvent ae) -> {
+                ignoreButton.addActionListener(new ActionListener() {
+                    public void actionPerformed(ActionEvent ae) {
                         boolean flag = label.isEnabled();
                         igc().ignoreMessage(m, flag);
                         textPane.setEnabled(!flag);
                         label.setEnabled(!flag);
-                    });
+                    }});
                 reportPanel.add(ignoreButton);
                 ignore = true;
                 break;
@@ -216,7 +218,8 @@ public final class ReportTurnPanel extends ReportPanel {
                     .template("report.turn.filter")
                     .addNamed("%type%", message.getMessageType()));
                 final ModelMessage mess = message;
-                filterButton.addActionListener((ActionEvent ae) -> {
+                filterButton.addActionListener(new ActionListener() {
+                    public void actionPerformed(ActionEvent ae) {
                         boolean flag = filterOption.getValue();
                         filterOption.setValue(!flag);
                         for (ModelMessage m : messages) {
@@ -228,7 +231,7 @@ public final class ReportTurnPanel extends ReportPanel {
                                 jc.setEnabled(!flag);
                             }
                         }
-                    });
+                    }});
                 if (ignore) {
                     reportPanel.add(filterButton);
                 } else {

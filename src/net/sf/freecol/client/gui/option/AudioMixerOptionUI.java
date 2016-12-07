@@ -59,7 +59,7 @@ public final class AudioMixerOptionUI extends OptionUI<AudioMixerOption> {
      *      interface for.
      * @param editable boolean whether user can modify the setting
      */
-    public AudioMixerOptionUI(GUI gui, final AudioMixerOption option,
+    public AudioMixerOptionUI(final GUI gui, final AudioMixerOption option,
                               boolean editable) {
         super(option, editable);
 
@@ -88,7 +88,7 @@ public final class AudioMixerOptionUI extends OptionUI<AudioMixerOption> {
         reset();
         cbox.setEnabled(editable);
 
-        ActionListener aHandler = (ActionEvent ae) -> {
+        ActionListener aHandler = new ActionListener() { public void actionPerformed(ActionEvent ae) {
             if (ae.getSource() == button1) {
                 gui.playSound("sound.event.buildingComplete");
             } else if (ae.getSource() == button2) {
@@ -100,7 +100,7 @@ public final class AudioMixerOptionUI extends OptionUI<AudioMixerOption> {
                     updateMixerLabel();
                 }
             }
-        };
+        }};
         button1.addActionListener(aHandler);
         button2.addActionListener(aHandler);
         cbox.addActionListener(aHandler);

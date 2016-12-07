@@ -22,6 +22,7 @@ package net.sf.freecol.client.gui.dialog;
 import java.awt.Dimension;
 import java.awt.Image;
 import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.io.File;
 import java.io.IOException;
 import java.util.Comparator;
@@ -92,9 +93,11 @@ public final class MapGeneratorOptionsDialog extends OptionsDialog {
                 for (File f : mapFiles) {
                     JButton mapButton = makeMapButton(f);
                     if (mapButton == null) continue;
-                    mapButton.addActionListener((ActionEvent ae) -> {
-                            updateFile(f);
-                        });
+                    final File f2 = f;
+                    mapButton.addActionListener(new ActionListener() {
+                        public void actionPerformed(ActionEvent ae) {
+                            updateFile(f2);
+                        }});
                     mapPanel.add(mapButton);
                 }
 

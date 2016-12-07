@@ -121,9 +121,10 @@ public final class CompactLabourReport extends ReportPanel {
             }
         }
 
-        return createButton(text, (ActionEvent ae) -> {
+        return createButton(text, new ActionListener() {
+            public void actionPerformed(ActionEvent ae) {
                 getGUI().showColonyPanel(colony, null);
-        });
+        }});
     }
 
 
@@ -409,8 +410,11 @@ public final class CompactLabourReport extends ReportPanel {
         LabourData.LocationData europe = unitData.getUnitsInEurope();
         if (europe.getRowCount() > 0) {
             String nam = Messages.getName(getMyPlayer().getEurope());
-            JButton button = createButton(nam,
-                (ActionEvent ae) -> { getGUI().showEuropePanel(); });
+            JButton button = createButton(nam, new ActionListener() {
+                public void actionPerformed(ActionEvent ae) {
+                    getGUI().showEuropePanel();
+                }});
+
             reportPanel.add(button, "cell " + COLONY_COLUMN + " " + row
                 + " 1 " + europe.getRowCount());
             row = addLocationData(europe, null, row);
@@ -601,10 +605,11 @@ public final class CompactLabourReport extends ReportPanel {
     }
 
     private JButton createUnitNameButton(String name,
-                                         LabourData.UnitData unitData) {
-        JButton button = createButton(name, (ActionEvent ae) -> {
+                                         final LabourData.UnitData unitData) {
+        JButton button = createButton(name, new ActionListener() {
+            public void actionPerformed(ActionEvent ae) {
                 getGUI().showCompactLabourReport(unitData);
-            });
+            }});
 
         if (!unitData.isSummary()) {
             button.setIcon(new ImageIcon(
