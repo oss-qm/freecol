@@ -21,6 +21,7 @@ package net.sf.freecol.client.gui.panel;
 
 import java.awt.Component;
 import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -65,7 +66,7 @@ public final class ServerListPanel extends FreeColPanel {
      *     connections.
      */
     public ServerListPanel(FreeColClient freeColClient,
-                           ConnectController connectController) {
+                           final ConnectController connectController) {
         super(freeColClient, new MigLayout("", "", ""));
 
         this.connectController = connectController;
@@ -104,16 +105,18 @@ public final class ServerListPanel extends FreeColPanel {
         tableScroll.getViewport().setOpaque(false);
         tableScroll.getColumnHeader().setOpaque(false);
 
-        connect.addActionListener(ae -> {
+        connect.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent ae) {
                 ServerInfo si = tableModel.getItem(table.getSelectedRow());
                 connectController.joinMultiplayerGame(si.getAddress(),
                                                       si.getPort());
-            });
+            }});
 
-        cancel.addActionListener(ae -> {
-                getGUI().removeFromCanvas(this);
+        cancel.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent ae) {
+                getGUI().removeFromCanvas(ServerListPanel.this);
                 getGUI().showNewPanel();
-            });
+            }});
 
         add(tableScroll, "width 400:, height 350:");
         add(connect, "newline 20, split 2");

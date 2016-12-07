@@ -21,6 +21,7 @@ package net.sf.freecol.client.gui.panel;
 
 import java.awt.Component;
 import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.HashMap;
@@ -36,6 +37,7 @@ import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JScrollPane;
 import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
 
 import net.miginfocom.swing.MigLayout;
 
@@ -92,9 +94,10 @@ public final class TradeRoutePanel extends FreeColPanel {
 
         this.unit = unit;
         this.tradeRoutes = new JList<>(listModel);
-        this.tradeRoutes.addListSelectionListener((ListSelectionEvent e) -> {
+        this.tradeRoutes.addListSelectionListener(new ListSelectionListener() {
+            public void valueChanged(ListSelectionEvent e) {
                 updateButtons();
-            });
+            }});
         this.tradeRoutes.setCellRenderer(new DefaultListCellRenderer() {
                 @Override
                 public Component getListCellRendererComponent(JList list,
@@ -122,11 +125,15 @@ public final class TradeRoutePanel extends FreeColPanel {
         // listener below.
         this.newRouteButton = Utility.localizedButton("tradeRoutePanel.newRoute");
         Utility.localizeToolTip(this.newRouteButton, "tradeRoutePanel.new.tooltip");
-        this.newRouteButton.addActionListener((ActionEvent ae) -> newRoute());
+        this.newRouteButton.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent ae) {
+                newRoute();
+            }});
 
         this.editRouteButton = Utility.localizedButton("tradeRoutePanel.editRoute");
         Utility.localizeToolTip(this.editRouteButton, "tradeRoutePanel.edit.tooltip");
-        this.editRouteButton.addActionListener((ActionEvent ae) -> {
+        this.editRouteButton.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent ae) {
                 final TradeRoute selected = tradeRoutes.getSelectedValue();
                 final String name = selected.getName();
                 getGUI().showTradeRouteInputPanel(selected, () -> {
@@ -141,11 +148,12 @@ public final class TradeRoutePanel extends FreeColPanel {
                             getGUI().showInformationMessage(template);
                         }
                     });
-            });
+            }});
 
         this.deleteRouteButton = Utility.localizedButton("tradeRoutePanel.deleteRoute");
         Utility.localizeToolTip(this.deleteRouteButton, "tradeRoutePanel.delete.tooltip");
-        this.deleteRouteButton.addActionListener((ActionEvent ae) -> {
+        this.deleteRouteButton.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent ae) {
                 TradeRoute route = getRoute();
                 if (route != null) {
                     for (Unit u : route.getAssignedUnits()) {
@@ -154,20 +162,24 @@ public final class TradeRoutePanel extends FreeColPanel {
                     igc().deleteTradeRoute(route);
                     updateList(null);
                 }
-            });
+            }});
 
         this.deassignRouteButton = Utility.localizedButton("tradeRoutePanel.deassignRoute");
         Utility.localizeToolTip(this.deassignRouteButton, "tradeRoutePanel.deassign.tooltip");
-        this.deassignRouteButton.addActionListener((ae) -> {
-                if (this.unit != null && getRoute() == this.unit.getTradeRoute()) {
-                    igc().clearOrders(this.unit);
+        this.deassignRouteButton.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent ae) {
+                if (TradeRoutePanel.this.unit != null
+                        && getRoute() == TradeRoutePanel.this.unit.getTradeRoute()) {
+                    igc().clearOrders(TradeRoutePanel.this.unit);
                 }
-                getGUI().removeFromCanvas(this);
-            });
+                getGUI().removeFromCanvas(TradeRoutePanel.this);
+            }});
 
         JButton cancelButton = Utility.localizedButton("cancel");
-        cancelButton.addActionListener((ae) ->
-            getGUI().removeTradeRoutePanel(this));
+        cancelButton.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent ae) {
+                getGUI().removeTradeRoutePanel(TradeRoutePanel.this);
+            }});
         setCancelComponent(cancelButton);
 
         updateButtons();

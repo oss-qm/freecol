@@ -38,6 +38,7 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.image.BufferedImage;
 import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 import java.io.File;
 import java.io.InputStream;
 import java.util.List;
@@ -409,11 +410,13 @@ public class SwingGUI extends GUI {
             logger.info(pmoffscreen + " overrides client option: "
                 + pmoffscreenValue);
         }
-        usePixmaps.addPropertyChangeListener((PropertyChangeEvent e) -> {
+
+        usePixmaps.addPropertyChangeListener(new PropertyChangeListener() {
+            public void propertyChange(PropertyChangeEvent e) {
                 String newValue = e.getNewValue().toString();
                 System.setProperty(pmoffscreen, newValue);
                 logger.info("Set " + pmoffscreen + " to: " + newValue);
-            });
+            }});
 
         this.mapViewer = new MapViewer(this.freeColClient);
         this.canvas = new Canvas(this.freeColClient, graphicsDevice, this,
@@ -423,7 +426,8 @@ public class SwingGUI extends GUI {
         // Now that there is a canvas, prepare for language changes.
         LanguageOption o = (LanguageOption)getClientOptions()
             .getOption(ClientOptions.LANGUAGE);
-        o.addPropertyChangeListener((PropertyChangeEvent e) -> {
+        o.addPropertyChangeListener(new PropertyChangeListener() {
+            public void propertyChange(PropertyChangeEvent e) {
                 Language language = (Language)e.getNewValue();
                 logger.info("Set language to: " + language);
                 if (Messages.AUTOMATIC.equalsIgnoreCase(language.getKey())) {
@@ -436,7 +440,7 @@ public class SwingGUI extends GUI {
                         .template("info.newLanguageSelected")
                         .addName("%language%", l.getDisplayName()));
                 }
-            });
+            }});
 
         logger.info("GUI created.");
         logger.info("Starting in Move Units View Mode");
