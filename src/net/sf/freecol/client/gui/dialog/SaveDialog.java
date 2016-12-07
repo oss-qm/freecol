@@ -20,6 +20,7 @@
 package net.sf.freecol.client.gui.dialog;
 
 import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.io.File;
 import java.util.List;
 
@@ -68,10 +69,13 @@ public final class SaveDialog extends FreeColDialog<File> {
         fileChooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
         fileChooser.setFileHidingEnabled(false);
         fileChooser.setSelectedFile(new File(defaultName));
-        fileChooser.addActionListener((ActionEvent ae) ->
+
+        fileChooser.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent ae) {
                 setValue((JFileChooser.APPROVE_SELECTION
                         .equals(ae.getActionCommand()))
-                    ? fileChooser.getSelectedFile() : cancelFile));
+                    ? fileChooser.getSelectedFile() : cancelFile);
+            }});
 
         List<ChoiceItem<File>> c = choices();
         initializeDialog(frame, DialogType.QUESTION, true, fileChooser, null, c);

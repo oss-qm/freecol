@@ -21,6 +21,7 @@ package net.sf.freecol.client.gui.dialog;
 
 import java.awt.Component;
 import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
@@ -183,7 +184,8 @@ public final class CaptureGoodsDialog extends FreeColDialog<List<Goods>> {
         this.goodsList.setListData(goods);
 
         this.allButton = Utility.localizedButton("all");
-        this.allButton.addActionListener((ActionEvent ae) -> {
+        this.allButton.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent ae) {
                 JList<GoodsItem> gl = CaptureGoodsDialog.this.goodsList;
                 for (int i = 0; i < gl.getModel().getSize()
                          && i < CaptureGoodsDialog.this.maxCargo; i++) {
@@ -191,19 +193,20 @@ public final class CaptureGoodsDialog extends FreeColDialog<List<Goods>> {
                     gi.setSelected(true);
                     updateComponents();
                 }
-            });
+            }});
         this.allButton.setMnemonic('a');
         this.allButton.setActionCommand(this.allButton.getText());
 
         this.noneButton = Utility.localizedButton("none");
-        this.noneButton.addActionListener((ActionEvent ae) -> {
+        this.noneButton.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent ae) {
                 JList<GoodsItem> gl = CaptureGoodsDialog.this.goodsList;
                 for (int i = 0; i < gl.getModel().getSize(); i++) {
                     GoodsItem gi = gl.getModel().getElementAt(i);
                     gi.setSelected(false);
                     updateComponents();
                 }
-            });
+            }});
         this.noneButton.setMnemonic('n');
         this.noneButton.setActionCommand(this.noneButton.getText());
 

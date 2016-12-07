@@ -20,6 +20,7 @@
 package net.sf.freecol.common.debug;
 
 import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -32,6 +33,7 @@ import javax.swing.JMenu;
 import javax.swing.JMenuItem;
 import javax.swing.JPopupMenu;
 import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 
 import net.sf.freecol.client.FreeColClient;
 import net.sf.freecol.client.gui.GUI;
@@ -235,9 +237,10 @@ public class DebugUtils {
                                              final Unit unit, JPopupMenu menu) {
         JMenuItem addg = new JMenuItem("Add goods");
         addg.setOpaque(false);
-        addg.addActionListener((ActionEvent ae) -> {
+        addg.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent ae) {
                 DebugUtils.addUnitGoods(fcc, unit);
-            });
+            }});
         addg.setEnabled(true);
         menu.add(addg);
     }
@@ -316,13 +319,14 @@ public class DebugUtils {
         final FreeColServer server = freeColClient.getFreeColServer();
         if (server == null) return;
 
-        menu.addChangeListener((ChangeEvent e) -> {
+        menu.addChangeListener(new ChangeListener() {
+            public void stateChanged(ChangeEvent e) {
                 boolean skipping = server.getInGameController()
                     .getSkippedTurns() > 0;
                 item.setText(Messages.message((skipping)
                         ? "menuBar.debug.stopSkippingTurns"
                         : "menuBar.debug.skipTurns"));
-            });
+            }});
     }
 
     /**

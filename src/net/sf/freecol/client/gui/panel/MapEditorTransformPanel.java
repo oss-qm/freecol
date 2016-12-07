@@ -25,6 +25,7 @@ import java.awt.Dimension;
 import java.awt.GridLayout;
 import java.awt.Image;
 import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Logger;
@@ -169,7 +170,8 @@ public final class MapEditorTransformPanel extends FreeColPanel {
         button.setToolTipText(text);
         button.setOpaque(false);
         group.add(button);
-        button.addActionListener((ActionEvent ae) -> {
+        button.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent ae) {
                 MapEditorController ctlr
                     = MapEditorTransformPanel.this.freeColClient.getMapEditorController();
                 MapTransform newMapTransform = null;
@@ -182,7 +184,7 @@ public final class MapEditorTransformPanel extends FreeColPanel {
                     group.setSelected(group.getElements().nextElement()
                         .getModel(), true);
                 }
-            });
+            }});
         button.setBorder(null);
         return button;
     }

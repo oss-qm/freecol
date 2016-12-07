@@ -21,6 +21,7 @@ package net.sf.freecol.client.gui.dialog;
 
 import java.awt.Dimension;
 import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
@@ -40,6 +41,7 @@ import javax.swing.JList;
 import javax.swing.JScrollPane;
 import javax.swing.ListSelectionModel;
 import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
@@ -145,7 +147,7 @@ public final class SelectDestinationDialog extends FreeColDialog<Location>
                 return false;
 
             for (Unit walk : unit.getUnits()) {
-                if (u.getUnitChange(UnitChangeType.NATIVES) != null)
+                if (unit.getUnitChange(UnitChangeType.NATIVES) != null)
                     return true;
             }
 
@@ -378,21 +380,23 @@ public final class SelectDestinationDialog extends FreeColDialog<Location>
 
         String omcb = Messages.message("selectDestinationDialog.onlyMyColonies");
         this.onlyMyColoniesBox = new JCheckBox(omcb, showOnlyMyColonies);
-        this.onlyMyColoniesBox.addChangeListener((ChangeEvent event) -> {
+        this.onlyMyColoniesBox.addChangeListener(new ChangeListener() {
+            public void stateChanged(ChangeEvent event) {
                 showOnlyMyColonies = onlyMyColoniesBox.isSelected();
                 updateDestinationList();
-            });
+            }});
 
         this.comparatorBox = new JComboBox<>(new String[] {
                 Messages.message("selectDestinationDialog.sortByOwner"),
                 Messages.message("selectDestinationDialog.sortByName"),
                 Messages.message("selectDestinationDialog.sortByDistance")
             });
-        this.comparatorBox.addItemListener((ItemEvent event) -> {
+        this.comparatorBox.addItemListener(new ItemListener() {
+            public void itemStateChanged(ItemEvent event) {
                 updateDestinationComparator();
                 SelectDestinationDialog.this.destinations.sort(SelectDestinationDialog.this.destinationComparator);
                 updateDestinationList();
-            });
+            }});
         this.comparatorBox.setSelectedIndex(
             (this.destinationComparator instanceof NameComparator) ? 1
             : (this.destinationComparator instanceof DistanceComparator) ? 2

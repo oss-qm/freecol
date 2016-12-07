@@ -20,6 +20,7 @@
 package net.sf.freecol.client.gui.dialog;
 
 import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.List;
 
 import javax.swing.ImageIcon;
@@ -88,9 +89,10 @@ public final class MonarchDialog extends FreeColDialog<Boolean> {
         if (action == MonarchAction.RAISE_TAX_ACT
             || action == MonarchAction.RAISE_TAX_WAR) {
             JButton helpButton = Utility.localizedButton("help");
-            helpButton.addActionListener((ActionEvent ae) -> {
+            helpButton.addActionListener(new ActionListener() {
+                public void actionPerformed(ActionEvent ae) {
                     getGUI().showColopediaPanel("colopedia.concepts.taxes");
-                });
+                }});
             panel.add(helpButton, "tag help");
         }
         JTextArea text = (template == null)
