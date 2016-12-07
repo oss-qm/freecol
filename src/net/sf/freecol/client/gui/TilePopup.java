@@ -23,6 +23,7 @@ import java.awt.Component;
 import java.awt.Container;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.List;
 import java.util.logging.Logger;
 
@@ -106,7 +107,8 @@ public final class TilePopup extends JPopupMenu {
                 gotoMenuItem = Utility.localizedMenuItem("goToThisTile");
             }
             if (gotoMenuItem != null) {
-                gotoMenuItem.addActionListener((ActionEvent ae) -> {
+                gotoMenuItem.addActionListener(new ActionListener() {
+                    public void actionPerformed(ActionEvent ae) {
                         if (!freeColClient.currentPlayerIsMyPlayer()) return;
                         Tile currTile = activeUnit.getTile();
                         if (currTile == tile) return; // already at destination
@@ -116,7 +118,7 @@ public final class TilePopup extends JPopupMenu {
                         if (activeUnit.getTile() == currTile) {
                             canvas.updateCurrentPathForActiveUnit();
                         }
-                    });
+                    }});
                 add(gotoMenuItem);
             }
 
@@ -124,10 +126,11 @@ public final class TilePopup extends JPopupMenu {
             if (unitTile == tile && activeUnit.hasHighSeasMove()) {
                 JMenuItem europeMenuItem = Utility.localizedMenuItem(StringTemplate
                     .template("goToEurope"));
-                europeMenuItem.addActionListener((ActionEvent ae) -> {
+                europeMenuItem.addActionListener(new ActionListener() {
+                    public void actionPerformed(ActionEvent ae) {
                         if (!freeColClient.currentPlayerIsMyPlayer()) return;
                         igc.moveTo(activeUnit, player.getEurope());
-                    });
+                    }});
                 add(europeMenuItem);
                 hasAnItem = true;
             }
@@ -137,34 +140,38 @@ public final class TilePopup extends JPopupMenu {
                 JMenuItem ji = null;
                 if (activeUnit.checkSetState(UnitState.ACTIVE)) {
                     ji = Utility.localizedMenuItem("activateUnit");
-                    ji.addActionListener((ActionEvent ae) -> {
+                    ji.addActionListener(new ActionListener() {
+                        public void actionPerformed(ActionEvent ae) {
                             igc.changeState(activeUnit, Unit.UnitState.ACTIVE);
-                        });
+                        }});
                     add(ji);
                     hasAnItem = true;
                 }
                 if (activeUnit.checkSetState(UnitState.FORTIFYING)) {
                     ji = Utility.localizedMenuItem("fortify");
-                    ji.addActionListener((ActionEvent ae) -> {
+                    ji.addActionListener(new ActionListener() {
+                        public void actionPerformed(ActionEvent ae) {
                             igc.changeState(activeUnit, Unit.UnitState.FORTIFYING);
-                        });
+                        }});
                     add(ji);
                     hasAnItem = true;
                 }
                 if (activeUnit.checkSetState(UnitState.SKIPPED)) {
                     ji = Utility.localizedMenuItem("skip");
-                    ji.addActionListener((ActionEvent ae) -> {
+                    ji.addActionListener(new ActionListener() {
+                        public void actionPerformed(ActionEvent ae) {
                             igc.changeState(activeUnit, Unit.UnitState.SKIPPED);
-                        });
+                        }});
                     add(ji);
                     hasAnItem = true;
                 }
                 if (activeUnit.canCarryTreasure()
                     && activeUnit.canCashInTreasureTrain()) {
                     ji = Utility.localizedMenuItem("cashInTreasureTrain");
-                    ji.addActionListener((ActionEvent ae) -> {
+                    ji.addActionListener(new ActionListener() {
+                        public void actionPerformed(ActionEvent ae) {
                             igc.checkCashInTreasureTrain(activeUnit);
-                        });
+                        }});
                     ji.setEnabled(true);
                     add(ji);
                     hasAnItem = true;
@@ -172,9 +179,10 @@ public final class TilePopup extends JPopupMenu {
 
                 if (activeUnit.getDestination() != null) {
                     ji = Utility.localizedMenuItem("clearOrders");
-                    ji.addActionListener((ActionEvent ae) -> {
+                    ji.addActionListener(new ActionListener() {
+                        public void actionPerformed(ActionEvent ae) {
                             igc.clearOrders(activeUnit);
-                        });
+                        }});
                     add(ji);
                     hasAnItem = true;
                 }
@@ -218,10 +226,11 @@ public final class TilePopup extends JPopupMenu {
             if (moreUnits) addSeparator();
             JMenuItem activateAllItem = Utility.localizedMenuItem(StringTemplate
                 .template("activateAllUnits"));
-            activateAllItem.addActionListener((ActionEvent ae) -> {
+            activateAllItem.addActionListener(new ActionListener() {
+                public void actionPerformed(ActionEvent ae) {
                     for (Unit unit : tile.getUnits()) igc.clearOrders(unit);
                     gui.setActiveUnit(tile.getFirstUnit());
-                });
+                }});
             add(activateAllItem);
         }
 
@@ -255,24 +264,27 @@ public final class TilePopup extends JPopupMenu {
 
         for (final Unit unit : tile.getUnits()) {
             JMenuItem toMenuItem = new JMenuItem(unit.toString());
-            toMenuItem.addActionListener((ActionEvent ae) -> {
+            toMenuItem.addActionListener(new ActionListener() {
+                public void actionPerformed(ActionEvent ae) {
                     DebugUtils.changeOwnership(freeColClient, unit);
-                });
+                }});
             changeOwnership.add(toMenuItem);
 
             if (unit.isCarrier()) {
                 JMenuItem menuItem = new JMenuItem(unit.toString());
-                menuItem.addActionListener((ActionEvent ae) -> {
+                menuItem.addActionListener(new ActionListener() {
+                    public void actionPerformed(ActionEvent ae) {
                         DebugUtils.displayMission(freeColClient, unit);
-                    });
+                    }});
                 transportLists.add(menuItem);
             }
 
             if (unit.isPerson()) {
                 JMenuItem roleMenuItem = new JMenuItem(unit.toString());
-                roleMenuItem.addActionListener((ActionEvent ae) -> {
+                roleMenuItem.addActionListener(new ActionListener() {
+                    public void actionPerformed(ActionEvent ae) {
                         DebugUtils.changeRole(freeColClient, unit);
-                    });
+                    }});
                 changeRole.add(roleMenuItem);
             }
         }
@@ -284,29 +296,33 @@ public final class TilePopup extends JPopupMenu {
             }
             JMenuItem toMenuItem = new JMenuItem(tile.getColony().toString());
             final Colony colony = tile.getColony();
-            toMenuItem.addActionListener((ActionEvent ae) -> {
+            toMenuItem.addActionListener(new ActionListener() {
+                public void actionPerformed(ActionEvent ae) {
                     DebugUtils.changeOwnership(freeColClient, colony);
-                });
+                }});
             changeOwnership.add(toMenuItem);
 
             JMenuItem displayColonyPlan = new JMenuItem("Display Colony Plan");
-            displayColonyPlan.addActionListener((ActionEvent ae) -> {
+            displayColonyPlan.addActionListener(new ActionListener() {
+                public void actionPerformed(ActionEvent ae) {
                     DebugUtils.displayColonyPlan(freeColClient, colony);
-                });
+                }});
             add(displayColonyPlan);
 
             JMenuItem applyDisaster = new JMenuItem("Apply Disaster");
-            applyDisaster.addActionListener((ActionEvent ae) -> {
+            applyDisaster.addActionListener(new ActionListener() {
+                public void actionPerformed(ActionEvent ae) {
                     DebugUtils.applyDisaster(freeColClient, colony);
-                });
+                }});
             add(applyDisaster);
         }
         if (tile.getIndianSettlement() != null) {
             JMenuItem displayGoods = new JMenuItem("Examine Settlement");
             final IndianSettlement is = tile.getIndianSettlement();
-            displayGoods.addActionListener((ActionEvent ae) -> {
+            displayGoods.addActionListener(new ActionListener() {
+                public void actionPerformed(ActionEvent ae) {
                     DebugUtils.summarizeSettlement(freeColClient, is);
-                });
+                }});
             add(displayGoods);
         }
         if (changeOwnership.getItemCount() > 0) add(changeOwnership);
@@ -315,33 +331,37 @@ public final class TilePopup extends JPopupMenu {
         if (tile.hasLostCityRumour()) {
             JMenuItem rumourItem = new JMenuItem("Set Lost City Rumour type");
             rumourItem.setOpaque(false);
-            rumourItem.addActionListener((ActionEvent ae) -> {
+            rumourItem.addActionListener(new ActionListener() {
+                public void actionPerformed(ActionEvent ae) {
                     DebugUtils.setRumourType(freeColClient, tile);
-                });
+                }});
             add(rumourItem);
         }
 
         JMenuItem addu = new JMenuItem("Add unit");
         addu.setOpaque(false);
-        addu.addActionListener((ActionEvent ae) -> {
+        addu.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent ae) {
                 DebugUtils.addNewUnitToTile(freeColClient, tile);
-            });
+            }});
         add(addu);
 
         if (!tile.isEmpty()) {
             JMenuItem adda = new JMenuItem("Reset moves");
             adda.setOpaque(false);
             final List<Unit> tileUnits = tile.getUnits();
-            adda.addActionListener((ActionEvent ae) -> {
+            adda.addActionListener(new ActionListener() {
+                public void actionPerformed(ActionEvent ae) {
                     DebugUtils.resetMoves(freeColClient, tileUnits);
-                });
+                }});
             add(adda);
         }
 
         final Unit activeUnit = gui.getActiveUnit();
         if (activeUnit != null && activeUnit.getTile() != null) {
             JMenuItem menuItem = new JMenuItem("Show search");
-            menuItem.addActionListener((ActionEvent ae) -> {
+            menuItem.addActionListener(new ActionListener() {
+                public void actionPerformed(ActionEvent ae) {
                     if (!freeColClient.currentPlayerIsMyPlayer()) return;
                     Tile currTile = activeUnit.getTile();
                     if (currTile == tile) return;
@@ -353,7 +373,7 @@ public final class TilePopup extends JPopupMenu {
                     gui.showInformationMessage(lb.toString());
                     canvas.setCurrentPath(path);
                     gui.refresh();
-                });
+                }});
             add(menuItem);
         }
 
@@ -371,9 +391,10 @@ public final class TilePopup extends JPopupMenu {
 
         JMenuItem dumpItem = new JMenuItem("Dump tile");
         dumpItem.setOpaque(false);
-        dumpItem.addActionListener((ActionEvent ae) -> {
+        dumpItem.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent ae) {
                 DebugUtils.dumpTile(freeColClient, tile);
-            });
+            }});
         add(dumpItem);
     }
 
@@ -397,9 +418,10 @@ public final class TilePopup extends JPopupMenu {
         menuItem.setFont(FontLibrary.createFont(FontLibrary.FontType.NORMAL,
             FontLibrary.FontSize.TINY, Font.BOLD,
             gui.getImageLibrary().getScaleFactor()));
-        menuItem.addActionListener((ActionEvent ae) -> {
+        menuItem.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent ae) {
                 gui.setActiveUnit(unit);
-            });
+            }});
         if (indent) {
             menuItem.setFont(menuItem.getFont().deriveFont(Font.ITALIC));
         }
@@ -444,16 +466,18 @@ public final class TilePopup extends JPopupMenu {
         menuItem.setFont(FontLibrary.createFont(FontLibrary.FontType.NORMAL,
             FontLibrary.FontSize.TINY, Font.BOLD,
             gui.getImageLibrary().getScaleFactor()));
-        menuItem.addActionListener((ActionEvent ae) -> {
+        menuItem.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent ae) {
                 gui.showColonyPanel(colony, null);
-            });
+            }});
 
         add(menuItem);
 
         menuItem = Utility.localizedMenuItem("rename");
-        menuItem.addActionListener((ActionEvent ae) -> {
+        menuItem.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent ae) {
                 freeColClient.getInGameController().rename(colony);
-            });
+            }});
 
         add(menuItem);
 
@@ -473,9 +497,10 @@ public final class TilePopup extends JPopupMenu {
         menuItem.setFont(FontLibrary.createFont(FontLibrary.FontType.NORMAL,
             FontLibrary.FontSize.TINY, Font.BOLD,
             gui.getImageLibrary().getScaleFactor()));
-        menuItem.addActionListener((ActionEvent ae) -> {
+        menuItem.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent ae) {
                 gui.showIndianSettlementPanel(is);
-            });
+            }});
         add(menuItem);
         hasAnItem = true;
     }
@@ -487,9 +512,10 @@ public final class TilePopup extends JPopupMenu {
      */
     private void addTile(final Tile tile) {
         JMenuItem menuItem = new JMenuItem(Messages.getName(tile));
-        menuItem.addActionListener((ActionEvent ae) -> {
+        menuItem.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent ae) {
                 gui.showTilePanel(tile);
-            });
+            }});
 
         add(menuItem);
         /**

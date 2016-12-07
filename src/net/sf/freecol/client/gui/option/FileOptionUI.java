@@ -20,6 +20,7 @@
 package net.sf.freecol.client.gui.option;
 
 import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.Color;
 import java.io.File;
 
@@ -67,18 +68,20 @@ public final class FileOptionUI extends OptionUI<FileOption>  {
 
         JButton browse = Utility.localizedButton("browse");
         if (editable) {
-            browse.addActionListener((ActionEvent ae) -> {
+            browse.addActionListener(new ActionListener() {
+                public void actionPerformed(ActionEvent ae) {
                     File f = gui.showLoadSaveFileDialog();
                     if (f != null) setValue(f);
-                });
+                }});
         }
         panel.add(browse);
 
         JButton remove = Utility.localizedButton("remove");
         if (editable) {
-            remove.addActionListener((ActionEvent ae) -> {
+            remove.addActionListener(new ActionListener() {
+                public void actionPerformed(ActionEvent ae) {
                     setValue(null);
-                });
+                }});
         }
         panel.add(remove);
 

@@ -20,6 +20,7 @@
 package net.sf.freecol.client.gui.panel;
 
 import java.awt.Component;
+import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
 import java.util.logging.Logger;
@@ -69,7 +70,8 @@ public final class StartGamePanel extends FreeColPanel {
 
     private PlayersTable table;
 
-    private final ActionListener startCmd = ae -> {
+    private final ActionListener startCmd
+    = new ActionListener() { public void actionPerformed(ActionEvent ae) {
         int row = table.getSelectedRow();
         int col = table.getSelectedColumn();
         if (row > -1 && col > -1){
@@ -81,45 +83,50 @@ public final class StartGamePanel extends FreeColPanel {
         // whatever he wants.
         if (singlePlayerGame) getMyPlayer().setReady(true);
         StartGamePanel.this.freeColClient.getPreGameController().requestLaunch();
-    };
+    }};
 
-    private final ActionListener cancelCmd = ae -> {
+    private final ActionListener cancelCmd
+    = new ActionListener() { public void actionPerformed(ActionEvent ae) {
         final SwingGUI gui = getGUI();
         StartGamePanel.this.freeColClient.getConnectController().newGame();
-        gui.removeFromCanvas(this);
+        gui.removeFromCanvas(StartGamePanel.this);
         gui.showNewPanel();
-    };
+    }};
 
-    private final ActionListener readyBoxCmd = ae -> {
+    private final ActionListener readyBoxCmd
+    = new ActionListener() { public void actionPerformed(ActionEvent ae) {
         StartGamePanel.this.freeColClient.getPreGameController().setReady(readyBox.isSelected());
         refreshPlayersTable();
-    };
+    }};
 
-    private final ActionListener chatCmd = ae -> {
+    private final ActionListener chatCmd
+    = new ActionListener() { public void actionPerformed(ActionEvent ae) {
         if (!chat.getText().isEmpty()) {
             StartGamePanel.this.freeColClient.getPreGameController().chat(chat.getText());
             displayChat(getMyPlayer().getName(), chat.getText(), false);
             chat.setText("");
         }
-    };
+    }};
 
-    private final ActionListener gameOptionsCmd = ae -> {
+    private final ActionListener gameOptionsCmd
+    = new ActionListener() { public void actionPerformed(ActionEvent ae) {
         final FreeColClient fcc = StartGamePanel.this.freeColClient;
         OptionGroup go = getGUI().showGameOptionsDialog(fcc.isAdmin(), true);
         if (go != null) {
             fcc.getGame().setGameOptions(go);
             fcc.getPreGameController().updateGameOptions();
         }
-    };
+    }};
 
-    private final ActionListener mapGeneratorOptionsCmd = ae -> {
+    private final ActionListener mapGeneratorOptionsCmd
+    = new ActionListener() { public void actionPerformed(ActionEvent ae) {
         final FreeColClient fcc = StartGamePanel.this.freeColClient;
         OptionGroup mgo = getGUI().showMapGeneratorOptionsDialog(fcc.isAdmin());
         if (mgo != null) {
             fcc.getGame().setMapGeneratorOptions(mgo);
             fcc.getPreGameController().updateMapGeneratorOptions();
         }
-    };
+    }};
 
     /**
      * Create the panel from which to start a game.
