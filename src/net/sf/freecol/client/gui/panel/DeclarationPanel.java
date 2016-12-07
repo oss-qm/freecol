@@ -95,9 +95,10 @@ public final class DeclarationPanel extends FreeColPanel {
 
         add(signaturePanel);
 
-        Timer t = new Timer(START_DELAY, (ActionEvent ae) -> {
+        Timer t = new Timer(START_DELAY, new ActionListener() {
+            public void actionPerformed(ActionEvent ae) {
                 signaturePanel.startAnimation();
-            });
+            }});
         t.setRepeats(false);
         t.start();
     }
@@ -112,9 +113,10 @@ public final class DeclarationPanel extends FreeColPanel {
     public void actionPerformed(ActionEvent ae) {
         final String command = ae.getActionCommand();
         if (ANIMATION_STOPPED.equals(command)) {
-            Timer t = new Timer(FINISH_DELAY, (x) -> {
+            Timer t = new Timer(FINISH_DELAY, new ActionListener() {
+                public void actionPerformed(ActionEvent aev) {
                     getGUI().removeFromCanvas(DeclarationPanel.this);
-                });
+                }});
             t.setRepeats(false);
             t.start();
         } else {
@@ -253,7 +255,7 @@ public final class DeclarationPanel extends FreeColPanel {
          * @see #addActionListener(ActionListener)
          */
         public void startAnimation() {
-            ActionListener taskPerformer = (ActionEvent ae) -> {
+            ActionListener taskPerformer = new ActionListener() { public void actionPerformed(ActionEvent ae) {
                 if (counter < points.length - 1) {
                     counter += 20;
                     if (counter > points.length) {
@@ -267,7 +269,7 @@ public final class DeclarationPanel extends FreeColPanel {
                     ((Timer)ae.getSource()).stop();
                     notifyStopped();
                 }
-            };
+            }};
             new Timer(ANIMATION_DELAY, taskPerformer).start();
         }
 

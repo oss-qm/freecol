@@ -21,6 +21,7 @@ package net.sf.freecol.client.gui.panel;
 
 import java.awt.Component;
 import java.awt.GridLayout;
+import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseListener;
@@ -590,22 +591,40 @@ public final class EuropePanel extends PortPanel {
 
         exitButton = new EuropeButton(Messages.message("close"),
             KeyEvent.VK_ESCAPE, EuropeAction.EXIT.toString(),
-            ae -> exitAction());
+            new ActionListener() {
+                public void actionPerformed(ActionEvent ae) {
+                    exitAction();
+                }});
         trainButton = new EuropeButton(Messages.message("train"),
             KeyEvent.VK_T, EuropeAction.TRAIN.toString(),
-            ae -> getGUI().showTrainPanel());
+            new ActionListener() {
+                public void actionPerformed(ActionEvent ae) {
+                    getGUI().showTrainPanel();
+                }});
         purchaseButton = new EuropeButton(Messages.message("purchase"),
             KeyEvent.VK_P, EuropeAction.PURCHASE.toString(),
-            ae -> getGUI().showPurchasePanel());
+            new ActionListener() {
+                public void actionPerformed(ActionEvent ae) {
+                    getGUI().showPurchasePanel();
+                }});
         recruitButton = new EuropeButton(Messages.message("recruit"),
             KeyEvent.VK_R, EuropeAction.RECRUIT.toString(),
-            ae -> getGUI().showRecruitPanel());
+            new ActionListener() {
+                public void actionPerformed(ActionEvent ae) {
+                    getGUI().showRecruitPanel();
+                }});
         unloadButton = new EuropeButton(Messages.message("unload"),
             KeyEvent.VK_U, EuropeAction.UNLOAD.toString(),
-            ae -> unloadAction());
+            new ActionListener() {
+                public void actionPerformed(ActionEvent ae) {
+                    unloadAction();
+                }});
         sailButton = new EuropeButton(Messages.message("setSail"),
             KeyEvent.VK_S, EuropeAction.SAIL.toString(),
-            ae -> sailAction());
+            new ActionListener() {
+                public void actionPerformed(ActionEvent ae) {
+                    sailAction();
+                }});
 
         toAmericaPanel = new DestinationPanel();
         toEuropePanel = new DestinationPanel();

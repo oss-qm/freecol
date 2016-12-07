@@ -55,13 +55,14 @@ public final class ColorCellEditor extends AbstractCellEditor
      * @param freeColClient The top level component that holds all
      *     other components.
      */
-    public ColorCellEditor(FreeColClient freeColClient) {
+    public ColorCellEditor(final FreeColClient freeColClient) {
         this.freeColClient = freeColClient;
 
         this.colorEditButton = new JButton();
-        this.colorEditButton.addActionListener(ae ->
-            this.colorChooserPanel = ((SwingGUI)freeColClient.getGUI())
-                .showColorChooserPanel(this));
+        this.colorEditButton.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                ColorCellEditor.this.colorChooserPanel = ((SwingGUI)freeColClient.getGUI()).showColorChooserPanel(this);
+        }});
         this.colorEditButton.setBorderPainted(false);
     }
 

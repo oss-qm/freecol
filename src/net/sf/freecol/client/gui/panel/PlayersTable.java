@@ -211,10 +211,10 @@ public final class PlayersTable extends JTable {
             = new JComboBox<>(NationState.values());
         private JComboBox activeBox;
 
-        private final ActionListener listener = (ActionEvent ae) -> {
-            stopCellEditing();
-        };
-
+        private final ActionListener listener = new ActionListener() {
+            public void actionPerformed(ActionEvent ae) {
+                stopCellEditing();
+            }};
 
         public AvailableCellEditor() {
             aiStateBox.setRenderer(new NationStateRenderer());
@@ -393,9 +393,10 @@ public final class PlayersTable extends JTable {
 
 
         public PlayerCellEditor() {
-            button.addActionListener((ActionEvent ae) -> {
+            button.addActionListener(new ActionListener() {
+                public void actionPerformed(ActionEvent ae) {
                     fireEditingStopped();
-                });
+                }});
         }
 
 
@@ -663,15 +664,17 @@ public final class PlayersTable extends JTable {
         setRowHeight(47);
 
         JButton nationButton = Utility.localizedButton("nation");
-        nationButton.addActionListener((ActionEvent ae) -> {
+        nationButton.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent ae) {
                 gui.showColopediaPanel(PanelType.NATIONS.getKey());
-            });
+            }});
 
         JLabel availabilityLabel = Utility.localizedLabel("playersTable.availability");
         JButton advantageButton = Utility.localizedButton("playersTable.advantage");
-        advantageButton.addActionListener((ActionEvent ae) -> {
+        advantageButton.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent ae) {
                 gui.showColopediaPanel(PanelType.NATION_TYPES.getKey());
-            });
+            }});
 
         JLabel colorLabel = Utility.localizedLabel("color");
         JLabel playerLabel = Utility.localizedLabel("player");
