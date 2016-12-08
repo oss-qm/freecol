@@ -221,4 +221,5 @@ public class ScopeTest extends FreeColTestCase {
         assertFalse(scope.appliesTo(unit));
 
     }
+
 }

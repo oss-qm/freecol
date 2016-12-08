@@ -2021,7 +2021,7 @@ public final class Specification {
         for (AbstractOption ao : allG) {
             allOptionGroups.remove(ao.getId());
             logger.warning("Dropping orphan option group: " + ao);
-        }            
+        }
     }
 
     /**

@@ -1047,6 +1047,7 @@ public final class FreeColServer {
                                                               false));
 
                 String r = xr.getAttribute(RANDOM_STATE_TAG, (String)null);
+
                 freeColServer.setServerRandom(Utils.restoreRandomState(r));
 
                 FreeColDebugger.setDebugModes(xr.getAttribute(DEBUG_TAG,
