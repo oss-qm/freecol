@@ -124,7 +124,7 @@ public class SimpleCombatModel extends CombatModel {
      *
      * @param lb The {@code LogBuilder} to log to.
      * @param modSet A set of {@code Modifiers} to log.
-     */   
+     */
     private void logModifiers(LogBuilder lb, Set<Modifier> modSet) {
         lb.addCollection(" ",
             sort(modSet, Modifier.ascendingModifierIndexComparator));
@@ -455,7 +455,7 @@ public class SimpleCombatModel extends CombatModel {
             // Settlement defence bonus
             result.addAll(settlement.getDefenceModifiers());
 
-            // Not allowed to see inside the settlement.  This only applies 
+            // Not allowed to see inside the settlement.  This only applies
             // to the pre-combat dialog--- the actual attack is on the
             // unit chosen to defend.
             result.add(UNKNOWN_DEFENCE_MODIFIER);
@@ -700,7 +700,7 @@ public class SimpleCombatModel extends CombatModel {
         boolean attackerWon = crs.get(0) == CombatResult.WIN;
         boolean loserMustDie = loser.hasAbility(Ability.DISPOSE_ON_COMBAT_LOSS);
         UnitChange uc;
-        
+
         if (loser.isNaval()) {
             // Naval victors get to loot the defenders hold.  Sink the
             // loser on great win/loss, lack of repair location, or
@@ -764,7 +764,7 @@ public class SimpleCombatModel extends CombatModel {
                         done = true;
                     }
                 }
- 
+
             } else if (settlement instanceof IndianSettlement) {
                 final IndianSettlement is = (IndianSettlement)settlement;
                 // Attacking and defeating the defender of a native

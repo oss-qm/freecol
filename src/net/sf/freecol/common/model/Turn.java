@@ -55,7 +55,7 @@ public class Turn {
         seasonYear = newSeasonYear;
         seasonNumber = newSeasonNumber;
     }
-    
+
     /**
      * Gets the starting year.
      *

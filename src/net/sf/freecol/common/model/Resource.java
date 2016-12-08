@@ -254,7 +254,7 @@ public class Resource extends TileItem {
     public boolean isComplete() {
         return true;
     }
-    
+
     /**
      * {@inheritDoc}
      */

@@ -68,7 +68,7 @@ public final class SelectTributeAmountDialog
         MigPanel panel = new MigPanel(new MigLayout("wrap 1"));
         panel.add(Utility.localizedTextArea(question));
         panel.add(this.input);
-        
+
         panel.setSize(panel.getPreferredSize());
 
         initializeInputDialog(frame, true, panel, null, "ok", "cancel");

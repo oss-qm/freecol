@@ -124,7 +124,7 @@ public class ColonyTradeItem extends TradeItem {
             ? Integer.MIN_VALUE
             : colony.evaluateFor(player);
     }
-    
+
 
     // Serialization
 

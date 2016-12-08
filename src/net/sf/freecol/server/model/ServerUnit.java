@@ -418,7 +418,7 @@ public class ServerUnit extends Unit implements ServerModelObject {
         Tile tile = getTile();
         ServerPlayer indianPlayer = (ServerPlayer)tile.getOwner();
         serverPlayer.csContact(indianPlayer, cs);
-        indianPlayer.csModifyTension(serverPlayer, 
+        indianPlayer.csModifyTension(serverPlayer,
             Tension.Level.HATEFUL.getLimit(), cs);//+til
         serverPlayer.csChangeStance(Stance.WAR, indianPlayer, true, cs);
         cs.addMessage(serverPlayer,
@@ -839,7 +839,7 @@ logger.finest("Debug first contact " + this + " to " + ((settlement == null) ? "
                         logger.finest("First contact between "
                             + contactPlayer.getId()
                             + " and " + is + " at " + newTile);
-                    }                   
+                    }
                 }
                 csActivateSentries(t, cs);
             }
@@ -860,7 +860,7 @@ logger.finest("Debug first contact " + this + " to " + ((settlement == null) ? "
             }
             setMovesLeft(0);
         }
-                
+
         // Check for slowing units.
         Unit slowedBy = getSlowedBy(newTile, random);
         if (slowedBy != null) {
@@ -918,7 +918,7 @@ logger.finest("Debug first contact " + this + " to " + ((settlement == null) ? "
                         .addStringTemplate("%location%",
                             loc.getLocationLabelFor(owner)));
                 cs.add(See.perhaps(), (Tile)loc);
-                cs.addRemove(See.perhaps().always(owner), loc, 
+                cs.addRemove(See.perhaps().always(owner), loc,
                              this);//-vis(owner)
                 this.dispose();
                 owner.invalidateCanSeeTiles();//+vis(owner)

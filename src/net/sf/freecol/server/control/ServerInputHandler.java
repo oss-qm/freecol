@@ -44,7 +44,7 @@ import org.w3c.dom.Element;
 
 /**
  * Handles the network messages on the server side.
- * 
+ *
  * @see Controller
  */
 public abstract class ServerInputHandler extends FreeColServerHolder
@@ -60,7 +60,7 @@ public abstract class ServerInputHandler extends FreeColServerHolder
         /**
          * Handle a request represented by an {@link Element} and
          * return another {@link Element} or null as the answer.
-         * 
+         *
          * @param connection The message's {@code Connection}.
          * @param element The root {@code Element} of the message.
          * @return The reply {@code Element}, which may be null.
@@ -78,7 +78,7 @@ public abstract class ServerInputHandler extends FreeColServerHolder
 
     /**
      * The constructor to use.
-     * 
+     *
      * @param freeColServer The main server object.
      */
     public ServerInputHandler(final FreeColServer freeColServer) {
@@ -100,7 +100,7 @@ public abstract class ServerInputHandler extends FreeColServerHolder
 
     /**
      * Register a network request handler.
-     * 
+     *
      * @param name The handler name.
      * @param handler The {@code NetworkRequestHandler} to register.
      */
@@ -110,7 +110,7 @@ public abstract class ServerInputHandler extends FreeColServerHolder
 
     /**
      * Unregister a network request handler.
-     * 
+     *
      * @param name The handler name.
      * @param handler The {@code NetworkRequestHandler} to unregister.
      * @return True if the supplied handler was actually removed.

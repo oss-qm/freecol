@@ -86,7 +86,7 @@ public final class Monarch extends FreeColGameObject implements Named {
         DECLARE_WAR,
         SUPPORT_LAND,
         SUPPORT_SEA,
-        MONARCH_MERCENARIES, 
+        MONARCH_MERCENARIES,
         HESSIAN_MERCENARIES,
         DISPLEASURE;
 
@@ -102,7 +102,7 @@ public final class Monarch extends FreeColGameObject implements Named {
         public String getTextKey() {
             return "model." + getKey() + ".text";
         }
-        
+
         public String getYesKey() {
             return "model." + getKey() + ".yes";
         }
@@ -128,7 +128,7 @@ public final class Monarch extends FreeColGameObject implements Named {
      */
     private Force interventionForce;
 
-    
+
     // Caches.  Do not serialize.
     /** The naval unit types suitable for support actions. */
     private List<UnitType> navalTypes = null;
@@ -330,7 +330,7 @@ public final class Monarch extends FreeColGameObject implements Named {
                 }
             }
         }
-        
+
     }
 
     /**
@@ -583,7 +583,7 @@ public final class Monarch extends FreeColGameObject implements Named {
 
         final Specification spec = getSpecification();
         List<AbstractUnit> support = new ArrayList<>();
-        
+
         if (naval) {
             support.add(new AbstractUnit(getRandomMember(logger,
                         "Choose naval support", navalTypes, random),
@@ -705,7 +705,7 @@ public final class Monarch extends FreeColGameObject implements Named {
         }
         return result;
     }
-        
+
     /**
      * Gets some units available as mercenaries.
      *
@@ -922,7 +922,7 @@ public final class Monarch extends FreeColGameObject implements Named {
         } else if (MERCENARY_FORCE_TAG.equals(tag)) {
             new Force(getSpecification()).readFromXML(xr);
         // end @compat 0.11.5
-            
+
         // @compat 0.10.5
         } else if (Force.NAVAL_UNITS_TAG.equals(tag)) {
             expeditionaryForce.clearNavalUnits();

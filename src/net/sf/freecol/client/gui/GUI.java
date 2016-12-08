@@ -94,7 +94,6 @@ public class GUI extends FreeColClientHolder {
         private final StringTemplate template;
         private Runnable runnable;
 
-        
         public ErrorJob(Exception ex, String key) {
             this.template = FreeCol.errorFromException(ex, key);
             this.runnable = null;
@@ -195,7 +194,7 @@ public class GUI extends FreeColClientHolder {
     public ErrorJob errorJob(Exception ex, StringTemplate template) {
         return new ErrorJob(ex, template);
     }
-    
+
     /**
      * Create a new error job from a given message key.
      *
@@ -215,13 +214,12 @@ public class GUI extends FreeColClientHolder {
     public ErrorJob errorJob(StringTemplate template) {
         return new ErrorJob(template);
     }
-    
-    
+
     // Initialization related methods
 
-    /** 
+    /**
      * Swing system and look-and-feel initialization.
-     * 
+     *
      * @param fontName An optional font name to be used.
      * @exception FreeColException if the LAF is incompatible with the GUI.
      */
@@ -306,7 +304,7 @@ public class GUI extends FreeColClientHolder {
 
     /**
      * Create a thumbnail for the minimap.
-     * 
+     *
      * FIXME: Delete all code inside this method and replace it with
      *        sensible code directly drawing in necessary size,
      *        without creating a throwaway GUI panel, drawing in wrong
@@ -404,7 +402,7 @@ public class GUI extends FreeColClientHolder {
     public boolean requireFocus(Tile tile) {
         return false;
     }
-    
+
     /**
      * Animate a unit attack.
      *
@@ -1244,7 +1242,7 @@ public class GUI extends FreeColClientHolder {
                                        String message) {
         showErrorMessage(template, message, null);
     }
-    
+
     /**
      * Show an i18n compliant error message derived from a template,
      * with optional extra debug information and an optional callback.

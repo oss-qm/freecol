@@ -689,7 +689,7 @@ public abstract class Settlement extends GoodsLocation
      * @return True if this settlement needs more defence.
      */
     public abstract boolean isBadlyDefended();
-        
+
     /**
      * Gets the range of gold plunderable when this settlement is captured.
      *

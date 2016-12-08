@@ -522,7 +522,7 @@ public final class Market extends FreeColGameObject implements Ownable {
             }
         }
     }
-    
+
     /**
      * {@inheritDoc}
      */

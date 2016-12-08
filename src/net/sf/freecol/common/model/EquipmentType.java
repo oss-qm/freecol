@@ -192,7 +192,7 @@ public class EquipmentType extends BuildableType {
         return Colony.NoBuildReason.NONE;
     }
 
-    
+
     // Serialization
 
     private static final String BY_INDIANS_TAG = "by-indians";
@@ -216,7 +216,7 @@ public class EquipmentType extends BuildableType {
         xw.writeAttribute(MAXIMUM_COUNT_TAG, maximumCount);
 
         xw.writeAttribute(COMBAT_LOSS_PRIORITY_TAG, combatLossPriority);
-        
+
         xw.writeAttribute(ROLE_TAG, role);
     }
 
@@ -240,9 +240,9 @@ public class EquipmentType extends BuildableType {
         if (compatibleEquipment != null) {
             for (String compatible : compatibleEquipment) {
                 xw.writeStartElement(COMPATIBLE_EQUIPMENT_TAG);
-                
+
                 xw.writeAttribute(ID_ATTRIBUTE_TAG, compatible);
-                
+
                 xw.writeEndElement();
             }
         }

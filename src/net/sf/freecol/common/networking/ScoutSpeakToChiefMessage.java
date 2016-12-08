@@ -88,7 +88,7 @@ public class ScoutSpeakToChiefMessage extends AttributeMessage {
         return (result == null) ? "" : result;
     }
 
-    
+
     /**
      * {@inheritDoc}
      */

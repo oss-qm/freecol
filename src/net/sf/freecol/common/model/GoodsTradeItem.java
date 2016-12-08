@@ -31,13 +31,13 @@ import net.sf.freecol.common.util.Utils;
  * A trade item consisting of some goods.
  */
 public class GoodsTradeItem extends TradeItem {
-    
+
     public static final String TAG = "goodsTradeItem";
 
     /** The goods to change hands. */
     protected Goods goods;
 
-    
+
     /**
      * Creates a new {@code GoodsTradeItem} instance.
      *
@@ -78,7 +78,7 @@ public class GoodsTradeItem extends TradeItem {
             && (goods.getLocation() instanceof Ownable)
             && getSource().owns((Ownable)goods.getLocation());
     }
-    
+
     /**
      * {@inheritDoc}
      */

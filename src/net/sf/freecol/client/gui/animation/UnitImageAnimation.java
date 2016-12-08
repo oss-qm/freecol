@@ -38,7 +38,7 @@ import net.sf.freecol.common.model.Unit;
  * Class for in-place animation of units.
  */
 public final class UnitImageAnimation {
-    
+
     private final SwingGUI gui;
     private final Unit unit;
     private final Tile tile;
@@ -84,7 +84,7 @@ public final class UnitImageAnimation {
                         }
                         icon.setImage(image);
                         gui.paintImmediatelyCanvasIn(getDirtyAnimationArea());
-                        
+
                         time = ievent.getDurationInMs()
                             - (System.nanoTime() - time) / 1000000;
                         if (time > 0) {

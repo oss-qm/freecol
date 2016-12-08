@@ -141,7 +141,7 @@ public abstract class GoodsLocation extends UnitLocation {
     public final void removeAll() {
         if (goodsContainer != null) goodsContainer.removeAll();
     }
-        
+
     /**
      * Gets a list of all the goods in this location.  Each list member is
      * limited to a maximum amount of CARGO_SIZE, thus there may be multiple
@@ -183,7 +183,6 @@ public abstract class GoodsLocation extends UnitLocation {
         GoodsContainer.moveGoods(srcContainer, goodsType, amount, dstContainer);
     }
 
-    
     // Interface Location (from UnitLocation)
     // Inheriting
     //    FreeColObject.getId()
@@ -212,7 +211,7 @@ public abstract class GoodsLocation extends UnitLocation {
      */
     @Override
     public boolean remove(Locatable locatable) {
-        return (locatable instanceof Goods) 
+        return (locatable instanceof Goods)
             ? removeGoods((Goods)locatable) != null
             : super.remove(locatable);
     }

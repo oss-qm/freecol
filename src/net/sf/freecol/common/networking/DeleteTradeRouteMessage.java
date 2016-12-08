@@ -66,10 +66,10 @@ public class DeleteTradeRouteMessage extends AttributeMessage {
     public ChangeSet serverHandler(FreeColServer freeColServer,
                                    ServerPlayer serverPlayer) {
         final String tradeRouteId = getStringAttribute(TRADE_ROUTE_TAG);
-        
+
         TradeRoute tradeRoute;
         try {
-            tradeRoute = serverPlayer.getOurFreeColGameObject(tradeRouteId, 
+            tradeRoute = serverPlayer.getOurFreeColGameObject(tradeRouteId,
                 TradeRoute.class);
         } catch (Exception e) {
             return serverPlayer.clientError(e.getMessage());

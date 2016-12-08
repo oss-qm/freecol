@@ -114,7 +114,7 @@ public class InGameMenuBar extends FreeColMenuBar {
 
     @SuppressWarnings("unused")
     private static final Logger logger = Logger.getLogger(InGameMenuBar.class.getName());
-    
+
 
     /**
      * Creates a new {@code FreeColMenuBar}. This menu bar will include
@@ -144,7 +144,7 @@ public class InGameMenuBar extends FreeColMenuBar {
         // Add a mouse listener so that autoscrolling can happen in
         // this menubar
         this.addMouseMotionListener(listener);
-        
+
         reset();
     }
 

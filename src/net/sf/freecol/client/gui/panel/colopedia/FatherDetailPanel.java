@@ -172,6 +172,6 @@ public class FatherDetailPanel
             dSize = description.getPreferredSize(), size = new Dimension();
         size.setSize(lSize.getWidth() + dSize.getWidth() + 20,
             hSize.getHeight() + lSize.getHeight() + 10);
-        panel.setPreferredSize(size);            
+        panel.setPreferredSize(size);
     }
 }

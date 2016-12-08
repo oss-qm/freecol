@@ -63,7 +63,7 @@ public class PreCombatDialog extends FreeColConfirmDialog {
     public PreCombatDialog(FreeColClient freeColClient, JFrame frame,
             Unit attacker, FreeColGameObject defender) {
         super(freeColClient, frame);
-        
+
         final ImageLibrary lib = freeColClient.getGUI().getImageLibrary();
         final Game game = attacker.getGame();
         final CombatModel combatModel = game.getCombatModel();
@@ -166,7 +166,7 @@ public class PreCombatDialog extends FreeColConfirmDialog {
                           int skip) {
         int len = labels.length;
         for (int i = 0; i < len; i++) if (labels[i] == null) len = i;
- 
+
         String constraint = (newline) ? "newline" : null;
         if (skip > 0) {
             if (constraint == null) {

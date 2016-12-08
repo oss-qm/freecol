@@ -179,7 +179,7 @@ public class ColonyPlanTest extends FreeColTestCase {
         }
         return builder.build();
     }
-    
+
     /**
      * Should a plan produce a type of goods?
      *

@@ -36,7 +36,7 @@ import javax.swing.TransferHandler;
  * Swing component to which it is attached can accept draggable data.
  */
 public final class DropListener extends MouseAdapter {
-    
+
     @SuppressWarnings("unused")
     private static final Logger logger = Logger.getLogger(DropListener.class.getName());
 

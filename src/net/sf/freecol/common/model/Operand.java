@@ -272,7 +272,7 @@ public class Operand extends Scope {
      */
     public Integer getValue(Settlement settlement) {
         if (this.value != null) return this.value;
-        
+
         // In future, we might expand this to handle native settlements
         if (this.scopeLevel != ScopeLevel.SETTLEMENT
             || !(settlement instanceof Colony)) return null;
@@ -327,7 +327,7 @@ public class Operand extends Scope {
         if (xr.hasAttribute(OLD_OPERAND_TYPE_TAG)) {
             this.operandType = xr.getAttribute(OLD_OPERAND_TYPE_TAG,
                 OperandType.class, OperandType.NONE);
-        } else            
+        } else
         // end @compat 0.11.3
             this.operandType = xr.getAttribute(OPERAND_TYPE_TAG,
                 OperandType.class, OperandType.NONE);

@@ -171,7 +171,7 @@ public final class FreeCol {
         // We need to keep a hard reference to the instantiated logger, as
         // Logger only uses weak references.
         public Logger logger;
-        
+
         public LogLevel(String name, Level level) {
             this.name = name;
             this.level = level;
@@ -214,7 +214,7 @@ public final class FreeCol {
     /** How much gui elements get scaled. */
     private static float guiScale = GUI_SCALE_DEFAULT;
 
-   
+
     private FreeCol() {} // Hide constructor
 
     /**
@@ -349,7 +349,6 @@ public final class FreeCol {
         }
     }
 
-
     /**
      * Get the JarURLConnection from a class.
      *
@@ -363,7 +362,7 @@ public final class FreeCol {
         URL url = c.getResource(resourceName);
         return (JarURLConnection)url.openConnection();
     }
-        
+
     /**
      * Extract the package version from the class.
      *
@@ -393,7 +392,7 @@ public final class FreeCol {
         ZipEntry ze = jf.getEntry(SPLASH_DEFAULT);
         return jf.getInputStream(ze);
     }
-            
+
     /**
      * Exit printing fatal error message.
      *
@@ -1073,7 +1072,7 @@ public final class FreeCol {
 
     /**
      * Sets the scale for GUI elements.
-     * 
+     *
      * @param arg The optional command line argument to be parsed.
      * @return If the argument was correctly formatted.
      */
@@ -1104,7 +1103,7 @@ public final class FreeCol {
 
     /**
      * Gets the valid scale factors for the GUI.
-     * 
+     *
      * @return A string containing these.
      */
     public static String getValidGUIScales() {
@@ -1162,7 +1161,7 @@ public final class FreeCol {
     public static Locale getLocale() {
         return FreeCol.locale;
     }
-    
+
     /**
      * Gets the current revision of game.
      *

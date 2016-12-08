@@ -70,7 +70,7 @@ public class DeclareIndependenceMessage extends AttributeMessage {
                                    ServerPlayer serverPlayer) {
         final String nationName = getStringAttribute(NATION_NAME_TAG);
         final String countryName = getStringAttribute(COUNTRY_NAME_TAG);
-        
+
         if (nationName == null || nationName.isEmpty()) {
             return serverPlayer.clientError("Empty nation name.");
         }
