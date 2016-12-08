@@ -146,7 +146,7 @@ public class NewRegionNameMessage extends AttributeMessage {
             return serverPlayer.clientError("Region mismatch, "
                 + region.getId() + " != " + regionId);
         }
-        
+
         // Do the discovery
         return freeColServer.getInGameController()
             .setNewRegionName(serverPlayer, unit, region, getNewRegionName());

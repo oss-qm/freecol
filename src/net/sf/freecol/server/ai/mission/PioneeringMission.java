@@ -317,7 +317,7 @@ public class PioneeringMission extends Mission {
             c.getTileImprovementPlans().size());
         final EuropeanAIPlayer owner = (EuropeanAIPlayer)aiUnit.getAIOwner();
         AIColony bestColony = maximize(owner.getAIColonies(), comp);
-            
+
         PathNode path;
         Colony colony;
         return (bestColony == null)
@@ -509,7 +509,7 @@ public class PioneeringMission extends Mission {
     public Location findTarget() {
         return findTarget(getAIUnit(), 10, true);
     }
-    
+
     /**
      * {@inheritDoc}
      */
@@ -652,30 +652,6 @@ public class PioneeringMission extends Mission {
             return lbRetarget(lb);
         }
 
-        // Check for threats.
-        // The code below is very conservative.  When enabled it
-        // reduces the number of completed improvements by a factor of
-        // 4 -- 5, which is unacceptable.  Therefore, disabled for
-        // now.  FIXME: do something better.
-        /*
-        int turnsNeeded = DEFAULT_THREAT_TURNS;
-        if (unit.getWorkImprovement() != null) {
-            turnsNeeded = Math.min(turnsNeeded, unit.getWorkLeft());
-        }
-        if (unit.isInDanger(turnsNeeded, 0.25f)) {
-            if (unit.getTile().getColony() != null) {
-                logger.finest(tag + " avoiding danger: " + this);
-                return lbDrop(lb);
-            }
-            PathNode safe = unit.findOurNearestSettlement(false, 1, false);
-            if (safe != null) {
-                travelToTarget(tag + " (evading)",
-                               safe.getLastNode().getTile(), costDecider);
-                return lbDrop(lb);
-            }
-        }
-        */
-
         // Going to a tile to perform an improvement.
         Tile tile = getTarget().getTile();
         for (;;) {
@@ -683,16 +659,16 @@ public class PioneeringMission extends Mission {
             switch (mt) {
             case MOVE: // Arrived
                 break;
-                
+
             case MOVE_HIGH_SEAS:
                 return lbWait(lb);
-                
+
             case MOVE_NO_REPAIR:
                 return lbFail(lb, false, AIUNITDIED);
 
             case MOVE_NO_MOVES: case MOVE_NO_TILE: case MOVE_ILLEGAL:
                 return this;
-                
+
             case MOVE_NO_ATTACK_CIVILIAN:
                 // Might be a temporary blockage due to an occupying
                 // unit at the target.  Move randomly and retry if

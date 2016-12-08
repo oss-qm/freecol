@@ -39,7 +39,7 @@ public class NativeGiftMessage extends AttributeMessage {
     private static final String COLONY_TAG = "colony";
     private static final String UNIT_TAG = "unit";
 
-    
+
     /**
      * Create a new {@code NativeGiftMessage}.
      *

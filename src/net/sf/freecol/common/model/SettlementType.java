@@ -240,7 +240,7 @@ public class SettlementType extends FreeColSpecObjectType {
         if (plunder == null) plunder = new ArrayList<>();
         plunder.add(pt);
     }
-    
+
     /**
      * Get the range of gifts available to a unit.
      *
@@ -334,7 +334,7 @@ public class SettlementType extends FreeColSpecObjectType {
 
         if (this.gifts != null) {
             xw.writeStartElement(GIFTS_TAG);
-                
+
             this.gifts.writeAttributes(xw);
 
             xw.writeEndElement();

@@ -82,7 +82,7 @@ public class EmigrateUnitMessage extends AttributeMessage {
             return serverPlayer.clientError("Invalid slot for recruitment: "
                 + slot);
         }
-            
+
         MigrationType type;
         if (serverPlayer.getRemainingEmigrants() > 0) {
             if (MigrationType.unspecificMigrantSlot(slot)) {

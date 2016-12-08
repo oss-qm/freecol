@@ -290,7 +290,7 @@ public abstract class MissionAIPlayer extends AIPlayer {
         return (IdleAtSettlementMission.invalidReason(aiUnit) != null) ? null
             : new IdleAtSettlementMission(getAIMain(), aiUnit);
     }
-       
+
     /**
      * Gets a UnitSeekAndDestroyMission for a unit.
      *

@@ -83,7 +83,7 @@ public final class ReportCompactColonyPanel extends ReportPanel
     /** Predicate to select units that are not working. */
     private static final Predicate<Unit> notWorkingPred = u ->
         u.getState() != Unit.UnitState.FORTIFIED && u.getState() != Unit.UnitState.SENTRY;
-    
+
     /** Container class for all the information about a colony. */
     private static class ColonySummary {
 
@@ -148,7 +148,7 @@ public final class ReportCompactColonyPanel extends ReportPanel
 
         /** Current production bonus. */
         public final int bonus;
-        
+
         /** Preferred size change. */
         public final int sizeChange;
 
@@ -166,7 +166,7 @@ public final class ReportCompactColonyPanel extends ReportPanel
         public final Map<UnitType, Suggestion> improve = new HashMap<>();
         /** Suggested new unit use. */
         public final Map<UnitType, Suggestion> want = new HashMap<>();
-        
+
         /** Currently building. */
         public final BuildableType build;
         public final int completeTurns;
@@ -198,7 +198,7 @@ public final class ReportCompactColonyPanel extends ReportPanel
             }
 
             this.bonus = colony.getProductionBonus();
-            
+
             this.sizeChange = colony.getPreferredSizeChange();
 
             for (GoodsType gt : goodsTypes) produce(gt);
@@ -237,7 +237,7 @@ public final class ReportCompactColonyPanel extends ReportPanel
                         spec.getExpertForProducing(e.getValue().goodsType),
                         e.getValue()));
             }
-            
+
             // Make a list of unit types that are not working at their
             // speciality, including the units just standing around.
             final Predicate<Unit> couldWorkPred = u -> {
@@ -371,7 +371,7 @@ public final class ReportCompactColonyPanel extends ReportPanel
         this.spec = getSpecification();
         this.lib = getImageLibrary();
         this.market = getMyPlayer().getMarket();
-        
+
         // Sort the colonies by continent.
         final Map<Integer, List<Colony>> continents = new HashMap<>();
         for (Colony c : freeColClient.getMySortedColonies()) {
@@ -509,30 +509,7 @@ public final class ReportCompactColonyPanel extends ReportPanel
         }
         if (ResourceManager.hasResource(key))
             annotations += ResourceManager.getString(key);
-        /* Omit for now, too much detail.
-        for (GoodsType gt : spec.getLibertyGoodsTypeList()) {
-            if ((building = s.colony.getWorkLocationWithModifier(gt.getId(), Building.class)) != null) {
-                key = "annotation." + building.getType().getSuffix();
-                t.add(Messages.message(building.getLabel()));
-                if (ResourceManager.hasResource(key))
-                    annotations += ResourceManager.getString(key);
-            }
-        }*/
-        /* Omit for now, too much detail.
-        for (GoodsType gt : spec.getImmigrationGoodsTypeList()) {
-            if ((building = s.colony.getWorkLocationWithModifier(gt.getId(), Building.class)) != null) {
-                key = "annotation." + building.getType().getSuffix();
-                t.add(Messages.message(building.getLabel()));
-                if (ResourceManager.hasResource(key))
-                    annotations += ResourceManager.getString(key);
-            }
-        }*/
-        /* Font update needed
-        if ((building = s.colony.getWorkLocationWithAbility(Ability.TEACH, Building.class)) != null) {
-            key = "annotation." + building.getType().getSuffix();
-            t.add(Messages.message(building.getLabel()));
-            if (ResourceManager.hasResource(key)) annotations += ResourceManager.getString(key);
-        }*/
+
         if ((building = s.colony.getWorkLocationWithAbility(Ability.EXPORT, Building.class)) != null) {
             annotations += "*";
             t.add(Messages.message(building.getLabel()));
@@ -587,7 +564,7 @@ public final class ReportCompactColonyPanel extends ReportPanel
         for (TileImprovementType ti : spec.getTileImprovementTypeList()) {
             if (ti.isNatural()) continue;
             n = 0;
-            boolean center = false; 
+            boolean center = false;
             for (TileImprovementSuggestion tis : s.tileSuggestions) {
                 if (tis.tileImprovementType == ti) {
                     n++;
@@ -831,7 +808,7 @@ public final class ReportCompactColonyPanel extends ReportPanel
 
         // TODO: notWorking?
     }
-    
+
     private List<JButton> unitButtons(final Map<UnitType, Suggestion> suggestions,
                                       List<UnitType> have, Colony colony) {
         final String cac = colony.getId();
@@ -1002,7 +979,7 @@ public final class ReportCompactColonyPanel extends ReportPanel
         // Field: The required goods rates.
         // Colour: cPlain
         List<JLabel> labels = transform(mapEntriesByValue(rNeeded, descendingDoubleComparator),
-            alwaysTrue(), 
+            alwaysTrue(),
             e -> newLabel(String.format("%4.1f %s", e.getValue(),
                                         Messages.getName(e.getKey())),
                 null, cPlain,
@@ -1034,10 +1011,10 @@ public final class ReportCompactColonyPanel extends ReportPanel
                                 cPlain, t));
             if (++n >= maxSize) break;
         }
-        
+
         return result;
-    }                
-        
+    }
+
     /**
      * Display the header area for the concise panel.
      *

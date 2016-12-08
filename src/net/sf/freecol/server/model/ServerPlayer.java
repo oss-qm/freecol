@@ -215,7 +215,7 @@ public class ServerPlayer extends Player implements ServerModelObject {
         if (nation == null) throw new RuntimeException("Null nation");
 
         this.initialize(game); // Attach to game
-        
+
         this.name = nation.getRulerName();
         this.admin = admin;
         this.nationId = nation.getId();
@@ -322,7 +322,7 @@ public class ServerPlayer extends Player implements ServerModelObject {
         if (this.connection != null) this.connection.close();
         setConnection(null);
     }
-            
+
     /**
      * Send a change set to this player.
      *
@@ -342,7 +342,7 @@ public class ServerPlayer extends Player implements ServerModelObject {
     public DOMMessage ask(Game game, DOMMessage request) {
         return (isConnected()) ? this.connection.ask(game, request) : null;
     }
-    
+
     /**
      * Send an element to this player.
      * Do not use (sole use in send() above). This will go away.
@@ -903,7 +903,7 @@ public class ServerPlayer extends Player implements ServerModelObject {
         if (gold != GOLD_NOT_ACCOUNTED) {
             this.score += (int)Math.floor(SCORE_GOLD * gold);
         }
-        
+
         int bonus = 0;
         for (HistoryEvent h : transform(getHistory(),
                 matchKeyEquals(getId(), HistoryEvent::getPlayerId))) {
@@ -993,7 +993,7 @@ public class ServerPlayer extends Player implements ServerModelObject {
      */
     public Set<Tile> exploreForUnit(Unit unit) {
         return (getGame() == null || getGame().getMap() == null || unit == null
-            || !(unit.getLocation() instanceof Tile)) 
+            || !(unit.getLocation() instanceof Tile))
             ? Collections.<Tile>emptySet()
             : exploreTiles(unit.getVisibleTiles());
     }
@@ -1034,7 +1034,7 @@ public class ServerPlayer extends Player implements ServerModelObject {
             : (unit.isOnCarrier()) ? false
             : true;
     }
-        
+
     /**
      * Try to reassign the ownership of a collection of tiles,
      * preferring this player.
@@ -1213,7 +1213,7 @@ public class ServerPlayer extends Player implements ServerModelObject {
         if (lb.grew("Load ships: ")) {
             lb.shrink(", ");
             lb.log(logger, Level.FINEST);
-        }        
+        }
         return leftOver;
     }
 
@@ -1326,7 +1326,7 @@ public class ServerPlayer extends Player implements ServerModelObject {
         final int tax = getTax();
         final int incomeBeforeTaxes = market.getSalePrice(type, amount);
         final int incomeAfterTaxes = ((100 - tax) * incomeBeforeTaxes) / 100;
-        
+
         modifyGold(incomeAfterTaxes);
         market.modifySales(type, amount);
         if (container != null) container.addGoods(type, -amount);
@@ -1924,7 +1924,7 @@ outer:  for (Effect effect : effects) {
         //     - not one of ours
         //     - a naval unit at sea
         //     - either we are at war with them or they are pirates
-        final Predicate<Unit> bombardUnit = u -> 
+        final Predicate<Unit> bombardUnit = u ->
             (u.getOwner() != this
                 && u.isNaval() && !u.getTile().isLand()
                 && (atWarWith(u.getOwner()) || u.hasAbility(Ability.PIRACY)));
@@ -2237,12 +2237,10 @@ outer:  for (Effect effect : effects) {
         Settlement attackerSettlement = null;
         Tile attackerTile = null;
         Unit defenderUnit = null;
-        //ServerPlayer attackerPlayer = null;
         ServerPlayer defenderPlayer = null;
         Tile defenderTile = null;
         if (isAttack) {
             attackerUnit = (Unit)attacker;
-            //attackerPlayer = (ServerPlayer)attackerUnit.getOwner();
             attackerTile = attackerUnit.getTile();
             defenderUnit = (Unit)defender;
             defenderPlayer = (ServerPlayer)defenderUnit.getOwner();
@@ -2268,7 +2266,6 @@ outer:  for (Effect effect : effects) {
             }
         } else if (isBombard) {
             attackerSettlement = (Settlement)attacker;
-            //attackerPlayer = (ServerPlayer)attackerSettlement.getOwner();
             attackerTile = attackerSettlement.getTile();
             defenderUnit = (Unit)defender;
             defenderPlayer = (ServerPlayer)defenderUnit.getOwner();
@@ -3177,7 +3174,7 @@ outer:  for (Effect effect : effects) {
             .getLocationLabelFor(winnerPlayer);
         final String suffix = loser.getType().getSuffix(); // pre-demotion value
         String key;
-        
+
         UnitChange uc = loser.getUnitChange(UnitChangeType.DEMOTION);
         if (uc == null || uc.to == loser.getType()) {
             logger.warning("Demotion failed, type="
@@ -3285,7 +3282,7 @@ outer:  for (Effect effect : effects) {
             u.setHomeIndianSettlement(null);
             cs.add(See.only(nativePlayer), u);
         }
-                
+
         // Destroy the settlement, update settlement tiles.
         csDisposeSettlement(is, cs);
 
@@ -3362,7 +3359,7 @@ outer:  for (Effect effect : effects) {
                 sis.csKillMissionary(true, cs);
             }
         }
-            
+
         // Get it off the map and off the owners list.
         settlement.exciseSettlement();//-vis(owner),-til
         owner.removeSettlement(settlement);
@@ -3727,7 +3724,7 @@ outer:  for (Effect effect : effects) {
             changed = colony.ejectUnits(building, building.getUnitList());//-til
             colony.destroyBuilding(building);//-til
             changed |= building.getType().isDefenceType();
-            cs.addRemove(See.only((ServerPlayer)colony.getOwner()), colony, 
+            cs.addRemove(See.only((ServerPlayer)colony.getOwner()), colony,
                          building);//-vis: safe, buildings are ok
             building.dispose();
             // Have any abilities been removed that gate other production,
@@ -3854,7 +3851,7 @@ outer:  for (Effect effect : effects) {
         ServerPlayer shipPlayer = (ServerPlayer) ship.getOwner();
         StringTemplate shipNation = ship.getApparentOwnerName();
         Building building = ((Colony)settlement).getStockade();
-        
+
         cs.addMessage(attackerPlayer,
             new ModelMessage(ModelMessage.MessageType.COMBAT_RESULT,
                              "combat.shipSunkByBombardment.enemy", settlement)
@@ -4034,7 +4031,7 @@ outer:  for (Effect effect : effects) {
             cs.addModifier(this, colony, tpm, true);
             cs.add(See.only(this), colony.getGoodsContainer());
             cs.add(See.only(this), market.getMarketData(goodsType));
-            
+
             String messageId = "model.player.colonyGoodsParty."
                 + goodsType.getSuffix();
             if (!Messages.containsKey(messageId)) {
@@ -4110,7 +4107,7 @@ outer:  for (Effect effect : effects) {
                 "image.flavor.model.mercenaries." + n));
         new MonarchSession(this, action, mercenaries, price);
     }
-        
+
     /**
      * Set the player tax rate.
      * If this requires a change to the bells bonuses, we have to update
@@ -4367,7 +4364,7 @@ outer:  for (Effect effect : effects) {
                 cs.add(See.only(this), colonyContainer);
                 cs.add(See.only(demandPlayer), unitContainer);
             }
-            
+
             // FIXME: One day the AI should decide what it does with tension
             int difficulty = getSpecification()
                 .getInteger(GameOptions.NATIVE_DEMANDS);
@@ -4486,7 +4483,7 @@ outer:  for (Effect effect : effects) {
             if (isRebel() && interventionBells
                 >= getSpecification().getInteger(GameOptions.INTERVENTION_BELLS)) {
                 interventionBells = Integer.MIN_VALUE;
-                
+
                 // Enter near a port.
                 List<Colony> ports = getPorts();
                 Colony port = getRandomMember(logger, "Intervention port",
@@ -4495,7 +4492,7 @@ outer:  for (Effect effect : effects) {
                 Tile entry = game.getMap().searchCircle(portTile,
                     GoalDeciders.getSimpleHighSeasGoalDecider(),
                     portTile.getHighSeasCount()+1).getSafeTile(this, random);
-                
+
                 // Create the force.
                 // @compat 0.10.5
                 // We used to nullify the monarch when declaring independence.

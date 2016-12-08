@@ -47,14 +47,14 @@ public abstract class ClientInputHandler extends FreeColClientHolder
 
     /**
      * Handle a request to a client.
-     * 
+     *
      * @param connection The {@code Connection} the request was sent on.
      * @param element The root {@code Element} of the message.
      */
     public interface ClientNetworkRequestHandler {
         void handle(Connection connection, Element element);
     }
-        
+
     /**
      * The handler map provides named handlers for network
      * requests.  Each handler deals with a given request type.
@@ -82,7 +82,7 @@ public abstract class ClientInputHandler extends FreeColClientHolder
 
    /**
      * Register a network request handler.
-     * 
+     *
      * @param name The handler name.
      * @param handler The {@code ClientNetworkRequestHandler} to register.
      */
@@ -92,7 +92,7 @@ public abstract class ClientInputHandler extends FreeColClientHolder
 
     /**
      * Unregister a network request handler.
-     * 
+     *
      * @param name The handler name.
      * @param handler The {@code ClienNetworkRequestHandler} to unregister.
      * @return True if the supplied handler was actually removed.

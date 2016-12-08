@@ -87,7 +87,7 @@ public final class ErrorPanel extends FreeColPanel {
         JTextArea textArea = Utility.getDefaultTextArea(message, columnWidth);
         textArea.setFocusable(true);
         textArea.setEditable(false);
-        
+
         JScrollPane scrollPane = new JScrollPane(textArea,
             JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,
             JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);

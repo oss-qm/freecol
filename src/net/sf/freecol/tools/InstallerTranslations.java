@@ -101,13 +101,6 @@ public class InstallerTranslations {
 
     public static void main(String[] args) throws Exception {
 
-        /*
-        if (!LANGUAGE_CODES.exists()) {
-            System.out.println("Language codes not found.");
-            System.exit(1);
-        }
-        */
-
         if (!MAIN_FILE.exists()) {
             System.out.println("Main input file not found.");
             System.exit(1);
@@ -117,13 +110,11 @@ public class InstallerTranslations {
             DESTINATION_DIRECTORY.mkdirs();
         }
 
-        //Map<String, String> languageMappings = readLanguageMappings(LANGUAGE_CODES);
         Map<String, String> languageMappings = new HashMap<>();
         for (String[] mapping : IZPACK_CODES) {
             languageMappings.put(mapping[0], mapping[1]);
         }
         Map<String, String> mainProperties = readFile(MAIN_FILE);
-        //Set<String> languages = new HashSet<String>();
 
         String[] sourceFiles = SOURCE_DIRECTORY.list(new FilenameFilter() {
                 @Override
@@ -207,26 +198,4 @@ public class InstallerTranslations {
         }
         return result;
     }
-    /*
-    private static Map<String, String> readLanguageMappings(File file) {
-        Map<String, String> result = new HashMap<>();
-        try {
-            FileReader fileReader = new FileReader(file);
-            BufferedReader bufferedReader = new BufferedReader(fileReader);
-            String line = bufferedReader.readLine();
-            String[] fields;
-            while (line != null) {
-                fields = line.split(":");
-                if (fields[1].length() > 0) {
-                    result.put(fields[1], fields[0].substring(0, 3));
-                }
-                line = bufferedReader.readLine();
-            }
-        } catch(Exception e) {
-            // forget it
-        }
-        return result;
-    }
-    */
 }
-

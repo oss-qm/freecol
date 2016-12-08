@@ -44,7 +44,7 @@ public class RangeOption extends SelectOption {
     private static final Logger logger = Logger.getLogger(RangeOption.class.getName());
 
     public static final String TAG = "rangeOption";
-    
+
     /**
      * Creates a new {@code RangeOption}.
      *

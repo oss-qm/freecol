@@ -92,10 +92,10 @@ public final class DifficultyDialog extends OptionsDialog
 
             JButton resetButton = Utility.localizedButton("reset");
             addResetAction(resetButton);
-            
+
             JButton loadButton = Utility.localizedButton("load");
             addLoadAction(loadButton);
-                    
+
             JButton saveButton = Utility.localizedButton("save");
             addSaveAction(saveButton);
 

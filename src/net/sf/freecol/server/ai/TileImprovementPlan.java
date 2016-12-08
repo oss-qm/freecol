@@ -325,8 +325,8 @@ public class TileImprovementPlan extends ValuedAIObject {
 
         final AIMain aiMain = getAIMain();
         final Specification spec = getSpecification();
-        
-        type = xr.getType(spec, TYPE_TAG, 
+
+        type = xr.getType(spec, TYPE_TAG,
                           TileImprovementType.class, (TileImprovementType)null);
 
         pioneer = (xr.hasAttribute(PIONEER_TAG))

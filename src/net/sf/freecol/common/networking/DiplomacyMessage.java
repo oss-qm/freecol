@@ -220,7 +220,7 @@ public class DiplomacyMessage extends DOMMessage {
             cs = serverPlayer.clientError("Our object is bogus: " + our);
         }
         if (cs != null) return cs;
-        
+
         Unit otherUnit = null;
         Colony otherColony = null;
         Player otherPlayer = null;
@@ -288,7 +288,7 @@ public class DiplomacyMessage extends DOMMessage {
                 otherUnit, otherColony, this.agreement);
             break;
         case DIPLOMATIC:
-            cs = (ourUnit != null) 
+            cs = (ourUnit != null)
                 ? ((!ourUnit.hasAbility(Ability.NEGOTIATE))
                     ? serverPlayer.clientError("Unit lacks ability"
                         + " to negotiate: " + ourUnit)

@@ -44,7 +44,7 @@ public class Building extends WorkLocation
     private static final Logger logger = Logger.getLogger(Building.class.getName());
 
     public static final String TAG = "building";
-    
+
     public static final String UNIT_CHANGE = "UNIT_CHANGE";
 
     /** The type of building. */
@@ -159,7 +159,7 @@ public class Building extends WorkLocation
                         : m;
                 });
     }
-        
+
     /**
      * Does this building have a higher level?
      *
@@ -321,7 +321,6 @@ public class Building extends WorkLocation
             // Scale production by limitations on availability.
             if (available < required) {
                 minimumRatio *= (double)available / required;
-                //maximumRatio = Math.max(maximumRatio, minimumRatio);
             }
         }
 
@@ -340,7 +339,7 @@ public class Building extends WorkLocation
                 }
                 production = output.getAmount() * maximumRatio;
                 if (production > headroom) {
-                    maximumRatio = Math.min(maximumRatio, 
+                    maximumRatio = Math.min(maximumRatio,
                         headroom / output.getAmount());
                 }
             }
@@ -386,7 +385,7 @@ public class Building extends WorkLocation
         return super.evaluateFor(player)
             + sum(getType().getRequiredGoods(), ag -> ag.evaluateFor(player));
     }
-        
+
 
     // Interface Location
     // Inherits:
@@ -497,7 +496,7 @@ public class Building extends WorkLocation
     public boolean isAvailable() {
         return true;
     }
-    
+
     /**
      * {@inheritDoc}
      */
@@ -505,7 +504,7 @@ public class Building extends WorkLocation
     public boolean isCurrent() {
         return true;
     }
-    
+
     /**
      * {@inheritDoc}
      */
@@ -521,7 +520,7 @@ public class Building extends WorkLocation
     public Tile getWorkTile() {
         return null;
     }
-    
+
     /**
      * {@inheritDoc}
      */
@@ -575,7 +574,7 @@ public class Building extends WorkLocation
                      colony.getProductionModifiers(goodsType, unitType, this),
                      getCompetenceModifiers(id, unitType, turn),
                      owner.getModifiers(id, unitType, turn))
-            // With no unit, only the building-specific bonuses 
+            // With no unit, only the building-specific bonuses
             : concat(colony.getModifiers(id, type, turn),
                      owner.getModifiers(id, type, turn));
     }

@@ -141,7 +141,7 @@ public class BuildColonyMission extends Mission {
     public static float scorePath(AIUnit aiUnit, PathNode path) {
         Location loc;
         if (path == null
-            || !((loc = extractTarget(aiUnit, path)) instanceof Tile)) 
+            || !((loc = extractTarget(aiUnit, path)) instanceof Tile))
             return Integer.MIN_VALUE;
 
         final Tile tile = (Tile)loc;
@@ -286,7 +286,7 @@ public class BuildColonyMission extends Mission {
         return (reason != null) ? reason
             : (loc instanceof Colony)
             ? invalidColonyReason(aiUnit, (Colony)loc)
-            : (loc instanceof Tile) 
+            : (loc instanceof Tile)
             ? invalidTileReason(aiUnit, (Tile)loc)
             : Mission.TARGETINVALID;
     }
@@ -301,7 +301,7 @@ public class BuildColonyMission extends Mission {
         return invalidMissionReason(aiUnit);
     }
 
-      
+
     // Implement Mission
     //   Inherit dispose, getTransportDestination, isOneTime
 
@@ -507,7 +507,7 @@ public class BuildColonyMission extends Mission {
                 }
                 l2.log(logger, Level.FINE);
             }
-            
+
             // Clear to build the colony.
             if (AIMessage.askBuildColony(aiUnit, Player.ASSIGN_SETTLEMENT_NAME)
                 && tile.getColony() != null) {

@@ -45,7 +45,7 @@ final class ReceivingThread extends Thread {
 
     /**
      * Input stream for buffering the data from the network.
-     * 
+     *
      * This is just an input stream that signals end-of-stream when a
      * given token {@link Connection#END_OF_STREAM} is encountered.
      * In order to continue receiving data, the method {@link #enable}
@@ -61,7 +61,7 @@ final class ReceivingThread extends Thread {
         private final byte[] buffer = new byte[Connection.BUFFER_SIZE];
 
         private final byte[] bb = new byte[1];
-        
+
         private int bStart = 0;
 
         private int bSize = 0;
@@ -71,7 +71,7 @@ final class ReceivingThread extends Thread {
 
         /**
          * Creates a new {@code FreeColNetworkInputStream}.
-         * 
+         *
          * @param in The input stream in which this object should get the data
          *            from.
          */
@@ -91,7 +91,7 @@ final class ReceivingThread extends Thread {
 
         /**
          * Fills the buffer with data.
-         * 
+         *
          * @return True if a non-zero amount of data was read into the buffer.
          * @exception IOException is thrown by the underlying read.
          * @exception IllegalStateException if the buffer is not empty.
@@ -109,7 +109,7 @@ final class ReceivingThread extends Thread {
 
         /**
          * Reads a single byte.
-         * 
+         *
          * @return The byte read, or EOS_RESULT on error or "end" of stream.
          * @see #read(byte[], int, int)
          * @exception IOException is thrown by the underlying read.
@@ -121,7 +121,7 @@ final class ReceivingThread extends Thread {
 
         /**
          * Reads from the buffer and returns the data.
-         * 
+         *
          * @param b The buffer to put the data in.
          * @param off The offset to use when writing the data.
          * @param len The maximum number of bytes to read.
@@ -176,7 +176,7 @@ final class ReceivingThread extends Thread {
 
     /**
      * The constructor to use.
-     * 
+     *
      * @param connection The {@code Connection} this
      *            {@code ReceivingThread} belongs to.
      * @param in The stream to read from.
@@ -195,7 +195,7 @@ final class ReceivingThread extends Thread {
     /**
      * Gets the next network reply identifier that will be used when
      * identifing a network message.
-     * 
+     *
      * @return The next available network reply identifier.
      */
     public synchronized int getNextNetworkReplyId() {
@@ -205,7 +205,7 @@ final class ReceivingThread extends Thread {
     /**
      * Creates and registers a new {@code NetworkReplyObject} with the
      * specified object identifier.
-     * 
+     *
      * @param networkReplyId The identifier of the message the calling
      *     thread should wait for.
      * @return The {@code NetworkReplyObject} containing the network
@@ -249,7 +249,7 @@ final class ReceivingThread extends Thread {
     /**
      * Listens to the InputStream and calls the MessageHandler for
      * each message received.
-     * 
+     *
      * @throws IOException If thrown by the {@link FreeColNetworkInputStream}.
      * @throws SAXException if a problem occured during parsing.
      * @throws XMLStreamException if a problem occured during parsing.

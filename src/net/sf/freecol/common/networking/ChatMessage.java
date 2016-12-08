@@ -112,5 +112,5 @@ public class ChatMessage extends AttributeMessage {
         server.getInGameController()
             .chat(serverPlayer, getMessage(), isPrivate());
         return null;
-    }        
+    }
 }

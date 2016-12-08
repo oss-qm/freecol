@@ -28,7 +28,7 @@ import java.util.logging.Logger;
 
 import javax.swing.SwingUtilities;
 
-import net.sf.freecol.FreeCol; 
+import net.sf.freecol.FreeCol;
 import net.sf.freecol.client.ClientOptions;
 import net.sf.freecol.client.FreeColClient;
 import net.sf.freecol.client.control.FreeColClientHolder;
@@ -119,7 +119,7 @@ public final class ConnectController extends FreeColClientHolder {
         final FreeColClient fcc = getFreeColClient();
         final Player player = fcc.getMyPlayer();
         if (!fcc.isLoggedIn()) return true;
-        
+
         logger.info("Logout begin for client " + player.getName()
             + ": " + reason.toString());
         return askServer().logout(player, reason);
@@ -483,21 +483,13 @@ public final class ConnectController extends FreeColClientHolder {
             try { Thread.sleep(1000); } catch (InterruptedException ie) {}
         }
         askServer().disconnect();
-        
+
         switch (fcc.getServerState()) {
         case PRE_GAME: case LOAD_GAME:
             // Name is good
             break;
 
         case IN_GAME:
-            /*
-            // Disable this check if you need to debug a multiplayer client.
-            if (FreeColDebugger.isInDebugMode(FreeColDebugger.DebugMode.MENUS)) {
-                getGUI().showErrorMessage(StringTemplate
-                    .template("client.debugConnect"));
-                return false;
-            }
-            */
             // Find the players, choose one.
             List<String> names = fcc.getVacantPlayerNames();
             if (names.isEmpty()) return false;
@@ -526,7 +518,7 @@ public final class ConnectController extends FreeColClientHolder {
      */
     public void mainTitle() {
         final FreeColClient fcc = getFreeColClient();
-        
+
         if (fcc.isMapEditor()) fcc.setMapEditor(false);
 
         if (fcc.isLoggedIn()) {
@@ -535,12 +527,12 @@ public final class ConnectController extends FreeColClientHolder {
             }
             return;
         }
-            
+
         fcc.stopServer();
         getGUI().removeInGameComponents();
         getGUI().mainTitle();
     }
-    
+
     /**
      * Reset to the NewPanel (except in the map editor).
      */

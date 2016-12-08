@@ -59,7 +59,7 @@ public class LoadAction extends MapboardAction {
             && carrier != null
             && carrier.isCarrier()
             && carrier.hasSpaceLeft();
-    }    
+    }
 
 
     // Interface ActionListener

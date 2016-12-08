@@ -243,7 +243,7 @@ public class Force extends FreeColSpecObject {
     }
     // end @compat 0.10.x
 
-                    
+
     // Serialization
 
     // @compat 0.10.5

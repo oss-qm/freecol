@@ -201,7 +201,7 @@ public final class Server extends Thread {
     public void sendToAll(DOMMessage message) {
         sendToAll(message, null);
     }
-    
+
     /**
      * Start the thread processing.  Contains the loop that is waiting
      * for new connections to the public socket.  When a new client
@@ -243,7 +243,7 @@ public final class Server extends Thread {
      */
     public void shutdown() {
         this.running = false;
- 
+
         try {
             this.serverSocket.close();
             logger.fine("Closed server socket.");

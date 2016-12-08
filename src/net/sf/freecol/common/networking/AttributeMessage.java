@@ -216,7 +216,7 @@ public class AttributeMessage extends TrivialMessage {
         return this;
     }
 
-    
+
     /**
      * {@inheritDoc}
      */

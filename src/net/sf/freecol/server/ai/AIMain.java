@@ -349,7 +349,7 @@ public class AIMain extends FreeColObject
         }
         return (lb.grew()) ? lb.toString() : null;
     }
-    
+
     /**
      * Checks the integrity of this {@code AIMain} by checking if
      * there are any invalid objects.
@@ -634,11 +634,11 @@ public class AIMain extends FreeColObject
 
             } else if (WorkerWish.TAG.equals(tag)) {
                 wish = new WorkerWish(this, xr);
-            
+
             } else {
                 super.readChild(xr);
             }
-            
+
             if (wish != null) {
                 AIColony ac = wish.getDestinationAIColony();
                 if (ac != null) ac.addWish(wish);

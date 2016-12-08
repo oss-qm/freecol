@@ -51,7 +51,7 @@ public class GenerateDocumentation {
     private static final File RULE_DIRECTORY =
         new File("data/rules/classic");
     private static final String XSL = "specification.xsl";
-    
+
     private static final File DESTINATION_DIRECTORY =
         new File("doc");
 
@@ -66,15 +66,12 @@ public class GenerateDocumentation {
         });
 
 
-
-
     public static void main(String[] args) throws Exception {
         System.setProperty("jaxp.debug", "1");
         if (args.length > 0) {
             Arrays.sort(args);
         }
         readResources();
-        //generateTMX();
         generateDocumentation(args);
     }
 
@@ -248,4 +245,3 @@ public class GenerateDocumentation {
         return Messages.message(stringTemplate);
     }
 }
-

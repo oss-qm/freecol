@@ -218,7 +218,7 @@ public final class AIInGameInputHandler implements MessageHandler {
             case SetCurrentPlayerMessage.TAG:
                 reply = setCurrentPlayer(new SetCurrentPlayerMessage(game, element));
                 break;
-                
+
             // Since we're the server, we can see everything.
             // Therefore most of these messages are useless.
             // This may change one day.

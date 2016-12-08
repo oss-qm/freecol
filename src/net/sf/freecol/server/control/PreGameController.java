@@ -81,7 +81,7 @@ public final class PreGameController extends Controller {
 
     /**
      * Launch the game if possible.
-     * 
+     *
      * @param serverPlayer The {@code ServerPlayer} that requested launching.
      * @return A {@code ChangeSet} encapsulating this action.
      */

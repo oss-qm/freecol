@@ -79,7 +79,7 @@ public class ServerColonyTest extends FreeColTestCase {
         = spec().getTileType("model.tile.marsh");
     private static final TileType plains
         = spec().getTileType("model.tile.plains");
-    
+
     private static final UnitType colonistType
         = spec().getUnitType("model.unit.freeColonist");
     private static final UnitType expertLumberJack
@@ -319,7 +319,7 @@ public class ServerColonyTest extends FreeColTestCase {
         Unit statesman = colony.getUnitList().get(0);
         townHall.setWorkFor(statesman);
         assertEquals(bellsType, statesman.getWorkType());
-        
+
         ServerBuilding church
             = (ServerBuilding)colony.getBuilding(chapelType);
         church.upgrade();

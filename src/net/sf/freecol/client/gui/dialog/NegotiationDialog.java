@@ -968,7 +968,7 @@ public final class NegotiationDialog extends FreeColDialog<DiplomaticTrade> {
         panel.add(labelOfferMessage);
 
         // Panel contents
-        // TODO: Expand center panel so that contents fill cell horizontally. 
+        // TODO: Expand center panel so that contents fill cell horizontally.
         panel.add(this.goldDemandPanel); // Left pane
         JPanel centerPanel = new MigPanel();
         centerPanel.setLayout(new MigLayout("wrap 1"));
@@ -1123,15 +1123,15 @@ public final class NegotiationDialog extends FreeColDialog<DiplomaticTrade> {
      * @return A new {@code JButton} for the item.
      */
     private JButton getTradeItemButton(TradeItem item, boolean saleDir) {
-        
+
         Market market = getMyPlayer().getMarket();
         JButton button = new JButton(new RemoveAction(item));
-        
+
         // Checks if the items are goods
         if (item.getGoods() != null) {
             int buyPriceTotal = market.getBidPrice(item.getGoods().getType(), item.getGoods().getAmount());
             int salePriceTotal = market.getSalePrice(item.getGoods().getType(), item.getGoods().getAmount());
-            
+
             // Depending on saleDir, creates a button for goods w/ EU buy or sale price
             if (saleDir) {
                 button.setText(Messages.message(item.getLabel()) + " " +
@@ -1148,7 +1148,7 @@ public final class NegotiationDialog extends FreeColDialog<DiplomaticTrade> {
             // If not goods, follow protocol
             button.setText(Messages.message(item.getLabel()));
         }
-        
+
         button.setMargin(Utility.EMPTY_MARGIN);
         button.setOpaque(false);
         button.setForeground(Utility.LINK_COLOR);

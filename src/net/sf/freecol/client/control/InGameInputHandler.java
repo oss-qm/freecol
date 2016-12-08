@@ -209,7 +209,7 @@ public final class InGameInputHandler extends ClientInputHandler {
     private void invokeAndWait(Runnable runnable) {
         getGUI().invokeNowOrWait(runnable);
     }
-    
+
     /**
      * Shorthand to run in the EDT eventually.
      *
@@ -218,7 +218,7 @@ public final class InGameInputHandler extends ClientInputHandler {
     private void invokeLater(Runnable runnable) {
         getGUI().invokeNowOrLater(runnable);
     }
-    
+
     /**
      * Get the integer value of an element attribute.
      *
@@ -623,7 +623,7 @@ public final class InGameInputHandler extends ClientInputHandler {
                             + object + "/" + add);
                     }
                     break;
-                    
+
                 default:
                     logger.warning("featureChange unrecognized: " + tag);
                     break;
@@ -671,7 +671,7 @@ public final class InGameInputHandler extends ClientInputHandler {
         final Game game = getGame();
         final FountainOfYouthMessage message
             = new FountainOfYouthMessage(game, element);
-        
+
         final int n = message.getMigrants();
         if (n <= 0) {
             logger.warning("Invalid migrants attribute: " + n);
@@ -715,7 +715,7 @@ public final class InGameInputHandler extends ClientInputHandler {
         invokeLater(() -> { igc().displayHighScores(message.getKey(),
                                                     message.getScores()); });
     }
-        
+
     /**
      * Handle an "incite" message.
      *
@@ -729,10 +729,10 @@ public final class InGameInputHandler extends ClientInputHandler {
         final IndianSettlement is = message.getSettlement(unit);
         final Player enemy = message.getEnemy(game);
         final int gold = message.getGold();
-        
+
         invokeLater(() -> { igc().incite(unit, is, enemy, gold); });
     }
-    
+
     /**
      * Handle an "indianDemand"-request.
      *
@@ -865,7 +865,7 @@ public final class InGameInputHandler extends ClientInputHandler {
         NewLandNameMessage message = new NewLandNameMessage(game, element);
         final Unit unit = message.getUnit(getMyPlayer());
         final String defaultName = message.getNewLandName();
-        if (unit == null || defaultName == null 
+        if (unit == null || defaultName == null
             || !unit.hasTile()) return;
 
         invokeLater(() -> igc().newLandName(defaultName, unit));
@@ -902,7 +902,7 @@ public final class InGameInputHandler extends ClientInputHandler {
             if (tr != null) player.addTradeRoute(tr);
         }
     }
-        
+
     /**
      * Handle a "newTurn"-message.
      *
@@ -986,7 +986,7 @@ public final class InGameInputHandler extends ClientInputHandler {
     private void setAI(Element element) {
         final Game game = getGame();
         final SetAIMessage message = new SetAIMessage(game, element);
-        
+
         final Player p = message.getPlayer(game);
         final boolean ai = message.getAI();
         if (p != null) p.setAI(ai);
@@ -1019,7 +1019,7 @@ public final class InGameInputHandler extends ClientInputHandler {
     private void setDead(Element element) {
         final Game game = getGame();
         final SetDeadMessage message = new SetDeadMessage(game, element);
-        
+
         final Player player = message.getPlayer(game);
         if (player == null) {
             logger.warning("Invalid player for setDead");
@@ -1076,7 +1076,7 @@ public final class InGameInputHandler extends ClientInputHandler {
         final Game game = getGame();
         final UpdateMessage message = new UpdateMessage(game, element);
         boolean visibilityChange = false;
-        
+
         for (FreeColGameObject fcgo : message.getObjects()) {
             if ((fcgo instanceof Player && (fcgo == player))
                 || ((fcgo instanceof Ownable) && player.owns((Ownable)fcgo))) {

@@ -116,8 +116,6 @@ public final class CaptureGoodsDialog extends FreeColDialog<List<Goods>> {
         private Market market;
 
         public CheckBoxRenderer() {
-            //setBackground(UIManager.getColor("List.textBackground"));
-            //setForeground(UIManager.getColor("List.textForeground"));
         }
 
         /**
@@ -196,7 +194,7 @@ public final class CaptureGoodsDialog extends FreeColDialog<List<Goods>> {
             });
         this.allButton.setMnemonic('a');
         this.allButton.setActionCommand(this.allButton.getText());
- 
+
         this.noneButton = Utility.localizedButton("none");
         this.noneButton.addActionListener((ActionEvent ae) -> {
                 JList<GoodsItem> gl = CaptureGoodsDialog.this.goodsList;
@@ -283,5 +281,5 @@ public final class CaptureGoodsDialog extends FreeColDialog<List<Goods>> {
             }
         }
         return gl;
-    }            
+    }
 }

@@ -58,7 +58,7 @@ import net.sf.freecol.common.util.Introspector;
 import net.sf.freecol.server.FreeColServer;
 import net.sf.freecol.server.control.ChangeSet;
 import net.sf.freecol.server.model.ServerPlayer;
-    
+
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NamedNodeMap;
@@ -103,7 +103,7 @@ public class DOMMessage {
     private DOMMessage(String tag) {
         this.document = createDocument(tag);
     }
-        
+
     /**
      * Constructs a new DOMMessage with data from the given InputStream. The
      * constructor to use if this is an INCOMING message.
@@ -125,13 +125,13 @@ public class DOMMessage {
      */
     public DOMMessage(String tag, String... attributes) {
         this(tag);
-        
+
         String[] all = attributes;
         for (int i = 0; i < all.length; i += 2) {
             if (all[i+1] != null) this.setAttribute(all[i], all[i+1]);
         }
     }
-    
+
     /**
      * Create a DOMMessage with given tag and attributes.
      *
@@ -185,7 +185,7 @@ public class DOMMessage {
         forEachMapEntry(map, e -> root.setAttribute(e.getKey(), e.getValue()));
         return document;
     }
-    
+
     /**
      * Create a new document with a root element with a given tag name
      * and attributes.
@@ -214,7 +214,7 @@ public class DOMMessage {
         }
         return map;
     }
-    
+
     /**
      * Create a DOMMessage from an element.
      *
@@ -242,7 +242,7 @@ public class DOMMessage {
                 logger.log(Level.WARNING, "Instantiation fail for:" + tag, ex);
                 message = null;
             }
-        }            
+        }
         return message;
     }
 
@@ -332,7 +332,7 @@ public class DOMMessage {
             }
         }
         return this;
-    }                
+    }
 
     /**
      * Set a array of attributes.
@@ -347,8 +347,8 @@ public class DOMMessage {
             }
         }
         return this;
-    }                
-    
+    }
+
     /**
      * Set all the attributes in a map.
      *
@@ -423,7 +423,7 @@ public class DOMMessage {
     public Element attachToDocument(Document doc) {
         return (Element)doc.adoptNode(this.toXMLElement());
     }
-    
+
 
     // Collection of static methods.
     // Much of the Element manipulation needs to go away.
@@ -507,8 +507,8 @@ public class DOMMessage {
             i++;
         }
         return collapseElements(results);
-    }    
-    
+    }
+
     /**
      * Convenience method to find the first child element with the
      * specified tagname.
@@ -700,7 +700,7 @@ public class DOMMessage {
         }
         return result;
     }
-        
+
     /**
      * Get an array of string attributes from an element.
      *
@@ -722,7 +722,7 @@ public class DOMMessage {
 
     /**
      * Read a Document from an input source.
-     * 
+     *
      * @param inputSource An {@code InputSource} to read from.
      * @return The resulting {@code Document}.
      * @exception IOException if thrown by the {@code InputStream}.
@@ -859,7 +859,7 @@ public class DOMMessage {
         readFromXMLElement(fcgo, element, true);
         return fcgo;
     }
-        
+
     /**
      * Read a new FreeCol object from an element.
      *
@@ -1057,7 +1057,7 @@ public class DOMMessage {
         return serverPlayer.clientError("Invalid message type: " + getType());
     }
 
-    
+
     // Override Object
 
     /**

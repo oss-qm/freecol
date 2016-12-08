@@ -198,9 +198,9 @@ public class Event extends FreeColSpecObjectType {
         if (xr.shouldClearContainers()) {
             limits = null;
         }
-        
+
         super.readChildren(xr);
-    }        
+    }
 
     /**
      * {@inheritDoc}

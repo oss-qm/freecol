@@ -39,7 +39,7 @@ public class SetColorMessage extends AttributeMessage {
     public static final String TAG = "setColor";
     private static final String COLOR_TAG = "color";
     private static final String NATION_TAG = "nation";
-    
+
 
     /**
      * Create a new {@code SetColorMessage}.
@@ -98,7 +98,7 @@ public class SetColorMessage extends AttributeMessage {
     public ChangeSet serverHandler(FreeColServer freeColServer,
                                    ServerPlayer serverPlayer) {
         final Specification spec = freeColServer.getGame().getSpecification();
-        
+
         if (serverPlayer != null) {
             Nation nation = getNation(spec);
             if (nation != null) {

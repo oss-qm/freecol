@@ -223,7 +223,7 @@ public class UnitWas implements Comparable<UnitWas> {
         }
         return super.equals(other);
     }
-    
+
     /**
      * {@inheritDoc}
      */

@@ -1,12 +1,12 @@
 /**
  * <h1>FreeCol Client Package</h1>
- * 
+ *
  * <p>This is the main client package.</p>
  *
  * <h2>survey of Thread objects in the FreeCol client</h2>
- * 
+ *
  * <p>This is the way threads were used when this was written:</p>
- * 
+ *
  * <h3>Anonymous sub-classes of Thread</h3>
  *
  *  <UL>
@@ -16,11 +16,11 @@
  *      <li>InGameController (save game, choose Founding Father)</li>
  *      <li>ReceivingThread (urgent messages)</li>
  *  </UL>
- *  
+ *
  * <p>(The shutdown hooks don't really count as they're not a normal use of a thread.)</p>
- * 
+ *
  * <h3>Named sub-classes of Thread</h3>
- * 
+ *
  *  <UL>
  *      <li>Canvas (ChatDisplayThread, TakeFocusThread)</li>
  *      <li>CanvasMouseMotionListener (ScrollThread)</li>
@@ -29,19 +29,19 @@
  *      <li>Server</li>
  *      <li>SoundPlayer (SoundPlayer)</li>
  *  </UL>
- *  
+ *
  * <p>Some code in FreeCol that does real work is run on the AWT thread. The AWT
  * thread is used to paint the user interface and to notify the application of user
  * interface events. When the AWT thread is busy, Java user interfaces look like
  * grey boxes. Users often report this as a "hang" or a "crash".</p>
- * 
+ *
  * <p>This can be avoided by only using the AWT thread for things that must be run
- * on it (such as to update the state of the user interface objects (JTable, etc.). 
+ * on it (such as to update the state of the user interface objects (JTable, etc.).
  * Technically, all Swing methods should be invoked on the AWT thread).</p>
- * 
+ *
  * <p>What follows is not an invention, rather something that worked well on other
  * projects.</p>
- * 
+ *
  * <h2>The three-thread model of a GUI application</h2>
  *
  * <p>The three threads are:</p>

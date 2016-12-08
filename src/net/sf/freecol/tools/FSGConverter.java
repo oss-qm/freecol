@@ -35,7 +35,7 @@ import net.sf.freecol.FreeCol;
 
 /**
  * Class for converting FreeCol Savegames (fsg-files).
- * 
+ *
  * @see #getFSGConverter()
  * @since 0.5.2
  */
@@ -46,44 +46,43 @@ public class FSGConverter {
      * @see #getFSGConverter()
      */
     private static FSGConverter singleton;
-    
-    
+
+
     /**
      * Creates an instance of {@code FSGConverter}
      */
     private FSGConverter() {
         // Nothing to initialize;
     }
-    
-    
+
     /**
      * Gets an object for converting FreeCol Savegames.
      * @return The singleton object.
      */
     public static FSGConverter getFSGConverter() {
-        // Using lazy initialization:       
+        // Using lazy initialization:
         if (singleton == null) {
             singleton = new FSGConverter();
         }
         return singleton;
     }
 
-    
+
     /**
      * Converts the given input file to an uncompressed and
      * indented XML-file.
-     * 
+     *
      * <br><br>
-     * 
+     *
      * Savegame compression is automatically detected, so using
      * this method on an uncompressed savegame creates an
      * indented version of that savegame.
-     * 
+     *
      * @param in The input file.
      * @param out The output file. This file will be overwritten
      *      if it already exists.
      * @throws FileNotFoundException if the given input file could not be found.
-     * @throws IOException if thrown while reading or writing the files. 
+     * @throws IOException if thrown while reading or writing the files.
      */
     public void convertToXML(File in, File out) throws FileNotFoundException, IOException {
         try (
@@ -95,26 +94,26 @@ public class FSGConverter {
     }
 
     /**
-     * Converts the data from the given input stream to an 
+     * Converts the data from the given input stream to an
      * uncompressed and indented text to the output stream.
      * Both streams are closed by this method.
-     * 
+     *
      * <br><br>
-     * 
+     *
      * Savegame compression is automatically detected, so using
      * this method on an uncompressed savegame creates an
      * indented version of that savegame.
-     * 
+     *
      * @param in The input stream.
      * @param out The output stream.
-     * 
-     * @throws IOException if thrown while reading or writing the streams. 
+     *
+     * @throws IOException if thrown while reading or writing the streams.
      */
     public void convertToXML(InputStream in, OutputStream out) throws IOException {
         try {
             in = new BufferedInputStream(in);
             out = new BufferedOutputStream(out);
-            
+
             // Automatically detect savegame compression:
             in.mark(10);
             byte[] buf = new byte[5];
@@ -126,7 +125,7 @@ public class FSGConverter {
 
             // Support for XML comments has not been added:
             int indent = 0;
-            int i;      
+            int i;
             while ((i = in.read()) != -1) {
                 char c = (char) i;
                 if (c == '<') {
@@ -159,7 +158,7 @@ public class FSGConverter {
                     out.write('\n');
                 } else if (c != '\n' && c != '\r') {
                     out.write(c);
-                }           
+                }
             }
 
         } finally {
@@ -167,8 +166,7 @@ public class FSGConverter {
             out.close();
         }
     }
-    
-    
+
     /**
      * Prints the usage of this program to standard out.
      */
@@ -181,10 +179,10 @@ public class FSGConverter {
         System.out.println();
         System.out.println("The output file will get the same name as FSG_FILE if not specified (with \".fsg\" replaced with \".xml\").");
     }
-    
+
     /**
      * An entry point for converting FreeCol Savegames.
-     * 
+     *
      * @param args The command-line parameters.
      */
     public static void main(String[] args) {

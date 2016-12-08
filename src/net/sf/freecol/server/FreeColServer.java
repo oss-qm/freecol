@@ -123,7 +123,7 @@ public final class FreeColServer {
      * TODO: Make loading a map as a game work.
      */
     public static final String MAP_EDITOR_NAME = "mapEditor";
-    
+
     // @compat 0.11.6
     public static final String ACTIVE_UNIT_TAG = "activeUnit";
     // end @compat 0.11.6
@@ -232,7 +232,7 @@ public final class FreeColServer {
         this.inGameInputHandler = new InGameInputHandler(this);
         this.inGameController = new InGameController(this);
     }
-    
+
     /**
      * Start a Server at port.
      *
@@ -316,7 +316,7 @@ public final class FreeColServer {
      * @exception FreeColException If the savegame could not be loaded.
      * @exception XMLStreamException If the server comms fail.
      */
-    public FreeColServer(final FreeColSavegameFile savegame, 
+    public FreeColServer(final FreeColSavegameFile savegame,
                          Specification specification, int port, String name)
         throws FreeColException, IOException, XMLStreamException {
         this(name, port);
@@ -548,7 +548,7 @@ public final class FreeColServer {
                      new LogoutMessage(sp, LogoutReason.QUIT)));
         }
     }
-        
+
     /**
      * Gets the network server responsible of handling the connections.
      *
@@ -644,7 +644,7 @@ public final class FreeColServer {
             break;
         case END_GAME: default:
             return;
-        }            
+        }
         this.server.addConnection(connection);
         updateMetaServer(false);
     }
@@ -667,7 +667,7 @@ public final class FreeColServer {
      *
      * @return The {@code Game}, or null if the wait times out.
      */
-    public Game waitForGame() {        
+    public Game waitForGame() {
         final int timeStep = 1000;
         int timeOut = 20000;
         Game game = null;
@@ -780,7 +780,7 @@ public final class FreeColServer {
         }
         return this.publicServer = false;
     }
-     
+
     /**
      * Sends information about this server to the meta-server.
      *
@@ -863,7 +863,7 @@ public final class FreeColServer {
      * @exception IOException If a problem was encountered while trying
      *     to open, write or close the file.
      */
-    public void saveMapEditorGame(File file, BufferedImage image) 
+    public void saveMapEditorGame(File file, BufferedImage image)
         throws IOException {
         this.setAIMain(null);
         // Mask out spec while saving map.
@@ -1050,7 +1050,7 @@ public final class FreeColServer {
         ) {
             // Switch to the read scope that creates server objects.
             xr.setReadScope(FreeColXMLReader.ReadScope.SERVER);
-            
+
             String active = null;
             xr.nextTag();
 
@@ -1067,7 +1067,7 @@ public final class FreeColServer {
 
                 String r = xr.getAttribute(RANDOM_STATE_TAG, (String)null);
                 server.setServerRandom(Utils.restoreRandomState(r));
-                    
+
                 FreeColDebugger.setDebugModes(xr.getAttribute(DEBUG_TAG,
                                                               (String)null));
 
@@ -1294,7 +1294,7 @@ public final class FreeColServer {
             LogBuilder lb = new LogBuilder(256);
             game.setMap(getMapGenerator().createMap(lb));
             lb.log(logger, Level.FINER);
-        
+
             // Initial stances and randomizations for all players.
             spec.generateDynamicOptions();
             Random random = getServerRandom();
@@ -1366,14 +1366,14 @@ public final class FreeColServer {
         for (Player player : getGame().getLiveEuropeanPlayerList()) {
             ((ServerPlayer)player).exploreMap(reveal);
         }
-     
+
         // Removes fog of war when revealing the whole map
         // Restores previous setting when hiding it back again
         BooleanOption fogOfWarSetting = game.getSpecification()
             .getBooleanOption(GameOptions.FOG_OF_WAR);
         if (reveal) {
             FreeColDebugger.setNormalGameFogOfWar(fogOfWarSetting.getValue());
-            fogOfWarSetting.setValue(Boolean.FALSE); 
+            fogOfWarSetting.setValue(Boolean.FALSE);
         } else {
             fogOfWarSetting.setValue(FreeColDebugger.getNormalGameFogOfWar());
         }

@@ -500,7 +500,7 @@ public class FreeColDirectories {
             autosaveDirectory = dir;
         }
     }
-        
+
 
     // Main initialization/bootstrap routines.
     // These need to be called early before the subsidiary directory

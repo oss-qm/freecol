@@ -113,7 +113,7 @@ public class ErrorMessage extends DOMMessage {
     public StringTemplate getTemplate() {
         return this.template;
     }
-    
+
     /**
      * Set the template.
      *
@@ -122,7 +122,7 @@ public class ErrorMessage extends DOMMessage {
     public void setTemplate(StringTemplate template) {
         this.template = template;
     }
-    
+
     /**
      * Get the non-i18n message.
      *
@@ -132,7 +132,6 @@ public class ErrorMessage extends DOMMessage {
         return this.message;
     }
 
-        
     /**
      * Handle a "error"-message.
      *

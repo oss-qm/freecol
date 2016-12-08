@@ -52,7 +52,7 @@ public class AIServerAPI extends ServerAPI {
 
 
     // Implement ServerAPI
-    
+
     /**
      * {@inheritDoc}
      */

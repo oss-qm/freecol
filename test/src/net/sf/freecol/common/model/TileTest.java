@@ -714,7 +714,7 @@ public class TileTest extends FreeColTestCase {
         assertEquals(0, marsh.getPotentialProduction(silver, colonistType));
         assertEquals(0, marshTile.getPotentialProduction(silver, colonistType));
         assertEquals(0, count(marshTile.getProductionModifiers(silver, colonistType)));
-        assertEquals(0, marshColonyTile.getPotentialProduction(silver, unit.getType()));        
+        assertEquals(0, marshColonyTile.getPotentialProduction(silver, unit.getType()));
         // Adding the road should not trigger any production
         TileImprovement road = marshTile.addRoad();
         road.setTurnsToComplete(0);
@@ -722,13 +722,13 @@ public class TileTest extends FreeColTestCase {
         assertEquals(0, marsh.getPotentialProduction(silver, colonistType));
         assertEquals(0, marshTile.getPotentialProduction(silver, colonistType));
         assertEquals(0, count(marshTile.getProductionModifiers(silver, colonistType)));
-        assertEquals(0, marshColonyTile.getPotentialProduction(silver, unit.getType()));        
+        assertEquals(0, marshColonyTile.getPotentialProduction(silver, unit.getType()));
         // Add the minerals and production should be available
         marshTile.addResource(new Resource(game, marshTile, mineralsResource));
         assertEquals(0, marsh.getPotentialProduction(silver, colonistType));
         assertEquals(2, marshTile.getPotentialProduction(silver, colonistType));
         assertEquals(2, count(marshTile.getProductionModifiers(silver, colonistType)));
-        assertEquals(2, marshColonyTile.getPotentialProduction(silver, unit.getType()));        
+        assertEquals(2, marshColonyTile.getPotentialProduction(silver, unit.getType()));
     }
 
     public void testDefenceModifiers() {
@@ -793,14 +793,14 @@ public class TileTest extends FreeColTestCase {
         assertTrue(tileE.isLand());
         tileS.setType(tundraForest);
         tileE.setType(mountains);
-        
+
         List<Tile> tiles = settlementTile.getSafestSurroundingLandTiles(dutch);
         assertFalse("Surrounding tiles should be found", tiles.isEmpty());
         assertEquals("Best tile is mountainous", tileE, tiles.get(0));
 
-        assertEquals("Best landing tile is forest", tileS, 
+        assertEquals("Best landing tile is forest", tileS,
             settlementTile.getBestDisembarkTile(dutch));
-        
+
         tileN.setType(hills);
         assertEquals("Best landing tile is now hills", tileN,
             settlementTile.getBestDisembarkTile(dutch));

@@ -36,7 +36,7 @@ public abstract class ValuedAIObject extends AIObject {
     /** A comparator by ascending AI object value. */
     public static final Comparator<? super ValuedAIObject> ascendingValueComparator
         = Comparator.comparingInt(ValuedAIObject::getValue);
-    
+
     /** A comparator by descending AI object value. */
     public static final Comparator<? super ValuedAIObject> descendingValueComparator
         = ascendingValueComparator.reversed();

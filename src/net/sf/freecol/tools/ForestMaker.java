@@ -295,7 +295,6 @@ public class ForestMaker {
                             && crown < -BASE_HEIGHT + RIVER_HEIGHT - (x - halfWidth) / 2) {
                             continue;
                         }
-                        //System.out.println("x=" + x + ", y=" + (y - height));
                         trees.add(new ImageLocation(image, x - halfWidth, crown));
                         count++;
                     }

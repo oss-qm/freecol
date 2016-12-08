@@ -191,7 +191,7 @@ public class HighSeas extends UnitLocation {
             xw.writeStartElement(DESTINATION_TAG);
 
             xw.writeLocationAttribute(ID_ATTRIBUTE_TAG, destination);
-            
+
             xw.writeEndElement();
         }
     }

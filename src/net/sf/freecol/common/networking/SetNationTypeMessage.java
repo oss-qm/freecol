@@ -39,7 +39,7 @@ public class SetNationTypeMessage extends AttributeMessage {
     public static final String TAG = "setNationType";
     private static final String PLAYER_TAG = "player";
     private static final String VALUE_TAG = "value";
-    
+
 
     /**
      * Create a new {@code SetNationTypeMessage}.

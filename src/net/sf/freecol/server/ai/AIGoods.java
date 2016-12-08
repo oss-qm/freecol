@@ -183,7 +183,7 @@ public class AIGoods extends TransportableAIObject {
             logger.fine("Unloaded " + amount + " " + type
                 + " from " + oldAmount + " leaving " + newAmount
                 + " off of " + carrier + " at " + carrier.getLocation());
-        }   
+        }
         return result;
     }
 

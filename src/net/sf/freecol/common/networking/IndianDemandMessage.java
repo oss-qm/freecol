@@ -153,7 +153,7 @@ public class IndianDemandMessage extends AttributeMessage {
         final String unitId = getAttribute(UNIT_TAG);
         final String colonyId = getAttribute(COLONY_TAG);
         final Boolean result = getResult();
-        
+
         Unit unit;
         Colony colony;
         try {

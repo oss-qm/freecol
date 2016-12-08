@@ -34,7 +34,7 @@ public class PercentageOption extends IntegerOption {
 
     public static final String TAG = "percentageOption";
 
-    
+
     /**
      * Creates a new {@code PercentageOption}.
      *

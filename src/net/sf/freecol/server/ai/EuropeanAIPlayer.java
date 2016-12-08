@@ -332,7 +332,7 @@ public class EuropeanAIPlayer extends MissionAIPlayer {
         final AIMain aiMain = getAIMain();
         List<AIUnit> aiUnits = getAIUnits();
         lb.add("\n  Initialize ");
-        
+
         // Find all the carriers with potential colony builders on board,
         // give them missions.
         final Map map = getGame().getMap();
@@ -451,7 +451,7 @@ public class EuropeanAIPlayer extends MissionAIPlayer {
                 }
             }
         }
-    
+
         if (!europe.isEmpty()
             && scoutsNeeded() > 0
             && randoms[cheatIndex++] < equipScoutCheatPercent) {
@@ -581,7 +581,7 @@ public class EuropeanAIPlayer extends MissionAIPlayer {
                 }
             }
         }
-            
+
         // Always cheat a new armed ship if the navy is destroyed,
         // otherwise if the navy is below average the chance to cheat
         // is proportional to how badly below average.
@@ -673,9 +673,6 @@ public class EuropeanAIPlayer extends MissionAIPlayer {
 
         lb.add("\n  Allocate Transport cargo=", transportables.size(),
                " carriers=", missions.size());
-        //for (TransportableAIObject t : urgent) lb.add(" ", t);
-        //lb.add(" ->");
-        //for (Mission m : missions) lb.add(" ", m);
 
         LogBuilder lb2 = new LogBuilder(0);
         TransportMission best;
@@ -793,7 +790,7 @@ public class EuropeanAIPlayer extends MissionAIPlayer {
                     lb.add(" ", t, "=", tip.getType().getSuffix());
                     if (pioneer != null) lb.add("/", pioneer.getUnit());
                 });
-        }                
+        }
     }
 
     /**
@@ -1098,7 +1095,7 @@ public class EuropeanAIPlayer extends MissionAIPlayer {
         for (AIUnit aiu : getAIUnits()) {
             TransportMission tm = aiu.getMission(TransportMission.class);
             if (tm != null) tm.suppressEuropeanTrade(type, lb);
-        }           
+        }
 
         int n = 0;
         List<GoodsWish> wishes = goodsWishes.get(type);
@@ -1119,7 +1116,7 @@ public class EuropeanAIPlayer extends MissionAIPlayer {
         }
         lb.add(".");
     }
-                
+
     /**
      * Gets a list of the wishes at a given location for a unit type.
      *
@@ -1349,7 +1346,7 @@ public class EuropeanAIPlayer extends MissionAIPlayer {
         Europe europe = player.getEurope();
         nEuropean = (europe == null) ? 0
             : count(europe.getUnits(), Unit::isPerson);
-            
+
         // If would be good to have at least two colonies, and at least
         // one port.  After that, determine the ratio of workers to colonies
         // (which should be the average colony size), and if that is above
@@ -1593,7 +1590,7 @@ public class EuropeanAIPlayer extends MissionAIPlayer {
     private TradeStatus rejectAgreement(TradeItem stance,
                                         DiplomaticTrade agreement) {
         if (stance == null) return TradeStatus.REJECT_TRADE;
-        
+
         agreement.clear();
         agreement.add(stance);
         return TradeStatus.PROPOSE_TRADE;
@@ -1645,7 +1642,7 @@ public class EuropeanAIPlayer extends MissionAIPlayer {
                     }
                 }
                 reasons.put(unit, "Damaged");
-                    
+
             } else if (unit.getState() == UnitState.IN_COLONY
                 && colony.getUnitCount() <= 1) {
                 // The unit has its hand full keeping the colony alive.
@@ -1704,7 +1701,7 @@ public class EuropeanAIPlayer extends MissionAIPlayer {
 
             } else { // Needs mission
                 continue;
-            }                
+            }
             done.add(aiUnit);
         }
         aiUnits.removeAll(done);
@@ -2119,7 +2116,7 @@ public class EuropeanAIPlayer extends MissionAIPlayer {
                 aiUnit.equipForRole(getSpecification().getDefaultRole());
             }
             return null;
-        }            
+        }
         return new ScoutingMission(getAIMain(), aiUnit, loc);
     }
 
@@ -2179,7 +2176,7 @@ public class EuropeanAIPlayer extends MissionAIPlayer {
     protected Stance determineStance(Player other) {
         final Player player = getPlayer();
         return (other.isREF())
-            ? ((player.getREFPlayer() == other) 
+            ? ((player.getREFPlayer() == other)
                 // At war with our REF if rebel, otherwise at peace.
                 ? ((player.isRebel()) ? Stance.WAR : Stance.PEACE)
                 // Do not mess with other player's REF unless they conquer
@@ -2196,7 +2193,7 @@ public class EuropeanAIPlayer extends MissionAIPlayer {
     @Override
     public void removeAIColony(AIColony aic) {
         final Colony colony = aic.getColony();
-        
+
         Set<TileImprovementPlan> tips = new HashSet<>();
         for (Tile t : colony.getOwnedTiles()) {
             TileImprovementPlan tip = tipMap.remove(t);
@@ -2351,7 +2348,7 @@ public class EuropeanAIPlayer extends MissionAIPlayer {
                 lb.add(", DIED.");
                 continue;
             }
-            
+
             updateTransport(aiu, oldTarget, lb);
             // Check again that the unit is alive, updateTransport() can
             // cause unit to disembark onto a fatal LCR!
@@ -2359,7 +2356,7 @@ public class EuropeanAIPlayer extends MissionAIPlayer {
                 lb.add(", DIED.");
                 continue;
             }
-            
+
             // Units with moves left should be requeued.  If they are on a
             // carrier the carrier needs to have moves left.
             if (unit.getMovesLeft() > 0 && (!unit.isOnCarrier()
@@ -2444,7 +2441,7 @@ public class EuropeanAIPlayer extends MissionAIPlayer {
         for (TradeItem item : agreement.getTradeItems()) {
             if (item instanceof StanceTradeItem) {
                 getNationSummary(other); // Freshen the name summary cache
-            }                    
+            }
             int score = item.evaluateFor(player);
             if (item instanceof StanceTradeItem) { // Handle some special cases
                 switch (item.getStance()) {
@@ -2486,7 +2483,7 @@ public class EuropeanAIPlayer extends MissionAIPlayer {
                 lb.add("  Too many (", unacceptable, ") unacceptable.");
             }
         }
-       
+
         if (result == null) {
             // Dump the unacceptable offers, sum the rest
             for (Entry<TradeItem, Integer> entry : scores.entrySet()) {
@@ -2499,7 +2496,7 @@ public class EuropeanAIPlayer extends MissionAIPlayer {
                            ", total = ", value, ".");
                 }
             }
-            // If nothing is left then fail, 
+            // If nothing is left then fail,
             if (agreement.isEmpty()) result = rejectAgreement(peace, agreement);
         }
 
@@ -2586,7 +2583,7 @@ public class EuropeanAIPlayer extends MissionAIPlayer {
                           s -> s.getGoodsCount(goodsType) > 0);
             ret = n < 2;
             if (ret) {
-                lb.add("accepted: breedable-type-", goodsType.getSuffix(), 
+                lb.add("accepted: breedable-type-", goodsType.getSuffix(),
                        "-missing.");
             } else {
                 lb.add("rejected: breedable-type-", goodsType.getSuffix(),

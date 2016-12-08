@@ -29,7 +29,7 @@ import static net.sf.freecol.common.util.CollectionUtils.*;
 
 
 public class PlayerTest extends FreeColTestCase {
-    
+
     private static final UnitType freeColonist
         = spec().getUnitType("model.unit.freeColonist");
     private static final UnitType galleonType

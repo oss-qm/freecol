@@ -176,10 +176,10 @@ public class PlayerExploredTile extends FreeColGameObject {
         }
         tile.setCachedTile(player, (ok) ? tile : copied);
     }
-        
+
 
     // Serialization
-    
+
     private static final String ALARM_TAG = "alarm";
     private static final String COLONY_UNIT_COUNT_TAG = "colonyUnitCount";
     private static final String LEARNABLE_SKILL_TAG = "learnableSkill";
@@ -318,7 +318,7 @@ public class PlayerExploredTile extends FreeColGameObject {
             Player p = missionary.getOwner();
             if (p != null) p.removeUnit(missionary);
             missionary = null;
-        }           
+        }
     }
 
     /**

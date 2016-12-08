@@ -19,8 +19,6 @@
 
 package net.sf.freecol.server.generator;
 
-//import java.util.logging.Logger;
-
 import java.util.EnumMap;
 
 import net.sf.freecol.common.model.Direction;
@@ -38,8 +36,6 @@ import net.sf.freecol.common.model.TileImprovement;
  * are many in case of confluence)
  */
 public class RiverSection {
-
-//    private static final Logger logger = Logger.getLogger(RiverImprovementBuilder.class.getName());
 
     private static final char[] template = {
         '0', '1', '2', '3'

@@ -65,7 +65,7 @@ public abstract class WorkLocation extends UnitLocation
                 .thenComparing(Suggestion::getGoodsType,
                                GoodsType.goodsTypeComparator)
                 .thenComparing(Suggestion::getNewUnitType);
-                    
+
         public final WorkLocation workLocation;
         public final UnitType oldType;
         public final UnitType newType;
@@ -100,11 +100,11 @@ public abstract class WorkLocation extends UnitLocation
         public UnitType getNewUnitType() {
             return this.newType;
         }
-        
+
         public GoodsType getGoodsType() {
             return this.goodsType;
         }
-        
+
         public int getAmount() {
             return this.amount;
         }
@@ -254,7 +254,7 @@ public abstract class WorkLocation extends UnitLocation
         if (unitType == null) {
             unitType = spec.getDefaultUnitType(getOwner().getNationType());
         }
-        
+
         LogBuilder lb = new LogBuilder((colony.getOccupationTrace()) ? 64 : 0);
         lb.add(colony.getName(), "/", this, ".getOccupation(",
                unitType.getSuffix(), ")");
@@ -272,7 +272,7 @@ public abstract class WorkLocation extends UnitLocation
         lb.log(logger, Level.WARNING);
         return (best.workType == null) ? null : best;
     }
-        
+
     /**
      * Get the best work type for a unit at this work location, favouring
      * the existing work.
@@ -318,7 +318,7 @@ public abstract class WorkLocation extends UnitLocation
         final Specification spec = getSpecification();
         final Player owner = getOwner();
         final UnitType expert = spec.getExpertForProducing(goodsType);
-        
+
         // Require there be a better unit to do this work, and that it
         // would actually improve production.
         final UnitType better = (expert != null) ? expert
@@ -338,9 +338,9 @@ public abstract class WorkLocation extends UnitLocation
         // and have maximized liberty, or for immigration.
         if (owner.getPlayerType() == Player.PlayerType.INDEPENDENT
             && ((goodsType.isLibertyType() && colony.getSoL() >= 100)
-                || goodsType.isImmigrationType())) 
+                || goodsType.isImmigrationType()))
             return null;
-        
+
         final Boolean ok = goodSuggestionCheck(better,unit, goodsType);
         return (!ok) ? null
             : new Suggestion(this, (unit == null) ? null : unit.getType(),
@@ -385,7 +385,7 @@ public abstract class WorkLocation extends UnitLocation
     public java.util.Map<Unit, Suggestion> getSuggestions() {
         java.util.Map<Unit, Suggestion> result = new HashMap<>();
         if (!canBeWorked() || canTeach()) return result;
-        
+
         Occupation occ = getOccupation(null);
         GoodsType work;
         Suggestion sug;
@@ -406,7 +406,7 @@ public abstract class WorkLocation extends UnitLocation
         }
         return result;
     }
-            
+
     /**
      * Get the {@code AbstractGoods} consumed by this work location.
      *
@@ -652,8 +652,8 @@ public abstract class WorkLocation extends UnitLocation
         return (pi == null) ? null
             : find(pi.getProductionDeficit(), AbstractGoods.matches(goodsType));
     }
- 
-   
+
+
     // Interface Location
     // Inherits:
     //   FreeColObject.getId
@@ -746,7 +746,7 @@ public abstract class WorkLocation extends UnitLocation
         return Location.getRank(getTile());
     }
 
-    
+
     // Interface UnitLocation
     // Inherits:
     //   UnitLocation.getSpaceTaken
@@ -805,7 +805,7 @@ public abstract class WorkLocation extends UnitLocation
      * @return The underlying {@code Tile} which is worked, if any.
      */
     public abstract Tile getWorkTile();
-    
+
     /**
      * Get the "level" of this work location.
      *
@@ -814,7 +814,7 @@ public abstract class WorkLocation extends UnitLocation
      * @return The work location level.
      */
     public abstract int getLevel();
-        
+
     /**
      * Can this work location can produce goods without workers?
      *
@@ -887,7 +887,7 @@ public abstract class WorkLocation extends UnitLocation
      * @return The rebel factor.
      */
     public abstract float getRebelFactor();
-      
+
     /**
      * Evaluate this work location for a given player.
      * To be overridden by subclasses.

@@ -311,7 +311,7 @@ public abstract class Feature extends FreeColSpecObject
         return this.scopes != null && !this.scopes.isEmpty();
     }
 
-    
+
     // Serialization
 
     private static final String DURATION_TAG = "duration";

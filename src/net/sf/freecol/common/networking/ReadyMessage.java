@@ -76,7 +76,7 @@ public class ReadyMessage extends AttributeMessage {
 
     /**
      * Get the ready state.
-     * 
+     *
      * @return True if the player is ready.
      */
     public boolean getValue() {

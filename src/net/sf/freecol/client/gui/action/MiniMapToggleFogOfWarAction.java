@@ -40,7 +40,7 @@ public class MiniMapToggleFogOfWarAction extends MapboardAction {
      */
     public MiniMapToggleFogOfWarAction(FreeColClient freeColClient) {
         super(freeColClient, id);
-        
+
         addImageIcons("toggle_fog_of_war");
     }
 
@@ -55,7 +55,7 @@ public class MiniMapToggleFogOfWarAction extends MapboardAction {
 
         addImageIcons("toggle_fog_of_war");
     }
-    
+
     // Interface ActionListener
 
     /**

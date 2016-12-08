@@ -144,7 +144,7 @@ public class SwingGUI extends GUI {
      */
     public SwingGUI(FreeColClient freeColClient, float scaleFactor) {
         super(freeColClient, scaleFactor);
-        
+
         graphicsDevice = getGoodGraphicsDevice();
         logger.info("GUI constructed using scale factor " + scaleFactor);
     }
@@ -167,7 +167,7 @@ public class SwingGUI extends GUI {
 
     // Initialization related methods
 
-    /** 
+    /**
      * {@inheritDoc}
      */
     @Override
@@ -190,7 +190,7 @@ public class SwingGUI extends GUI {
         }
     }
 
-    /** 
+    /**
      * {@inheritDoc}
      */
     @Override
@@ -205,8 +205,8 @@ public class SwingGUI extends GUI {
         resetMapZoom(); // Should refresh the map
         return (active == null) ? null : active.getId();
     }
-        
-    /** 
+
+    /**
      * {@inheritDoc}
      */
     @Override
@@ -326,7 +326,6 @@ public class SwingGUI extends GUI {
                 canvas.removeKeyListener(this);
                 canvas.removeMouseListener(this);
                 vp.removeMouseListener(this);
-                //vp.removeVideoListener(this);
                 vp.stop();
                 canvas.remove(vp);
                 if (t != null) {
@@ -338,7 +337,6 @@ public class SwingGUI extends GUI {
         }
         AbortListener l = new AbortListener();
         vp.addMouseListener(l);
-        //vp.addVideoListener(l);
         canvas.showVideoComponent(vp, l, l);
         vp.play();
         // Cortado applet is failing to quit when finished, make sure it
@@ -621,7 +619,7 @@ public class SwingGUI extends GUI {
         }
         return false;
     }
-        
+
     /**
      * {@inheritDoc}
      */
@@ -966,7 +964,7 @@ public class SwingGUI extends GUI {
     public boolean onClosingErrorPanel(Runnable callback) {
         return canvas != null && canvas.onClosingErrorPanel(callback);
     }
-        
+
     /**
      * {@inheritDoc}
      */
