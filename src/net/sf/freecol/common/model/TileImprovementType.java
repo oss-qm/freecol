@@ -543,7 +543,7 @@ public final class TileImprovementType extends FreeColSpecObjectType {
 
         super.readChildren(xr);
     }
-    
+
     /**
      * {@inheritDoc}
      */

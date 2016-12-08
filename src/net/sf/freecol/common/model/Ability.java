@@ -191,7 +191,7 @@ public final class Ability extends Feature {
     /** The ability to demand tribute even when unarmed. */
     public static final String DEMAND_TRIBUTE
         = "model.ability.demandTribute";
-    
+
     /** Units with this ability are demoted on losing all equipment. */
     public static final String DEMOTE_ON_ALL_EQUIPMENT_LOST
         = "model.ability.demoteOnAllEquipLost";
@@ -407,7 +407,7 @@ public final class Ability extends Feature {
     /** Upgrade converts to free colonist with Casas. */
     public static final String UPGRADE_CONVERT
         = "model.ability.upgradeConvert";
-    
+
 
     /** The ability value. */
     private boolean value = true;
@@ -463,7 +463,7 @@ public final class Ability extends Feature {
      */
     public Ability(Ability template) {
         this((Specification)null);
-        
+
         copyFrom(template);
         this.value = template.value;
     }

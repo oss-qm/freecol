@@ -50,7 +50,7 @@ public abstract class Message {
 
     /**
      * Constructs a new message with data from the given input stream.
-     * 
+     *
      * @param inputStream The {@code InputStream} to read.
      * @exception IOException if thrown by the {@code InputStream}.
      * @exception SAXException if thrown during parsing.
@@ -61,13 +61,12 @@ public abstract class Message {
 
     /**
      * Build a new message with the given type.
-     * 
+     *
      * @param type The main message type.
      */
     public Message(String type) {
         setType(type);
     }
-    
 
     /**
      * Get the message tag.
@@ -75,17 +74,17 @@ public abstract class Message {
      * @return The message tag.
      */
     abstract public String getType();
-    
+
     /**
      * Set the message tag.
      *
      * @param type The new message tag.
      */
     abstract protected void setType(String type);
-    
+
     /**
      * Checks if this message is of a given type.
-     * 
+     *
      * @param type The type you wish to test against.
      * @return True if the type of this message equals the given type.
      */
@@ -95,7 +94,7 @@ public abstract class Message {
 
     /**
      * Checks if an attribute is present in this message.
-     * 
+     *
      * @param key The attribute to look for.
      * @return True if the attribute is present.
      */
@@ -163,7 +162,7 @@ public abstract class Message {
 
     /**
      * Sets an attribute in this message.
-     * 
+     *
      * @param key The attribute to set.
      * @param value The new value of the attribute.
      */
@@ -176,7 +175,7 @@ public abstract class Message {
      * @return A {@code Map} of the attributes.
      */
     abstract public Map<String,String> getStringAttributes();
-    
+
     /**
      * Set all the attributes in a map.
      *

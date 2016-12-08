@@ -119,7 +119,7 @@ public class ProductionType extends FreeColSpecObject {
      */
     public ProductionType(GoodsType input, GoodsType output, int amount) {
         this((Specification)null);
-        
+
         if (input != null) {
             this.inputs = new ArrayList<>();
             this.inputs.add(new AbstractGoods(input, amount));
@@ -350,7 +350,7 @@ public class ProductionType extends FreeColSpecObject {
     private static final String OLD_PRODUCTION_LEVEL_TAG = "productionLevel";
     // end @compat 0.11.3
 
-    
+
     /**
      * {@inheritDoc}
      */

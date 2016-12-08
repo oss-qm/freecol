@@ -117,7 +117,7 @@ public class NativeTrade extends FreeColGameObject {
 
     /** True if no purchases made in this trade. */
     private boolean buy;
-        
+
     /** True if no sales made in this trade. */
     private boolean sell;
 
@@ -126,7 +126,7 @@ public class NativeTrade extends FreeColGameObject {
 
     /** An item under consideration for a transaction. */
     private NativeTradeItem item;
-    
+
     /**
      * The goods on the unit that are being offered for purchase by
      * the settlement.
@@ -261,7 +261,7 @@ public class NativeTrade extends FreeColGameObject {
         return getSell() && !atWar()
             && any(getUnitToSettlement(), NativeTradeItem::priceIsValid);
     }
-    
+
     /**
      * Set the sale state.
      *
@@ -270,7 +270,7 @@ public class NativeTrade extends FreeColGameObject {
     public void setSell(boolean sell) {
         this.sell = sell;
     }
-    
+
     /**
      * Is giving available in this transaction?
      *
@@ -288,7 +288,7 @@ public class NativeTrade extends FreeColGameObject {
     public boolean canGift() {
         return getGift() && this.unit.hasGoodsCargo();
     }
-    
+
     /**
      * Set the gift state.
      *
@@ -458,7 +458,7 @@ public class NativeTrade extends FreeColGameObject {
             nti.setPrice(NativeTradeItem.PRICE_INVALID);
         }
     }
-            
+
     /**
      * Choose the next available upward haggling price.
      *
@@ -510,9 +510,9 @@ public class NativeTrade extends FreeColGameObject {
         super.writeAttributes(xw);
 
         xw.writeAttribute(BUY_TAG, this.buy);
-        
+
         xw.writeAttribute(COUNT_TAG, this.count);
-        
+
         xw.writeAttribute(GIFT_TAG, this.gift);
 
         xw.writeAttribute(SELL_TAG, this.sell);
@@ -556,7 +556,7 @@ public class NativeTrade extends FreeColGameObject {
         this.buy = xr.getAttribute(BUY_TAG, false);
 
         this.count = xr.getAttribute(COUNT_TAG, -1);
-        
+
         this.gift = xr.getAttribute(GIFT_TAG, false);
 
         this.sell = xr.getAttribute(SELL_TAG, false);
@@ -617,7 +617,7 @@ public class NativeTrade extends FreeColGameObject {
             super.readChild(xr);
         }
     }
-        
+
     /**
      * {@inheritDoc}
      */

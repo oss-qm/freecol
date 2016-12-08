@@ -50,7 +50,7 @@ public final class DummyConnection extends Connection {
      */
     public DummyConnection(String name, MessageHandler incomingMessageHandler) {
         super(name);
-        
+
         setMessageHandler(incomingMessageHandler);
     }
 
@@ -136,7 +136,7 @@ public final class DummyConnection extends Connection {
         try {
             log(request, true);
             reply = getOtherConnection().handleElement(request);
-            log(reply, false);            
+            log(reply, false);
         } catch (FreeColException fce) {
             logger.log(Level.WARNING, "Dummy-ask handler fail: " + tag, fce);
             reply = null;

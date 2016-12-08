@@ -47,7 +47,7 @@ public final class MetaRegister {
 
     /** The current list of servers. */
     private final List<ServerInfo> items = new ArrayList<>();
-    
+
 
     /**
      * Create a new MetaRegister.

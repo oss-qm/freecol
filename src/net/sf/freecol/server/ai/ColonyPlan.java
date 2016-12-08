@@ -154,8 +154,7 @@ public class ColonyPlan {
     /** The colony this AIColony manages. */
     private final Colony colony;
 
- 
-   private final List<BuildPlan> buildPlans = new ArrayList<>();
+    private final List<BuildPlan> buildPlans = new ArrayList<>();
 
     /** Plans for work locations available to this colony. */
     private final List<WorkLocationPlan> workPlans = new ArrayList<>();
@@ -840,7 +839,7 @@ public class ColonyPlan {
             GoodsType g = e.getKey();
             return !g.isStorable() || g.limitIgnored()
                 || colony.getGoodsCount(g) < colony.getWarehouseCapacity();
-        };            
+        };
         forEachMapEntry(production, fullPred, e -> {
                 for (WorkLocation wl : transform(e.getValue().keySet(),
                         w -> (w.canBeWorked() || w.canAutoProduce()))) {
@@ -1516,7 +1515,7 @@ plans:          for (WorkLocationPlan w : getFoodPlans()) {
         for (WorkLocationPlan wlp : getFoodPlans()) {
             WorkLocation wl = wlp.getWorkLocation();
             lb.add(locationDescription(wl),
-                ": ", wl.getGenericPotential(wlp.getGoodsType()), 
+                ": ", wl.getGenericPotential(wlp.getGoodsType()),
                 " ", wlp.getGoodsType().getSuffix(), "\n");
         }
         lb.add("Work Plans:\n");

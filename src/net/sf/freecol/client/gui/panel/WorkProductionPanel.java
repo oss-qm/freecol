@@ -73,7 +73,7 @@ public class WorkProductionPanel extends FreeColPanel {
         String shortName = "";
         String longName = "";
         Image image = null;
-        float result = wl.getBaseProduction(wl.getProductionType(), 
+        float result = wl.getBaseProduction(wl.getProductionType(),
                                             workType, unitType);
 
         // FIXME: Fix OO.

@@ -173,12 +173,12 @@ public final class MiniMap extends JPanel implements MouseInputListener {
         freeColClient.getClientOptions()
             .setBoolean(ClientOptions.MINIMAP_TOGGLE_BORDERS, toggle);
     }
-    
+
     public void setToggleFogOfWarOption(boolean toggle) {
         freeColClient.getClientOptions()
             .setBoolean(ClientOptions.MINIMAP_TOGGLE_FOG_OF_WAR, toggle);
     }
-    
+
     /**
      * Paints this component.
      * @param graphics The {@code Graphics} context in which
@@ -285,18 +285,18 @@ public final class MiniMap extends JPanel implements MouseInputListener {
         tilePath.lineTo(halfWidth, tileHeight);
         tilePath.lineTo(0, halfHeight);
         tilePath.closePath();
-        
+
         GeneralPath settlementPath = new GeneralPath(tilePath);
         settlementPath.transform(AffineTransform.getScaleInstance(0.7, 0.7));
         settlementPath.transform(AffineTransform.getTranslateInstance(0.15 * tileWidth, 0.15 * tileHeight));
-        
+
         GeneralPath unitPath = new GeneralPath(tilePath);
         unitPath.transform(AffineTransform.getScaleInstance(0.5, 0.5));
         unitPath.transform(AffineTransform.getTranslateInstance(0.25 * tileWidth, 0.25 * tileHeight));
-        
+
         GeneralPath paintFull = new GeneralPath(tilePath);
         paintFull.transform(AffineTransform.getScaleInstance(1, 1));
-        
+
         g.setStroke(new BasicStroke(1f));
 
         AffineTransform baseTransform = g.getTransform();
@@ -319,7 +319,7 @@ public final class MiniMap extends JPanel implements MouseInputListener {
                     if (clientOptions.getBoolean(ClientOptions.MINIMAP_TOGGLE_BORDERS)) {
                         g.setColor(getMinimapPoliticsColor(tile.getType()));
                         g.fill(tilePath);
-                        
+
                         if (tile.getOwner() != null) {
                             Color nationOwner = tile.getOwner().getNationColor();
                             Color colorTransparent =

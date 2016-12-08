@@ -71,8 +71,8 @@ public class RearrangeColonyMessage extends AttributeMessage {
             init(game, unitId, locId, workId, roleId, roleCount);
         }
 
-        public final void init(Game game, String unitId, 
-                               String locId, String workId, 
+        public final void init(Game game, String unitId,
+                               String locId, String workId,
                                String roleId, String roleCount) {
             this.unit = game.getFreeColGameObject(unitId, Unit.class);
             this.loc = game.findFreeColLocation(locId);
@@ -265,7 +265,7 @@ public class RearrangeColonyMessage extends AttributeMessage {
         return ret;
     }
 
-    
+
     /**
      * {@inheritDoc}
      */
@@ -275,7 +275,7 @@ public class RearrangeColonyMessage extends AttributeMessage {
         final String colonyId = getStringAttribute(COLONY_TAG);
         final Game game = serverPlayer.getGame();
         final List<Arrangement> arrangements = getArrangements(game);
-        
+
         Colony colony;
         try {
             colony = serverPlayer.getOurFreeColGameObject(colonyId, Colony.class);

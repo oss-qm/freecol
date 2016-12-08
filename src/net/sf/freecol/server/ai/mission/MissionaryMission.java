@@ -113,9 +113,9 @@ public class MissionaryMission extends Mission {
             : (settlement instanceof Colony
                 && invalidColonyReason(aiUnit, (Colony)settlement) == null)
             ? (Colony)settlement
-            : null;        
+            : null;
     }
-    
+
     /**
      * Evaluate a potential cashin mission for a given unit and
      * path.
@@ -166,7 +166,7 @@ public class MissionaryMission extends Mission {
             GoalDeciders.getOurClosestSettlementGoalDecider())
             : gd;
     }
-            
+
     /**
      * Find a suitable mission location for this unit.
      *
@@ -240,7 +240,7 @@ public class MissionaryMission extends Mission {
             : (unit.getSkillLevel() >= -1
                 && !unit.hasAbility(Ability.EXPERT_MISSIONARY))
             ? "unit-is-not-subskilled-or-expertMissionary"
-            : (unit.isInEurope() || unit.isAtSea()) 
+            : (unit.isInEurope() || unit.isAtSea())
             ? ((!unit.getOwner().hasSettlements())
                 ? "unit-off-map-but-missing-initial-settlement"
                 : null)
@@ -354,7 +354,7 @@ public class MissionaryMission extends Mission {
     public String invalidReason() {
         return invalidReason(getAIUnit(), getTarget());
     }
-    
+
     /**
      * {@inheritDoc}
      */
@@ -389,7 +389,7 @@ public class MissionaryMission extends Mission {
 
         case MOVE_HIGH_SEAS: case MOVE_NO_MOVES: case MOVE_ILLEGAL:
             return lbWait(lb);
-            
+
         case MOVE_NO_REPAIR:
             return lbFail(lb, false, AIUNITDIED);
 
@@ -416,7 +416,7 @@ public class MissionaryMission extends Mission {
 
 
     // Serialization
-    
+
     private static final String TARGET_TAG = "target";
 
 
@@ -438,7 +438,7 @@ public class MissionaryMission extends Mission {
     @Override
     protected void readAttributes(FreeColXMLReader xr) throws XMLStreamException {
         super.readAttributes(xr);
-        
+
         target = xr.getLocationAttribute(getGame(), TARGET_TAG, false);
     }
 

@@ -367,7 +367,7 @@ public abstract class FreeColAction extends AbstractAction
     // Serialization
     // This is not actually a FreeColObject, so the serialization is
     // less elaborate.
-    
+
     private static final String ACCELERATOR_TAG = "accelerator";
 
 

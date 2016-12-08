@@ -79,7 +79,7 @@ public final class ReportExplorationPanel extends ReportPanel {
         JLabel valueOfRegion = Utility.localizedLabel("report.exploration.valueOfRegion");
         valueOfRegion.setFont(font);
         reportPanel.add(valueOfRegion);
-        
+
         // Content Rows
         // TODO: Display "None" if no contents, though this would be rare.
         for (Region region : CollectionUtils.transform(getGame().getMap().getRegions(),

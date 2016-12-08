@@ -54,7 +54,7 @@ public class NameCache {
     /** Default season names to use if nameCache.season.* not found. */
     private static final String[] DEFAULT_SEASON_IDS
         = { "model.season.spring.name", "model.season.autumn.name" };
-    
+
     private final static String CIBOLA_PREFIX
         = "nameCache.lostCityRumour.cityName.";
 
@@ -79,12 +79,12 @@ public class NameCache {
     /** Extra rumour names. */
     private static final Object rumourNothingLock = new Object();
     private static List<String> rumourNothingKeys = null;
-    
+
     /** Season names. */
     private static List<String> seasonNames = null;
     private static final Object seasonNamesLock = new Object();
     private static int seasonNumber = 0;
-    
+
     /** Settlement names. */
     private static final Map<Player, String> capitalNames
         = new HashMap<>();
@@ -261,7 +261,7 @@ public class NameCache {
             .template("nameCache.season.default")
             .addAmount("%number%", index+1));
     }
-    
+
     /**
      * Initialize the settlement names for a player.
      *
@@ -323,7 +323,7 @@ public class NameCache {
             }
         }
     }
-    
+
 
     /**
      * Get the next name for a city of Cibola, removing it from the
@@ -437,7 +437,7 @@ public class NameCache {
                 if (map.getRegionByName(name) == null) return name;
             }
         }
-            
+
         // There are a bunch of extra rivers not attached to a specific
         // nation at model.other.region.river.*.
         if (region.getType() == Region.RegionType.RIVER) {
@@ -533,7 +533,7 @@ public class NameCache {
         String name = null;
         while (game.getSettlementByName(name = base + i++) != null);
         return name;
-    }           
+    }
 
     /**
      * Puts a suggested settlement name back into the pool.

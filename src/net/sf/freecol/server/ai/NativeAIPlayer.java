@@ -170,7 +170,7 @@ public class NativeAIPlayer extends MissionAIPlayer {
             Stance newStance = determineStance(p);
             if (newStance != serverPlayer.getStance(p)) {
                 getAIMain().getFreeColServer().getInGameController()
-                    .changeStance(serverPlayer, newStance, 
+                    .changeStance(serverPlayer, newStance,
                                   (ServerPlayer)p, true);
                 lb.add(" ", p.getDebugName(), "->", newStance, ", ");
             }
@@ -406,7 +406,7 @@ public class NativeAIPlayer extends MissionAIPlayer {
             final Settlement settlement = unit.getSettlement();
             final IndianSettlement is = unit.getHomeIndianSettlement();
             Mission m = aiUnit.getMission();
-            
+
             if (settlement != null && settlement.getUnitCount()
                 + settlement.getTile().getUnitCount() <= 1) {
                 // First see to local settlement defence
@@ -490,7 +490,7 @@ public class NativeAIPlayer extends MissionAIPlayer {
                 }
             }
             if (alreadyAssignedUnits > MAX_NUMBER_OF_GIFTS_BEING_DELIVERED) {
-                lb.add(is.getName(), " has ", alreadyAssignedUnits, 
+                lb.add(is.getName(), " has ", alreadyAssignedUnits,
                        " already, ");
                 continue;
             } else if (availableUnits.isEmpty()) {
@@ -715,7 +715,7 @@ public class NativeAIPlayer extends MissionAIPlayer {
                 mission.setSucceeded(accept);
             }
         }
-            
+
         return null;
     }
 
@@ -865,7 +865,7 @@ public class NativeAIPlayer extends MissionAIPlayer {
         final int turn = getGame().getTurn();
         NativeTradeItem ours;
         int anger, haggle;
-        
+
         switch (action) {
         case OPEN:
             switch (is.getAlarm(other).getLevel()) {

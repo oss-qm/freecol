@@ -52,7 +52,7 @@ public final class DefaultHandler extends Handler {
 
     /**
      * The constructor to use.
-     * 
+     *
      * @param consoleLogging The flag to log to the console as well.
      * @param writer The {@code Writer} to use for logging.
      */
@@ -60,7 +60,7 @@ public final class DefaultHandler extends Handler {
         throws FreeColException {
         this.consoleLogging = consoleLogging;
         this.writer = writer;
-        
+
         // We should use XMLFormatter here in the future
         // or maybe a self-made HTMLFormatter.
         setFormatter(new TextFormatter());
@@ -132,7 +132,7 @@ public final class DefaultHandler extends Handler {
     /**
      * Publishes the given LogRecord by writing its data to a file using a
      * TextFormatter.
-     * 
+     *
      * @param record The {@code LogRecord} to publish.
      */
     @Override

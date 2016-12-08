@@ -42,7 +42,6 @@ public abstract class FreeColSpecObject extends FreeColObject {
         this.specification = specification;
     }
 
-
     /**
      * Get the specification.  It may be null.
      *
@@ -54,7 +53,7 @@ public abstract class FreeColSpecObject extends FreeColObject {
     }
 
     /**
-     * Sets the specification for this object. 
+     * Sets the specification for this object.
      *
      * @param specification The {@code Specification} to use.
      */
