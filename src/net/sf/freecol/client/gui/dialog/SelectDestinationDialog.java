@@ -28,7 +28,6 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.Map.Entry;
 import java.util.function.Function;
-import java.util.function.Predicate;
 import java.util.logging.Logger;
 
 import javax.swing.DefaultListModel;
@@ -135,6 +134,25 @@ public final class SelectDestinationDialog extends FreeColDialog<Location>
         }
 
         /**
+         * Test whether the unit - or in case of carrier, somebody on
+         * board - can learn from the natives
+         */
+        private boolean unitCanLearn(Unit unit) {
+            if (unit.getUnitChange(UnitChangeType.NATIVES) != null)
+                return true;
+
+            if (!unit.isCarrier())
+                return false;
+
+            for (Unit walk : unit.getUnits()) {
+                if (u.getUnitChange(UnitChangeType.NATIVES) != null)
+                    return true;
+            }
+
+            return false;
+        }
+
+        /**
          * Collected extra annotations of interest to a unit proposing to
          * visit a location.
          *
@@ -180,16 +198,8 @@ public final class SelectDestinationDialog extends FreeColDialog<Location>
                     // Show skill if relevant
                     IndianSettlement is = (IndianSettlement)loc;
                     UnitType sk = is.getLearnableSkill();
-                    if (sk != null) {
-                        final Predicate<Unit> upgradePred = u ->
-                            u.getUnitChange(UnitChangeType.NATIVES) != null;
-                        Unit up = (unit.isCarrier())
-                            ? find(unit.getUnits(), upgradePred)
-                            : (upgradePred.test(unit)) ? unit
-                            : null;
-                        if (up != null) {
-                            lb.add("[", Messages.getName(sk), "]");
-                        }
+                    if ((sk != null) && unitCanLearn(unit)) {
+                        lb.add("[", Messages.getName(sk), "]");
                     }
                 }
                 if (!goodsTypes.isEmpty()) {
