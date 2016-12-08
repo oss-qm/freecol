@@ -159,7 +159,11 @@ public class NativeTradeItem extends GoodsTradeItem {
      * @return A suitable {@code Predicate}.
      */
     public Predicate<NativeTradeItem> goodsMatcher() {
-        return matchKeyEquals(this.getGoods(), NativeTradeItem::getGoods);
+        return new Predicate<NativeTradeItem>() {
+            public boolean test(NativeTradeItem i) {
+                return NativeTradeItem.this.getGoods().equals(i.getGoods());
+            }
+        };
     }
 
 
