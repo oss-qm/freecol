@@ -229,7 +229,7 @@ public final class ReportIndianPanel extends ReportPanel {
                     reportPanel.add(goodsLabel, x);
                     x = null;
                 }
-            }                
+            }
         }
     }
 }

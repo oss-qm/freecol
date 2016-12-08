@@ -121,13 +121,13 @@ public class ScaleMapSizeDialog extends FreeColDialog<Dimension> {
             if (w <= 0) throw new NumberFormatException();
         } catch (NumberFormatException nfe) {
             inputWidth.setText(Integer.toString(oldMap.getWidth()));
-        } 
+        }
         try {
             int h = Integer.parseInt(inputHeight.getText());
             if (h <= 0) throw new NumberFormatException();
         } catch (NumberFormatException nfe) {
             inputHeight.setText(Integer.toString(oldMap.getHeight()));
-        } 
+        }
     }
 
     /**

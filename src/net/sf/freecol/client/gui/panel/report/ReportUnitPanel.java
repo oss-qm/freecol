@@ -217,7 +217,7 @@ public abstract class ReportUnitPanel extends ReportPanel {
 
 
     // To be implemented by specific unit panels.
-    
+
     /**
      * Gather the overall unit data, mostly by calling addUnit() above.
      */

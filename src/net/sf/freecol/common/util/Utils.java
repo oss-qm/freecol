@@ -202,7 +202,7 @@ public class Utils {
         }
         return ret;
     }
-        
+
     /**
      * Create a new file writer that uses UTF-8.
      *
@@ -222,7 +222,7 @@ public class Utils {
     public static Writer getFileUTF8AppendWriter(File file) {
         return getF8W(file, true);
     }
-    
+
     /**
      * Create a new file writer that uses UTF-8.
      *
@@ -247,7 +247,7 @@ public class Utils {
                 logger.log(Level.WARNING, "Failed to close", ioe);
             }
         }
-        return wr;            
+        return wr;
     }
 
     /**

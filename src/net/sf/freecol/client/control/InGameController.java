@@ -178,7 +178,7 @@ public final class InGameController extends FreeColClientHolder {
     private void sound(String soundKey) {
         getSoundController().playSound(soundKey);
     }
-    
+
     /**
      * Require that it is this client's player's turn.
      * Put up the notYourTurn message if not.
@@ -358,7 +358,7 @@ public final class InGameController extends FreeColClientHolder {
         }
         return false;
     }
-    
+
     /**
      * A unit in Europe emigrates.
      *
@@ -1532,7 +1532,7 @@ public final class InGameController extends FreeColClientHolder {
         }
 
         unit.getOwner().invalidateCanSeeTiles();
-        
+
         final Tile tile = unit.getTile();
 
         // Perform a short pause on an active unit's last move if
@@ -1715,7 +1715,7 @@ public final class InGameController extends FreeColClientHolder {
             askServer().demandTribute(unit, direction);
             return false;
         }
-        
+
         // Europeans might be human players, so we convert to a diplomacy
         // dialog.
         DiplomaticTrade agreement
@@ -1839,7 +1839,7 @@ public final class InGameController extends FreeColClientHolder {
                     changeState(unit, UnitState.SKIPPED);
                     break;
                 }
-                
+
                 // Try to follow the path.  If the unit does not reach
                 // the stop it is finished for now.
                 movePath(unit, path);
@@ -1950,7 +1950,7 @@ public final class InGameController extends FreeColClientHolder {
         StringTemplate left = StringTemplate.label(", ");
         StringTemplate loaded = StringTemplate.label(", ");
         StringTemplate nonePresent = StringTemplate.label(", ");
-        
+
         // Check the goods already on board.  If it is not expected to
         // be loaded at this stop then complain (unload must have
         // failed somewhere).  If it is expected to load, reduce the
@@ -2076,7 +2076,7 @@ public final class InGameController extends FreeColClientHolder {
         if (enhancedTradeRoutes) { // Prioritize by goods amount
             toLoad.sort(AbstractGoods.descendingAmountComparator);
         }
-        
+
         // Load the goods.
         boolean done = false;
         for (AbstractGoods ag : toLoad) {
@@ -2534,7 +2534,7 @@ public final class InGameController extends FreeColClientHolder {
         if (!ret) {
             ret = askClaimTile(player, tile, unit, player.getLandPrice(tile));
             if (!ret) NameCache.putSettlementName(player, name);
-        }            
+        }
         if (ret) {
             ret = askServer().buildColony(name, unit)
                 && tile.hasSettlement();
@@ -2762,7 +2762,7 @@ public final class InGameController extends FreeColClientHolder {
      */
     public void chooseFoundingFather(List<FoundingFather> ffs) {
         if (ffs == null || ffs.isEmpty()) return;
-       
+
         getGUI().showChooseFoundingFatherDialog(ffs,
             (FoundingFather ff) -> chooseFoundingFather(ffs, ff));
     }
@@ -3348,7 +3348,7 @@ public final class InGameController extends FreeColClientHolder {
      */
     public void incite(Unit unit, IndianSettlement is, Player enemy, int gold) {
         final Player player = getMyPlayer();
-        
+
         if (gold < 0) {
             ; // protocol fail
         } else if (!player.checkGold(gold)) {
@@ -3500,7 +3500,7 @@ public final class InGameController extends FreeColClientHolder {
         }
         return ret;
     }
-    
+
     /**
      * Leave a ship.  The ship must be in harbour.
      *
@@ -3781,7 +3781,7 @@ public final class InGameController extends FreeColClientHolder {
 
         getGUI().setSelectedTile(newTile);
         return true;
-    } 
+    }
 
     /**
      * A player names the New World.
@@ -3916,7 +3916,7 @@ public final class InGameController extends FreeColClientHolder {
         // Maintain this for now but consider lifting in a future
         // "enhanced trade" mode.
         nt.limitSettlementToUnit(3);
-        
+
         final Function<NativeTradeItem, ChoiceItem<NativeTradeItem>>
             goodsMapper = i -> {
             String label = Messages.message(i.getGoods().getLabel(true));
@@ -3950,7 +3950,7 @@ public final class InGameController extends FreeColClientHolder {
                     nti.setPrice(NativeTradeItem.PRICE_UNSET);
                     askServer().nativeTrade(NativeTradeAction.BUY, nt);
                     return;
-                }                    
+                }
                 break;
             case SELL:
                 act = null;
@@ -4279,14 +4279,14 @@ public final class InGameController extends FreeColClientHolder {
         boolean visibilityChange = false;
         for (FreeColGameObject fcgo : objects) {
             if (divert != null) player.divertModelMessages(fcgo, divert);
-        
+
             if (fcgo instanceof Settlement) {
                 Settlement settlement = (Settlement)fcgo;
                 if (settlement.getOwner() != null) {
                     settlement.getOwner().removeSettlement(settlement);
                 }
                 visibilityChange = true;//-vis(player)
-                
+
             } else if (fcgo instanceof Unit) {
                 // Deselect the object if it is the current active unit.
                 Unit u = (Unit)fcgo;
@@ -4308,7 +4308,7 @@ public final class InGameController extends FreeColClientHolder {
 
         getGUI().refresh();
     }
-        
+
     /**
      * Renames a {@code Nameable}.
      *
@@ -4429,7 +4429,7 @@ public final class InGameController extends FreeColClientHolder {
             break;
         }
     }
-    
+
     /**
      * Selects a destination for this unit. Europe and the player's
      * colonies are valid destinations.
@@ -4579,7 +4579,7 @@ public final class InGameController extends FreeColClientHolder {
                         Europe.MigrationType.getUnspecificSlot());
                 }
             }
-            
+
             // Wake up human!
             if (!getFreeColClient().getSinglePlayer()) {
                 sound("sound.anthem." + player.getNationId());
@@ -4706,7 +4706,7 @@ public final class InGameController extends FreeColClientHolder {
     public void spyColony(Tile tile) {
         getGUI().showSpyColonyPanel(tile);
     }
-    
+
     /**
      * Trains a unit of a specified type in Europe.
      *
@@ -4862,7 +4862,7 @@ public final class InGameController extends FreeColClientHolder {
         }
         return true;
     }
-        
+
     /**
      * Tell a unit to wait.
      *

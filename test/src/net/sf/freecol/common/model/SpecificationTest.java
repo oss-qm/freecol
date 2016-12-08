@@ -425,15 +425,15 @@ public final class SpecificationTest extends FreeColTestCase {
         assertNotNull("No European nation type", europeanNationType);
         assertNotNull("No native nation type", nativeNationType);
         assertNotNull("No REF nation type", refNationType);
-                
+
         assertEquals("Should find free colonist", freeColonistType,
                      spec().getDefaultUnitType(europeanNationType));
         assertEquals("Should find brave", braveType,
                      spec().getDefaultUnitType(nativeNationType));
         assertEquals("Should find kings regular", kingsRegularType,
                      spec().getDefaultUnitType(refNationType));
-    }        
-        
+    }
+
     public void testLoadMods() {
         try {
             Specification specification = new Specification(new FreeColTcFile("freecol").getSpecificationInputStream());
@@ -442,7 +442,7 @@ public final class SpecificationTest extends FreeColTestCase {
             mods.add(new FreeColModFile(new File("data/mods/example")));
             specification.loadMods(mods);
             UnitType milkmaid = specification.getUnitType("model.unit.milkmaid");
-            assertEquals(numberOfUnitTypes + 1, 
+            assertEquals(numberOfUnitTypes + 1,
                 specification.getUnitTypeList().size());
         } catch (Exception e) {
             fail(e.getMessage());

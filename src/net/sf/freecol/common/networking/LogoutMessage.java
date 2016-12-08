@@ -114,7 +114,7 @@ public class LogoutMessage extends AttributeMessage {
         // Make sure the player is disconnected
         new DisconnectMessage(getReason())
             .serverHandler(freeColServer, serverPlayer);
-        
+
         // Inform other players
         LogoutMessage message
             = new LogoutMessage(serverPlayer, serverPlayer.getName()

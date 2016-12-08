@@ -35,7 +35,7 @@ public class ClientTestHelper {
         // This is not ideal, but headless mode allows cutting off
         // some excessive resource loading, especially in the sound
         // tests where the resource manager is exercised.
-        System.setProperty("java.awt.headless", "true"); 
+        System.setProperty("java.awt.headless", "true");
 
         FreeColClient client = new FreeColClient(null, null);
         client.startClient(null, null, false, false, null, null);
@@ -47,7 +47,7 @@ public class ClientTestHelper {
         client.getPreGameController().setReady(true);
         return client;
     }
-    
+
     public static void stopClient(FreeColClient client) {
         client.getConnectController().quitGame(false);
     }

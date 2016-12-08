@@ -280,7 +280,7 @@ public class FoundingFather extends FreeColSpecObjectType {
             events = null;
             units = null;
         }
-        
+
         super.readChildren(xr);
     }
 

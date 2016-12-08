@@ -161,7 +161,7 @@ public class FreeColFrame extends JFrame {
      */
     private static String getFrameName() {
         return "FreeCol " + FreeCol.getVersion();
-    } 
+    }
 
 
     /**
@@ -178,7 +178,7 @@ public class FreeColFrame extends JFrame {
             getContentPane().add(canvas);
         } catch (Exception e) {
             logger.log(Level.WARNING, "Java crash", e);
-        }        
+        }
     }
 
 }

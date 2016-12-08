@@ -67,7 +67,7 @@ public class TransportMission extends Mission {
     public static final String TAG = "transportMission";
 
     private static final String tag = "AI transport";
-    
+
     private static enum CargoResult {
         TCONTINUE,  // Cargo should continue
         TDONE,      // Cargo completed successfully
@@ -272,7 +272,7 @@ public class TransportMission extends Mission {
         synchronized (cargoes) {
             change = cargoes.isEmpty() || index == 0;
             if (index >= 0) {
-                cargoes.add(index, cargo); 
+                cargoes.add(index, cargo);
             } else {
                 cargoes.add(cargo);
             }
@@ -351,7 +351,7 @@ public class TransportMission extends Mission {
             }
         }
         return ret;
-    }                
+    }
 
     /**
      * How many more destinations are desirable on the current cargoes list?
@@ -591,7 +591,7 @@ public class TransportMission extends Mission {
         return true;
     }
 
-   
+
     /**
      * Incrementally queue a cargo to the cargoes list.
      *
@@ -629,7 +629,7 @@ public class TransportMission extends Mission {
                 }
             }
         }
-        
+
         if (candidate < 0) { // Queue at end unless match required
             if (requireMatch) return false;
             candidate = ts.size();
@@ -793,7 +793,7 @@ public class TransportMission extends Mission {
             path = carrier.getTrivialPath();
             Location end = (path == null) ? null
                 : path.getLastNode().getLocation();
-            
+
             while (!drop.isEmpty()) {
                 TransportableAIObject t = drop.remove(0);
                 if (t.leaveTransport()) {
@@ -856,7 +856,7 @@ public class TransportMission extends Mission {
                     + " at " + t.getLocation().toString()
                     + " to " + carrier);
                 return CargoResult.TFAIL;
-            }                    
+            }
             tloc = tloc.getTile().getNeighbourOrNull(d.getReverseDirection());
             // Fall through
         case LOAD:
@@ -881,7 +881,7 @@ public class TransportMission extends Mission {
                 lb.add(", ", t, " retry-", carrier.getNoAddReason(l));
                 return CargoResult.TRETRY;
             }
-            
+
             String reason = cargo.update();
             if (reason != null) {
                 lb.add(", ", t, " NO-UPDATE(", reason, ")");
@@ -1215,7 +1215,7 @@ public class TransportMission extends Mission {
             : ((reason = t.invalidReason()) != null) ? "cargo-" + reason
             : null;
     }
-            
+
     /**
      * Why would this mission be invalid with the given AI unit and location?
      *
@@ -1321,10 +1321,10 @@ public class TransportMission extends Mission {
     public boolean forceCollection(AIUnit aiu, LogBuilder lb) {
         for (Cargo c : tCopy()) {
             if (c.getMode().isCollection()) removeCargo(c);
-        }            
+        }
         return queueTransportable(aiu, false, lb);
     }
-    
+
     /**
      * Suppress European trade in a type of goods which is about to be
      * boycotted.
@@ -1414,7 +1414,7 @@ public class TransportMission extends Mission {
                 if (isEmpty() && unit.isOffensiveUnit()) {
                     Mission m = euaip.getPrivateerMission(aiCarrier, null);
                     if (m != null) return lbDone(lb, false, "going pirate");
-                }                    
+                }
                 if ((reason = invalidReason()) != null) {
                     logger.warning(tag + " post-stop failure(" + reason
                         + "): " + this.toFullString());

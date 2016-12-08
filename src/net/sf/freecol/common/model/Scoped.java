@@ -43,7 +43,7 @@ public interface Scoped {
      * @return A stream of {@code Scope}s.
      */
     public Stream<Scope> getScopes();
-    
+
     /**
      * Set the scopes for this object.
      *

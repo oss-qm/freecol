@@ -120,41 +120,6 @@ public class IndianNationType extends NationType {
     }
 
     /**
-     * Can this Nation can settle the given Tile?
-     *
-     * @param tile a {@code Tile} value
-     * @return a {@code boolean} value
-     */
-    /*
-    public boolean canSettleTile(Tile tile) {
-        if (tile.getType().canSettle()) {
-            return canSettleRegion(tile.getRegion());
-        } else {
-            return false;
-        }
-    }
-    */
-    /**
-     * Can this Nation can settle the given Region?
-     *
-     * @param region a {@code Region} value
-     * @return a {@code boolean} value
-     */
-    /*
-    public boolean canSettleRegion(Region region) {
-        if (regions.isEmpty()) {
-            return true;
-        } else if (regions.contains(region.getId())) {
-            return true;
-        } else if (region.getParent() == null) {
-            return false;
-        } else {
-            return canSettleRegion(region.getParent());
-        }
-    }
-    */
-
-    /**
      * Gets a list of this Nation's skills.
      *
      * @return A list of national skills.

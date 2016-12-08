@@ -51,7 +51,7 @@ public final class NetworkHandler implements MessageHandler {
 
     /**
      * The constructor to use.
-     * 
+     *
      * @param metaServer The {@code MetaServer} this
      *     {@code NetworkHandler} has been created for.
      * @param metaRegister An object containing a list of all the servers.
@@ -61,7 +61,7 @@ public final class NetworkHandler implements MessageHandler {
         this.metaRegister = metaRegister;
     }
 
-    
+
     /**
      * Handle a network message.
      *
@@ -95,10 +95,10 @@ public final class NetworkHandler implements MessageHandler {
         return (reply == null) ? null : reply.toXMLElement();
     }
 
-    
+
     /**
      * Handles a "register"-request.
-     * 
+     *
      * @param connection The connection the message was received on.
      * @param element The element containing the request.
      * @return Null.
@@ -130,11 +130,11 @@ public final class NetworkHandler implements MessageHandler {
         }
         return message;
     }
-        
+
 
     /**
      * Handles an "update"-request.
-     * 
+     *
      * @param connection The connection the message came from.
      * @param element The element containing the request.
      * @return Null.
@@ -152,7 +152,7 @@ public final class NetworkHandler implements MessageHandler {
 
     /**
      * Handles a "remove"-request.
-     * 
+     *
      * @param connection The connection the message came from.
      * @param element The element containing the request.
      * @return Null.
@@ -170,7 +170,7 @@ public final class NetworkHandler implements MessageHandler {
 
     /**
      * Handles a "disconnect"-request.
-     * 
+     *
      * @param connection The connection the message came from.
      * @param element The element containing the request.
      * @return Null.

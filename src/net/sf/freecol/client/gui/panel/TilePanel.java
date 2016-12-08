@@ -130,7 +130,7 @@ public final class TilePanel extends FreeColPanel {
         int movementCost = tile.getType().getBasicMoveCost() / 3;
         add(Utility.localizedLabel("tilePanel.movementCost"));
         add(new JLabel(Integer.toString(movementCost)));
-        
+
         if (tileType != null) {
             final Specification spec = getSpecification();
             final UnitType colonist = spec.getDefaultUnitType();

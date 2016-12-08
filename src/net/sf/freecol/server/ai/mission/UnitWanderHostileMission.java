@@ -34,7 +34,7 @@ import net.sf.freecol.server.ai.AIUnit;
 
 
 /**
- * Mission for wandering around, attacking targets owned by a player we 
+ * Mission for wandering around, attacking targets owned by a player we
  * do not like.
  */
 public class UnitWanderHostileMission extends Mission {

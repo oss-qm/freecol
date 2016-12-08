@@ -260,7 +260,7 @@ public class FreeColDebugger {
         }
         return true;
     }
-    
+
     /**
      * Signal that a debug run should complete at the next suitable
      * opportunity.  Currently called from the server.

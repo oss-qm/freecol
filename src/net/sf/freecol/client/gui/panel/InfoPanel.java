@@ -113,12 +113,8 @@ public final class InfoPanel extends FreeColPanel {
     public class TileInfoPanel extends MigPanel {
 
         private static final int PRODUCTION = 4;
-        
+
         private Tile tile;
-
-        // TODO: Find a way of removing the need for an extremely tiny font.
-        //private final Font font = new JLabel().getFont().deriveFont(8f);
-
 
         /**
          * Create a {@code TileInfoPanel}.
@@ -129,7 +125,6 @@ public final class InfoPanel extends FreeColPanel {
             setSize(260, 130);
             setOpaque(false);
         }
-
 
         /**
          * Updates this {@code InfoPanel}.
@@ -169,13 +164,11 @@ public final class InfoPanel extends FreeColPanel {
                     JLabel defenceLabel = Utility.localizedLabel(StringTemplate
                         .template("infoPanel.defenseBonus")
                         .addAmount("%bonus%", tile.getDefenceBonusPercentage()));
-                    //defenceLabel.setFont(font);
                     add(defenceLabel, "span " + PRODUCTION);
 
                     JLabel moveLabel = Utility.localizedLabel(StringTemplate
                         .template("infoPanel.movementCost")
                         .addAmount("%cost%", tile.getType().getBasicMoveCost()/3));
-                    //moveLabel.setFont(font);
                     add(moveLabel, "span " + PRODUCTION);
 
                     List<AbstractGoods> produce

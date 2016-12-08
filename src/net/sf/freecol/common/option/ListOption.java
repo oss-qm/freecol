@@ -210,9 +210,9 @@ public abstract class ListOption<T> extends AbstractOption<List<AbstractOption<T
     protected void writeChildren(FreeColXMLWriter xw) throws XMLStreamException {
         if (template != null) {
             xw.writeStartElement(TEMPLATE_TAG);
-        
+
             template.toXML(xw);
-            
+
             xw.writeEndElement();
         }
 

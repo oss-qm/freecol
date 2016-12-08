@@ -106,7 +106,7 @@ public class UnitSeekAndDestroyMission extends Mission {
             : path.getLastNode().getLocation();
         Tile t;
         Unit u;
-        return (loc == null || aiUnit == null || aiUnit.getUnit() == null) 
+        return (loc == null || aiUnit == null || aiUnit.getUnit() == null)
             ? null
             : (invalidReason(aiUnit, loc.getSettlement()) == null)
             ? loc.getSettlement()
@@ -220,7 +220,7 @@ public class UnitSeekAndDestroyMission extends Mission {
         return new GoalDecider() {
                 private PathNode bestPath = null;
                 private int bestValue = Integer.MIN_VALUE;
-            
+
                 @Override
                 public PathNode getGoal() { return bestPath; }
                 @Override
@@ -356,7 +356,7 @@ public class UnitSeekAndDestroyMission extends Mission {
     public static String invalidReason(AIUnit aiUnit, Location loc) {
         String reason = invalidMissionReason(aiUnit);
         return (reason != null)
-            ? reason                
+            ? reason
             : (loc instanceof Settlement)
             ? invalidSettlementReason(aiUnit, (Settlement)loc)
             : (loc instanceof Unit)
@@ -364,7 +364,7 @@ public class UnitSeekAndDestroyMission extends Mission {
             : Mission.TARGETINVALID;
     }
 
-    
+
     // Implement Mission
     //   Inherit dispose, isOneTime
 
@@ -455,7 +455,7 @@ public class UnitSeekAndDestroyMission extends Mission {
                 && (m = getAIPlayer().getDefendSettlementMission(aiUnit,
                         colony)) != null) {
                 return lbDone(lb, true, " capturing colony ", colony.getName());
-            }            
+            }
             return retargetMission(reason, lb);
         } else if (reason != null) {
             return lbFail(lb, false, reason);

@@ -208,7 +208,7 @@ public class Disaster extends FreeColSpecObjectType {
 
 
     // Override Object
-    
+
     /**
      * {@inheritDoc}
      */

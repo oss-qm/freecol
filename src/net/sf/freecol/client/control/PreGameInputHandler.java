@@ -307,7 +307,7 @@ public final class PreGameInputHandler extends ClientInputHandler {
         final Game game = getGame();
         final Specification spec = game.getSpecification();
         final SetColorMessage message = new SetColorMessage(game, element);
-            
+
         Nation nation = message.getNation(spec);
         if (nation != null) {
             Color color = message.getColor();
@@ -391,7 +391,7 @@ public final class PreGameInputHandler extends ClientInputHandler {
                             logger.log(Level.SEVERE, "Thread used for starting a game has been interupted.", ie);
                         }
                     }
-                    
+
                     SwingUtilities.invokeLater(() -> {
                             pgc().startGame();
                         });
@@ -440,7 +440,7 @@ public final class PreGameInputHandler extends ClientInputHandler {
         }
         return null;
     }
-    
+
     /**
      * Handles an "updateMapGeneratorOptions"-message.
      *

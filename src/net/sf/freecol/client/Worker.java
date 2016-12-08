@@ -38,7 +38,7 @@ public final class Worker extends Thread {
     private volatile boolean stopRunning;
 
     private static final Logger logger = Logger.getLogger(Worker.class.getName());
-    
+
     public Worker() {
         super(FreeCol.CLIENT_THREAD+"Worker");
         jobList = new LinkedBlockingQueue<>();
@@ -64,7 +64,7 @@ public final class Worker extends Thread {
 
     /**
      * Adds a new job to the queue
-     * 
+     *
      * @param job the job to add to the queue.
      */
     public void schedule(Runnable job) {

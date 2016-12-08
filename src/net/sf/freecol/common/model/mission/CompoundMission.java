@@ -37,7 +37,7 @@ import static net.sf.freecol.common.util.CollectionUtils.*;
 public class CompoundMission extends AbstractMission {
 
     public static final String TAG = "compoundMission";
-    
+
     /**
      * The individual missions this CompoundMission wraps.
      */

@@ -151,7 +151,7 @@ public class AIMessage {
         return aiUnit.getAIOwner().askServer()
             .clearSpeciality(aiUnit.getUnit());
     }
- 
+
     /**
      * An AIUnit disbands.
      *

@@ -471,7 +471,7 @@ public final class GoodsType extends FreeColSpecObjectType {
                          gt -> gt == this || gt.getStoredAs() == this,
                          Function.identity(), Collectors.toSet());
     }
-        
+
     /**
      * Set the derived fields for the goods types in a specification.
      *
@@ -480,7 +480,7 @@ public final class GoodsType extends FreeColSpecObjectType {
      *   a BuildableType requiredGoods list
      * - makes depends on whether a GoodsType madeFrom field refers
      *   to another
-     *   
+     *
      * This is called from Specification.clean() when the
      * specification is fully read.  We must wait until then as the
      * made-from field can change in extended specifications and mods.

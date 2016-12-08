@@ -41,7 +41,7 @@ import org.w3c.dom.Element;
 public class Modifier extends Feature {
 
     public static final String TAG = "modifier";
-    
+
     /**
      * Comparator to sort by ascending modifier index, then type, then
      * source, then FCO order.
@@ -51,7 +51,7 @@ public class Modifier extends Feature {
             .thenComparingInt(m -> m.getType().ordinal())
             .thenComparing(FreeColObject.fcoComparator)
             .thenComparing(Modifier::getSource, FreeColObject.fcoComparator);
-    
+
     public static final String AMPHIBIOUS_ATTACK
         = "model.modifier.amphibiousAttack";
     public static final String ARTILLERY_AGAINST_RAID
@@ -628,7 +628,7 @@ public class Modifier extends Feature {
     @Override
     public boolean equals(Object o) {
         if (o == this) return true;
-        if (o instanceof Modifier) { 
+        if (o instanceof Modifier) {
             Modifier m = (Modifier)o;
             return Utils.equals(this.modifierType, m.modifierType)
                 && this.value == m.value

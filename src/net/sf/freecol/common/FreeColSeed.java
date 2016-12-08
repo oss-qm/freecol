@@ -33,7 +33,7 @@ public class FreeColSeed {
     public static final long DEFAULT_SEED = 0L;
 
     private static long freeColSeed = DEFAULT_SEED;
-    
+
 
     /**
      * Gets the seed for the PRNG.

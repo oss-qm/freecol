@@ -138,7 +138,7 @@ public class DefendSettlementMission extends Mission {
         return new GoalDecider() {
                 private PathNode bestPath = null;
                 private int bestValue = Integer.MIN_VALUE;
-                
+
                 @Override
                 public PathNode getGoal() { return bestPath; }
                 @Override
@@ -204,7 +204,7 @@ public class DefendSettlementMission extends Mission {
         return (cm.getDefencePower(null, unit) <= 0.0f) ? "unit-not-defender"
             : null;
     }
-    
+
     /**
      * Why is this mission invalid with a given settlement target?
      *
@@ -418,7 +418,7 @@ public class DefendSettlementMission extends Mission {
 
         return lbWait(lb, ", alert at ", getTarget());
     }
-    
+
 
     // Serialization
 

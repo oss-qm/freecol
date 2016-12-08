@@ -124,9 +124,9 @@ public class GUI extends FreeColClientHolder {
 
     // Initialization related methods
 
-    /** 
+    /**
      * Swing system and look-and-feel initialization.
-     * 
+     *
      * @param fontName An optional font name to be used.
      * @exception FreeColException if the LAF is incompatible with the GUI.
      */
@@ -202,7 +202,7 @@ public class GUI extends FreeColClientHolder {
 
     /**
      * Create a thumbnail for the minimap.
-     * 
+     *
      * FIXME: Delete all code inside this method and replace it with
      *        sensible code directly drawing in necessary size,
      *        without creating a throwaway GUI panel, drawing in wrong
@@ -300,7 +300,7 @@ public class GUI extends FreeColClientHolder {
     public boolean requireFocus(Tile tile) {
         return false;
     }
-    
+
     /**
      * Animate a unit attack.
      *
@@ -1131,7 +1131,7 @@ public class GUI extends FreeColClientHolder {
                                        String message) {
         showErrorMessage(template, message, null);
     }
-    
+
     /**
      * Show an i18n compliant error message derived from a template,
      * with optional extra debug information and an optional callback.

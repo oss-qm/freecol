@@ -37,14 +37,14 @@ import org.w3c.dom.Element;
 
 /**
  * Handle messages that arrive before the game starts.
- * 
+ *
  * @see PreGameController
  */
 public final class PreGameInputHandler extends ServerInputHandler {
 
     /**
      * Create the a new pre-game controller.
-     * 
+     *
      * @param freeColServer The main server object.
      */
     public PreGameInputHandler(FreeColServer freeColServer) {

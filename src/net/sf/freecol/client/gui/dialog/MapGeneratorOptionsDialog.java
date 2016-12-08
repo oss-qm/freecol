@@ -140,7 +140,7 @@ public final class MapGeneratorOptionsDialog extends OptionsDialog {
             foui = (FileOptionUI)OptionUI.getOptionUI(gui,
                 mgo.getOption(MapGeneratorOptions.IMPORT_FILE), true);
         foui.setValue(file);
-        
+
         BooleanOptionUI terrainUI = (BooleanOptionUI)mgoUI
             .getOptionUI(MapGeneratorOptions.IMPORT_TERRAIN);
         if (terrainUI == null)

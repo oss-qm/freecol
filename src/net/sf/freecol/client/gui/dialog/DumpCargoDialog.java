@@ -104,5 +104,5 @@ public final class DumpCargoDialog extends FreeColDialog<List<Goods>> {
             }
         }
         return gl;
-    }            
+    }
 }

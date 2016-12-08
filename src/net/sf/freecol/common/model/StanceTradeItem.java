@@ -32,13 +32,13 @@ import net.sf.freecol.common.util.Utils;
  * A trade item consisting of a change of stance.
  */
 public class StanceTradeItem extends TradeItem {
-    
+
     public static final String TAG = "stanceTradeItem";
 
     /** The stance between source and destination. */
     private Stance stance;
 
-    
+
     /**
      * Creates a new {@code StanceTradeItem} instance.
      *
@@ -148,7 +148,7 @@ public class StanceTradeItem extends TradeItem {
 
         xw.writeAttribute(STANCE_TAG, stance);
     }
-    
+
     /**
      * {@inheritDoc}
      */

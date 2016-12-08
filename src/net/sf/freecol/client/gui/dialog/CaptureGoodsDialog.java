@@ -157,7 +157,7 @@ public final class CaptureGoodsDialog extends FreeColDialog<List<Goods>> {
             });
         this.allButton.setMnemonic('a');
         this.allButton.setActionCommand(this.allButton.getText());
- 
+
         this.noneButton = Utility.localizedButton("none");
         this.noneButton.addActionListener((ActionEvent ae) -> {
                 JList<GoodsItem> gl = CaptureGoodsDialog.this.goodsList;
@@ -250,5 +250,5 @@ public final class CaptureGoodsDialog extends FreeColDialog<List<Goods>> {
             }
         }
         return gl;
-    }            
+    }
 }

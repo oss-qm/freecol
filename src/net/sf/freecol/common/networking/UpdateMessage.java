@@ -82,7 +82,7 @@ public class UpdateMessage extends DOMMessage {
         return this.fcgos;
     }
 
-    
+
     // No server handler required.
     // This message is only sent to the client.
 

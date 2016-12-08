@@ -574,15 +574,15 @@ public class REFAIPlayer extends EuropeanAIPlayer {
                         // Bleed off excessive defenders.
                         if (u.isAtLocation(colony)
                             && !colony.isBadlyDefended()
-                            && randomInt(logger, "REF defend " + colony.getName(), 
+                            && randomInt(logger, "REF defend " + colony.getName(),
                                          getAIRandom(), 3) == 0) {
                             land.add(aiu);
                         } else {
                             incrementMapCount(targetMap, mission.getTarget());
-                        }                          
+                        }
                     } else {
                         land.add(aiu);
-                    }                    
+                    }
                 } else if (mission instanceof UnitSeekAndDestroyMission) {
                     if (mission.isValid()) {
                         incrementMapCount(targetMap, mission.getTarget());
@@ -616,7 +616,7 @@ public class REFAIPlayer extends EuropeanAIPlayer {
         // - defend the closest port
         // - go idle in a port
         for (AIUnit aiu : land) {
-            Location target = UnitSeekAndDestroyMission.findTarget(aiu, 
+            Location target = UnitSeekAndDestroyMission.findTarget(aiu,
                 seekAndDestroyRange, false);
             if (target != null) {
                 int count = (targetMap.containsKey(target))
@@ -917,6 +917,6 @@ public class REFAIPlayer extends EuropeanAIPlayer {
 
 
     // Serialization
-    
+
     // getXMLTagName not needed, uses parent
 }

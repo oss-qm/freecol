@@ -33,10 +33,10 @@ import net.sf.freecol.common.networking.Connection;
 
 /**
  * The entry point and main controller object for the meta server.
- * 
+ *
  * When a new client connects to the meta server a new {@link Connection} is
  * made, with {@link NetworkHandler} as the control object.
- * 
+ *
  * @see net.sf.freecol.common.networking
  */
 public final class MetaServer extends Thread {
@@ -63,7 +63,7 @@ public final class MetaServer extends Thread {
 
     /**
      * Creates and starts a new {@code MetaServer}.
-     * 
+     *
      * @param args The command-line options.
      */
     public static void main(String[] args) {
@@ -89,7 +89,7 @@ public final class MetaServer extends Thread {
     /**
      * Creates a new network server. Use {@link #run metaServer.start()} to
      * start listening for new connections.
-     * 
+     *
      * @param port The TCP port to use for the public socket.
      * @throws IOException if the public socket cannot be created.
      */
@@ -126,7 +126,7 @@ public final class MetaServer extends Thread {
 
     /**
      * Gets the control object that handles the network requests.
-     * 
+     *
      * @return The {@code NetworkHandler}.
      */
     public NetworkHandler getNetworkHandler() {
@@ -135,7 +135,7 @@ public final class MetaServer extends Thread {
 
     /**
      * Gets the TCP port that is being used for the public socket.
-     * 
+     *
      * @return The TCP port.
      */
     public int getPort() {
@@ -144,7 +144,7 @@ public final class MetaServer extends Thread {
 
     /**
      * Gets an iterator of every connection to this server.
-     * 
+     *
      * @return The {@code Iterator}.
      * @see Connection
      */
@@ -171,7 +171,7 @@ public final class MetaServer extends Thread {
 
     /**
      * Gets a {@code Connection} identified by a {@code Socket}.
-     * 
+     *
      * @param socket The {@code Socket} that identifies the
      *            {@code Connection}
      * @return The {@code Connection}.
@@ -182,7 +182,7 @@ public final class MetaServer extends Thread {
 
     /**
      * Removes the given connection.
-     * 
+     *
      * @param connection The connection that should be removed.
      */
     public void removeConnection(Connection connection) {

@@ -54,7 +54,7 @@ public class UnitChangeTypeTest extends FreeColTestCase {
 
         UnitType gardenerType = new UnitType("gardener", spec());
         gardenerType.setSkill(0);
-        
+
         assertNull(gardenerType.getTeachingType(farmer));
 
         spec().addUnitChange(UnitChangeType.EDUCATION, gardenerType, farmer,
@@ -65,7 +65,7 @@ public class UnitChangeTypeTest extends FreeColTestCase {
         Scope scope = new Scope();
         scope.setAbilityId(Ability.NATIVE);
         spec().getUnitChangeType(UnitChangeType.EDUCATION).addScope(scope);
-        
+
         assertEquals(farmer, gardenerType.getTeachingType(farmer));
         Unit gardenerUnit = new ServerUnit(game, null, dutch, gardenerType);
         assertNull(gardenerUnit.getTeachingType(farmer));
@@ -87,7 +87,7 @@ public class UnitChangeTypeTest extends FreeColTestCase {
 
         assertEquals(0, count(spec().getUnitChanges(UnitChangeType.CREATION,
                                                     gardenerType)));
-        
+
         spec().addUnitChange(UnitChangeType.CREATION, gardenerType, farmer,
                              100, -1);
 

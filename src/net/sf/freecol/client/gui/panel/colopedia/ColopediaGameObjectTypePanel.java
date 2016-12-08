@@ -64,7 +64,7 @@ public abstract class ColopediaGameObjectTypePanel<T extends FreeColSpecObjectTy
     private static final Logger logger = Logger.getLogger(ColopediaGameObjectTypePanel.class.getName());
 
     /** The enclosing colopedia panel. */
-    private ColopediaPanel colopediaPanel; 
+    private ColopediaPanel colopediaPanel;
 
     /** The specific panel id. */
     private final String id;
@@ -160,7 +160,7 @@ public abstract class ColopediaGameObjectTypePanel<T extends FreeColSpecObjectTy
     protected DefaultMutableTreeNode buildItem(FreeColSpecObjectType type,
                                                ImageIcon icon) {
         String name = Messages.getName(type);
-        return new DefaultMutableTreeNode(new ColopediaTreeItem(this, 
+        return new DefaultMutableTreeNode(new ColopediaTreeItem(this,
                 type.getId(), name, icon));
     }
 
@@ -283,7 +283,7 @@ public abstract class ColopediaGameObjectTypePanel<T extends FreeColSpecObjectTy
             logger.log(Level.WARNING, "Insert fail", ble);
         }
     }
-        
+
 
     // Override Component
 

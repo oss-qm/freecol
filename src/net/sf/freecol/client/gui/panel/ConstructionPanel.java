@@ -106,7 +106,7 @@ public class ConstructionPanel extends MigPanel
             // we are interested in changes to the build queue, as well as
             // changes to the warehouse and the colony's production bonus
             colony.addPropertyChangeListener(EVENT, this);
-                
+
             if (openBuildQueue) {
                 addMouseListener(new MouseAdapter() {
                         @Override

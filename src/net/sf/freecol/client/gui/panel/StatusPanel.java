@@ -47,14 +47,14 @@ public final class StatusPanel extends FreeColPanel {
         super(freeColClient, new FlowLayout());
 
         setFocusable(false);
-        
+
         statusLabel = new JLabel();
         add(statusLabel);
 
         setSize(260, 60);
     }
 
-    
+
     /**
      * Sets a new status message to be displayed by this
      * {@code StatusPanel}.

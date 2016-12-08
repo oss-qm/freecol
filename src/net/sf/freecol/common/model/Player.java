@@ -111,7 +111,7 @@ public class Player extends FreeColGameObject implements Nameable {
     /** Special return values for showstopper getColonyValue fail. */
     public static enum NoValueType {
         BOGUS(-1), TERRAIN(-2), RUMOUR(-3), SETTLED(-4), FOOD(-5), INLAND(-6), POLAR(-7);
-     
+
         private static final int MAX = values().length;
 
         private final int value;
@@ -129,7 +129,7 @@ public class Player extends FreeColGameObject implements Nameable {
         }
     }
 
-    
+
     /**
      * An {@code Iterator} of {@link Unit}s that can be made active.
      */
@@ -852,7 +852,7 @@ public class Player extends FreeColGameObject implements Nameable {
         }
         return false;
     }
-    
+
     /**
      * Is this player currently on bad terms with a given player, and thus
      * a suitable candidate for a random monarch peace declaration?
@@ -1332,7 +1332,7 @@ public class Player extends FreeColGameObject implements Nameable {
      */
     public int getTotalImmigrationProduction() {
         if (!isColonial()) return 0;
-        
+
         final List<GoodsType> immigrationGoodsTypes = getSpecification()
             .getImmigrationGoodsTypeList();
         int production = sum(getColonies(),
@@ -1458,7 +1458,7 @@ public class Player extends FreeColGameObject implements Nameable {
     }
 
     /**
-     * Gets the number of founding fathers in this players congress. 
+     * Gets the number of founding fathers in this players congress.
      * Used to calculate number of liberty needed to recruit new fathers.
      *
      * @return The number of founding fathers in this players congress
@@ -1652,7 +1652,7 @@ public class Player extends FreeColGameObject implements Nameable {
                 units.add(new AbstractUnit(te.getKey(), re.getKey(), re.getValue()))));
         return units;
     }
-    
+
 
     //
     // Taxation and trade
@@ -2075,7 +2075,7 @@ public class Player extends FreeColGameObject implements Nameable {
     public int getUnitCount(boolean naval) {
         return count(getUnits(), u -> u.isNaval() == naval);
     }
-        
+
     /**
      * Gets the number of King's land units.
      *
@@ -2211,7 +2211,7 @@ public class Player extends FreeColGameObject implements Nameable {
             }
         }
     }
-    
+
     /**
      * Get a trade route by name.
      *
@@ -2312,7 +2312,7 @@ public class Player extends FreeColGameObject implements Nameable {
     public Stream<Settlement> getSettlements() {
         return getSettlementList().stream();
     }
-        
+
     /**
      * Does this player have any settlements at present.
      *
@@ -2450,7 +2450,7 @@ public class Player extends FreeColGameObject implements Nameable {
         return transform(getSettlements(), s -> s instanceof Colony,
                          s -> (Colony)s);
     }
-    
+
     /**
      * Get a sorted list of all colonies this player owns.
      *
@@ -2494,8 +2494,8 @@ public class Player extends FreeColGameObject implements Nameable {
             s instanceof IndianSettlement
                 && ((IndianSettlement)s).hasMissionary(p);
         return transform(getSettlements(), isPred, s -> (IndianSettlement)s);
-    }            
-        
+    }
+
     /**
      * Get a stream of all indian settlements owned by this player with
      * a missionary from a given player.
@@ -2506,8 +2506,8 @@ public class Player extends FreeColGameObject implements Nameable {
      */
     public Stream<IndianSettlement> getIndianSettlementsWithMissionary(Player p) {
         return getIndianSettlementsWithMissionaryList(p).stream();
-    }            
-        
+    }
+
     /**
      * Find a {@code Settlement} by name.
      *
@@ -2703,7 +2703,7 @@ public class Player extends FreeColGameObject implements Nameable {
      * there not be any active units.
      *
      * Favour the first settlement, followed by the entry tile.
-     * 
+     *
      * @return A suitable {@code Tile}.
      */
     public Tile getFallbackTile() {
@@ -3203,7 +3203,7 @@ public class Player extends FreeColGameObject implements Nameable {
         public String getDescriptionKey() {
             return Messages.descriptionKey("model." + getKey());
         }
-        
+
         // Implement Named
 
         /**
@@ -3211,7 +3211,7 @@ public class Player extends FreeColGameObject implements Nameable {
          */
         public String getNameKey() {
             return Messages.nameKey("model." + getKey());
-        }        
+        }
     };
 
     /**
@@ -4032,7 +4032,7 @@ public class Player extends FreeColGameObject implements Nameable {
 
                 xw.writeEndElement();
             }
-            
+
             if (bannedMissions != null) {
                 for (Player p : sort(bannedMissions)) {
                     xw.writeStartElement(BAN_MISSIONS_TAG);
@@ -4065,7 +4065,7 @@ public class Player extends FreeColGameObject implements Nameable {
             }
 
             if (highSeas != null) highSeas.toXML(xw);
-            
+
             xw.writeToListElement(FOUNDING_FATHERS_TAG, foundingFathers);
 
             xw.writeToListElement(OFFERED_FATHERS_TAG, offeredFathers);
@@ -4106,7 +4106,7 @@ public class Player extends FreeColGameObject implements Nameable {
             Stance s = getStance(player);
             if (s != null && s != Stance.UNCONTACTED) {
                 xw.writeStartElement(STANCE_TAG);
-                
+
                 xw.writeAttribute(PLAYER_TAG, player);
 
                 xw.writeAttribute(VALUE_TAG, s);
@@ -4253,7 +4253,7 @@ public class Player extends FreeColGameObject implements Nameable {
                     addFather(ff); // addFather adds the features
                 }
             }
-        
+
         } else if (OFFERED_FATHERS_TAG.equals(tag)) {
             List<FoundingFather> ofs = xr.readList(spec, OFFERED_FATHERS_TAG,
                                                    FoundingFather.class);
@@ -4271,7 +4271,7 @@ public class Player extends FreeColGameObject implements Nameable {
                                                  Player.class, true),
                         new Tension(xr.getAttribute(VALUE_TAG, 0)));
             xr.closeTag(TENSION_TAG);
-        
+
         } else if (Ability.TAG.equals(tag)) {
             Ability ability = new Ability(xr, spec);
             if (ability.isIndependent()) addAbility(ability);
@@ -4316,7 +4316,7 @@ public class Player extends FreeColGameObject implements Nameable {
 
 
     // Override Object
-    
+
     /**
      * {@inheritDoc}
      */

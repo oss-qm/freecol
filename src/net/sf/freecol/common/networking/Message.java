@@ -62,7 +62,7 @@ public class Message {
     /**
      * Constructs a new Message with data from the given String. The
      * constructor to use if this is an INCOMING message.
-     * 
+     *
      * @param msg The raw message data.
      * @exception IOException should not be thrown.
      * @exception SAXException if thrown during parsing.
@@ -74,7 +74,7 @@ public class Message {
     /**
      * Constructs a new Message with data from the given InputStream. The
      * constructor to use if this is an INCOMING message.
-     * 
+     *
      * @param inputStream The {@code InputStream} to get the XML-data
      *            from.
      * @exception IOException if thrown by the {@code InputStream}.
@@ -87,7 +87,7 @@ public class Message {
     /**
      * Constructs a new Message with data from the given InputSource. The
      * constructor to use if this is an INCOMING message.
-     * 
+     *
      * @param inputSource The {@code InputSource} to get the XML-data
      *            from.
      * @exception IOException if thrown by the {@code InputSource}.
@@ -135,7 +135,7 @@ public class Message {
 
     /**
      * Constructs a new Message with data from the given XML-document.
-     * 
+     *
      * @param document The document representing an XML-message.
      */
     public Message(Document document) {
@@ -145,7 +145,7 @@ public class Message {
 
     /**
      * Gets the {@code Document} holding the message data.
-     * 
+     *
      * @return The {@code Document} holding the message data.
      */
     public Document getDocument() {
@@ -154,7 +154,7 @@ public class Message {
 
     /**
      * Gets the type of this Message.
-     * 
+     *
      * @return The type of this Message.
      */
     public String getType() {
@@ -165,7 +165,7 @@ public class Message {
 
     /**
      * Checks if this message is of a given type.
-     * 
+     *
      * @param type The type you wish to test against.
      * @return True if the type of this message equals the given type.
      */
@@ -175,7 +175,7 @@ public class Message {
 
     /**
      * Gets an attribute from the root element.
-     * 
+     *
      * @param key The key of the attribute.
      * @return The value of the attribute with the given key.
      */
@@ -185,7 +185,7 @@ public class Message {
 
     /**
      * Checks if an attribute is set on the root element.
-     * 
+     *
      * @param attribute The attribute in which to verify the existence of.
      * @return {@code true} if the root element has the given attribute.
      */
@@ -195,7 +195,7 @@ public class Message {
 
     /**
      * Sets an attribute on the root element.
-     * 
+     *
      * @param key The key of the attribute.
      * @param value The value of the attribute.
      */
@@ -205,7 +205,7 @@ public class Message {
 
     /**
      * Sets an attribute on the root element.
-     * 
+     *
      * @param key The key of the attribute.
      * @param value The value of the attribute.
      */
@@ -225,7 +225,7 @@ public class Message {
 
     /**
      * Gets the current version of the FreeCol protocol.
-     * 
+     *
      * @return The version of the FreeCol protocol.
      */
     public static String getFreeColProtocolVersion() {

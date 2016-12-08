@@ -93,20 +93,6 @@ public class ColonyProductionTest extends FreeColTestCase {
         assertEquals(colony, colony.getTile().getSettlement());
         assertEquals(dutch, colony.getTile().getOwner());
 
-        // Disabled.  Removal of equipment has moved to the server, so
-        // nonServerBuildColony is not going to work.
-        //// Should have 50 Muskets and nothing else
-        //GoodsType muskets = spec().getGoodsType("model.goods.muskets");
-        //assertNotNull(muskets);
-        //
-        //for (GoodsType type : spec().getGoodsTypeList()){
-        //    if (type == muskets)
-        //        assertEquals(50, colony.getGoodsCount(type));
-        //    else
-        //        assertEquals(type.toString(), 0, colony.getGoodsCount(type));
-        //}
-        //assertEquals(false, soldier.isArmed());
-
         // Test the state of the soldier
         // Soldier should be working on the field with the bonus
 
@@ -139,20 +125,6 @@ public class ColonyProductionTest extends FreeColTestCase {
         assertEquals("New Amsterdam", colony.getName());
         assertEquals(colony, colony.getTile().getSettlement());
         assertEquals(dutch, colony.getTile().getOwner());
-
-        // Disabled.  Removal of equipment has moved to the server, so
-        // nonServerBuildColony is not going to work.
-        //// Should have 100 tools and nothing else
-        //GoodsType tools = spec().getGoodsType("model.goods.tools");
-        //assertNotNull(tools);
-        //
-        //for (GoodsType type : spec().getGoodsTypeList()){
-        //    if (type == tools)
-        //        assertEquals(100, colony.getGoodsCount(type));
-        //    else
-        //        assertEquals(type.toString(), 0, colony.getGoodsCount(type));
-        //}
-        //assertEquals(false, pioneer.isArmed());
 
         // Test the state of the pioneer
         // Pioneer should be working on the field with the bonus
@@ -216,7 +188,7 @@ public class ColonyProductionTest extends FreeColTestCase {
         int expectedBellNetProd = expectedBellProd - expectedBellUpkeep;
         assertEquals("Wrong unattended bell net production", expectedBellNetProd,
                      bellsNetProdPerTurn);
-        
+
         Unit unit = colony.getFirstUnit();
         assertTrue(unit.setLocation(townHall));
         colony.invalidateCache();
@@ -404,92 +376,6 @@ public class ColonyProductionTest extends FreeColTestCase {
             }
         }
 
-        /*
-        TypeCountMap<GoodsType> grossProduction = new TypeCountMap<GoodsType>();
-        TypeCountMap<GoodsType> netProduction = new TypeCountMap<GoodsType>();
-        for (ProductionInfo productionInfo : info.values()) {
-            for (AbstractGoods goods : productionInfo.getProduction()) {
-                grossProduction.incrementCount(goods.getType(), goods.getAmount());
-                netProduction.incrementCount(goods.getType().getStoredAs(), goods.getAmount());
-            }
-            for (AbstractGoods goods : productionInfo.getStorage()) {
-                grossProduction.incrementCount(goods.getType(), goods.getAmount());
-                netProduction.incrementCount(goods.getType().getStoredAs(), goods.getAmount());
-            }
-            for (AbstractGoods goods : productionInfo.getConsumption()) {
-                netProduction.incrementCount(goods.getType().getStoredAs(), -goods.getAmount());
-            }
-        }
-
-        assertEquals(2, grossProduction.getCount(cottonType));
-        assertEquals(2, colony.getNetProductionOf(cottonType));
-
-        assertEquals(20, grossProduction.getCount(grainType));
-        assertEquals(0, colony.getNetProductionOf(grainType));
-
-        assertEquals(3, grossProduction.getCount(bellsType));
-        assertEquals(0, colony.getNetProductionOf(bellsType));
-
-        assertEquals(1, grossProduction.getCount(crossesType));
-        assertEquals(1, colony.getNetProductionOf(crossesType));
-
-        // this is storage only
-        assertEquals(7, grossProduction.getCount(foodType));
-        // this includes implicit type change and consumption
-        assertEquals(14, colony.getNetProductionOf(foodType));
-
-        colony.addGoods(horsesType, 50);
-        colony.getUnitList().get(0).changeWorkType(cottonType);
-        Building weaverHouse = colony.getBuilding(spec().getBuildingType("model.building.weaverHouse"));
-        colony.getUnitList().get(1).setLocation(weaverHouse);
-
-        info = colony.getProductionAndConsumption();
-
-        assertEquals(grainType, tile.getProduction().get(0).getType());
-        assertEquals(5, tile.getProduction().get(0).getAmount());
-        assertEquals(cottonType, tile.getProduction().get(1).getType());
-        assertEquals(2, tile.getProduction().get(1).getAmount());
-
-        grossProduction = new TypeCountMap<GoodsType>();
-        netProduction = new TypeCountMap<GoodsType>();
-        for (ProductionInfo productionInfo : info.values()) {
-            for (AbstractGoods goods : productionInfo.getProduction()) {
-                grossProduction.incrementCount(goods.getType(), goods.getAmount());
-                netProduction.incrementCount(goods.getType().getStoredAs(), goods.getAmount());
-            }
-            for (AbstractGoods goods : productionInfo.getStorage()) {
-                grossProduction.incrementCount(goods.getType(), goods.getAmount());
-                netProduction.incrementCount(goods.getType().getStoredAs(), goods.getAmount());
-            }
-            for (AbstractGoods goods : productionInfo.getConsumption()) {
-                netProduction.incrementCount(goods.getType().getStoredAs(), -goods.getAmount());
-            }
-        }
-
-        assertEquals(4, grossProduction.getCount(cottonType));
-        assertEquals(1, colony.getNetProductionOf(cottonType));
-
-        assertEquals(3, grossProduction.getCount(clothType));
-        assertEquals(3, colony.getNetProductionOf(clothType));
-
-        assertEquals(10, grossProduction.getCount(grainType));
-        assertEquals(0, colony.getNetProductionOf(grainType));
-
-        assertEquals(2, grossProduction.getCount(horsesType));
-        assertEquals(2, colony.getNetProductionOf(horsesType));
-
-        assertEquals(3, grossProduction.getCount(bellsType));
-        assertEquals(0, colony.getNetProductionOf(bellsType));
-
-        assertEquals(1, grossProduction.getCount(crossesType));
-        assertEquals(1, colony.getNetProductionOf(crossesType));
-
-        // this is storage only
-        assertEquals(2, grossProduction.getCount(foodType));
-        // this includes implicit type change and consumption
-        assertEquals(2, colony.getNetProductionOf(foodType));
-
-        */
     }
 
     public void testGetPotentialProduction() {

@@ -235,7 +235,7 @@ public final class FreeColClient {
      * The indirection through invokeLater is necessary if this is
      * called in the closing callback of another panel --- if called
      * directly it loops when Canvas.showMainPanel tries to close all
-     * existing panels.     
+     * existing panels.
      *
      * @param userMsg A message to the user.
      * @return A {@code Runnable} for the main panel.
@@ -377,7 +377,6 @@ public final class FreeColClient {
             clop.merge(userOptions);
         }
 
-        //logger.info("Final client options: " + clop.toString());
         return clop;
     }
 
@@ -570,7 +569,7 @@ public final class FreeColClient {
         }
         this.inGame = inGame;
     }
-        
+
     /**
      * Are we using the map editor?
      *
@@ -884,7 +883,7 @@ public final class FreeColClient {
         if (!getMyPlayer().isAdmin()
             || !co.getBoolean(ClientOptions.AUTOSAVE_DELETE)) return;
         final String prefix = co.getText(ClientOptions.AUTO_SAVE_PREFIX);
-        
+
         File asd = FreeColDirectories.getAutosaveDirectory();
         File[] files;
         if (asd == null || (files = asd.listFiles()) == null) return;

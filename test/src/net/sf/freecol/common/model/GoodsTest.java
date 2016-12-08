@@ -124,12 +124,6 @@ public class GoodsTest extends FreeColTestCase {
 
         assertEquals("75 Cotton", Messages.message(g.getLabel(true)));
         assertEquals("75 Cotton (boycotted)", Messages.message(g.getLabel(false)));
-
-        // Same as getName(int, boolean)
-        //assertEquals(g.getName(), Goods.getName(cottonType));
-        //assertEquals(g.getName(false), Goods.getName(cottonType, false));
-        //assertEquals(g.getName(true), Goods.getName(cottonType, true));
-
     }
 
     public void testGetInputType() {
@@ -171,7 +165,6 @@ public class GoodsTest extends FreeColTestCase {
         assertFalse(clothType.isBuildingMaterial());
         assertFalse(cottonType.isBuildingMaterial());
         assertFalse(fishType.isBuildingMaterial());
-        //assertFalse(foodType.isBuildingMaterial());
         assertFalse(oreType.isBuildingMaterial());
         assertFalse(lumberType.isBuildingMaterial());
 

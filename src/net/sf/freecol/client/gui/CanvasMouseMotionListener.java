@@ -46,7 +46,7 @@ public final class CanvasMouseMotionListener extends AbstractCanvasListener
      * path when dragging units.
      */
     private Tile lastTile;
-    
+
 
     /**
      * Creates a new listener for mouse movement.

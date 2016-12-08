@@ -439,7 +439,7 @@ public class TileImprovement extends TileItem implements Named {
 
 
     // Interface Named
-    
+
     /**
      * {@inheritDoc}
      */
@@ -672,7 +672,7 @@ public class TileImprovement extends TileItem implements Named {
             } else {
             // end @compat
 
-                throw new XMLStreamException("For " + type 
+                throw new XMLStreamException("For " + type
                     + ", bogus style: " + str + " -> /" + style
                     + "/ at " + tile);
             }

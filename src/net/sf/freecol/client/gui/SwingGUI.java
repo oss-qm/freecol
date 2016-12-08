@@ -144,7 +144,7 @@ public class SwingGUI extends GUI {
      */
     public SwingGUI(FreeColClient freeColClient, float scaleFactor) {
         super(freeColClient, scaleFactor);
-        
+
         graphicsDevice = getGoodGraphicsDevice();
         logger.info("GUI constructed using scale factor " + scaleFactor);
     }
@@ -167,7 +167,7 @@ public class SwingGUI extends GUI {
 
     // Initialization related methods
 
-    /** 
+    /**
      * {@inheritDoc}
      */
     @Override
@@ -190,7 +190,7 @@ public class SwingGUI extends GUI {
         }
     }
 
-    /** 
+    /**
      * {@inheritDoc}
      */
     @Override
@@ -605,7 +605,7 @@ public class SwingGUI extends GUI {
         }
         return false;
     }
-        
+
     /**
      * {@inheritDoc}
      */
@@ -950,7 +950,7 @@ public class SwingGUI extends GUI {
     public boolean onClosingErrorPanel(Runnable callback) {
         return canvas != null && canvas.onClosingErrorPanel(callback);
     }
-        
+
     /**
      * {@inheritDoc}
      */

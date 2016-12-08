@@ -29,7 +29,7 @@ import java.util.logging.Logger;
 import javax.swing.SwingUtilities;
 import javax.xml.stream.XMLStreamException;
 
-import net.sf.freecol.FreeCol; 
+import net.sf.freecol.FreeCol;
 import net.sf.freecol.client.ClientOptions;
 import net.sf.freecol.client.FreeColClient;
 import net.sf.freecol.client.control.FreeColClientHolder;
@@ -170,7 +170,7 @@ public final class ConnectController extends FreeColClientHolder {
         }
         return null;
     }
-        
+
     /**
      * Log out this client.
      *
@@ -189,7 +189,7 @@ public final class ConnectController extends FreeColClientHolder {
         // than in the input handler.
 
         // Drop all attachment to the game
-        fcc.setLoggedIn(false);    
+        fcc.setLoggedIn(false);
         fcc.changeClientState(false);
         fcc.setGame(null);
         fcc.setMyPlayer(null);
@@ -296,7 +296,7 @@ public final class ConnectController extends FreeColClientHolder {
         class ErrorJob implements Runnable {
             private final StringTemplate template;
             private final Runnable runnable;
-            
+
             ErrorJob(StringTemplate template) {
                 this.template = template;
                 this.runnable = null;
@@ -306,7 +306,7 @@ public final class ConnectController extends FreeColClientHolder {
                 this.template = template;
                 this.runnable = runnable;
             }
-            
+
             @Override
             public void run() {
                 getGUI().closeMenus();
@@ -403,7 +403,7 @@ public final class ConnectController extends FreeColClientHolder {
                 // Server might have bounced to another port.
                 fcc.setSinglePlayer(singlePlayer);
                 igc().setGameConnected();
-                if (login(FreeCol.getName(), freeColServer.getHost(), 
+                if (login(FreeCol.getName(), freeColServer.getHost(),
                           freeColServer.getPort())) {
                     SwingUtilities.invokeLater(() -> {
                             ResourceManager.setScenarioMapping(saveGame.getResourceMapping());
@@ -501,7 +501,7 @@ public final class ConnectController extends FreeColClientHolder {
             GameStateMessage.TAG, StringTemplate.template("client.noState"));
         ServerState state = (msg instanceof GameStateMessage)
             ? ((GameStateMessage)msg).getState()
-            : null;        
+            : null;
         if (state == null) return false;
 
         StringTemplate err;

@@ -123,7 +123,7 @@ public class UnitTest extends FreeColTestCase {
         Unit caravel = new ServerUnit(game, null, dutch, caravelType);
         Unit colonist = new ServerUnit(game, null, dutch, colonistType);
         Unit wagonTrain = new ServerUnit(game, null, dutch, wagonType);
-        Unit treasureTrain = new ServerUnit(game, null, dutch, 
+        Unit treasureTrain = new ServerUnit(game, null, dutch,
                                             treasureTrainType);
 
         // tests according to standard rules
@@ -175,7 +175,7 @@ public class UnitTest extends FreeColTestCase {
                      foodInColony, colony.getGoodsCount(foodType));
 
         Player dutch = game.getPlayerByNationId("model.nation.dutch");
-        Unit wagonTrain = new ServerUnit(game, colony.getTile(), dutch, 
+        Unit wagonTrain = new ServerUnit(game, colony.getTile(), dutch,
                                          wagonType);
         assertEquals("Setup error, unit should not carry anything", 0,
                      wagonTrain.getGoodsSpaceTaken());
@@ -560,7 +560,7 @@ public class UnitTest extends FreeColTestCase {
         Unit soldier = new ServerUnit(game, merchantman, dutch, veteranSoldierType);
         Goods goods = new Goods(game, merchantman, cottonType, 44);
         merchantman.add(goods);
-        
+
         Unit other = merchantman.copy(game, merchantman.getClass());
 
         assertFalse(merchantman == other);
@@ -577,7 +577,7 @@ public class UnitTest extends FreeColTestCase {
         assertEquals(merchantman.getUnitList().get(0).getId(),
             other.getUnitList().get(0).getId());
     }
-    
+
     public void testDefaultRole() {
         for (UnitType type : spec().getUnitTypeList()) {
             assertNotNull(type.getDefaultRole());
@@ -592,5 +592,5 @@ public class UnitTest extends FreeColTestCase {
                 assertFalse(type.hasMaximumAttrition());
             }
         }
-    }        
+    }
 }

@@ -71,7 +71,7 @@ public class UserServerAPI extends ServerAPI {
      * @exception IOException on connection failure.
      */
     public boolean connect(String threadName, String host, int port,
-                           MessageHandler messageHandler) 
+                           MessageHandler messageHandler)
         throws IOException {
         int tries;
         if (port < 0) {
@@ -119,7 +119,7 @@ public class UserServerAPI extends ServerAPI {
      * Get the port we are connected to.
      *
      * @return The current port, or negative if none.
-     */     
+     */
     public int getPort() {
         return (this.clientConnection == null) ? -1
             : this.clientConnection.getPort();
@@ -147,7 +147,7 @@ public class UserServerAPI extends ServerAPI {
 
 
     // Implement ServerAPI
-    
+
     /**
      * {@inheritDoc}
      */

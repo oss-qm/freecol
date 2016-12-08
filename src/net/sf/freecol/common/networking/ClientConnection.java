@@ -68,7 +68,7 @@ public final class ClientConnection extends Connection {
     public String getHost() {
         return this.host;
     }
-    
+
     /**
      * Gets the port used by the connection.
      *

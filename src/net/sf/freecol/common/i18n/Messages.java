@@ -161,7 +161,7 @@ public class Messages {
         return FreeColDataFile.getFileNames(MOD_MESSAGE_FILE_PREFIX,
             MESSAGE_FILE_SUFFIX, locale);
     }
-        
+
     /**
      * Load the message bundle for the given locale
      *
@@ -297,7 +297,7 @@ public class Messages {
             }
         }
     }
-    
+
     /**
      * Get the {@code Locale} corresponding to a given language name.
      *
@@ -484,7 +484,7 @@ public class Messages {
     public static final Predicate<Named> matchesNamed(String key) {
         return matchKeyEquals(key, (Named k) -> Messages.getName(k));
     }
-    
+
 
     // Special purpose unit labelling
 

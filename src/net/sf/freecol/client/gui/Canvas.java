@@ -196,7 +196,7 @@ public final class Canvas extends JDesktopPane {
 
     /** A wrapper class for non-modal dialogs. */
     private class DialogCallback<T> implements Runnable {
-        
+
         /** The dialog to show. */
         private final FreeColDialog<T> fcd;
 
@@ -692,7 +692,7 @@ public final class Canvas extends JDesktopPane {
      * @param popupPosition An optional {@code PopupPosition} hint.
      * @return A suitable {@code Point} to place the component.
      */
-    private Point chooseLocation(Component comp, int width, int height, 
+    private Point chooseLocation(Component comp, int width, int height,
                                  PopupPosition popupPosition) {
         Point p = null;
         if ((comp instanceof FreeColPanel)
@@ -966,7 +966,7 @@ public final class Canvas extends JDesktopPane {
         if (c instanceof FreeColPanel) {
             FreeColPanel fcp = (FreeColPanel)c;
             fcp.firePropertyChange("closing", false, true);
-            
+
             savePosition(fcp, frame.getLocation());
             saveSize(fcp, fcp.getSize());
         }
@@ -1702,7 +1702,7 @@ public final class Canvas extends JDesktopPane {
             = getExistingFreeColPanel(TradeRouteInputPanel.class);
         if (trip != null) trip.cancelTradeRoute();
     }
-        
+
     /**
      * Display the AboutPanel.
      */
@@ -2145,7 +2145,7 @@ public final class Canvas extends JDesktopPane {
                                        Tile tile, ImageIcon icon,
                                        StringTemplate template) {
         String text = Messages.message(template);
-        showFreeColPanel(new InformationPanel(freeColClient, text, 
+        showFreeColPanel(new InformationPanel(freeColClient, text,
                                               displayObject, icon),
                          tile, true);
     }
@@ -2232,7 +2232,7 @@ public final class Canvas extends JDesktopPane {
 
     /**
      * Display the map size dialog.
-     * 
+     *
      * @return The response returned by the dialog.
      */
     public Dimension showMapSizeDialog() {
@@ -2354,7 +2354,7 @@ public final class Canvas extends JDesktopPane {
 
     /**
      * Display the parameters dialog.
-     * 
+     *
      * @return The response returned by the dialog.
      */
     public Parameters showParametersDialog() {
@@ -2445,7 +2445,7 @@ public final class Canvas extends JDesktopPane {
 
     /**
      * Display the scale map size dialog.
-     * 
+     *
      * @return The response returned by the dialog.
      */
     public Dimension showScaleMapSizeDialog() {

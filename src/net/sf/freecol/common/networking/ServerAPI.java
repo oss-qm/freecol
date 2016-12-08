@@ -494,7 +494,7 @@ public abstract class ServerAPI {
      * @param dt The {@code DiplomaticTrade} agreement to propose.
      * @return The resulting agreement or null if none present.
      */
-    public boolean diplomacy(FreeColGameObject our, FreeColGameObject other, 
+    public boolean diplomacy(FreeColGameObject our, FreeColGameObject other,
                              DiplomaticTrade dt) {
         return ask(our.getGame(),
                    new DiplomacyMessage(our, other, dt));
@@ -656,7 +656,7 @@ public abstract class ServerAPI {
                    new IndianDemandMessage(unit, colony, type, amount)
                        .setResult(result));
     }
-            
+
     /**
      * Server query-response for joining a colony.
      *
@@ -835,7 +835,7 @@ public abstract class ServerAPI {
      * @param name The new region name.
      * @return True if the server interaction succeeded.
      */
-    public boolean newRegionName(Region region, Tile tile, Unit unit, 
+    public boolean newRegionName(Region region, Tile tile, Unit unit,
                                  String name) {
         return ask(unit.getGame(),
                    new NewRegionNameMessage(region, tile, unit, name));
@@ -948,7 +948,7 @@ public abstract class ServerAPI {
         return ask(unit.getGame(),
                    new ScoutIndianSettlementMessage(unit, direction));
     }
-   
+
     /**
      * Server query-response for speaking with a native chief.
      *

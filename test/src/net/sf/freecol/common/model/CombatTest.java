@@ -573,7 +573,7 @@ public class CombatTest extends FreeColTestCase {
         Unit defender = is.getDefendingUnit(soldier);
         assertNotNull(defender);
         assertTrue(defender.getOwner().isIndian());
-        
+
         MockPseudoRandom random = new MockPseudoRandom();
         List<Integer> il = new ArrayList<>();
         il.add(0);

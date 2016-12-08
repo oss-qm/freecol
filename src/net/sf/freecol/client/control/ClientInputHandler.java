@@ -66,7 +66,7 @@ public abstract class ClientInputHandler extends FreeColClientHolder
 
    /**
      * Register a network request handler.
-     * 
+     *
      * @param name The handler name.
      * @param handler The {@code NetworkRequestHandler} to register.
      */
@@ -76,7 +76,7 @@ public abstract class ClientInputHandler extends FreeColClientHolder
 
     /**
      * Unregister a network request handler.
-     * 
+     *
      * @param name The handler name.
      * @param handler The {@code NetworkRequestHandler} to unregister.
      * @return True if the supplied handler was actually removed.

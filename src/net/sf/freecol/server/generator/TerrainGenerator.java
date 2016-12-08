@@ -473,7 +473,7 @@ public class TerrainGenerator {
         while ((tile = map.getRandomLandTile(random)) != null) {
             // Can not be high ground already
             if (tile.getType() != hills && tile.getType() != mountains
-                
+
                 // Not too close to a mountain range as this would
                 // defeat the purpose of adding random hills
                 && none(tile.getSurroundingTiles(1, 3), t -> t.getType() == mountains)
@@ -663,7 +663,7 @@ public class TerrainGenerator {
             }
         }
         lb.add("\n");
-        
+
         return makeLakes(map, lakes);
     }
 
@@ -792,7 +792,7 @@ public class TerrainGenerator {
         int minValue = resourceType.getMinValue();
         int maxValue = resourceType.getMaxValue();
         int quantity = (minValue == maxValue) ? maxValue
-            : (minValue + randomInt(logger, "Rsiz", random, 
+            : (minValue + randomInt(logger, "Rsiz", random,
                                     maxValue - minValue + 1));
         return new Resource(game, tile, resourceType, quantity);
     }

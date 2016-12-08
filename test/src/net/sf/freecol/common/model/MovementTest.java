@@ -137,7 +137,7 @@ public class MovementTest extends FreeColTestCase {
         road2.updateRoadConnections(true);
         assertTrue(road2.isComplete());
         assertEquals(road2, tile2.getRoad());
-        
+
         assertTrue(road1.isConnectedTo(tile1.getDirection(tile2)));
         assertTrue(road2.isConnectedTo(tile2.getDirection(tile1)));
 

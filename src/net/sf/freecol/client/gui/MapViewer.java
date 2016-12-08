@@ -73,7 +73,7 @@ import static net.sf.freecol.common.util.StringUtils.*;
 
 /**
  * MapViewer is a private helper class of Canvas and SwingGUI.
- * 
+ *
  * This class is responsible for drawing the map/background on the
  * {@code Canvas}.
  * In addition, the graphical state of the map (focus, active unit..)
@@ -188,7 +188,7 @@ public final class MapViewer extends FreeColClientHolder {
      */
     MapViewer(FreeColClient freeColClient) {
         super(freeColClient);
-        
+
         this.gui = (SwingGUI)getGUI();
         this.size = null;
 
@@ -204,7 +204,7 @@ public final class MapViewer extends FreeColClientHolder {
 
     /**
      * Gets the contained {@code ImageLibrary}.
-     * 
+     *
      * @return The image library;
      */
     ImageLibrary getImageLibrary() {
@@ -1100,7 +1100,7 @@ public final class MapViewer extends FreeColClientHolder {
 
     /**
      * Starts a goto operation on the mapboard.
-     * 
+     *
      * Dont use this directly, call the method in canvas!
      */
     void startGoto() {
@@ -1110,7 +1110,7 @@ public final class MapViewer extends FreeColClientHolder {
 
     /**
      * Stops any ongoing goto operation on the mapboard.
-     * 
+     *
      * Dont use this directly, call the method in canvas!
      */
     void stopGoto() {
@@ -1131,7 +1131,7 @@ public final class MapViewer extends FreeColClientHolder {
 
     /**
      * Sets the path to be drawn on the map.
-     * 
+     *
      * Dont use this directly, call the method in canvas!
      *
      * @param gotoPath The path that should be drawn on the map

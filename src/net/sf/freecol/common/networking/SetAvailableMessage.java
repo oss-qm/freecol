@@ -38,7 +38,7 @@ public class SetAvailableMessage extends AttributeMessage {
     public static final String TAG = "setAvailable";
     private static final String NATION_TAG = "nation";
     private static final String STATE_TAG = "state";
-    
+
 
     /**
      * Create a new {@code SetAvailableMessage}.
@@ -62,7 +62,7 @@ public class SetAvailableMessage extends AttributeMessage {
         super(TAG, NATION_TAG, getStringAttribute(element, NATION_TAG),
               STATE_TAG, getStringAttribute(element, STATE_TAG));
     }
-        
+
 
     // Public interface
 
@@ -94,7 +94,7 @@ public class SetAvailableMessage extends AttributeMessage {
                                    ServerPlayer serverPlayer) {
         final Game game = freeColServer.getGame();
         final Specification spec = game.getSpecification();
-        
+
         if (serverPlayer != null) {
             Nation nation = getNation(spec);
             NationState state = getNationState();

@@ -31,7 +31,7 @@ import net.sf.freecol.util.test.FreeColTestCase;
 
 
 public class SaveLoadTest extends FreeColTestCase {
-    
+
     @Override
     public void tearDown() throws Exception {
         ServerTestHelper.stopServer();
@@ -64,7 +64,7 @@ public class SaveLoadTest extends FreeColTestCase {
         file.delete();
         assertFalse(file.exists());
     }
-    
+
     public void testImport() {
         File file = ServerTestHelper.createRandomSaveGame();
         ServerTestHelper.stopServer();

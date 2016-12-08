@@ -967,7 +967,7 @@ public final class NegotiationDialog extends FreeColDialog<DiplomaticTrade> {
         panel.add(labelOfferMessage);
 
         // Panel contents
-        // TODO: Expand center panel so that contents fill cell horizontally. 
+        // TODO: Expand center panel so that contents fill cell horizontally.
         panel.add(this.goldDemandPanel); // Left pane
         JPanel centerPanel = new MigPanel();
         centerPanel.setLayout(new MigLayout("wrap 1"));

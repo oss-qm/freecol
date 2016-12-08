@@ -658,7 +658,7 @@ public final class Tile extends UnitLocation implements Named, Ownable {
             return !unit.isNaval(); // Can not swim
         }
     }
-       
+
     /**
      * Gets the {@code IndianSettlementInternals} for the given player.
      *
@@ -986,7 +986,7 @@ public final class Tile extends UnitLocation implements Named, Ownable {
             && type.isTileTypeAllowed(getType())
             && ((ti = getTileImprovement(type)) == null || !ti.isComplete());
     }
-        
+
     /**
      * Check if a given improvement is valid for this tile.
      *
@@ -1398,7 +1398,7 @@ public final class Tile extends UnitLocation implements Named, Ownable {
         return transform(getSurroundingTiles(0, 1), safeTilePred,
                          Function.identity(), defenceComp);
     }
-                    
+
     /**
      * Get the adjacent land tile with the best defence bonus.
      * Useful for incoming attackers as a disembark site.
@@ -1445,7 +1445,7 @@ public final class Tile extends UnitLocation implements Named, Ownable {
                          t -> (!t.isLand() && t.isHighSeasConnected()
                              && !t.isDangerousToShip(unit)));
     }
-                
+
 
     //
     // Type and Ownership
@@ -1761,7 +1761,7 @@ public final class Tile extends UnitLocation implements Named, Ownable {
                                                   Player owner) {
         // Defend against calls while partially read.
         if (getType() == null) return Collections.<AbstractGoods>emptyList();
-        
+
         final ToIntFunction<GoodsType> productionMapper = cacheInt(gt ->
             getPotentialProduction(gt, unitType));
         final Predicate<GoodsType> productionPred = gt ->
@@ -2136,7 +2136,7 @@ public final class Tile extends UnitLocation implements Named, Ownable {
             .addNamed("%direction%", direction)
             .addStringTemplate("%location%", location);
     }
-    
+
     /**
      * {@inheritDoc}
      */
@@ -2372,7 +2372,7 @@ public final class Tile extends UnitLocation implements Named, Ownable {
     // @compat 0.11.3
     public static final String OLD_TILE_ITEM_CONTAINER_TAG = "tileitemcontainer";
     // end @compat 0.11.3
-    
+
 
     /**
      * {@inheritDoc}
@@ -2438,7 +2438,7 @@ public final class Tile extends UnitLocation implements Named, Ownable {
         if (owner != null) {
             xw.writeAttribute(OWNER_TAG, owner);
         }
-        
+
         if (owningSettlement != null) {
             if (owningSettlement.isDisposed()
                 || owningSettlement.getId() == null) {
@@ -2456,13 +2456,13 @@ public final class Tile extends UnitLocation implements Named, Ownable {
                 xw.writeAttribute(OWNING_SETTLEMENT_TAG, owningSettlement);
             }
         }
-        
+
         xw.writeAttribute(STYLE_TAG, style);
-        
+
         if (region != null) {
             xw.writeAttribute(REGION_TAG, region);
         }
-        
+
         if (moveToEurope != null) {
             xw.writeAttribute(MOVE_TO_EUROPE_TAG,
                               moveToEurope.booleanValue());
@@ -2471,7 +2471,7 @@ public final class Tile extends UnitLocation implements Named, Ownable {
         if (highSeasCount >= 0) {
             xw.writeAttribute(CONNECTED_TAG, highSeasCount);
         }
-       
+
         if (contiguity >= 0) {
             xw.writeAttribute(CONTIGUITY_TAG, contiguity);
         }
@@ -2486,7 +2486,7 @@ public final class Tile extends UnitLocation implements Named, Ownable {
         // player that can not see the tile, and there is no blocking
         // enemy settlement.
         Player player = xw.getClientPlayer();
-        if ((player == null || player.canSee(this)) 
+        if ((player == null || player.canSee(this))
             && (settlement == null
                 || xw.validFor(settlement.getOwner()))) {
             super.writeChildren(xw);
@@ -2592,7 +2592,7 @@ public final class Tile extends UnitLocation implements Named, Ownable {
 
         region = xr.findFreeColGameObject(game, REGION_TAG,
                                           Region.class, (Region)null, false);
-        
+
         moveToEurope = (xr.hasAttribute(MOVE_TO_EUROPE_TAG))
             ? xr.getAttribute(MOVE_TO_EUROPE_TAG, false)
             : null;
@@ -2642,7 +2642,7 @@ public final class Tile extends UnitLocation implements Named, Ownable {
         final String tag = xr.getLocalName();
 
         if (cachedTiles != null && CACHED_TILE_TAG.equals(tag)) {
-            Player player = xr.findFreeColGameObject(game, PLAYER_TAG, 
+            Player player = xr.findFreeColGameObject(game, PLAYER_TAG,
                 Player.class, (Player)null, true);
 
             boolean copied = xr.getAttribute(COPIED_TAG, false);

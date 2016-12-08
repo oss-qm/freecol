@@ -28,7 +28,7 @@ import java.net.URL;
 public class Video {
 
     private final URL url;
-    
+
     /**
      * Create a {@code Video}.
      *
@@ -37,7 +37,6 @@ public class Video {
     public Video(URL url) {
         this.url = url;
     }
-    
 
     public URL getURL() {
         return this.url;

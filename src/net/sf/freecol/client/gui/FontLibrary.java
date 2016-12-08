@@ -26,7 +26,7 @@ import net.sf.freecol.common.resources.ResourceManager;
 
 /**
  * Wraps anything {@code Font} related and contains a scale factor.
- * 
+ *
  * Should be used for getting a {@code Font} everywhere it is needed.
  */
 public class FontLibrary {
@@ -35,7 +35,7 @@ public class FontLibrary {
 
     /**
      * FontType is used for choosing the typeface of the {@code Font}.
-     * 
+     *
      * Choices are:
      * <ul>
      * <li>NORMAL -- a normal system typeface</li>
@@ -51,7 +51,7 @@ public class FontLibrary {
 
     /**
      * FontSize allows for choosing the relative size of the {@code Font}.
-     * 
+     *
      * Choices are:
      * <ul>
      * <li>TINY -- used for normal text</li>
@@ -90,7 +90,7 @@ public class FontLibrary {
     /**
      * Create a {@code FontLibrary} with scaling.
      * Useful if you need many different fonts.
-     * 
+     *
      * @param scaleFactor How much scaling should be applied.
      *                    Typically the same value as in ImageLibrary.
      */
@@ -100,7 +100,7 @@ public class FontLibrary {
 
     /**
      * Create a default {@code Font} set on initialization of the GUI.
-     * 
+     *
      * @param fontName Can be used to choose a different font from a
      *     user-provided name.
      * @param scaleFactor The applied scale factor.
@@ -123,7 +123,7 @@ public class FontLibrary {
 
     /**
      * Create a scaled {@code Font}.
-     * 
+     *
      * @param fontType How the font should look like.
      * @param fontSize Its relative size.
      * @param style The font style for choosing plain, bold or italic.
@@ -156,7 +156,7 @@ public class FontLibrary {
      * you should get from the appropriate ImageLibrary (there are 3 in use)!
      * Exceptions are currently big headers and things where gui elements are
      * not made flexible enough already to allow a changed size.
-     * 
+     *
      * @param fontType How the font should look like.
      * @param fontSize Its size.
      * @param style The font style for choosing plain, bold or italic.
@@ -196,7 +196,7 @@ public class FontLibrary {
      * source code and slow down the game if used, would be:
      * createFont(FontType.NORMAL, FontSize.TINY, Font.PLAIN,
      *            gui.getImageLibrary().getScalingFactor());
-     * 
+     *
      * @param fontType How the font should look like.
      * @param fontSize Its relative size.
      * @param style The font style for choosing plain, bold or italic.
@@ -220,7 +220,7 @@ public class FontLibrary {
      * This is mostly necessary for the header font. Thats because the currently
      * used ShadowedBlack is missing support for CJK and others. Even some
      * special glyphs for European languages like the triple-dot are missing.
-     * 
+     *
      * @param string The text to find a compatible font for.
      * @param fontType How the font should look like.
      * @param fontSize Its relative size.

@@ -51,7 +51,7 @@ public class GenerateDocumentation {
     private static final File RULE_DIRECTORY =
         new File("data/rules/classic");
     private static final String XSL = "specification.xsl";
-    
+
     private static final File DESTINATION_DIRECTORY =
         new File("doc");
 

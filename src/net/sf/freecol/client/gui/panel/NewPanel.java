@@ -339,7 +339,7 @@ public final class NewPanel extends FreeColPanel
         setSize(getPreferredSize());
     }
 
-    
+
     /**
      * Update specification and difficulty as needed.
      */
@@ -347,7 +347,7 @@ public final class NewPanel extends FreeColPanel
         // If the TC box changed, update the specification.
         boolean changed = !this.specification.getId().equals(getSelectedTC().getId());
         if (changed) this.specification = getSpecification();
-            
+
         // If the difficulty box changed, update the difficulty.
         if (!this.difficulty.getId().equals(getSelectedDifficulty().getId())) {
             this.difficulty = getSelectedDifficulty();

@@ -48,7 +48,7 @@ public final class DummyConnection extends Connection {
      */
     public DummyConnection(String name, MessageHandler incomingMessageHandler) {
         super(name);
-        
+
         setMessageHandler(incomingMessageHandler);
     }
 
@@ -146,7 +146,7 @@ public final class DummyConnection extends Connection {
             log(request, true);
             reply = outgoingMessageHandler.handle(getOtherConnection(),
                                                   request);
-            log(reply, false);            
+            log(reply, false);
         } catch (FreeColException e) {
             reply = null;
         }
