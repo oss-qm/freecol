@@ -240,7 +240,7 @@ public class ProductionCache {
                    pi -> any(pi.getConsumption(),
                              AbstractGoods.matches(goodsType)));
     }
-    
+
     /**
      * Returns the net production, that is the total production minus
      * the total consumption, of the given GoodsType.

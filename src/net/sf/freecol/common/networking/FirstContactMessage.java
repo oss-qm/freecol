@@ -88,7 +88,7 @@ public class FirstContactMessage extends AttributeMessage {
     public int getSettlementCount() {
         return getIntegerAttribute(CAMPS_TAG, -1);
     }
-            
+
     public boolean getResult() {
         return getBooleanAttribute(RESULT_TAG, (Boolean)null);
     }

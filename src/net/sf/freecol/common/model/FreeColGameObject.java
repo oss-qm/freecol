@@ -69,7 +69,7 @@ public abstract class FreeColGameObject extends FreeColObject {
      */
     public FreeColGameObject(Game game) {
         initialize(game);
-    }        
+    }
 
     /**
      * Creates a new {@code FreeColGameObject}.
@@ -101,7 +101,7 @@ public abstract class FreeColGameObject extends FreeColObject {
         this.initialized = getId() != null;
         this.disposed = false;
     }
-        
+
 
     /**
      * Instantiate an uninitialized FreeColGameObject within a game.

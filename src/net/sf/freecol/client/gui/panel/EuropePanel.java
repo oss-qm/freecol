@@ -179,7 +179,7 @@ public final class EuropePanel extends PortPanel {
                     dest = getGUI().showSelectDestinationDialog(unit);
                     if (dest == null) return null; // user aborted
                 }
-                
+
                 final ClientOptions co = getClientOptions();
                 if (!co.getBoolean(ClientOptions.AUTOLOAD_EMIGRANTS)
                     && unit.isInEurope()
@@ -618,7 +618,6 @@ public final class EuropePanel extends PortPanel {
 
         SimpleAttributeSet attributes = new SimpleAttributeSet();
         StyleConstants.setAlignment(attributes, StyleConstants.ALIGN_RIGHT);
-        //StyleConstants.setForeground(attributes, Color.WHITE);
         StyleConstants.setBold(attributes, true);
         log.setParagraphAttributes(attributes, true);
 

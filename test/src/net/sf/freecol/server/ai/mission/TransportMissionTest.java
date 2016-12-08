@@ -132,7 +132,7 @@ public class TransportMissionTest extends FreeColTestCase {
 
         ServerPlayer dutch = (ServerPlayer) game.getPlayerByNationId("model.nation.dutch");
         dutch.exploreMap(true);
-        
+
         // create a ship carrying a colonist
         Tile colonyTile = map.getTile(9, 9);
         getStandardColony(1, colonyTile.getX(), colonyTile.getY());
@@ -143,7 +143,7 @@ public class TransportMissionTest extends FreeColTestCase {
 
         // assign transport mission to the ship
         TransportMission mission = new TransportMission(aiMain, aiUnit);
-        TransportableAIObject goods = new AIGoods(aiMain, galleon, 
+        TransportableAIObject goods = new AIGoods(aiMain, galleon,
                                                   horsesType, 50, colonyTile);
         mission.queueTransportable(goods, false, lb);
 
@@ -190,7 +190,7 @@ public class TransportMissionTest extends FreeColTestCase {
         // Test
         assertNotNull("Unit should have a destination", dest);
         assertEquals("Destination should be Europe", europe, dest);
-        assertTrue("Unit should have a path", 
+        assertTrue("Unit should have a path",
             galleon.getTurnsToReach(dest) < Unit.MANY_TURNS);
     }
 
@@ -312,7 +312,7 @@ public class TransportMissionTest extends FreeColTestCase {
 
         Goods goods = new Goods(game, two, horsesType, 20);
         two.addGoods(goods);
-        AIGoods aiGoods = new AIGoods(aiMain, two, 
+        AIGoods aiGoods = new AIGoods(aiMain, two,
                                       goods.getType(), goods.getAmount(), one);
         mission.queueTransportable(aiGoods, false, lb);
         mission.doMission(lb);

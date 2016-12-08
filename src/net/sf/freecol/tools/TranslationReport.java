@@ -32,7 +32,7 @@ import java.util.TreeSet;
  * Document the state of the translations.
  */
 public class TranslationReport {
-    
+
     private static class LanguageStatsRecord{
         String localFile = "";
         int missingKeys = 0;
@@ -50,7 +50,6 @@ public class TranslationReport {
     public static void main(String[] args) throws Exception {
         ArrayList<LanguageStatsRecord> statistics = new ArrayList<>();
 
-        //String dirName = "src/net/sf/freecol.common.i18n/";
         String dirName = args[0];
         File directory = new File(dirName);
         if (!directory.isDirectory()) {
@@ -67,7 +66,6 @@ public class TranslationReport {
         File masterFile = new File(directory, "FreeColMessages.properties");
         Properties master = new Properties();
         master.load(new FileInputStream(masterFile));
-        //System.out.println("*** Found master property file with " + master.size() + " properties.\n");
 
         for (String name : languageFiles) {
             LanguageStatsRecord lstat = new LanguageStatsRecord();
@@ -82,7 +80,7 @@ public class TranslationReport {
             ArrayList<String> missingKeys      = new ArrayList<>();
             ArrayList<String> missingVariables = new ArrayList<>();
             ArrayList<String> copiedFromMaster = new ArrayList<>();
-            
+
             for (Enumeration<Object> keys = master.keys() ; keys.hasMoreElements()  ;)  {
                 String key = (String) keys.nextElement();
                 String value = properties.getProperty(key, null);
@@ -92,7 +90,7 @@ public class TranslationReport {
                     String masterValue = master.getProperty(key);
                     int lastIndex = 0;
                     boolean inVariable = false;
-                    
+
                     if (value.equalsIgnoreCase(masterValue)){
                         // ignore some values which are most probably copies in many languages
                         if (!key.contains("newColonyName")
@@ -121,7 +119,7 @@ public class TranslationReport {
                     }
                 }
             }
-            
+
             if (!missingKeys.isEmpty()) {
                 System.out.println("** Total of " + missingKeys.size() + " properties missing:\n");
                 for (String key : sort(missingKeys)) {
@@ -132,7 +130,7 @@ public class TranslationReport {
             } else {
                 System.out.println("** No properties missing.\n");
             }
-            
+
             if (!copiedFromMaster.isEmpty()){
                 System.out.println("** Total of " + copiedFromMaster.size() + " properties copied from master properties:\n");
                 for (String key : sort(copiedFromMaster)) {
@@ -199,7 +197,7 @@ public class TranslationReport {
             } else {
                 System.out.println("** No superfluous properties.\n");
             }
-            
+
             if (!superfluousVariables.isEmpty()) {
                 System.out.println("** Total of " + superfluousVariables.size() +
                                    " properties with superfluous variables:\n");
@@ -215,7 +213,7 @@ public class TranslationReport {
 
             statistics.add(lstat);
         }
-        
+
         if (printSummary){
             System.out.println(stars);
             System.out.println("*** Summary of translation efforts (" + master.size() + " keys in master file) ***");
@@ -234,11 +232,11 @@ public class TranslationReport {
                 output.append(" redundant keys, ");
                 output.append(prettyPrint(stats.superfluousVariables));
                 output.append(" redundant vars. ");
-                
+
                 float percentageDone =  (100 * (master.size() - (stats.missingKeys + stats.copiedKeys))) / (float) master.size();
                 percentageDone = Math.round(percentageDone*100)/100f;
                 output.append(percentageDone).append("% finished.");
-                
+
                 System.out.println(output.toString());
             }
         }
@@ -269,4 +267,3 @@ public class TranslationReport {
     }
 
 }
-

@@ -64,7 +64,7 @@ public class UpdateGameOptionsMessage extends DOMMessage {
 
         DOMUtils.readFromXMLElement(this.options, element);
     }
-    
+
     /**
      * Create a new {@code UpdateGameOptionsMessage} from a
      * supplied element.

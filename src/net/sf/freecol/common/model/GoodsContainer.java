@@ -64,7 +64,7 @@ public class GoodsContainer extends FreeColGameObject implements Ownable {
      */
     private final Map<GoodsType, Integer> storedGoods = new HashMap<>();
 
-    /** 
+    /**
      * The previous list of Goods stored in this
      * {@code GoodsContainer}.
      *
@@ -134,7 +134,7 @@ public class GoodsContainer extends FreeColGameObject implements Ownable {
      */
     public int getGoodsCount(GoodsType type) {
         synchronized (this.storedGoods) {
-            return (this.storedGoods.containsKey(type)) 
+            return (this.storedGoods.containsKey(type))
                 ? this.storedGoods.get(type)
                 : 0;
         }
@@ -451,7 +451,7 @@ public class GoodsContainer extends FreeColGameObject implements Ownable {
         }
     }
 
-    
+
     // Interface Ownable
 
     /**
@@ -525,7 +525,7 @@ public class GoodsContainer extends FreeColGameObject implements Ownable {
         xw.writeStartElement(tag);
 
         for (GoodsType goodsType : sort(storage.keySet())) {
-            
+
             xw.writeStartElement(Goods.TAG);
 
             xw.writeAttribute(TYPE_TAG, goodsType);

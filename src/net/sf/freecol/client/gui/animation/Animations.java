@@ -25,7 +25,7 @@ import net.sf.freecol.common.model.Unit;
 
 
 /**
- * A facade for animations. 
+ * A facade for animations.
  */
 public class Animations {
 
@@ -42,10 +42,10 @@ public class Animations {
         new UnitMoveAnimation(freeColClient, unit, source, destination)
             .animate();
     }
-    
+
     /**
      * Animates a unit attack.
-     * 
+     *
      * @param freeColClient The enclosing {@code FreeColClient}.
      * @param attacker The {@code Unit} that is attacking.
      * @param defender The {@code Unit} that is defending.

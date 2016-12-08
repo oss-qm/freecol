@@ -46,7 +46,7 @@ public class BaseCostDeciderTest extends FreeColTestCase {
         = spec().getUnitType("model.unit.galleon");
     private static final UnitType pioneerType
         = spec().getUnitType("model.unit.hardyPioneer");
-    
+
     private Game game;
 
 
@@ -88,7 +88,7 @@ public class BaseCostDeciderTest extends FreeColTestCase {
     public void testGetRemainingMovesAndNewTurn() {
         Map map = getTestMap(plainsType);
         game.setMap(map);
-        
+
         final CostDecider decider = CostDeciders.avoidSettlements();
         ServerPlayer french = (ServerPlayer)game.getPlayerByNationId("model.nation.french");
         Unit unit = new ServerUnit(game, game.getMap().getTile(1, 1),
@@ -99,7 +99,7 @@ public class BaseCostDeciderTest extends FreeColTestCase {
         assertEquals(4 - plainsType.getBasicMoveCost(), decider.getMovesLeft());
         assertEquals(0, decider.getNewTurns());
     }
-    
+
     /**
      * Checks possible move of a land unit to an ocean tile
      * Verifies that is invalid
@@ -108,21 +108,21 @@ public class BaseCostDeciderTest extends FreeColTestCase {
         // For this test we need a different map
         Map map = getCoastTestMap(plainsType);
         game.setMap(map);
-        
+
         Tile unitTile = map.getTile(9, 9);
         assertTrue("Unit tile should be land",unitTile.isLand());
         ServerPlayer french = (ServerPlayer)game.getPlayerByNationId("model.nation.french");
         Unit unit = new ServerUnit(game, unitTile, french, pioneerType);
-        
+
         Tile seaTile = map.getTile(10, 9);
         assertFalse("Tile should be ocean",seaTile.isLand());
-        
+
         // Execute
         CostDecider decider = CostDeciders.avoidSettlements();
         int cost = decider.getCost(unit, unitTile, seaTile, 4);
         assertTrue("Move should be invalid", cost == CostDecider.ILLEGAL_MOVE);
     }
-    
+
     /**
      * Checks possible move of a naval unit to a land tile without settlement
      * Verifies that is invalid
@@ -131,22 +131,22 @@ public class BaseCostDeciderTest extends FreeColTestCase {
         // For this test we need a different map
         Map map = getCoastTestMap(plainsType);
         game.setMap(map);
-        
+
         Tile unitTile = map.getTile(10, 9);
         assertFalse("Unit tile should be ocean", unitTile.isLand());
 
         ServerPlayer french = (ServerPlayer)game.getPlayerByNationId("model.nation.french");
         Unit unit = new ServerUnit(game, unitTile, french, galleonType);
-        
+
         Tile landTile = map.getTile(9, 9);
         assertTrue("Tile should be land", landTile.isLand());
-        
+
         // Execute
         final CostDecider decider = CostDeciders.avoidSettlements();
         int cost = decider.getCost(unit, unitTile, landTile, 4);
         assertTrue("Move should be invalid", cost == CostDecider.ILLEGAL_MOVE);
     }
-    
+
     /**
      * Checks possible move of a unit through a tile with a settlement
      * Verifies that is invalid
@@ -168,14 +168,14 @@ public class BaseCostDeciderTest extends FreeColTestCase {
         // unit is going somewhere else
         Tile unitDestination = map.getTile(3, 1);
         unit.setDestination(unitDestination);
-        
+
         // Execute
         final CostDecider decider = CostDeciders.avoidSettlements();
         int cost = decider.getCost(unit, unitTile, settlementTile, 4);
 
         assertEquals("Move should be invalid", CostDecider.ILLEGAL_MOVE, cost);
     }
-        
+
     /**
      * Checks possible move of a naval unit to a tile with a settlement
      */
@@ -189,17 +189,17 @@ public class BaseCostDeciderTest extends FreeColTestCase {
 
         ServerPlayer french = (ServerPlayer)game.getPlayerByNationId("model.nation.french");
         Unit galleon = new ServerUnit(game, unitTile, french, galleonType);
-        
+
         Tile settlementTile = map.getTile(9, 9);
         assertTrue("Tile should be land", settlementTile.isLand());
-        
+
         FreeColTestCase.IndianSettlementBuilder builder
             = new FreeColTestCase.IndianSettlementBuilder(game);
         Settlement settlement = builder.settlementTile(settlementTile).build();
 
         // galleon is trying go to settlement
         galleon.setDestination(settlementTile);
-        
+
         CostDecider base = CostDeciders.avoidIllegal();
         int cost;
 

@@ -47,7 +47,7 @@ import net.sf.freecol.common.model.StringTemplate;
  * Generally monarch actions require a choice to accept or reject, but
  * some do not.  Therefore the value of the dialog is boolean, but
  * there may not be a meaningful accept option in some cases.  This
- * prevents just extending FreeColConfirmDialog. 
+ * prevents just extending FreeColConfirmDialog.
  */
 public final class MonarchDialog extends FreeColDialog<Boolean> {
 
@@ -71,7 +71,7 @@ public final class MonarchDialog extends FreeColDialog<Boolean> {
                 + action);
         }
         String yesId = action.getYesKey();
-        if (!Messages.containsKey(yesId)) yesId = null;        
+        if (!Messages.containsKey(yesId)) yesId = null;
         String noId = action.getNoKey();
         if (!Messages.containsKey(noId)) noId = "close";
 

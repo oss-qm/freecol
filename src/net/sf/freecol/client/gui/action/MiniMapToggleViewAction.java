@@ -29,10 +29,10 @@ import net.sf.freecol.client.FreeColClient;
  * Change view in on the minimap.
  */
 public class MiniMapToggleViewAction extends MapboardAction {
-    
+
     public static final String id = "miniMapToggleBordersAction";
-    
-    
+
+
     /**
      * Creates a new {@code MiniMapToggleViewAction}.
      *
@@ -52,7 +52,7 @@ public class MiniMapToggleViewAction extends MapboardAction {
      */
     public MiniMapToggleViewAction(FreeColClient freeColClient, boolean b) {
         super(freeColClient, id + ".secondary");
- 
+
         addImageIcons("toggle_view_politics");
     }
 

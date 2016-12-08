@@ -35,7 +35,7 @@ public class Scope extends FreeColObject {
 
     public static final String TAG = "scope";
 
-    /** 
+    /**
      * The identifier of a {@code FreeColSpecObjectType}, or
      * {@code Option}.
      */
@@ -106,7 +106,7 @@ public class Scope extends FreeColObject {
         }
         return k;
     }
-        
+
     /**
      * Does this scope match null?
      *

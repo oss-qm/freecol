@@ -55,7 +55,7 @@ public final class ReportCargoPanel extends ReportUnitPanel {
         reportPanel.add(Utility.localizedLabel(player.getForcesLabel()),
             "newline, span, split 2");
         reportPanel.add(new JSeparator(JSeparator.HORIZONTAL), "growx");
-        
+
         for (UnitType unitType : getSpecification().getUnitTypeList()) {
             if (unitType.isAvailableTo(player)
                 && (unitType.canCarryUnits() || unitType.canCarryGoods())) {

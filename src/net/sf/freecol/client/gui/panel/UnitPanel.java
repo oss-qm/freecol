@@ -175,7 +175,7 @@ public abstract class UnitPanel extends MigPanel
         }
         return false;
     }
-        
+
 
     // Interface PropertyChangeListener
 

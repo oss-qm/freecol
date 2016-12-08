@@ -36,14 +36,14 @@ public class CLDRTest extends FreeColTestCase {
         assertFalse(rule.matches(1));
         assertFalse(rule.matches(5));
         assertFalse(rule.matches(112));
-        
+
         DefaultNumberRule arabic = new DefaultNumberRule();
         arabic.addRule(Category.zero, "n is 0");
         arabic.addRule(Category.one, "n is 1");
         arabic.addRule(Category.two, "n is 2");
         arabic.addRule(Category.few, "N Mod 100 in 3.. 10");
         arabic.addRule(Category.many, "n MOD 100 in 11   ..99");
-        
+
         assertEquals(Category.zero, arabic.getCategory(0));
         assertEquals(Category.one, arabic.getCategory(1));
         assertEquals(Category.two, arabic.getCategory(2));

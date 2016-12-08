@@ -71,7 +71,7 @@ public class TradeRouteTest extends FreeColTestCase {
         // Create a trade route
         TradeRoute tr = new TradeRoute(game, "TR", player);
         assertNotNull(tr);
-       
+
         // Build towards validity
         assertNotNull(tr.verify()); // Invalid, no stops
         assertTrue(tr.getStops().isEmpty());

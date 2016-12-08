@@ -137,7 +137,7 @@ public class IndividualFatherTest extends FreeColTestCase {
         assertTrue(jeanDeBrebeuf.hasAbility(ability));
         assertFalse(dutch.hasAbility(ability));
 
-        Unit missionary = new ServerUnit(game, null, dutch, 
+        Unit missionary = new ServerUnit(game, null, dutch,
                                          colonistType, missionaryRole);
         assertEquals(missionaryRole, missionary.getRole());
         assertTrue(missionary.hasAbility(Ability.ESTABLISH_MISSION));
@@ -208,7 +208,7 @@ public class IndividualFatherTest extends FreeColTestCase {
         ServerPlayer player = (ServerPlayer)colony.getOwner();
         Unit unit = colony.getUnitList().get(0);
         unit.setType(nativeConvertType);
-        
+
         player.csAddFoundingFather(bartolomeDeLasCasas, null, new ChangeSet());
         assertEquals(unit.getType(), colonistType);
     }

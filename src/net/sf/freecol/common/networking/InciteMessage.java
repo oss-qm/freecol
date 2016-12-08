@@ -100,7 +100,7 @@ public class InciteMessage extends AttributeMessage {
     public ChangeSet serverHandler(FreeColServer freeColServer,
                                    ServerPlayer serverPlayer) {
         final Game game = freeColServer.getGame();
-        
+
         Unit unit;
         try {
             unit = getUnit(serverPlayer);

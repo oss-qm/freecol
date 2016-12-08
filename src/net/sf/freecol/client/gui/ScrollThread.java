@@ -48,7 +48,7 @@ public class ScrollThread extends Thread {
 
     /**
      * The constructor to use.
-     * 
+     *
      * @param canvas The Canvas containing the map to scroll.
      */
     public ScrollThread(Canvas canvas) {
@@ -58,7 +58,7 @@ public class ScrollThread extends Thread {
 
     /**
      * Sets the direction in which this ScrollThread will scroll.
-     * 
+     *
      * @param d The {@code Direction} in which this ScrollThread
      *     will scroll.
      */

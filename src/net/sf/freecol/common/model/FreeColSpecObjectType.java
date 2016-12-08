@@ -81,7 +81,7 @@ public abstract class FreeColSpecObjectType extends FreeColSpecObject
      * a particular revision of a particular specification.
      */
     private int index = -1;
-    
+
 
     /**
      * Deliberately empty constructor.

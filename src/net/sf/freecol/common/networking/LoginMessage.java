@@ -48,7 +48,7 @@ public class LoginMessage extends DOMMessage {
     private static final String STATE_TAG = "state";
     private static final String USER_NAME_TAG = "userName";
     private static final String VERSION_TAG = "version";
-    
+
     /** The user name. */
     private final String userName;
 
@@ -57,7 +57,7 @@ public class LoginMessage extends DOMMessage {
 
     /** The server state. */
     private final ServerState state;
-    
+
     /** Is this a single player game. */
     private final boolean singlePlayer;
 
@@ -67,7 +67,7 @@ public class LoginMessage extends DOMMessage {
     /** The game. */
     private final Game game;
 
-        
+
     /**
      * Create a new {@code LoginMessage} with the supplied parameters.
      *
@@ -152,7 +152,7 @@ public class LoginMessage extends DOMMessage {
                                    ServerPlayer serverPlayer) {
         // Note: At this point serverPlayer is just a stub, with only
         // the connection infomation being valid.
-        
+
         // FIXME: Do not allow more than one (human) player to connect
         // to a single player game. This would be easy if we used a
         // dummy connection for single player games.
@@ -297,7 +297,7 @@ public class LoginMessage extends DOMMessage {
                                  freeColServer.getSinglePlayer(),
                                  serverGame.getCurrentPlayer() == present,
                                  serverGame));
-            
+
         case END_GAME: default:
             break;
         }

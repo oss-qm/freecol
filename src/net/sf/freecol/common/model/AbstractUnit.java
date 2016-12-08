@@ -183,7 +183,7 @@ public class AbstractUnit extends FreeColObject {
      * @return The approximate offence power.
      */
     public static double calculateStrength(Specification spec,
-                                           List<AbstractUnit> units) { 
+                                           List<AbstractUnit> units) {
         return sumDouble(units, au -> au.getOffence(spec));
     }
 

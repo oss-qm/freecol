@@ -52,7 +52,6 @@ public class AnimateAttackMessage extends DOMMessage {
      * The defender unit *if* it is not currently visible, or on a carrier.
      */
     private Unit defender = null;
-    
 
     /**
      * Create a new {@code AnimateAttackMessage} for the supplied attacker,
@@ -153,7 +152,6 @@ public class AnimateAttackMessage extends DOMMessage {
         return getBooleanAttribute(SUCCESS_TAG, false);
     }
 
-    
     /**
      * {@inheritDoc}
      */
