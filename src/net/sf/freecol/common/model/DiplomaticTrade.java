@@ -96,7 +96,7 @@ public class DiplomaticTrade extends FreeColGameObject {
     public DiplomaticTrade(Game game, String id) {
         super(game, ""); // Identifier not required
     }
-        
+
     /**
      * Creates a new {@code DiplomaticTrade} instance.
      *

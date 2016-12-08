@@ -68,7 +68,7 @@ public class NationTypeDetailPanel
 
 
     // Implement ColopediaDetailPanel
-    
+
     /**
      * {@inheritDoc}
      */

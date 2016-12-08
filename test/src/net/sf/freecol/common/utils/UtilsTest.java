@@ -66,7 +66,7 @@ public class UtilsTest extends FreeColTestCase {
         assertEquals(d.get(0), 3.0);
         d.sort(CollectionUtils.ascendingDoubleComparator);
         assertEquals(d.get(0), 1.0);
-        
+
         List<List<Object>> o = new ArrayList<>();
         List<Object> o1 = new ArrayList<Object>();
         List<Object> o2 = new ArrayList<Object>();

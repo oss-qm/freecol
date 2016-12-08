@@ -35,7 +35,7 @@ public class PlunderType extends FreeColSpecObjectType {
 
     /** The range of plunder amounts. */
     private RandomRange range;
-    
+
     /**
      * Creates a new plunder type.
      *

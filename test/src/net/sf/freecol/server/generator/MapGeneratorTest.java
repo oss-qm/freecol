@@ -108,9 +108,6 @@ public class MapGeneratorTest extends FreeColTestCase {
 
         MapGenerator gen = new SimpleMapGenerator(g, new Random(1));
 
-        // Apply the difficulty level
-        //spec().applyDifficultyLevel("model.difficulty.medium");
-
         Vector<Player> players = new Vector<Player>();
 
         for (Nation n : spec().getNations()) {
@@ -209,7 +206,7 @@ public class MapGeneratorTest extends FreeColTestCase {
         Game game = new ServerGame(spec());
         MapGenerator gen = new SimpleMapGenerator(game, new Random(1));
         gen.createMap(new LogBuilder(-1));
-        
+
         Map map = game.getMap();
         Region pacific = map.getRegionByKey("model.region.pacific");
         assertNotNull(pacific);

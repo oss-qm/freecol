@@ -78,7 +78,7 @@ public class UnloadGoodsMessage extends AttributeMessage {
         final String typeId = getStringAttribute(TYPE_TAG);
         final int amount = getIntegerAttribute(AMOUNT_TAG, -1);
         final String carrierId = getStringAttribute(CARRIER_TAG);
-        
+
         Unit carrier;
         try {
             carrier = serverPlayer.getOurFreeColGameObject(carrierId, Unit.class);

@@ -42,7 +42,7 @@ public class ClaimLandMessage extends AttributeMessage {
     private static final String PRICE_TAG = "price";
     private static final String TILE_TAG = "tile";
 
-    
+
     /**
      * Create a new {@code ClaimLandMessage}.
      *
@@ -134,7 +134,7 @@ public class ClaimLandMessage extends AttributeMessage {
                 || tile.getOwningSettlement() == settlement) { // pre-attached
                 price = 0;
             } else { // must fail
-                return serverPlayer.clientError("Can not claim tile " 
+                return serverPlayer.clientError("Can not claim tile "
                     + tile.getId() + ": European owners will not sell.");
             }
         } else { // natives

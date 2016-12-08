@@ -27,7 +27,6 @@ import java.io.IOException;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Properties;
-import java.util.function.Function;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -132,7 +131,7 @@ public final class MapGeneratorOptionsDialog extends OptionsDialog {
             foui = (FileOptionUI)OptionUI.getOptionUI(gui,
                 mgo.getOption(MapGeneratorOptions.IMPORT_FILE), true);
         foui.setValue(file);
-        
+
         BooleanOptionUI terrainUI = (BooleanOptionUI)mgoUI
             .getOptionUI(MapGeneratorOptions.IMPORT_TERRAIN);
         if (terrainUI == null)
@@ -237,7 +236,7 @@ public final class MapGeneratorOptionsDialog extends OptionsDialog {
             }
         } catch (Exception ex) {
             logger.log(Level.WARNING, "Options in disarray", ex);
-        }           
+        }
         if (!ok) {
             getGUI().showErrorMessage(FreeCol.badFile("error.couldNotSave", file));
             return false;

@@ -76,7 +76,7 @@ public class Region extends FreeColGameObject implements Nameable {
         RegionType(boolean claimable) {
             this.claimable = claimable;
         }
-        
+
 
         /** Is this region claimable by default?
          *
@@ -451,7 +451,7 @@ public class Region extends FreeColGameObject implements Nameable {
                 return r;
             } else if (key.equals(Messages.nameKey(r))) {
                 return lastPart(key, ".");
-            }            
+            }
         }
         return null;
     }
@@ -492,7 +492,7 @@ public class Region extends FreeColGameObject implements Nameable {
     // @compat 0.11.3
     private static final String NAME_KEY_TAG = "nameKey";
     // end @compat 0.11.3
-    
+
 
     /**
      * {@inheritDoc}
@@ -606,7 +606,7 @@ public class Region extends FreeColGameObject implements Nameable {
             addChild(xr.makeFreeColGameObject(getGame(), ID_ATTRIBUTE_TAG,
                                               Region.class, true));
             xr.closeTag(CHILD_TAG);
-        
+
         } else {
             super.readChild(xr);
         }

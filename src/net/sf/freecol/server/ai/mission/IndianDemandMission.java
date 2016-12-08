@@ -64,7 +64,7 @@ public class IndianDemandMission extends Mission {
 
     /** The minimum amount of goods to demand. */
     private static final int GOODS_DEMAND_MIN = 30;
-    
+
     /** The tag for this mission. */
     private static final String tag = "AI native demander";
 
@@ -77,7 +77,7 @@ public class IndianDemandMission extends Mission {
         selectPredicates.add(gt -> gt.isTradeGoods());
         selectPredicates.add(gt -> gt.isRefined());
     };
-    
+
     /** The colony to demand from. */
     private Colony colony;
 
@@ -420,20 +420,20 @@ public class IndianDemandMission extends Mission {
                 switch (mt) {
                 case MOVE: // Arrived
                     break;
-                    
+
                 case MOVE_HIGH_SEAS: case MOVE_NO_MOVES: case MOVE_ILLEGAL:
                     return lbWait(lb);
-                    
+
                 case MOVE_NO_REPAIR:
                     return lbFail(lb, false, AIUNITDIED);
-                    
+
                 case MOVE_NO_TILE:
                     return this;
-                    
+
                 default:
                     return lbMove(lb, mt);
                 }
-                
+
                 // Unload the goods
                 lbAt(lb);
                 GoodsContainer container = unit.getGoodsContainer();

@@ -94,7 +94,7 @@ public abstract class MapControls extends FreeColClientHolder {
             unitButtons.add(new UnitButton(am, SkipUnitAction.id));
             unitButtons.add(new UnitButton(am, SentryAction.id));
             unitButtons.add(new UnitButton(am, FortifyAction.id));
-            
+
             final Specification spec = game.getSpecification();
             if (spec != null) {
                 for (TileImprovementType type : spec.getTileImprovementTypeList()) {
@@ -155,13 +155,13 @@ public abstract class MapControls extends FreeColClientHolder {
     public abstract void removeFromComponent(Canvas canvas);
 
     public abstract void repaint();
-    
+
     public void toggleView() {
         miniMap.setToggleBordersOption(!getClientOptions()
             .getBoolean(ClientOptions.MINIMAP_TOGGLE_BORDERS));
         repaint();
     }
-    
+
     public void toggleFogOfWar() {
         miniMap.setToggleFogOfWarOption(!getClientOptions()
             .getBoolean(ClientOptions.MINIMAP_TOGGLE_FOG_OF_WAR));
@@ -200,7 +200,7 @@ public abstract class MapControls extends FreeColClientHolder {
             infoPanel.update(mapTransform);
         }
     }
-    
+
     public void zoomIn() {
         miniMap.zoomIn();
         repaint();

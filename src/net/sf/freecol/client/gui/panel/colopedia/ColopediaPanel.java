@@ -69,7 +69,7 @@ public final class ColopediaPanel extends FreeColPanel
      * @param id The object identifier of the item to select.
      */
     public ColopediaPanel(FreeColClient freeColClient, String id) {
-        super(freeColClient, new MigLayout("fill", 
+        super(freeColClient, new MigLayout("fill",
                 "[200:]unrelated[550:, grow, fill]", "[][grow, fill][]"));
 
         add(Utility.localizedHeader("colopedia", false),

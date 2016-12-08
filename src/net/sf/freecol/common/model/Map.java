@@ -92,7 +92,7 @@ public class Map extends FreeColGameObject implements Location {
 
     /** A position on the Map. */
     public static final class Position {
-        
+
         /** The coordinates of the position. */
         public final int x, y;
 
@@ -560,7 +560,7 @@ public class Map extends FreeColGameObject implements Location {
             : (l1 == l2) ? true
             : (l1.getTile() == null || l2.getTile() == null) ? false
             : l1.getTile().isConnectedTo(l2.getTile());
-    }            
+    }
 
     /**
      * Is a tile in the map in a polar region?
@@ -744,7 +744,7 @@ public class Map extends FreeColGameObject implements Location {
             } else {
                 entry = unitLoc;
             }
-            
+
         } else if (start instanceof HighSeas) {
             if (unit.isOnCarrier()) {
                 entry = unit.getCarrier().resolveDestination();
@@ -928,7 +928,7 @@ public class Map extends FreeColGameObject implements Location {
         }
         if (lb != null) lb.log(logger, Level.INFO);
     }
-        
+
     /**
      * Find the quickest path for a unit (with optional carrier) from
      * a start location to an end location.
@@ -1043,7 +1043,7 @@ public class Map extends FreeColGameObject implements Location {
             if (offMapUnit == null
                 || !offMapUnit.getType().canMoveToHighSeas()) {
                 path = null;
-                
+
                 // Search forwards to the high seas.
             } else if ((p = searchMap(unit, (Tile)realStart,
                         GoalDeciders.getHighSeasGoalDecider(),
@@ -1117,7 +1117,7 @@ public class Map extends FreeColGameObject implements Location {
 
         final Location realStart = findRealStart(unit, start, carrier);
         final Unit offMapUnit = (carrier != null) ? carrier : unit;
-        
+
         PathNode p, path;
         if (realStart instanceof Europe) {
             // Fail fast if Europe is unattainable.
@@ -1600,7 +1600,7 @@ public class Map extends FreeColGameObject implements Location {
                 MoveCandidate move;
                 switch (step) {
                 case BYLAND:
-                    move = new MoveCandidate(unit, currentNode, moveTile, 
+                    move = new MoveCandidate(unit, currentNode, moveTile,
                         currentMovesLeft, currentTurns, false,
                         ((costDecider != null) ? costDecider
                             : CostDeciders.defaultCostDeciderFor(unit)));
@@ -1689,12 +1689,12 @@ public class Map extends FreeColGameObject implements Location {
                 && !goalDecider.hasSubGoals())
                 break;
         }
-        
+
         PathNode best = goalDecider.getGoal();
         return (best == null) ? null : best.getTile();
     }
 
-    
+
     // Support for various kinds of map iteration.
 
     /**
@@ -1877,7 +1877,7 @@ public class Map extends FreeColGameObject implements Location {
      * An iterator for the whole map.
      */
     private class WholeMapIterator implements Iterator<Tile> {
-       
+
         /** The current coordinate position in the iteration. */
         private int x, y;
 
@@ -1973,7 +1973,7 @@ public class Map extends FreeColGameObject implements Location {
      * Iterates through a rectangular subpart of the Map.
      * Intentionally avoids calling methods doing redundant checks,
      * which would slow down map display.
-     * 
+     *
      * @param x X-component of the position of first tile.
      * @param y Y-component of the position of first tile.
      * @param w Width of the rectangle.
@@ -2583,7 +2583,7 @@ public class Map extends FreeColGameObject implements Location {
             if (width < 0) {
                 throw new XMLStreamException("Bogus width: " + width);
             }
-               
+
             int height = xr.getAttribute(HEIGHT_TAG, -1);
             if (height < 0) {
                 throw new XMLStreamException("Bogus height: " + height);

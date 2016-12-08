@@ -375,7 +375,7 @@ public class ChangeSet {
             this.defender = defender.copy(game, Unit.class);
             this.defender.setLocationNoUpdate(this.defender.getTile());
             this.defender.setWorkType(null);
-            this.defender.setState(Unit.UnitState.ACTIVE);            
+            this.defender.setState(Unit.UnitState.ACTIVE);
             this.success = success;
         }
 
@@ -1935,7 +1935,7 @@ public class ChangeSet {
 
 
     // Convenience functions to create change sets
-    
+
     /**
      * Convenience function to create an i18n client error message and
      * wrap it into a change set.
@@ -2025,7 +2025,7 @@ public class ChangeSet {
                message);
         return cs;
     }
-    
+
 
     // Override Object
 

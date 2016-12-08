@@ -159,7 +159,7 @@ public final class EditSettlementDialog extends FreeColDialog<IndianSettlement>
     private SettlementType getSettlementType() {
         return getOwnerNationType().getSettlementType(this.capital.isSelected());
     }
-        
+
     private int getAverageSize() {
         SettlementType t = getSettlementType();
         return (t.getMinimumSize() + t.getMaximumSize()) / 2;
@@ -259,7 +259,7 @@ public final class EditSettlementDialog extends FreeColDialog<IndianSettlement>
             ret = is;
 
         } else if (options.get(1).equals(value)) {
-            if (!gui.confirm("editSettlementDialog.removeSettlement.text", 
+            if (!gui.confirm("editSettlementDialog.removeSettlement.text",
                              "ok", "cancel")) {
                 return is;
             }

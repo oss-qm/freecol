@@ -77,7 +77,7 @@ public class ServerBuilding extends Building implements ServerModelObject {
      */
     private void csTeach(ChangeSet cs) {
         final ServerPlayer owner = (ServerPlayer)getColony().getOwner();
-        
+
         for (Unit teacher : getUnitList()) {
             Unit student = teacher.getStudent();
 
@@ -129,7 +129,7 @@ public class ServerBuilding extends Building implements ServerModelObject {
         }
         return false;
     }
-        
+
     /**
      * Train a student.
      *

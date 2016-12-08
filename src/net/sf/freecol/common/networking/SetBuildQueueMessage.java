@@ -96,7 +96,7 @@ public class SetBuildQueueMessage extends AttributeMessage {
                          toListNoNulls());
     }
 
-    
+
     /**
      * {@inheritDoc}
      */
