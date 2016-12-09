@@ -22,6 +22,7 @@ package net.sf.freecol.common.model;
 import java.awt.Color;
 
 import java.util.ArrayList;
+import java.util.BitSet;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
@@ -129,6 +130,68 @@ public class Player extends FreeColGameObject implements Nameable {
         }
     }
 
+    /**
+     * VisibilityMap - holds a bitmap for the visible tiles
+     *
+     * note: semantically, composition instead of inheritance would
+     * be more correct. OTOH, it would require yet another instance.
+     * as its just an private internal class, we can afford being a
+     * bit unclean to save a bit of memory.
+     */
+    private class TileVisibilityMap extends BitSet {
+        private int width;
+        private int height;
+        private BitSet bits = new BitSet();
+
+        protected TileVisibilityMap(int w, int h) {
+            width = w;
+            height = h;
+        }
+
+        /** hope the compiler inlines it **/
+        private final int bitid(int x, int y) {
+            return y * width + x;
+        }
+
+        /** trivial case: mark visible via coordinates **/
+        protected final void setVisible(int x, int y) {
+            bits.set(bitid(x,y));
+        }
+
+        /** mark an individual tile visible **/
+        protected final void setVisible(Tile t) {
+            if (t != null) {
+                bits.set(bitid(t.getX(), t.getY()));
+                t.seeTile(t);
+            }
+        }
+
+        /** mark a whole set of tiles visible **/
+        protected final void setVisible(Set<Tile> st) {
+            if (st != null)
+                for (Tile t : st)
+                    setVisible(t);
+        }
+
+        /** mark an settlement and its surrounding visible **/
+        protected final void setVisible(Settlement s) {
+            if (s != null)
+                setVisible(s.getVisibleTiles());
+        }
+
+        /** mark an unit and is surrounding visible - only when the
+            unit is on the map (skipping those in Europe) **/
+        protected final void setVisible(Unit u) {
+            if ((u != null) && (u.getLocation instanceof Tile))
+                setVisible(u.getVisibleTiles());
+        }
+
+        /** check whether a tile is visible **/
+        protected final boolean isVisible(Tile t) {
+            return (t == null ? false
+                              : bits.get(bitid(t.getX(), t.getY())));
+        }
+    }
 
     //
     // Constants
@@ -288,11 +351,7 @@ public class Player extends FreeColGameObject implements Nameable {
     protected final List<Settlement> settlements = new ArrayList<>();
 
     /** The tiles the player can see. */
-    private boolean[][] canSeeTiles = null;
-    /** Are the canSeeTiles valid or do they need to be recalculated? */
-    private boolean canSeeValid = false;
-    /** Do not access canSeeTiles without taking canSeeLock. */
-    private final Object canSeeLock = new Object();
+    private TileVisibilityMap visibilityMap = null;
 
     /** A container for the abilities and modifiers of this type. */
     protected final FeatureContainer featureContainer = new FeatureContainer();
@@ -2626,16 +2685,15 @@ public class Player extends FreeColGameObject implements Nameable {
      * @return True if this player can see the given {@code Tile}.
      */
     public boolean canSee(Tile tile) {
-        if (tile == null) return false;
 
-        do {
-            synchronized (canSeeLock) {
-                if (canSeeValid) {
-                    return canSeeTiles[tile.getX()][tile.getY()];
-                }
-            }
-        } while (resetCanSeeTiles());
-        return false;
+        /** the visibility map is allocated on-demand and killed on invalidation **/
+        TileVisibilityMap vismap = visibilityMap;
+
+        /** if we dont have a map yet, create a new one, while holding a lock **/
+        if (vismap == null)
+            vismap = makeCanSeeTiles();
+
+        return vismap.isVisible(tile);
     }
 
     /**
@@ -2643,7 +2701,7 @@ public class Player extends FreeColGameObject implements Nameable {
      *
      * This method should be used to invalidate the current
      * {@code canSeeTiles} when something significant changes.
-     * The method {@link #resetCanSeeTiles} will be called whenever it
+     * The method {@link #makeCanSeeTiles} will be called whenever it
      * is needed.
      *
      * So what is "significant"?  Looking at the makeCanSeeTiles routine
@@ -2680,30 +2738,7 @@ public class Player extends FreeColGameObject implements Nameable {
      * By convention, we try to avoid cs* routines being -vis.
      */
     public void invalidateCanSeeTiles() {
-        synchronized (canSeeLock) {
-            canSeeValid = false;
-        }
-    }
-
-    /**
-     * Resets this player's "can see"-tiles.  This is done by setting
-     * all the tiles within each {@link Unit} and {@link Settlement}s
-     * line of sight visible.  The other tiles are made invisible.
-     *
-     * Use {@link #invalidateCanSeeTiles} whenever possible.
-     *
-     * @return True if successful.
-     */
-    private boolean resetCanSeeTiles() {
-        Map map = getGame().getMap();
-        if (map == null) return false;
-
-        boolean[][] cST = makeCanSeeTiles(map);
-        synchronized (canSeeLock) {
-            canSeeTiles = cST;
-            canSeeValid = true;
-        }
-        return true;
+        visibilityMap = null;
     }
 
     /**
@@ -2728,65 +2763,74 @@ public class Player extends FreeColGameObject implements Nameable {
      *
      * @param map The {@code Map} to use.
      * @return A canSeeTiles array.
+     *
+     * note: theoretically we could do completely without a lock,
+     * which could cause the bitmap generation twice, while one
+     * copy just being thrown away. even though still semantically
+     * correct, it's just a waste of resources w/o any gain.
      */
-    private boolean[][] makeCanSeeTiles(Map map) {
+    private synchronized TileVisibilityMap makeCanSeeTiles(Map map) {
+
+        /* ugh, dont have a map yet ? */
+        if (map == null) {
+            TileVisibilityMap vismap = new TileVisibilityMap(1,1);
+            visibilityMap = vismap;
+            return vismap;
+        }
+
+        TileVisibilityMap vismap = new TileVisibilityMap(Map.getWidth(), Map.getHeight());
+
         final Specification spec = getSpecification();
         // Simple case when there is no fog of war: a tile is
         // visible once it is explored.
         if (!spec.getBoolean(GameOptions.FOG_OF_WAR)) {
-            boolean[][] cST = (canSeeTiles != null) ? canSeeTiles
-                : new boolean[map.getWidth()][map.getHeight()];
-            getGame().getMap().forEachTile(t -> {
-                    cST[t.getX()][t.getY()] = hasExplored(t);
-                });
-            return cST;
+            Tile[][] tiles = map.getTiles();
+
+            for (int x=0; x<tiles.length; x++) {
+                Tile[] col = tiles[x];
+
+                if (col == null) // can columns be null at all ?
+                    continue;
+
+                for (y=0; y<col.length; y++)
+                    if ((col[y] != null) && (col[y].isExplored()))
+                        vismap.setVisible(x, y);
+            }
+        }
+        else
+        {
+            // player has units, settlements, (optionally) missions, and
+            // extra visibility.
+            // Set the PET for visible tiles to the tile itself.
+
+            // Only consider units directly on the map, not those on a
+            // carrier or in Europe.
+            for (Unit unit : getUnits())
+                vismap.setVisible(u);
+
+            // All the settlements.
+            for (Settlement settlement : getSettlementList())
+                vismap.setVisible(settlement);
+
+            if (isEuropean()) {
+
+                // All missions if using enhanced missionaries.
+                if (spec.getBoolean(GameOptions.ENHANCED_MISSIONARIES))
+                    for (Player other : getGame().getLiveNativePlayerList(this))
+                        for (IndianSettlement is : getIndianSettlementsWithMissionaryList(this))
+                            vismap.setVisible(is);
+
+                // All other European settlements if can see all colonies.
+                if (hasAbility(Ability.SEE_ALL_COLONIES))
+                    for (Colony c : getAllColoniesList(this))
+                        vismap.setVisible(c);
+            }
         }
 
-        // When there is fog, have to trace all locations where the
-        // player has units, settlements, (optionally) missions, and
-        // extra visibility.
-        // Set the PET for visible tiles to the tile itself.
-        boolean[][] cST = new boolean[map.getWidth()][map.getHeight()];
-
-        // Only consider units directly on the map, not those on a
-        // carrier or in Europe.
-        for (Unit unit : transform(getUnits(),
-                                   u -> u.getLocation() instanceof Tile)) {
-            // All the units.
-            for (Tile t : unit.getVisibleTiles()) {
-                cST[t.getX()][t.getY()] = true;
-                t.seeTile(this);
-            }
-        }
-        // All the settlements.
-        for (Settlement settlement : getSettlementList()) {
-            for (Tile t : settlement.getVisibleTiles()) {
-                cST[t.getX()][t.getY()] = true;
-                t.seeTile(this);
-            }
-        }
-        // All missions if using enhanced missionaries.
-        if (isEuropean()
-                && spec.getBoolean(GameOptions.ENHANCED_MISSIONARIES)) {
-            for (Player other : getGame().getLiveNativePlayerList(this)) {
-                for (Tile t : iterable(flatten(getIndianSettlementsWithMissionary(this),
-                                               is -> is.getVisibleTiles().stream()))) {
-                    cST[t.getX()][t.getY()] = true;
-                    t.seeTile(this);
-                }
-            }
-        }
-        // All other European settlements if can see all colonies.
-        if (isEuropean() && hasAbility(Ability.SEE_ALL_COLONIES)) {
-            for (Tile t : iterable(flatten(getGame().getAllColonies(this),
-                                           c -> c.getVisibleTiles().stream()))) {
-                cST[t.getX()][t.getY()] = true;
-                t.seeTile(this);
-            }
-        }
-        return cST;
+        // finally update the current visibility map
+        visibilityMap = vismap;
+        return vismap;
     }
-
 
     //
     // Foreign relations
