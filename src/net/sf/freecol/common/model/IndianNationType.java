@@ -23,8 +23,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
-import java.util.function.Function;
-import java.util.stream.Collectors;
 
 import javax.xml.stream.XMLStreamException;
 
@@ -149,26 +147,37 @@ public class IndianNationType extends NationType {
      * @return A random choice set of skills.
      */
     public List<RandomChoice<UnitType>> generateSkillsForTile(Tile tile) {
-        final List<RandomChoice<UnitType>> skills = getSkills();
-        final Map<GoodsType, Integer> scale
-            = transform(skills, alwaysTrue(), Function.identity(),
-                Collectors.toMap(rc -> rc.getObject().getExpertProduction(),
-                                 rc -> 1));
+        List<RandomChoice<UnitType>> sklist = skills;
+        if (sklist == null)
+            return Collections.<RandomChoice<UnitType>>emptyList();
 
-        for (Tile t: tile.getSurroundingTiles(1)) {
-            forEachMapEntry(scale, e -> {
-                    GoodsType goodsType = e.getKey();
-                    scale.put(goodsType, e.getValue()
-                        + t.getPotentialProduction(goodsType, null));
-                });
+        /** transform from skills random-choices into temporary arrays for direct access **/
+        int sz = sklist.size();
+        GoodsType[] goods_types   = new GoodsType[sz];
+        UnitType[]  unit_types    = new UnitType[sz];
+        int[]       scales        = new int[sz];
+        int[]       probabilities = new int[sz];
+
+        int idx = 0;
+        for (RandomChoice<UnitType> rc : sklist) {
+            scales[idx]        = 1;
+            probabilities[idx] = rc.getProbability();
+            unit_types[idx]    = rc.getObject();
+            goods_types[idx]   = unit_types[idx].getExpertProduction();
+            idx++;
         }
 
-        final Function<RandomChoice<UnitType>, RandomChoice<UnitType>> mapper = rc -> {
-            UnitType ut = rc.getObject();
-            int scaleValue = scale.get(ut.getExpertProduction());
-            return new RandomChoice<>(ut, rc.getProbability() * scaleValue);
-        };
-        return transform(skills, alwaysTrue(), mapper);
+        /** sum up surrounding tiles **/
+        for (Tile t : tile.getSurroundingTiles(1))
+            for (int x=0; x<sz; x++)
+                scales[x] += t.getPotentialProduction(goods_types[x], null);
+
+        /** finally create the new random choice list **/
+        List<RandomChoice<UnitType>> choices = new ArrayList<RandomChoice<UnitType>>(sz);
+        for (int x=0; x<sz; x++)
+            choices.add(new RandomChoice<>(unit_types[x], probabilities[x] * scales[x]));
+
+        return choices;
     }
 
 
