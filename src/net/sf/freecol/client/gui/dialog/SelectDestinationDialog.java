@@ -407,6 +407,15 @@ public final class SelectDestinationDialog extends FreeColDialog<Location>
             getImageLibrary().getSmallUnitImage(unit)), c);
     }
 
+    /**
+     * Quick check for whether a settlement is reachable by the unit.
+     * Used to knock out obviously impossible candidates before invoking
+     * the expensive full path search.
+     */
+    private final boolean unitCanReach(Unit unit, Settlement s) {
+        return unit.isNaval() ? s.isConnectedPort()
+                : Map.isSameContiguity(unit.getLocation(), s.getTile());
+    }
 
     /**
      * Load destinations for a given unit and carried goods types.
@@ -425,12 +434,6 @@ public final class SelectDestinationDialog extends FreeColDialog<Location>
         final Europe europe = player.getEurope();
         final Game game = getGame();
         final Map map = game.getMap();
-        // Quick check for whether a settlement is reachable by the unit.
-        // Used to knock out obviously impossible candidates before invoking
-        // the expensive full path search.
-        final Predicate<Settlement> canReach = s ->
-            (unit.isNaval()) ? s.isConnectedPort()
-                : Map.isSameContiguity(unit.getLocation(), s.getTile());
 
         if (this.destinationComparator == null) {
             this.destinationComparator = new DestinationComparator(player);
@@ -451,7 +454,7 @@ public final class SelectDestinationDialog extends FreeColDialog<Location>
 
         // Find all the player accessible settlements except the current one.
         td.addAll(transform(player.getSettlements(),
-                            s -> s != inSettlement && canReach.test(s),
+                            s -> s != inSettlement && unitCanReach(unit, s),
                             s -> new Destination(s, unit.getTurnsToReach(s),
                                                  unit, goodsTypes)));
 
@@ -463,7 +466,7 @@ public final class SelectDestinationDialog extends FreeColDialog<Location>
             p.hasContacted(player) && (canTrade || !p.isEuropean());
         final Function<Player, Stream<Location>> settlementTileMapper = p ->
             transform(p.getSettlements(),
-                      s -> canReach.test(s) && s.hasContacted(p),
+                      s -> unitCanReach(unit, s) && s.hasContacted(p),
                       s -> (Location)s.getTile()).stream();
         List<Location> locs = toList(flatten(game.getLivePlayers(player),
                                              tradePred, settlementTileMapper));
