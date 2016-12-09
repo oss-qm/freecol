@@ -388,6 +388,13 @@ public class Map extends FreeColGameObject implements Location {
     }
 
     /**
+     * Get the tiles of this map
+     */
+    public final Tile[][] getTiles() {
+        return this.tiles;
+    }
+
+    /**
      * Gets the width of this map.
      *
      * @return The width of this map.
