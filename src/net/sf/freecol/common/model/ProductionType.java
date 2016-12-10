@@ -24,7 +24,6 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
-import java.util.function.Predicate;
 
 import javax.xml.stream.XMLStreamException;
 
@@ -368,10 +367,22 @@ public class ProductionType extends FreeColSpecObject {
      * @return The best production.
      */
     public AbstractGoods getBestOutputFor(GoodsType goodsType) {
-        final Predicate<AbstractGoods> typePred = ag ->
-            goodsType == null || ag.getType() == goodsType;
-        return maximize(getOutputs(), typePred,
-                        AbstractGoods.ascendingAmountComparator);
+        if (outputs == null)
+            return null;
+
+        int max_amount = 0;
+        AbstractGoods max_ag = null;
+        for (AbstractGoods walk : outputs) {
+            if (goodsType == null || walk.getType() == goodsType) {
+                int a = walk.getAmount();
+                if (max_ag == null || a > max_amount) {
+                    max_amount = a;
+                    max_ag = walk;
+                }
+            }
+        }
+
+        return max_ag;
     }
 
 
