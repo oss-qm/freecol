@@ -82,10 +82,6 @@ import static net.sf.freecol.common.util.CollectionUtils.*;
 public final class ReportCompactColonyPanel extends ReportPanel
     implements ActionListener {
 
-    /** Predicate to select units that are not working. */
-    private static final Predicate<Unit> notWorkingPred = u ->
-        u.getState() != Unit.UnitState.FORTIFIED && u.getState() != Unit.UnitState.SENTRY;
-
     /** Container class for all the information about a colony. */
     private static class ColonySummary {
 
@@ -205,8 +201,9 @@ public final class ReportCompactColonyPanel extends ReportPanel
 
             for (GoodsType gt : goodsTypes) produce(gt);
 
-            this.notWorking.addAll(transform(colony.getTile().getUnits(),
-                                             notWorkingPred));
+            for (Unit u : colony.getTile().getUnits())
+                if (!u.isWorking())
+                    this.notWorking.add(u);
 
             // Collect the types of the units at work in the colony
             // (colony tiles and buildings) that are suboptimal (and
