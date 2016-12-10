@@ -21,7 +21,6 @@ package net.sf.freecol.common.model;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.function.Predicate;
 import java.util.logging.Logger;
 
 import javax.xml.stream.XMLStreamException;
@@ -209,11 +208,10 @@ public class TradeRouteStop extends FreeColGameObject implements TradeLocation {
         // Look for goods to load.
         // If there is space on the unit to load some more of this goods
         // type and there is some available at the stop, return true.
-
-        final Predicate<AbstractGoods> loadPred = ag ->
-            unit.getGoodsCount(ag.getType()) < ag.getAmount()
-                && getExportAmount(ag.getType(), turns) > 0;
-        if (any(stopGoods, loadPred)) return true;
+        for (AbstractGoods ag : stopGoods)
+            if (unit.getGoodsCount(ag.getType()) < ag.getAmount()
+                    && getExportAmount(ag.getType(), turns) > 0)
+                return true;
 
         // Look for goods to unload.
         // For all goods the unit has loaded, and if the type of goods
