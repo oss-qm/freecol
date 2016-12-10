@@ -367,10 +367,22 @@ public class ProductionType extends FreeColSpecObject {
      * @return The best production.
      */
     public AbstractGoods getBestOutputFor(GoodsType goodsType) {
-        final Predicate<AbstractGoods> typePred = ag ->
-            goodsType == null || ag.getType() == goodsType;
-        return maximize(getOutputs(), typePred,
-                        AbstractGoods.ascendingAmountComparator);
+        if (outputs == null)
+            return null;
+
+        int max_amount;
+        GoodsType max_gt;
+        for (GoodsType walk : outputs) {
+            if (goodsType == null || walk.getType() == goodsType) {
+                int a = walk.getAmount();
+                if (max_gt == null || a > max_amount) {
+                    max_amount = a;
+                    max_gt = walk;
+                }
+            }
+        }
+
+        return max_gt;
     }
 
 
