@@ -344,11 +344,20 @@ public class ProductionType extends FreeColSpecObject {
      */
     public static ProductionType getBestProductionType(GoodsType goodsType,
         Collection<ProductionType> types) {
-        final Comparator<ProductionType> comp = cachingIntComparator(pt -> {
-                AbstractGoods best = pt.getBestOutputFor(goodsType);
-                return (best == null) ? Integer.MIN_VALUE : best.getAmount();
-            });
-        return maximize(types, comp);
+
+        int max_val = 0;
+        ProductionType max_pt = null;
+        for (ProductionType pt : types) {
+            AbstractGoods best = pt.getBestOuputFor(goodsType);
+            if (best == null)
+                continue;
+
+            int x = best.getAmount();
+            if (x > max_val) {
+                max_val = x;
+                max_pt = pt;
+            }
+        }
     }
 
     /**
