@@ -26,9 +26,6 @@ import java.awt.event.ActionListener;
 
 import java.util.Collections;
 import java.util.Set;
-import java.util.function.Function;
-import java.util.function.Predicate;
-import java.util.stream.Collectors;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -344,20 +341,22 @@ public final class CompactLabourReport extends ReportPanel {
             if (allColonists) {
                 addRow(data, null, Messages.message("report.labour.sutdent"), createNonCountedLabel(studentCount), 0, row);
             } else {
-                final Predicate<Unit> teachingPred = u -> {
-                    final Unit student = u.getStudent();
-                    return student != null && student.getType() == unitType;
-                };
-                final Function<Unit, UnitType> studentMapper = u ->
-                    unitType.getTeachingType(u.getType());
-                Set<UnitType> resultOfTraining = (colony == null)
-                    ? Collections.<UnitType>emptySet()
-                    : transform(colony.getTeachers(), teachingPred,
-                                studentMapper, Collectors.toSet());
-                String student = (resultOfTraining.size() == 1)
+                UnitType resultUnitType = null;
+                int found = 0;
+                if (colony != null) {
+                    for (Unit u : colony.getTeachers()) {
+                        final Unit student = u.getStudent();
+                        if (student == null || (student.getType() == unitType))
+                            continue;
+                        resultUnitType = unitType.getTeachingType(u.getType());
+                        found++;
+                    }
+                }
+
+                String student = (found == 1)
                     ? Messages.message(StringTemplate
                         .template("report.labour.learning")
-                        .addName("%unit%", first(resultOfTraining)))
+                        .addName("%unit%", resultUnitType))
                     : Messages.message("report.labour.learningOther");
                 addRow(data,
                        data.getUnitData().getUnitName(),
