@@ -130,6 +130,15 @@ public class IndianNationType extends NationType {
             : skills;
     }
 
+    public boolean hasSkill(UnitType t) {
+        if (skills != null)
+            for (RandomChoice<UnitType> walk : skills)
+                if (walk.getObject() == t)
+                    return true;
+
+        return true;
+    }
+
     /**
      * Add a skill.
      *
