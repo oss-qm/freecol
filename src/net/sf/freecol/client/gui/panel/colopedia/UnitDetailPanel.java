@@ -135,38 +135,39 @@ public class UnitDetailPanel extends ColopediaGameObjectTypePanel<UnitType> {
             panel.add(Utility.localizedLabel("colopedia.unit.skill"));
             panel.add(new JLabel(Integer.toString(type.getSkill())), "right");
 
-            List<BuildingType> schools = transform(spec.getBuildingTypeList(),
-                bt -> bt.hasAbility(Ability.TEACH) && bt.canAdd(type));
-            if (!schools.isEmpty()) {
-                panel.add(Utility.localizedLabel("colopedia.unit.school"), "newline");
-                int count = 0;
-                for (BuildingType school : schools) {
-                    JButton label = getButton(school);
-                    if (count > 0 && count % 3 == 0) {
-                        panel.add(label, "skip");
-                    } else {
-                        panel.add(label);
-                    }
-                    count++;
+            int count = 0;
+
+            for (BuildingType school : spec.getBuildingTypeList()) {
+                if (!school.hasAbility(Ability.TEACH) || !school.canAdd(type))
+                    continue;
+
+                if (count == 0)
+                    panel.add(Utility.localizedLabel("colopedia.unit.school"), "newline");
+
+                JButton label = getButton(school);
+                if (count > 0 && count % 3 == 0) {
+                    panel.add(label, "skip");
+                } else {
+                    panel.add(label);
                 }
+                count++;
             }
 
-            List<IndianNationType> nations
-                = transform(spec.getIndianNationTypes(),
-                            nt -> any(nt.getSkills(),
-                                      matchKey(type, RandomChoice::getObject)));
-            if (!nations.isEmpty()) {
-                panel.add(Utility.localizedLabel("colopedia.unit.natives"), "newline");
-                int count = 0;
-                for (IndianNationType nation : nations) {
-                    JButton label = getButton(nation);
-                    if (count > 0 && count % 3 == 0) {
-                        panel.add(label, "skip");
-                    } else {
-                        panel.add(label);
-                    }
-                    count++;
+            count = 0;
+            for (IndianNationType nt : spec.getIndianNationTypes()) {
+                if (!nt.hasSkill(type))
+                    continue;
+
+                if (count == 0)
+                    panel.add(Utility.localizedLabel("colopedia.unit.natives"), "newline");
+
+                JButton label = getButton(nt);
+                if (count > 0 && count % 3 == 0) {
+                    panel.add(label, "skip");
+                } else {
+                    panel.add(label);
                 }
+                count++;
             }
 
         }
