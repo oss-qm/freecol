@@ -604,6 +604,14 @@ public class Unit extends GoodsLocation
     }
 
     /**
+     * Check whether unit is working (fortified or sentry)
+     */
+    public final boolean isWorking() {
+        return ((state == UnitState.FORTIFIED)
+             || (state == UnitState.SENTRY));
+    }
+
+    /**
      * Checks if a {@code Unit} can get the given state set.
      *
      * @param s The new state for this Unit.  Should be one of
