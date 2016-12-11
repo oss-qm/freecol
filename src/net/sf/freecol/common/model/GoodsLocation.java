@@ -22,7 +22,6 @@ package net.sf.freecol.common.model;
 import java.util.Collections;
 import java.util.List;
 import java.util.logging.Logger;
-import java.util.stream.Stream;
 
 import javax.xml.stream.XMLStreamException;
 
@@ -303,10 +302,11 @@ public abstract class GoodsLocation extends UnitLocation {
      * {@inheritDoc}
      */
     @Override
-    public Stream<FreeColGameObject> getDisposables() {
-        Stream<FreeColGameObject> up = super.getDisposables();
-        return (this.goodsContainer == null) ? up
-            : concat(this.goodsContainer.getDisposables(), up);
+    public void fillDisposables(List<FreeColGameObject> dl) {
+        if (this.goodsContainer != null)
+            this.goodsContainer.fillDisposables(dl);
+
+        super.fillDisposables(dl);
     }
 
 
