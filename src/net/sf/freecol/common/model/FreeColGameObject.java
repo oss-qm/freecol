@@ -21,7 +21,8 @@ package net.sf.freecol.common.model;
 
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import java.util.stream.Stream;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.xml.stream.XMLStreamException;
 
@@ -150,7 +151,9 @@ public abstract class FreeColGameObject extends FreeColObject {
         if (this.disposed) return;
         LogBuilder lb = new LogBuilder(64);
         lb.add("Destroying:");
-        for (FreeColGameObject fcgo : toList(getDisposables())) {
+        List<FreeColGameObject> dl = new ArrayList<>();
+        fillDisposables(dl);
+        for (FreeColGameObject fcgo : dl) {
             lb.add(" ", fcgo.getId());
             fcgo.disposeResources();
         }
@@ -188,10 +191,10 @@ public abstract class FreeColGameObject extends FreeColObject {
      * Overriding routines should call upwards towards this routine,
      * arranging that the object itself is last.
      *
-     * @return A stream of {@code FreeColGameObject}s to dispose of.
+     * @param  dl  target list to fill elements into
      */
-    public Stream<FreeColGameObject> getDisposables() {
-        return Stream.of(this);
+    public void fillDisposables(List<FreeColGameObject> dl) {
+        dl.add(this);
     }
 
     /**
