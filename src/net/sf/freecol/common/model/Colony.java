@@ -2557,10 +2557,16 @@ loop:   for (WorkLocation wl : getWorkLocationsForProducing(goodsType)) {
      * {@inheritDoc}
      */
     @Override
-    public Stream<FreeColGameObject> getDisposables() {
-        return concat(flatten(getAllWorkLocations(),
-                WorkLocation::getDisposables),
-                super.getDisposables());
+    public void getDisposables(List<FreeColGameObject> list) {
+        synchronized (this.colonyTiles) {
+            for (ColonyTile walk : this.colonyTiles)
+                walk.getDisposables(list);
+        }
+        synchronized (this.buildingMap) {
+            for (Building walk : this.buildingMap.values())
+                walk.getDisposables(list);
+        }
+        super.getDisposables(list);
     }
 
 
