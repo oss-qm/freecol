@@ -59,9 +59,20 @@ public class EuropeWas {
      * @return The newest {@code Unit} or null if none has been added.
      */
     public Unit getNewUnit() {
-        return (europe.getUnitCount() <= this.unitCount) ? null
-            : maximize(europe.getUnits(),
-                       cachingIntComparator(Unit::getIdNumber));
+        if (europe.getUnitCount() <= this.unitCount)
+            return null;
+
+        int max_id = 0;
+        Unit max_unit = null;
+        for (Unit u : europe.getUnits()) {
+            int uid = u.getIdNumber();
+            if (uid > max_id) {
+                max_id = uid;
+                max_unit = u;
+            }
+        }
+
+        return max_unit;
     }
 
     /**
