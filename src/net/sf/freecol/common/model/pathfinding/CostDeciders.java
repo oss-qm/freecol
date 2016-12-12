@@ -19,8 +19,6 @@
 
 package net.sf.freecol.common.model.pathfinding;
 
-import java.util.function.Predicate;
-
 import net.sf.freecol.common.model.Ability;
 import net.sf.freecol.common.model.Europe;
 import net.sf.freecol.common.model.Location;
@@ -185,23 +183,25 @@ public final class CostDeciders {
                            Location newLocation, int movesLeft) {
             int cost = super.getCost(unit, oldLocation, newLocation, movesLeft);
             Tile tile = newLocation.getTile();
-            if (cost != ILLEGAL_MOVE && cost != Map.INFINITY && tile != null) {
-                if (tile.isDangerousToShip(unit)) {
-                    cost = ILLEGAL_MOVE;
-                } else {
-                    // Move might end if there is a credible naval
-                    // threat in an adjacent tile.
-                    final Player owner = unit.getOwner();
-                    final Predicate<Unit> threatPred = u ->
-                        (u.getOwner() != owner
-                            && (u.hasAbility(Ability.PIRACY)
-                                || (u.getOwner().atWarWith(owner)
-                                    && u.isOffensiveUnit())));
-                    if (any(flatten(tile.getSurroundingTiles(1,1),
-                                    Tile::getUnits),
-                            threatPred)) {
+
+            if (cost == ILLEGAL_MOVE || cost == Map.INFINITY && tile == null)
+                return cost;
+
+            if (tile.isDangerousToShip(unit))
+                return ILLEGAL_MOVE;
+
+            // Move might end if there is a credible naval
+            // threat in an adjacent tile.
+            final Player owner = unit.getOwner();
+            for (Tile t : tile.getSurroundingTiles(1,1)) {
+                for (Unit u : t.getUnits()) {
+                    if (u.getOwner() != owner
+                        && (u.hasAbility(Ability.PIRACY) ||
+                            (u.getOwner().atWarWith(owner) && u.isOffensiveUnit())
+                    )) {
                         this.movesLeft = 0;
                         this.newTurns++;
+                        return cost;
                     }
                 }
             }
