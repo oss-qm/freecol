@@ -46,8 +46,6 @@ public interface CargoLabel {
      * @param comp The Component to remove.
      * @param cargoPanel The {@link CargoPanel} to affect.
      */
-    public default void removeCargo(Component comp, CargoPanel cargoPanel) {
-        cargoPanel.update();
-    }
+    public void removeCargo(Component comp, CargoPanel cargoPanel);
 
 }
