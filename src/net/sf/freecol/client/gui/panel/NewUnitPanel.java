@@ -76,8 +76,11 @@ public class NewUnitPanel extends FreeColPanel {
         this.question = new JLabel(label);
         this.units.addAll(units);
         final Europe europe = getMyPlayer().getEurope();
-        this.priceComparator = Comparator.comparingInt((UnitType ut) ->
-            europe.getUnitPrice(ut));
+
+        this.priceComparator = new Comparator<UnitType>() {
+            public int compare(UnitType a, UnitType b) {
+                return europe.getUnitPrice(a) - europe.getUnitPrice(b);
+            }};
 
         okButton.setText(Messages.message("close"));
 

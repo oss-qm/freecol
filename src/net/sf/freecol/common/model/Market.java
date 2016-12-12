@@ -427,8 +427,12 @@ public final class Market extends FreeColGameObject implements Ownable {
      * @return A suitable {@code Comparator}.
      */
     public <T extends AbstractGoods> Comparator<T> getSalePriceComparator() {
-        return Comparator.comparingInt((T t)
-            -> getSalePrice(t.getType(), t.getAmount())).reversed();
+        return new Comparator<T>() {
+            public int compare(T a, T b) {
+                return getSalePrice(b.getType(), b.getAmount())
+                     - getSalePrice(a.getType(), a.getAmount()); // reversed
+            }
+        };
     }
 
     /**

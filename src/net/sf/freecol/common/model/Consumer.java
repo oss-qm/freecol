@@ -33,7 +33,10 @@ public interface Consumer {
 
     /** Compare consumers by descending priority. */
     public static final Comparator<Consumer> COMPARATOR
-        = Comparator.comparingInt(Consumer::getPriority).reversed();
+        = new Comparator<Consumer>() {
+            public int compare(Consumer a, Consumer b) {
+                return b.getPriority() - a.getPriority(); // reversed
+            }};
 
     /**
      * Default consumption priority for the Colony when producing new

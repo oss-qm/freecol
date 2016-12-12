@@ -51,7 +51,11 @@ public class ImageResource extends Resource
 
     /** Comparator to compare buffered images by ascending size. */
     private static final Comparator<BufferedImage> biComp
-        = Comparator.<BufferedImage>comparingInt(bi -> bi.getWidth() * bi.getHeight());
+        = new Comparator<BufferedImage>() {
+            public int compare(BufferedImage a, BufferedImage b) {
+                return a.getWidth() * a.getHeight()
+                     - b.getWidth() * b.getHeight();
+            }};
 
     private final Object loadingLock = new Object();
     private volatile BufferedImage image = null;

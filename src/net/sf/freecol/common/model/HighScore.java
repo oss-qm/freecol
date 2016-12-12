@@ -55,8 +55,12 @@ public class HighScore extends FreeColObject {
     public static final String TAG = "highScore";
 
     /** A comparator by ascending AI object value. */
-    public static final Comparator<? super HighScore> descendingScoreComparator
-        = Comparator.comparingInt(HighScore::getScore).reversed();
+    public static final Comparator<HighScore> descendingScoreComparator
+        = new Comparator<HighScore>() {
+            public int compare(HighScore a, HighScore b) {
+                return b.getScore() - a.getScore(); // reversed
+            }
+        };
 
     /** The number of high scores to allow in the high scores list. */
     public static final int NUMBER_OF_HIGH_SCORES = 10;

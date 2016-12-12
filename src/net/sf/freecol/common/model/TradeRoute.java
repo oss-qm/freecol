@@ -24,6 +24,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.logging.Logger;
+import java.util.Comparator;
 
 import javax.xml.stream.XMLStreamException;
 
@@ -42,6 +43,13 @@ public class TradeRoute extends FreeColGameObject
     private static final Logger logger = Logger.getLogger(TradeRoute.class.getName());
 
     public static final String TAG = "tradeRoute";
+
+    /** compare trade routes by name **/
+    public static final Comparator<TradeRoute> nameComparator = new Comparator<TradeRoute>() {
+        public int compare(TradeRoute a, TradeRoute b) {
+            return a.getName().compareTo(b.getName());
+        }
+    };
 
     /** The name of this trade route. */
     private String name;
