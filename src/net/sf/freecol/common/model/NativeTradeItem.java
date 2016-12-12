@@ -40,10 +40,20 @@ public class NativeTradeItem extends GoodsTradeItem {
 
     /** Compare the trade item price. */
     public static final Comparator<NativeTradeItem> descendingPriceComparator
-        = Comparator.comparingInt(NativeTradeItem::getPrice).reversed()
-            .thenComparingInt(NativeTradeItem::getHaggleCount)
-            .thenComparing(nti -> nti.getGoods().getType(),
-                           GoodsType.goodsTypeComparator);
+        = new Comparator<NativeTradeItem>() {
+            int compareTo(NativeTradeItem a, NativeTradeItem b) {
+                int diff = b.getPrice() - a.getPrice(); // reversed
+                if (diff != 0)
+                    return diff;
+
+                diff = a.getHaggleCount() - b.getHaggleCount();
+                if (diff != 0)
+                    return diff;
+
+                return GoodsType.goodsTypeComparator(
+                    a.getGoods().getType(), b.getGoods().getType());
+            }
+        };
 
     /** Magic number to denote that the price has not been initialized. */
     public static final int PRICE_UNSET = 0;

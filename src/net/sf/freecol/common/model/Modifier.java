@@ -47,10 +47,24 @@ public class Modifier extends Feature {
      * source, then FCO order.
      */
     public static final Comparator<Modifier> ascendingModifierIndexComparator
-        = Comparator.<Modifier>comparingInt(Modifier::getModifierIndex)
-            .thenComparingInt(m -> m.getType().ordinal())
-            .thenComparing(FreeColObject.fcoComparator)
-            .thenComparing(Modifier::getSource, FreeColObject.fcoComparator);
+        = new Comparator<Modifier>() {
+            public int compareTo(Modifier a, Modifier b) {
+                int diff = getModifierIndex(a) - getModifierIndex(b);
+                if (diff != 0)
+                    return diff;
+
+                diff = a.getType().ordinal() - b.getType.ordinal();
+                if (diff != 0)
+                    return diff;
+
+                diff = FreeColObject.fcoComparator(a,b);
+                if (diff != 0)
+                    return diff;
+
+                return
+                    FreeColObject.fcoComparator(getSource(a)) -
+                    FreeColObject.fcoComparator(getSource(b));
+            }};
 
     public static final String AMPHIBIOUS_ATTACK
         = "model.modifier.amphibiousAttack";

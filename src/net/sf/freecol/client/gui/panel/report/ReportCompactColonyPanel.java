@@ -384,7 +384,11 @@ public final class ReportCompactColonyPanel extends ReportPanel
         final Comparator<Colony> colonyComparator
             = freeColClient.getClientOptions().getColonyComparator();
         final Comparator<List<Colony>> firstColonyComparator
-            = Comparator.comparing(l -> first(l), colonyComparator);
+            = new Comparator<List<Colony>>() {
+                public int compare(List<Colony> a, List<Colony> b) {
+                    return colonyComparator.compare(first(a), first(b));
+                }};
+
         this.colonies.addAll(sort(continents.values(), firstColonyComparator));
 
         this.goodsTypes.addAll(transform(spec.getGoodsTypeList(),
@@ -814,8 +818,12 @@ public final class ReportCompactColonyPanel extends ReportPanel
         final String cac = colony.getId();
         List<JButton> result = new ArrayList<>();
         final Comparator<UnitType> buttonComparator
-            = Comparator.comparing(ut -> suggestions.get(ut),
-                                   Suggestion.descendingAmountComparator);
+            = new Comparator() {
+                public int compare(UnitType a, UnitType b) {
+                    int diff = suggestions.get(a) - suggestions.get(b);
+                    return (diff==0 ? Suggestion.descendingAmountComparator(a,b) : diff);
+                }};
+
         for (UnitType type : sort(suggestions.keySet(), buttonComparator)) {
             boolean present = have.contains(type);
             Suggestion suggestion = suggestions.get(type);

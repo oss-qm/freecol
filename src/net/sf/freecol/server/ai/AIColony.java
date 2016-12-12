@@ -114,12 +114,17 @@ public class AIColony extends AIObject implements PropertyChangeListener {
 
     /** Comparator to choose the best pioneers. */
     private static final Comparator<Unit> pioneerComparator
-        = Comparator.comparingInt(Unit::getPioneerScore).reversed();
+        = new Comparator<Unit>() {
+            public int compare(Unit a, Unit b) {
+                return b.getPioneerScore() - a.getPioneerScore(); // reversed
+            }};
 
     /** Comparator to choose the best scouts. */
     private static final Comparator<Unit> scoutComparator
-        = Comparator.comparingInt(Unit::getScoutScore).reversed();
-
+        = new Comparator<Unit>() {
+            public int compare(Unit a, Unit b) {
+                return b.getScoutScore() - a.getScoutScore(); // reversed
+            }};
 
     /**
      * Creates a new uninitialized {@code AIColony}.

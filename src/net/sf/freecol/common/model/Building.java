@@ -21,6 +21,7 @@ package net.sf.freecol.common.model;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 import java.util.logging.Logger;
 import java.util.stream.Stream;
@@ -46,6 +47,19 @@ public class Building extends WorkLocation
     public static final String TAG = "building";
 
     public static final String UNIT_CHANGE = "UNIT_CHANGE";
+
+    /**
+     * Compare buildings by their underlying type index (which reduces
+     * to the order in the spec), then the FCO order.
+     */
+    private static final Comparator<Building> typeComparator
+        = new Comparator<Building>() {
+            public int compare(Building a, Building b) {
+                int diff = a.getType().getIndex()
+                         - b.getType().getIndex();
+
+                return (diff == 0 ? FreeColObject.compareIds(fco1, fco2) : diff);
+            }};
 
     /** The type of building. */
     protected BuildingType buildingType;

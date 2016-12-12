@@ -141,8 +141,15 @@ public final class InGameController extends FreeColClientHolder {
 
     /** A comparator for ordering trade route units. */
     private static final Comparator<Unit> tradeRouteUnitComparator
-        = Comparator.comparing((Unit u) -> u.getTradeRoute().getName())
-            .thenComparing(u -> (FreeColObject)u);
+        = new Comparator<Unit>() {
+            public int compareTo(Unit unit_a, Unit unit_bb) {
+                /* first compare by name, then by identity */
+                int diff = a.getTradeRoute().getName().compareTo(
+                    (b.getTradeRoute().getName()));
+                return (diff == 0 ?
+                    (unit_a == unit_b ? 0 : 1) : diff);
+            }
+        };
 
     /** Current mode for moving units. */
     private MoveMode moveMode = MoveMode.NEXT_ACTIVE_UNIT;

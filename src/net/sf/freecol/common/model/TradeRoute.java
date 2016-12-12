@@ -43,6 +43,13 @@ public class TradeRoute extends FreeColGameObject
 
     public static final String TAG = "tradeRoute";
 
+    /** compare trade routes by name **/
+    public static final Comparator<TradeRoute> nameComparator = new Comparator<TradeRoute>() {
+        public int compare(TradeRoute a, TradeRoute b) {
+            return a.getName().compareTo(b.getName());
+        }
+    };
+
     /** The name of this trade route. */
     private String name;
 

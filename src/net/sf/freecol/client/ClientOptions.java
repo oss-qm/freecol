@@ -436,29 +436,52 @@ public class ClientOptions extends OptionGroup {
 
 
     // Comparators for sorting colonies.
+
     /** Compare by ascending age. */
     private static final Comparator<Colony> colonyAgeComparator
-        = Comparator.comparingInt(c -> c.getEstablished().getNumber());
+        = new Comparator<Colony> () {
+            @Override public int compare(Colonly a, Colony b) {
+                return a.getEstablished().getNumber() - b.getEstablished().getNumber();
+            }
+        };
 
     /** Compare by name. */
     private static final Comparator<Colony> colonyNameComparator
-        = Comparator.comparing(Colony::getName);
+        = new Comparator<Colony> () {
+            @Override public int compare(Colony a, Colony b) {
+                return a.getName().compareTo(b.getName());
+            }
+        };
 
     /** Compare by descending size then liberty. */
     private static final Comparator<Colony> colonySizeComparator
-        = Comparator.comparingInt(Colony::getUnitCount)
-            .thenComparingInt(Colony::getSoL)
-            .reversed();
+        = new Comparator<Colony> () {
+            @Override public int compare(Colony a, Colony b) {
+                int a_units = a.getUnitCount();
+                int b_units = b.getUnitCount();
+
+                return -(a_units==b_units ? a.getSoL()-b.getSoL() : a_units-b_units);
+            }
+        };
 
     /** Compare by descending liberty then size. */
     private static final Comparator<Colony> colonySoLComparator
-        = Comparator.comparingInt(Colony::getSoL)
-            .thenComparingInt(Colony::getUnitCount)
-            .reversed();
+        = new Comparator<Colony> () {
+            @Override public int compare(Colony a, Colony b) {
+                int a_sol = a.getSoL();
+                int b_sol = b.getSoL();
+
+                return -(a_sol==b_sol ? a.getUnitCount()-b.getUnitCount() : a_sol-b_sol);
+            }
+        };
 
     /** Compare by position on the map. */
     private static final Comparator<Colony> colonyPositionComparator
-        = Comparator.comparingInt(c -> Location.getRank(c));
+        = new Comparator<Colony> () {
+            @Override public int compare(Colony a, Colony b) {
+                return Location.getRank(a) - Location.getRank(b);
+            }
+        };
 
 
     private class MessageSourceComparator implements Comparator<ModelMessage> {
@@ -505,9 +528,11 @@ public class ClientOptions extends OptionGroup {
 
     /** Compare messages by type. */
     private static final Comparator<ModelMessage> messageTypeComparator
-        = (m1, m2) -> m1.getMessageType().ordinal()
-                    - m2.getMessageType().ordinal();
-
+        = new Comparator<ModelMessage>() {
+            @Override public int compare(ModelMessage a, ModelMessage b) {
+                return m1.getMessageType().ordinal() - m2.getMessageType().ordinal();
+            }
+        };
 
     /**
      * Creates a new {@code ClientOptions}.

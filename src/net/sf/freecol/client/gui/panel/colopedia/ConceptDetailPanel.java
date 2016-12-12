@@ -62,8 +62,12 @@ public class ConceptDetailPanel extends FreeColPanel
     };
 
     private static final Comparator<DefaultMutableTreeNode> nodeComparator
-        = Comparator.comparing(tn ->
-            ((ColopediaTreeItem)tn.getUserObject()).getText());
+        = new Comparator() {
+            public int compareTo(DefaultMutableTreeNode a, DefaultMutableTreeNode b) {
+                String as = ((ColopediaTreeItem)a.getUserObject()).getText();
+                String bs = ((ColopediaTreeItem)b.getUserObject()).getText();
+                return as.compareTo(bs);
+            }};
 
     private ColopediaPanel colopediaPanel;
 
