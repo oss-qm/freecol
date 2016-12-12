@@ -312,6 +312,29 @@ public final class GoalDeciders {
             public PathNode getGoal() { return goal; }
             @Override
             public boolean hasSubGoals() { return true; }
+
+            private boolean isDanger(Tile t, Player owner, Unit u) {
+                Settlement settlement = t.getSettlement();
+                return (settlement != null
+                    && !owner.owns(settlement)
+                    && settlement.hasAbility(Ability.BOMBARD_SHIPS)
+                    && (owner.atWarWith(settlement.getOwner())
+                        || u.hasAbility(Ability.PIRACY)));
+            };
+
+            private static double getDangerBonus(Tile t, Player owner, Unit u) {
+                for (Tile walk : t.getSurroundingTiles(1, 1))
+                    if (isDanger(walk, owner, u))
+                        return 0.0;
+
+                return NO_DANGER_BONUS;
+            }
+
+            private static double getTileScore(Tile t, Player owner, Unit u, Map map) {
+                return (t.getDefenceValue() / (1.0 + map.getDistance(target, t))
+                        + getDangerBonus(t, owner, u));
+            }
+
             @Override
             public boolean check(Unit u, PathNode pathNode) {
                 final Tile tile = pathNode.getTile();
@@ -320,30 +343,26 @@ public final class GoalDeciders {
 
                 final Player owner = u.getOwner();
                 final Map map = u.getGame().getMap();
-                final Predicate<Tile> dockPred = t ->
-                    t.isHighSeasConnected() && !t.isLand();
-                final Predicate<Tile> dangerPred = t -> {
-                    Settlement settlement = t.getSettlement();
-                    return (settlement != null
-                        && !owner.owns(settlement)
-                        && settlement.hasAbility(Ability.BOMBARD_SHIPS)
-                        && (owner.atWarWith(settlement.getOwner())
-                            || u.hasAbility(Ability.PIRACY)));
-                };
-                final ToDoubleFunction<Tile> tileScorer = cacheDouble(t ->
-                    (t.getDefenceValue() / (1.0 + map.getDistance(target, t))
-                        + ((none(t.getSurroundingTiles(1, 1), dangerPred))
-                            ? NO_DANGER_BONUS : 0.0)));
-                Tile best = maximize(tile.getSurroundingTiles(1, 1), dockPred,
-                                     Comparator.comparingDouble(tileScorer));
-                double score;
-                if (best != null
-                    && (score = tileScorer.applyAsDouble(best)) > bestScore) {
-                    bestScore = score;
-                    goal = pathNode;
-                    return true;
+
+                Tile best;
+                double best_score = -1.0;
+                for (Tile walk : tile.getSurroundingTiles(1, 1)) {
+                    if (!walk.isHighSeasConnected() || walk.isLand())
+                        continue;
+
+                    double sc = getTileScore(t, owner, u, map);
+                    if (sc > best_score) {
+                        best_score = sc;
+                        best = walk;
+                    }
                 }
-                return false;
+
+                if ((best == null) || (best_score <= bestScore))
+                    return false;
+
+                bestScore = best_score;
+                goal = pathNode;
+                return true;
             }
         };
     }
