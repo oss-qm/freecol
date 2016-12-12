@@ -57,14 +57,6 @@ import static net.sf.freecol.common.util.CollectionUtils.*;
 public final class ReportClassicColonyPanel extends ReportPanel
     implements ActionListener {
 
-    /**
-     * Compare buildings by their underlying type index (which reduces
-     * to the order in the spec), then the FCO order.
-     */
-    private static final Comparator<Building> buildingTypeComparator
-        = Comparator.<Building>comparingInt(b -> b.getType().getIndex())
-            .thenComparing(FreeColObject.fcoComparator);
-
     private static final int COLONISTS_PER_ROW = 20;
     private static final int UNITS_PER_ROW = 14;
     private static final int GOODS_PER_ROW = 10;
@@ -163,7 +155,7 @@ public final class ReportClassicColonyPanel extends ReportPanel
                 = new JPanel(new GridLayout(0, BUILDINGS_PER_ROW));
             buildingsPanel.setOpaque(false);
             for (Building building : sort(colony.getBuildings(),
-                                          buildingTypeComparator)) {
+                                          Building.typeComparator)) {
                 if (building.getType().isAutomaticBuild()) continue;
                 JLabel buildingLabel = new JLabel(new ImageIcon(lib
                         .getSmallBuildingImage(building)));

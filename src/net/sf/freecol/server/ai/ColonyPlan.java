@@ -113,7 +113,10 @@ public class ColonyPlan {
 
     /** Comparator to sort buildable by descending value. */
     private static final Comparator<BuildPlan> buildPlanComparator
-        = Comparator.comparingDouble(BuildPlan::getValue).reversed();
+        = new Comparator<BuildPlan>() {
+            public int compare(BuildPlan a, BuildPlan b) {
+                return Double.compare(b.getValue(), a.getValue()); // reversed
+            }};
 
     /** Require production plans to always produce an amount exceeding this. */
     private static final int LOW_PRODUCTION_THRESHOLD = 1;
@@ -870,15 +873,28 @@ public class ColonyPlan {
         // not on the produce list, then make sure such plans sort to
         // the end, except for food plans.
         final Comparator<WorkLocationPlan> comp
-            = cachingIntComparator((WorkLocationPlan wp) -> {
-                    final GoodsType gt = wp.getGoodsType();
-                    int i = produce.indexOf(gt);
-                    return (i < 0 && !gt.isFoodType()) ? 99999 : i;
-                })
-            .thenComparingInt((WorkLocationPlan wp) ->
-                wp.getWorkLocation().getGenericPotential(wp.getGoodsType()))
-            .thenComparing((WorkLocationPlan wp) ->
-                wp.getGoodsType(), GoodsType.goodsTypeComparator);
+            = new Comparator<WorkLocationPlan>() {
+                public int compare(WorkLocationPlan a, WorkLocationPlan b) {
+                    final GoodsType a_gt = a.getGoodsType();
+                    int a_i = produce.indexOf(a_gt);
+
+                    final GoodsType b_gt = b.getGoodsType();
+                    int b_i = produce.indexOf(b_gt);
+
+                    int diff = ((a_i < 0 && !a_gt.isFoodType()) ? 99999 : a_i)
+                             - ((b_i < 0 && !b_gt.isFoodType()) ? 99999 : b_i);
+
+                    if (diff != 0) return diff;
+
+                    diff = a.getWorkLocation().getGenericPotential(a_gt)
+                         - b.getWorkLocation().getGenericPotential(b_gt);
+
+                    if (diff != 0) return diff;
+
+                    return GoodsType.goodsTypeComparator.compare(a_gt, b_gt);
+                }
+            };
+
         workPlans.sort(comp);
     }
 
@@ -890,10 +906,21 @@ public class ColonyPlan {
      * @param production A map of the production.
      */
     private void updateProductionList(final Map<GoodsType, Map<WorkLocation, Integer>> production) {
+        /** do the caching on our own, to save extra callbacks and conversions in the loops **/
+        final HashMap<GoodsType,Integer> cache = new HashMap<>();
+        for (Entry<GoodsType, Map<WorkLocation, Integer>> e : production.entrySet()) {
+            GoodsType gt = e.getKey();
+            int sum = 0;
+            for (Integer i : e.getValue().values())
+                sum += i;
+            cache.put(gt, new Integer(sum));
+        }
         final Comparator<GoodsType> productionComparator
-            = cachingIntComparator((GoodsType gt) ->
-                sum(production.get(gt).values(), Integer::intValue))
-                .reversed();
+            = new Comparator<GoodsType>() {
+                public int compare(GoodsType a, GoodsType b) {
+                    return cache.get(b) - cache.get(a); // reversed
+                }
+            };
 
         // If we need liberty put it before the new world production.
         if (colony.getSoL() < 100) {
@@ -904,8 +931,11 @@ public class ColonyPlan {
 
         // Always add raw/building materials first.
         rawBuildingGoodsTypes.sort(productionComparator);
-        final ToIntFunction<GoodsType> indexer = gt ->
-            rawBuildingGoodsTypes.indexOf(gt.getInputType());
+        Comparator<GoodsType> indexComparator = new Comparator<GoodsType>() {
+            public int compare(GoodsType a, GoodsType b) {
+                return rawBuildingGoodsTypes.indexOf(b.getInputType())
+                     - rawBuildingGoodsTypes.indexOf(a.getInputType()); // reversed
+                }};
         List<GoodsType> toAdd = new ArrayList<>();
         toAdd.addAll(transform(buildingGoodsTypes,
                 gt -> production.containsKey(gt)
@@ -913,7 +943,7 @@ public class ColonyPlan {
                         >= GoodsContainer.CARGO_SIZE/2
                         || production.containsKey(gt.getInputType())),
                 Function.identity(),
-                Comparator.comparingInt(indexer).reversed()));
+                indexComparator));
 
         for (int i = toAdd.size()-1; i >= 0; i--) {
             GoodsType make = toAdd.get(i);
@@ -1212,13 +1242,22 @@ public class ColonyPlan {
         // in reverse order of their production on the produce-list,
         // and finally by least experience.
         final Comparator<Unit> soldierComparator
-            = Comparator.<Unit>comparingInt(Unit::getSkillLevel)
-                .thenComparingInt(u ->
-                    (u.getType().getExpertProduction() == null) ? 1 : 0)
-                .thenComparingInt(u ->
-                    produce.indexOf(u.getType().getExpertProduction()))
-                .reversed()
-                .thenComparingInt(Unit::getExperience);
+            = new Comparator<Unit>() {
+                public int compare(Unit a, Unit b) {
+                    int diff = a.getSkillLevel() - b.getSkillLevel();
+                    if (diff != 0) return diff;
+
+                    diff = ((a.getType().getExpertProduction() == null) ? 1 : 0)
+                         - ((b.getType().getExpertProduction() == null) ? 1 : 0);
+                    if (diff != 0) return diff;
+
+                    diff = produce.indexOf(b.getType().getExpertProduction()) // reversed
+                         - produce.indexOf(a.getType().getExpertProduction());
+
+                    return a.getExperience() - b.getExperience();
+                }
+            };
+
         for (Unit u : sort(workers, soldierComparator)) {
             if (workers.size() <= 1) break;
             if (!col.isBadlyDefended()) break;

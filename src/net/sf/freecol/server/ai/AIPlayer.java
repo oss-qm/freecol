@@ -66,7 +66,11 @@ public abstract class AIPlayer extends AIObject {
 
     /** A comparator to sort AI units by location. */
     private static final Comparator<AIUnit> aiUnitLocationComparator
-        = Comparator.comparing(AIUnit::getUnit, Unit.locComparator);
+        = new Comparator<AIUnit>() {
+            @Override
+            public int compare(AIUnit a, AIUnit b) {
+                return Unit.locComparator.compare(a.getUnit(), b.getUnit());
+            }};
 
     /** The FreeColGameObject this AIObject contains AI-information for. */
     private ServerPlayer player;
