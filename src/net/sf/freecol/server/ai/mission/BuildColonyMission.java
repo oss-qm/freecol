@@ -20,9 +20,10 @@
 package net.sf.freecol.server.ai.mission;
 
 import java.util.Comparator;
-import java.util.function.Predicate;
+import java.util.HashMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.Map;
 
 import javax.xml.stream.XMLStreamException;
 
@@ -351,6 +352,31 @@ public class BuildColonyMission extends Mission {
         return invalidReason(getAIUnit(), target);
     }
 
+    private static Colony findNearestSmallerColony(Unit unit, Colony colony, Player player) {
+        // Go to the nearest smaller colony?
+        Colony best = null;
+        int best_turns = Integer.MAX_VALUE;
+        Map<Colony,Integer> turnsCache = new HashMap<Colony,Integer>();
+        for (Colony c : player.getColonies()) {
+            if (!(c != colony && c.getUnitCount() < colony.getUnitCount()))
+                continue;
+
+            int turns;
+            if (turnsCache.containsKey(c))
+                turns = turnsCache.get(c);
+            else {
+                turns = unit.getTurnsToReach(c);
+                turnsCache.put(c, turns);
+            }
+
+            if ((best == null) || (turns < best_turns)) {
+                best_turns = turns;
+                best = c;
+            }
+        }
+        return best;
+    }
+
     /**
      * {@inheritDoc}
      */
@@ -440,12 +466,8 @@ public class BuildColonyMission extends Mission {
                 }
 
                 // Go to the nearest smaller colony?
-                final Predicate<Colony> smallPred = c ->
-                    c != colony && c.getUnitCount() < colony.getUnitCount();
-                final Comparator<Colony> closeComp = cachingIntComparator(c ->
-                    unit.getTurnsToReach(c));
-                Colony best = minimize(player.getColonies(), smallPred,
-                                       closeComp);
+                Colony best = findNearestSmallerColony(unit, colony, player);
+
                 if (best != null) {
                     lb.add(", going to smaller ", best.getUnitCount(), "<",
                         colony.getUnitCount(), " colony");
