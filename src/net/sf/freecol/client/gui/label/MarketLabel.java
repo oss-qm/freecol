@@ -167,4 +167,13 @@ public final class MarketLabel extends AbstractGoodsLabel
         cargoPanel.update();
         return comp;
     }
+
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void removeCargo(Component comp, CargoPanel cargoPanel) {
+        cargoPanel.update();
+    }
 }
