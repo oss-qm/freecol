@@ -190,8 +190,12 @@ public abstract class CombatModel {
      * @return A suitable unit {@code Comparator}.
      */
     public final Comparator<Unit> getMilitaryStrengthComparator() {
-        return (u1, u2) -> Double.compare(calculateCombatOdds(u1, u2).win,
-                                          calculateCombatOdds(u2, u1).win);
+        return new Comparator<Unit>() {
+            public int compare(Unit u1, Unit u2) {
+                return Double.compare(calculateCombatOdds(u1, u2).win,
+                                      calculateCombatOdds(u2, u1).win);
+            }
+        };
     }
 
     /**

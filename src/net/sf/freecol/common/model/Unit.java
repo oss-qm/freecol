@@ -22,6 +22,7 @@ package net.sf.freecol.common.model;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -80,23 +81,38 @@ public class Unit extends GoodsLocation
 
     /** Compare units by location. */
     public static final Comparator<Unit> locComparator
-        = Comparator.comparingInt(u -> Location.getRank(u));
+        = new Comparator<Unit>() {
+            public int compare(Unit a, Unit b) {
+                return a.Location.getRank(u) - b.Location.getRank(u);
+            }};
 
     /**
      * A comparator to compare units by type, then role index, then
      * the FCO order.
      */
     public static final Comparator<Unit> typeRoleComparator
-        = Comparator.comparing(Unit::getType)
-            .thenComparingInt(u -> u.getRole().getRoleIndex())
-            .thenComparing(FreeColObject.fcoComparator);
+        = new Comparator<Unit>() {
+            public int compare(Unit a, Unit b) {
+                int diff = a.getType().toString().compareTo(b.getType().toString());
+                if (diff != 0) return diff;
+                diff = a.getRole().getRoleIndex() - b.getRole().getRoleIndex();
+                if (diff != 0) return diff;
+                return FreeColObject.fcoComparator.compare(a,b);
+            }};
 
     /** A comparator to compare units by increasing skill level. */
     public static final Comparator<Unit> increasingSkillComparator
-        = Comparator.comparingInt(Unit::getSkillLevel);
+        = new Comparator<Unit>() {
+            public int compare(Unit a, Unit b) {
+                return a.getSkillLevel() - b.getSkillLevel();
+            }};
+
     /** A comparator to compare units by decreasing skill level. */
     public static final Comparator<Unit> decreasingSkillComparator
-        = increasingSkillComparator.reversed();
+        = new Comparator<Unit>() {
+            public int compare(Unit a, Unit b) {
+                return b.getSkillLevel() - a.getSkillLevel();
+            }};
 
     /** A state a Unit can have. */
     public static enum UnitState {
@@ -2757,10 +2773,22 @@ public class Unit extends GoodsLocation
     public Comparator<Tile> getPathComparator(final Location start,
                                               final Unit carrier,
                                               final CostDecider costDecider) {
-        return cachingIntComparator((Tile t) -> {
-                PathNode p = this.findPath(start, t, carrier, costDecider);
-                return (p == null) ? INFINITY : p.getTotalTurns();
-            });
+        return new Comparator<Tile>() {
+            private HashMap<Tile,Integer> cache = new HashMap<>();
+            private int calc(Tile t) {
+                if (cache.containsKey(t))
+                    return cache.get(t);
+
+                PathNode p = findPath(start, t, carrier, costDecider);
+                int turns = (p == null) ? INFINITY : p.getTotalTurns();
+                cache.put(t, turns);
+                return turns;
+            }
+
+            public int compare(Tile a, Tile b) {
+                return calc(a) - calc(b);
+            }
+        };
     }
 
     /**

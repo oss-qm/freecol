@@ -283,9 +283,12 @@ public final class QuickActionMenu extends JPopupMenu {
 
     private List<JMenuItem> descendingList(final Map<JMenuItem, Integer> map) {
         final Comparator<JMenuItem> comp
-            = Comparator.comparingInt((JMenuItem k) -> map.get(k))
-                .reversed()
-                .thenComparing(JMenuItem::getText);
+            = new Comparator<JMenuItem>() {
+                public int compare(JMenuItem a, JMenuItem b) {
+                    int diff = map.get(b) - map.get(a); // reversed
+                    return (diff == 0 ? a.getText().compareTo(b.getText()) : diff);
+                }};
+
         return sort(map.keySet(), comp);
     }
 

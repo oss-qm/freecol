@@ -1455,8 +1455,12 @@ public final class InGameController extends Controller {
         // natives declare peace on you and war on the REF.  If they
         // are the same nation, go to the next most hostile nation
         // that may already be at war.
-        final Comparator<Player> comp = Comparator.comparingInt(p ->
-            p.getTension(serverPlayer).getValue());
+        final Comparator<Player> comp = new Comparator<Player>() {
+            public int compare(Player a, Player b) {
+                return a.getTension(serverPlayer).getValue() -
+                       b.getTension(serverPlayer).getValue();
+            }};
+
         List<Player> natives = transform(game.getLiveNativePlayers(),
             p -> p.hasContacted(serverPlayer), Function.identity(), comp);
         if (!natives.isEmpty()) {
