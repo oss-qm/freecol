@@ -46,8 +46,12 @@ public final class GoodsType extends FreeColSpecObjectType {
 
     /** A comparator to impose a useful order on goods types. */
     public static final Comparator<GoodsType> goodsTypeComparator
-        = Comparator.comparingInt(GoodsType::getRank)
-            .thenComparing(gt -> (FreeColObject)gt);
+        = new Comparator<GoodsType>() {
+            @Override
+            public int compare(GoodsType a, GoodsType b) {
+                int diff = a.getRank() - b.getRank();
+                return (diff == 0 ? a.compareTo(b) : diff);
+            }};
 
     /** Is this a farmed goods type. */
     private boolean isFarmed;

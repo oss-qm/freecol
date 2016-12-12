@@ -44,10 +44,15 @@ public final class ReportExplorationPanel extends ReportPanel {
 
     /** Comparator for discovered regions, by descending turn and score. */
     private static final Comparator<Region> regionComparator
-        = Comparator.comparingInt((Region r) ->
-            r.getDiscoveredIn()).reversed()
-                .thenComparingInt(Region::getScoreValue).reversed();
+        = new Comparator<Region>() {
+            public int compare(Region a, Region b) {
+                int diff = b.getDiscoveredIn()
+                         - a.getDiscoveredIn(); // reversed
 
+                return (diff != 0 ? diff
+                    : b.getScoreValue() - a.getScoreValue() // reversed
+                );
+            }};
 
     /**
      * The constructor that will add the items to this panel.

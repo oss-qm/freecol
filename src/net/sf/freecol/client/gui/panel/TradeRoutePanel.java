@@ -56,10 +56,6 @@ public final class TradeRoutePanel extends FreeColPanel {
     @SuppressWarnings("unused")
     private static final Logger logger = Logger.getLogger(TradeRoutePanel.class.getName());
 
-    /** Compare trade routes by name. */
-    private static final Comparator<TradeRoute> tradeRouteComparator
-        = Comparator.comparing(TradeRoute::getName);
-
     /** The unit to assign/deassign trade routes for. */
     private final Unit unit;
 
@@ -273,7 +269,7 @@ public final class TradeRoutePanel extends FreeColPanel {
                 logger.warning("Dropped trade route: " + Messages.message(st));
             }
         }
-        routes.sort(tradeRouteComparator);
+        routes.sort(TradeRoute.nameComparator);
 
         // Update the counts
         this.counts.clear();

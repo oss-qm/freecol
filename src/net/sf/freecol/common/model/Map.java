@@ -1427,7 +1427,11 @@ public class Map extends FreeColGameObject implements Location {
         final HashMap<String, PathNode> closedMap = new HashMap<>();
         final HashMap<String, Integer> f = new HashMap<>();
         final PriorityQueue<PathNode> openMapQueue = new PriorityQueue<>(1024,
-            Comparator.comparingInt(p -> f.get(p.getLocation().getId())));
+            new Comparator<PathNode>() {
+                public int compare(PathNode a, PathNode b) {
+                    return f.get(a.getLocation().getId())
+                         - f.get(b.getLocation().getId());
+                }});
         final Unit offMapUnit = (carrier != null) ? carrier : unit;
         Unit currentUnit = (start.isLand())
             ? ((start.hasSettlement()

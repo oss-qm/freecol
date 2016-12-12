@@ -59,11 +59,17 @@ public final class Tile extends UnitLocation implements Named, Ownable {
 
     /** Comparator to sort tiles by increasing distance from the edge. */
     public static final Comparator<Tile> edgeDistanceComparator
-        = Comparator.comparingInt(Tile::getEdgeDistance);
+        = new Comparator<Tile>() {
+            public int compare(Tile a, Tile b) {
+                return a.getEdgeDistance() - b.getEdgeDistance();
+            }};
 
     /** Comparator to find the smallest high seas count. */
     public static final Comparator<Tile> highSeasComparator
-        = Comparator.comparingInt(Tile::getHighSeasCount);
+        = new Comparator<Tile>() {
+            public int compare(Tile a, Tile b) {
+                return a.getHighSeasCount() - b.getHighSeasCount();
+            }};
 
     /**
      * Information that is internal to the native settlements, and only

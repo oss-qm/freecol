@@ -197,7 +197,10 @@ public class Player extends FreeColGameObject implements Nameable {
 
     /** A comparator for ordering players. */
     public static final Comparator<Player> playerComparator
-        = Comparator.comparingInt(Player::getRank);
+        = new Comparator<Player>() {
+            public int compare(Player a, Player b) {
+                return a.getRank() - b.getRank();
+            }};
 
     /** A magic constant to denote that a players gold is not tracked. */
     public static final int GOLD_NOT_ACCOUNTED = Integer.MIN_VALUE;
