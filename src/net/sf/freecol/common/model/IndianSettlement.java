@@ -965,15 +965,18 @@ public class IndianSettlement extends Settlement implements TradeLocation {
         }
 
         // Sort and truncate to limit
-        final Comparator<Goods> salePriceComparator
-            = Comparator.comparingInt((Goods g)
-                -> getPriceToSell(g.getType(), g.getAmount()))
-            .reversed();
         final Comparator<Goods> exportGoodsComparator
-            = Comparator.comparingInt((Goods g) ->
-                    (g.getType().isNewWorldGoodsType()) ? 0 : 1)
-                .thenComparing(salePriceComparator)
-                .thenComparing(AbstractGoods.descendingAmountComparator);
+            = new Comparator<Goods>() {
+                public int compare(Goods a, Goods b) {
+                    int diff = (a.getType().isNewWorldGoodsType() ? 0 : 1)
+                             - (b.getType().isNewWorldGoodsType() ? 0 : 1);
+                    if (diff != 0) return diff;
+                    diff = getPriceToSell(b.getType(), b.getAmount()) // reversed
+                         - getPriceToSell(a.getType(), a.getAmount());
+                    if (diff != 0) return diff;
+                    return AbstractGoods.descendingAmountComparator.compare(a, b);
+                }};
+
         return sort(result, exportGoodsComparator);
     }
 

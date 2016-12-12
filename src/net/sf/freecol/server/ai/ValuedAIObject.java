@@ -34,12 +34,18 @@ import net.sf.freecol.common.io.FreeColXMLWriter;
 public abstract class ValuedAIObject extends AIObject {
 
     /** A comparator by ascending AI object value. */
-    public static final Comparator<? super ValuedAIObject> ascendingValueComparator
-        = Comparator.comparingInt(ValuedAIObject::getValue);
+    public static final Comparator<ValuedAIObject> ascendingValueComparator
+        = new Comparator<ValuedAIObject>() {
+            public int compare(ValuedAIObject a, ValuedAIObject b) {
+                return a.getValue() - b.getValue();
+            }};
 
     /** A comparator by descending AI object value. */
-    public static final Comparator<? super ValuedAIObject> descendingValueComparator
-        = ascendingValueComparator.reversed();
+    public static final Comparator<ValuedAIObject> descendingValueComparator
+        = new Comparator<ValuedAIObject>() {
+            public int compare(ValuedAIObject a, ValuedAIObject b) {
+                return b.getValue() - a.getValue(); // reversed
+            }};
 
     /** The value of this AIObject. */
     private int value;

@@ -20,6 +20,7 @@
 package net.sf.freecol.server.ai;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -310,16 +311,46 @@ public class NativeAIPlayer extends MissionAIPlayer {
         // Also favour units native to the settlement.
         final int homeBonus = 3;
         final Tile isTile = is.getTile();
-        final Comparator<Unit> isComparator = cachingIntComparator(u -> {
+
+        final HashMap<Unit,Integer> isComparatorCache = new HashMap<>();
+        final Comparator<Unit> isComparator = new Comparator<Unit>() {
+            private int score(Unit u) {
+                if (isComparatorCache.containsKey(u))
+                    return isComparatorCache.get(u);
+
                 final Tile t = u.getTile();
-                return t.getDistanceTo(isTile)
+                int sc = t.getDistanceTo(isTile)
                     - ((u.getHomeIndianSettlement() == is) ? homeBonus : 0);
-            });
+                isComparatorCache.put(u, sc);
+                return sc;
+            }
+
+            public int compare(Unit a, Unit b) {
+                return score(a) - score(b);
+            }
+        };
+
+        final Comparator<Unit> isComparatorRev = new Comparator<Unit>() {
+            private int score(Unit u) {
+                if (isComparatorCache.containsKey(u))
+                    return isComparatorCache.get(u);
+
+                final Tile t = u.getTile();
+                int sc = t.getDistanceTo(isTile)
+                    - ((u.getHomeIndianSettlement() == is) ? homeBonus : 0);
+                isComparatorCache.put(u, sc);
+                return sc;
+            }
+
+            public int compare(Unit a, Unit b) {
+                return score(b) - score(a); // reversed
+            }
+        };
 
         // Do we need more or less defenders?
         int needed = minimumDefence + threats.size();
         if (defenders.size() < needed) { // More needed, call some in.
-            units.sort(isComparator);
+            Collections.sort(units, isComparator);
             while (!units.isEmpty()) {
                 Unit u = units.remove(0);
                 AIUnit aiu = aiMain.getAIUnit(u);
@@ -331,7 +362,7 @@ public class NativeAIPlayer extends MissionAIPlayer {
                 }
             }
         } else if (defenders.size() > needed) { // Less needed, release them
-            defenders.sort(isComparator.reversed());
+            Collections.sort(defenders, isComparatorRev);
             while (defenders.size() > needed) {
                 units.add(defenders.remove(0));
             }
@@ -339,7 +370,10 @@ public class NativeAIPlayer extends MissionAIPlayer {
 
         // Sort threat tiles by threat value.
         final Comparator<Tile> threatComp
-            = Comparator.<Tile>comparingDouble(t -> threats.get(t));
+            = new Comparator<Tile>() {
+                public int compare(Tile a, Tile b) {
+                    return Double.compare(threats.get(a), threats.get(b));
+                }};
         List<Tile> threatTiles = sort(threats.keySet(), threatComp);
 
         if (!defenders.isEmpty()) {

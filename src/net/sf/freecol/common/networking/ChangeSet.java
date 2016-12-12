@@ -61,7 +61,10 @@ public class ChangeSet {
 
     /** Compare changes by ascending priority. */
     private static final Comparator<Change> changeComparator
-        = Comparator.comparingInt(Change::getPriority);
+        = new Comparator<Change>() {
+            public int compare(Change a, Change b) {
+                return a.getPriority() - b.getPriority();
+        }};
 
     // Convenient way to specify the relative priorities of the fixed
     // change types in one place.

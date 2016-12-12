@@ -67,18 +67,40 @@ public class CollectionUtils {
 
     /** Useful comparators for mapEntriesBy* */
     public static final Comparator<Integer> ascendingIntegerComparator
-        = Comparator.comparingInt(i -> i);
-    public static final Comparator<Integer> descendingIntegerComparator
-        = ascendingIntegerComparator.reversed();
-    public static final Comparator<Double> ascendingDoubleComparator
-        = Comparator.comparingDouble(d -> d);
-    public static final Comparator<Double> descendingDoubleComparator
-        = ascendingDoubleComparator.reversed();
-    public static final Comparator<List<?>> ascendingListLengthComparator
-        = Comparator.comparingInt(l -> l.size());
-    public static final Comparator<List<?>> descendingListLengthComparator
-        = ascendingListLengthComparator.reversed();
+        = new Comparator<Integer>() {
+            public int compare(Integer a, Integer b) {
+                return a - b;
+            }};
 
+    public static final Comparator<Integer> descendingIntegerComparator
+        = new Comparator<Integer>() {
+            public int compare(Integer a, Integer b) {
+                return b - a;
+            }};
+
+    public static final Comparator<Double> ascendingDoubleComparator
+        = new Comparator<Double>() {
+            public int compare(Double a, Double b) {
+                return Double.compare(a, b);
+            }};
+
+    public static final Comparator<Double> descendingDoubleComparator
+        = new Comparator<Double>() {
+            public int compare(Double a, Double b) {
+                return Double.compare(b, a);
+            }};
+
+    public static final Comparator<List<?>> ascendingListLengthComparator
+        = new Comparator<List<?>>() {
+            public int compare(List<?> a, List<?> b) {
+                return a.size() - b.size();
+            }};
+
+    public static final Comparator<List<?>> descendingListLengthComparator
+        = new Comparator<List<?>>() {
+            public int compare(List<?> a, List<?> b) {
+                return b.size() - a.size();
+            }};
 
     /**
      * Make an unmodifiable set with specified members.
@@ -319,7 +341,10 @@ public class CollectionUtils {
      */
     public static <K extends Comparable<? super K>,V> List<Entry<K,V>>
         mapEntriesByKey(Map<K, V> map) {
-        return sort(map.entrySet(), Comparator.comparing(Entry::getKey));
+        return sort(map.entrySet(), new Comparator<Entry<K, V>>() {
+            public int compare(Entry<K, V> a, Entry<K, V> b) {
+                return a.getKey().compareTo(b.getKey());
+            }});
     }
 
     /**
@@ -334,7 +359,10 @@ public class CollectionUtils {
     public static <K,V> List<Entry<K,V>>
         mapEntriesByKey(Map<K, V> map, final Comparator<K> comparator) {
         return sort(map.entrySet(),
-                    Comparator.comparing(Entry::getKey, comparator));
+            new Comparator<Entry<K,V>>() {
+                public int compare(Entry<K,V> a, Entry<K,V> b) {
+                    return comparator.compare(a.getKey(), b.getKey());
+                }});
     }
 
     /**
@@ -347,7 +375,10 @@ public class CollectionUtils {
      */
     public static <K,V extends Comparable<? super V>> List<Entry<K,V>>
         mapEntriesByValue(Map<K, V> map) {
-        return sort(map.entrySet(), Comparator.comparing(Entry::getValue));
+        return sort(map.entrySet(), new Comparator<Entry<K, V>>() {
+            public int compare(Entry<K, V> a, Entry<K, V> b) {
+                return a.getValue().compareTo(b.getValue());
+            }});
     }
 
     /**
@@ -362,7 +393,10 @@ public class CollectionUtils {
     public static <K,V> List<Entry<K,V>>
         mapEntriesByValue(Map<K, V> map, final Comparator<V> comparator) {
         return sort(map.entrySet(),
-                    Comparator.comparing(Entry::getValue, comparator));
+            new Comparator<Entry<K,V>>() {
+                public int compare(Entry<K,V> a, Entry<K,V> b) {
+                    return comparator.compare(a.getValue(), b.getValue());
+                }});
     }
 
     // Stream-based routines from here on

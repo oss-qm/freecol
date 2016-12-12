@@ -37,18 +37,24 @@ public class AbstractGoods extends FreeColObject implements Named {
 
     /** Compare the amount of abstract goods. */
     public static final Comparator<AbstractGoods> ascendingAmountComparator
-        = Comparator.comparingInt(AbstractGoods::getAmount)
-            .thenComparing(AbstractGoods::getType,
-                           GoodsType.goodsTypeComparator);
+        = new Comparator<AbstractGoods>() {
+            public int compare(AbstractGoods a, AbstractGoods b) {
+                int diff = a.getAmount() - b.getAmount();
+                if (diff != 0) return diff;
+                return GoodsType.goodsTypeComparator.compare(a.getType(), b.getType());
+            }};
 
     /**
      * A comparator to sort by descending goods amount and then by a
      * predictable goods type order.
      */
     public static final Comparator<AbstractGoods> descendingAmountComparator
-        = Comparator.comparingInt(AbstractGoods::getAmount).reversed()
-            .thenComparing(AbstractGoods::getType,
-                           GoodsType.goodsTypeComparator);
+        = new Comparator<AbstractGoods>() {
+            public int compare(AbstractGoods a, AbstractGoods b) {
+                int diff = b.getAmount() - a.getAmount();
+                if (diff != 0) return diff;
+                return GoodsType.goodsTypeComparator.compare(b.getType(), a.getType());
+            }};
 
     /** The type of goods. */
     protected GoodsType type;
