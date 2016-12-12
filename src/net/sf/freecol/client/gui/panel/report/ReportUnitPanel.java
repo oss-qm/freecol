@@ -23,6 +23,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.TreeMap;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -66,7 +67,7 @@ public abstract class ReportUnitPanel extends ReportPanel {
     /**
      * Units in other locations.
      */
-    private final Map<String, List<Unit>> inLocations = new HashMap<>();
+    private final TreeMap<String, List<Unit>> inLocations = new TreeMap<>();
 
     /**
      * Records the number of units of each type.
@@ -112,8 +113,10 @@ public abstract class ReportUnitPanel extends ReportPanel {
         }
 
         // Finally all other locations, sorted alphabetically.
-        forEach(mapEntriesByKey(inLocations),
-                e -> handleLocation(null, e.getKey(), e.getValue()));
+
+        // Map<String, List<Unit>>
+        for (Map.Entry<String, List<Unit>> e : inLocations.entrySet())
+            handleLocation(null, e.getKey(), e.getValue());
 
         revalidate();
         repaint();
