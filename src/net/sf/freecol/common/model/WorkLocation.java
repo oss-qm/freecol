@@ -60,10 +60,15 @@ public abstract class WorkLocation extends UnitLocation
     public static class Suggestion {
 
         public static final Comparator<Suggestion> descendingAmountComparator
-            = Comparator.comparingInt(Suggestion::getAmount).reversed()
-                .thenComparing(Suggestion::getGoodsType,
-                               GoodsType.goodsTypeComparator)
-                .thenComparing(Suggestion::getNewUnitType);
+            = new Comparator<Suggestion>() {
+                public int compare(Suggestion a, Suggestion b) {
+                    int diff = b.getAmount() - a.getAmount(); // reversed
+                    if (diff != 0) return diff;
+                    diff = GoodsType.goodsTypeComparator.compare(
+                        a.getGoodsType(), b.getGoodsType());
+                    if (diff != 0) return diff;
+                    return a.getNewUnitType().compareTo(b.getNewUnitType());
+                }};
 
         public final WorkLocation workLocation;
         public final UnitType oldType;

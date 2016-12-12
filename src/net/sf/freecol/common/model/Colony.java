@@ -2219,9 +2219,12 @@ loop:   for (WorkLocation wl : getWorkLocationsForProducing(goodsType)) {
          * amount.
          */
         public static final Comparator<TileImprovementSuggestion> descendingAmountComparator
-                = Comparator.comparingInt(TileImprovementSuggestion::getAmount)
-                .reversed()
-                .thenComparing(tis -> (FreeColObject)tis.tile);
+            = new Comparator<TileImprovementSuggestion>() {
+                public int compare(TileImprovementSuggestion a, TileImprovementSuggestion b) {
+                    int diff = b.getAmount() - a.getAmount(); // reversed
+                    if (diff != 0) return diff;
+                    return (a.tile == b.tile ? 0 : 1);
+                }};
 
         /** The tile to explore or improve. */
         public Tile tile;

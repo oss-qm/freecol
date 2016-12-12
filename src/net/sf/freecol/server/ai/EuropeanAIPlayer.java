@@ -154,7 +154,10 @@ public class EuropeanAIPlayer extends MissionAIPlayer {
 
     /** A comparator to sort units by decreasing builder score. */
     private static final Comparator<AIUnit> builderComparator
-        = Comparator.comparingInt(AIUnit::getBuilderScore).reversed();
+        = new Comparator<AIUnit>() {
+            public int compare(AIUnit a, AIUnit b) {
+                return b.getBuilderScore() - a.getBuilderScore(); // reversed
+            }};
 
     /**
      * A comparator to sort units by suitability for a PioneeringMission.
@@ -163,7 +166,10 @@ public class EuropeanAIPlayer extends MissionAIPlayer {
      * as that is likely to be too expensive.  FIXME: perhaps we should.
      */
     public static final Comparator<AIUnit> pioneerComparator
-        = Comparator.comparingInt(AIUnit::getPioneerScore).reversed();
+        = new Comparator<AIUnit>() {
+            public int compare(AIUnit a, AIUnit b) {
+                return b.getPioneerScore() - a.getPioneerScore(); // reversed
+            }};
 
     /**
      * A comparator to sort units by suitability for a ScoutingMission.
@@ -172,7 +178,10 @@ public class EuropeanAIPlayer extends MissionAIPlayer {
      * as that is likely to be too expensive.  FIXME: perhaps we should.
      */
     public static final Comparator<AIUnit> scoutComparator
-        = Comparator.comparingInt(AIUnit::getScoutScore).reversed();
+        = new Comparator<AIUnit>() {
+            public int compare(AIUnit a, AIUnit b) {
+                return b.getScoutScore() - a.getScoutScore(); // reversed
+            }};
 
 
     // These should be final, but need the spec.
