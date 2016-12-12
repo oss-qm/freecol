@@ -30,6 +30,7 @@ import net.sf.freecol.server.model.ServerPlayer;
 
 import net.sf.freecol.common.util.DOMUtils;
 import org.w3c.dom.Element;
+import org.w3c.dom.NodeList;
 
 
 /**
@@ -64,9 +65,10 @@ public class UpdateMessage extends DOMMessage {
      */
     public UpdateMessage(Game game, Element element) {
         this(null);
-
-        for (FreeColGameObject f : DOMUtils.mapChildren(element, (e) ->
-                DOMUtils.updateFromElement(game, e))) {
+        NodeList nodes = element.getChildNodes();
+        for (int i = 0; i < nodes.getLength(); i++) {
+            Element e = (Element)nodes.item(i);
+            FreeColGameObject f = DOMUtils.updateFromElement(game, e);
             if (f != null) this.fcgos.add(f);
         }
     }

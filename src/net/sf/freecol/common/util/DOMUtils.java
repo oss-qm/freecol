@@ -25,7 +25,6 @@ import java.io.IOException;
 import java.io.StringReader;
 import java.io.StringWriter;
 import java.util.ArrayList;
-import java.util.function.Function;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
@@ -228,20 +227,6 @@ public class DOMUtils {
     }
 
     /**
-     * Handle the child nodes of an element.
-     *
-     * @param mh The {@code MessageHandler} to handle the nodes.
-     * @param connection The {@code Connection} the element arrived on.
-     * @param element The {@code Element} to process.
-     * @return An {@code Element} containing the response/s.
-     */
-    public static final Element handleChildren(MessageHandler mh,
-        Connection connection, Element element) {
-        return handleList(mh, connection,
-                          mapChildren(element, Function.identity()));
-    }
-
-    /**
      * Handle a list of messages.
      *
      * @param mh The {@code MessageHandler} to handle the messages.
@@ -345,27 +330,6 @@ public class DOMUtils {
         for (int i = 0; i < nl.getLength(); i++) {
             T t = getChild(game, element, i, returnClass);
             if (t != null) ret.add(t);
-        }
-        return ret;
-    }
-
-    /**
-     * Convenience method to map a function over the children of an Element.
-     *
-     * @param <T> The actual list member return type.
-     * @param element The {@code Element} to extract children from.
-     * @param mapper A mapper function.
-     * @return A list of results of the mapping.
-     */
-    public static <T> List<T> mapChildren(Element element,
-        Function<? super Element, ? extends T> mapper) {
-        List<T> ret = new ArrayList<>();
-        NodeList nl = element.getChildNodes();
-        for (int i = 0; i < nl.getLength(); i++) {
-            Element e = (Element)nl.item(i);
-            if (e == null) continue;
-            T x = mapper.apply((Element)nl.item(i));
-            if (x != null) ret.add(x);
         }
         return ret;
     }

@@ -438,9 +438,13 @@ public final class InGameInputHandler extends ClientInputHandler {
             return;
         }
 
-        DOMUtils.mapChildren(element, (e) -> {
-                final String tag = DOMUtils.getType(e);
-                switch (tag) {
+        NodeList nodes = element.getChildNodes();
+        for (int i = 0; i < nodes.getLength(); i++) {
+            Element e = (Element)nodes.item(i);
+            if (e == null) continue;
+
+            final String tag = DOMUtils.getType(e);
+            switch (tag) {
                 case Ability.TAG:
                     Ability a = new Ability(spec);
                     DOMUtils.readFromXMLElement(a, e);
@@ -515,9 +519,8 @@ public final class InGameInputHandler extends ClientInputHandler {
                 default:
                     logger.warning("featureChange unrecognized: " + tag);
                     break;
-                }
-                return null;
-            });
+            }
+        }
     }
 
     /**
@@ -844,7 +847,10 @@ public final class InGameInputHandler extends ClientInputHandler {
             = game.getFreeColGameObject(element.getAttribute("divert"));
         final List<FreeColGameObject> objects = new ArrayList<>();
 
-        DOMUtils.mapChildren(element, (e) -> {
+        NodeList nodes = element.getChildNodes();
+        for (int i = 0; i < nodes.getLength(); i++) {
+            Element e = (Element)nodes.item(i);
+            if (e != null) {
                 final String id = DOMUtils.readId(e);
                 FreeColGameObject fcgo = game.getFreeColGameObject(id);
                 if (fcgo != null) {
@@ -855,8 +861,9 @@ public final class InGameInputHandler extends ClientInputHandler {
                     // remove is processed.
                     objects.add(fcgo);
                 }
-                return fcgo;
-            });
+            }
+        };
+
         if (!objects.isEmpty()) {
             invokeLater(() -> igc().remove(objects, divert));
         }

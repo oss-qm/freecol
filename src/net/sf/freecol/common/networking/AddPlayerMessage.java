@@ -29,6 +29,7 @@ import net.sf.freecol.server.model.ServerPlayer;
 
 import net.sf.freecol.common.util.DOMUtils;
 import org.w3c.dom.Element;
+import org.w3c.dom.NodeList;
 
 
 /**
@@ -67,8 +68,14 @@ public class AddPlayerMessage extends DOMMessage {
         // Making this message implicitly updates the game.
         // TODO: should this do a non-interning read and have the client
         // handlers do more checking?
-        this.players.addAll(DOMUtils.mapChildren(element, (e) ->
-                DOMUtils.readGameElement(game, e, true, Player.class)));
+        NodeList nodes = element.getChildNodes();
+        for (int i = 0; i < nodes.getLength(); i++) {
+            Element e = (Element)nodes.item(i);
+            if (e == null) continue;
+
+            Player p = DOMUtils.readGameElement(game, e, true, Player.class);
+            if (p != null) this.players.add(p);
+        }
     }
 
 
