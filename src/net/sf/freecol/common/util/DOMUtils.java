@@ -25,7 +25,6 @@ import java.io.IOException;
 import java.io.StringReader;
 import java.io.StringWriter;
 import java.util.ArrayList;
-import java.util.function.Function;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
@@ -442,24 +441,6 @@ public class DOMUtils {
         for (Element e : getChildElementList(element)) {
             FreeColObject fco = readElement(game, e, true);
             if (fco != null) ret.add(fco);
-        }
-        return ret;
-    }
-
-    /**
-     * Convenience method to map a function over the children of an Element.
-     *
-     * @param <T> The actual list member return type.
-     * @param element The {@code Element} to extract children from.
-     * @param mapper A mapper function.
-     * @return A list of results of the mapping.
-     */
-    public static <T> List<T> mapChildren(Element element,
-        Function<? super Element, ? extends T> mapper) {
-        List<T> ret = new ArrayList<>();
-        for (Element e : getChildElementList(element)) {
-            T x = mapper.apply(e);
-            if (x != null) ret.add(x);
         }
         return ret;
     }

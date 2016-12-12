@@ -21,7 +21,6 @@ package net.sf.freecol.common.networking;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.function.Function;
 
 import net.sf.freecol.common.model.Game;
 import net.sf.freecol.common.model.Player;
@@ -29,6 +28,7 @@ import net.sf.freecol.server.FreeColServer;
 
 import net.sf.freecol.common.util.DOMUtils;
 import org.w3c.dom.Element;
+import org.w3c.dom.NodeList;
 
 
 /**
@@ -68,7 +68,11 @@ public class MultipleMessage extends DOMMessage {
      * @param element An element containing the sub-{@code Element}s.
      */
     public MultipleMessage(Element element) {
-        this(DOMUtils.mapChildren(element, Function.identity()));
+        super(TAG);
+
+        NodeList nodes = element.getChildNodes();
+        for (int i = 0; i < nodes.getLength(); i++)
+            this.elements.add((Element)nodes.item(i));
     }
 
     /**
@@ -81,7 +85,9 @@ public class MultipleMessage extends DOMMessage {
     public MultipleMessage(Game game, Element element) {
         this();
 
-        this.elements.addAll(DOMUtils.mapChildren(element, Function.identity()));
+        NodeList nodes = element.getChildNodes();
+        for (int i = 0; i < nodes.getLength(); i++)
+            this.elements.add((Element)nodes.item(i));
     }
 
 
