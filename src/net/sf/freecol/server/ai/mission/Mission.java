@@ -607,17 +607,25 @@ public abstract class Mission extends AIObject {
      * @return A good settlement to restart a Mission from.
      */
     protected static Settlement getBestSettlement(Player player) {
-        final Comparator<Settlement> comp = cachingIntComparator(s -> {
-                int value = s.getUnitCount() + s.getTile().getUnitCount();
-                if (s instanceof Colony) {
-                    Colony colony = (Colony)s;
-                    // Favour coastal
-                    value += ((colony.isConnectedPort()) ? 10 : 0)
-                        + colony.getAvailableWorkLocationCount();
-                }
-                return value;
-            });
-        return maximize(player.getSettlements(), comp);
+        Settlement max_s = null;
+        int max_v = 0;
+
+        for (Settlement s : player.getSettlements()) {
+            int value = s.getUnitCount() + s.getTile().getUnitCount();
+            if (s instanceof Colony) {
+                Colony colony = (Colony)s;
+                // Favour coastal
+                value += ((colony.isConnectedPort()) ? 10 : 0)
+                       + colony.getAvailableWorkLocations().size();
+            }
+
+            if (value > max_v) {
+                max_s = s;
+                max_v = value;
+            }
+        }
+
+        return max_s;
     }
 
     /**
