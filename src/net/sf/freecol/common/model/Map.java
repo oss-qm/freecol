@@ -31,8 +31,6 @@ import java.util.NoSuchElementException;
 import java.util.PriorityQueue;
 import java.util.Queue;
 import java.util.Random;
-import java.util.function.Consumer;
-import java.util.function.Predicate;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -1971,7 +1969,7 @@ public class Map extends FreeColGameObject implements Location {
     }
 
     /**
-     * Iterates through a rectangular subpart of the Map.
+     * Retrieve a rectangular subpart of the Map.
      * Intentionally avoids calling methods doing redundant checks,
      * which would slow down map display.
      *
@@ -1979,10 +1977,11 @@ public class Map extends FreeColGameObject implements Location {
      * @param y Y-component of the position of first tile.
      * @param w Width of the rectangle.
      * @param h Height of the rectangle.
-     * @param consumer Provides a function to call for each tile.
+     * @result list of tiles of the submap
      */
-    public void forSubMap(int x, int y, int w, int h,
-                          Consumer<Tile> consumer) {
+    public List<Tile> getSubMap(int x, int y, int w, int h) {
+        List<Tile> result = new ArrayList<>();
+
         if (x < 0) {
             w += x;
             x = 0;
@@ -1991,17 +1990,18 @@ public class Map extends FreeColGameObject implements Location {
             h += y;
             y = 0;
         }
-        if (w <= 0 || h <= 0) return;
+        if (w <= 0 || h <= 0) return Collections.<Tile>emptyList();
         int width = getWidth();
         int height = getHeight();
-        if (x > width || y > height) return;
+        if (x > width || y > height) return Collections.<Tile>emptyList();
         if (x+w > width) w = width - x;
         if (y+h > height) h = height - y;
         for (int yi = y; yi < y+h; ++yi) {
             for (int xi = x; xi < x+w; ++xi) {
-                consumer.accept(this.tiles[xi][yi]);
+                result.add(this.tiles[xi][yi]);
             }
         }
+        return result;
     }
 
 
