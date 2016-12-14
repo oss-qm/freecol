@@ -275,7 +275,7 @@ public class ProductionType extends FreeColSpecObject {
      */
     public AbstractGoods getOutput(GoodsType goodsType) {
         return (outputs == null) ? null
-            : find(outputs, AbstractGoods.matches(goodsType));
+            : AbstractGoods.findByType(outputs, goodsType);
     }
 
     /**

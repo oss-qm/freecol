@@ -19,9 +19,8 @@
 
 package net.sf.freecol.common.model;
 
-import java.util.Collection;
 import java.util.Comparator;
-import java.util.function.Predicate;
+import java.util.List;
 
 import net.sf.freecol.common.model.GoodsType;
 import static net.sf.freecol.common.util.CollectionUtils.*;
@@ -207,8 +206,8 @@ public class AbstractGoods extends FreeColObject implements Named {
      * @return The goods count found, or zero if not found.
      */
     public static int getCount(GoodsType type,
-        Collection<? extends AbstractGoods> goods) {
-        AbstractGoods ag = find(goods, matches(type));
+        List<? extends AbstractGoods> goods) {
+        AbstractGoods ag = AbstractGoods.findByType(goods, type);
         return (ag == null) ? 0 : ag.getAmount();
     }
 
@@ -225,13 +224,16 @@ public class AbstractGoods extends FreeColObject implements Named {
     }
 
     /**
-     * A predicate maker to match by type.
+     * Check whether it is of the given {@link GoodsType}
      *
-     * @param key The key of type {@link GoodsType}
-     * @return A suitable {@code Predicate}.
+     * @param gt  The {@link GoodsType} to match against
+     * @return    True if matching
      */
-    public static final Predicate<? super AbstractGoods> matches(final GoodsType key) {
-        return matchKey(key, AbstractGoods::getType);
+    public final boolean isType(GoodsType gt) {
+        if ((gt == null) || (type == null))
+            return false;
+
+        return (type == gt || type.equals(gt));
     }
 
     /**
@@ -244,6 +246,38 @@ public class AbstractGoods extends FreeColObject implements Named {
                     return true;
 
         return false;
+    }
+
+    /**
+     * find any in list by type
+     */
+    public static AbstractGoods findByType(List<AbstractGoods> l, GoodsType gt) {
+        if (l != null)
+            for (AbstractGoods ag : l)
+                if (ag.getType() == gt)
+                    return ag;
+
+        return false;
+    }
+
+    public static AbstractGoods findByType(List<AbstractGoods> l, AbstractGoods ag) {
+        return findByType(l, ag.getType());
+    }
+
+    /**
+     * find any in list by type
+     */
+    public static AbstractGoods findByType(List<AbstractGoods> l, GoodsType gt) {
+        if (l != null)
+            for (AbstractGoods ag : l)
+                if (ag.getType() == gt)
+                    return ag;
+
+        return null;
+    }
+
+    public static AbstractGoods findByType(List<AbstractGoods> l, AbstractGoods ag) {
+        return findByType(l, ag.getType());
     }
 
     // Interface Named
