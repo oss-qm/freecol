@@ -92,8 +92,7 @@ public class ProductionInfo {
      */
     public List<AbstractGoods> getProductionDeficit() {
         final Function<AbstractGoods, AbstractGoods> mapper = ag -> {
-            AbstractGoods agMax = find(this.maximumProduction,
-                                       AbstractGoods.matches(ag.getType()));
+            AbstractGoods agMax = AbstractGoods.findByType(this.maximumProduction, ag);
             int amount = (agMax == null) ? 0
                 : agMax.getAmount() - ag.getAmount();
             return (amount <= 0) ? null
@@ -112,8 +111,7 @@ public class ProductionInfo {
      */
     public List<AbstractGoods> getConsumptionDeficit() {
         final Function<AbstractGoods, AbstractGoods> mapper = ag -> {
-            AbstractGoods agMax = find(this.maximumConsumption,
-                                       AbstractGoods.matches(ag.getType()));
+            AbstractGoods agMax = AbstractGoods.findByType(this.maximumConsumption, ag);
             int amount = (agMax == null) ? 0
                 : agMax.getAmount() - ag.getAmount();
             return (amount == 0) ? null
