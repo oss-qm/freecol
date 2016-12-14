@@ -521,7 +521,7 @@ public abstract class WorkLocation extends UnitLocation
         if (info == null) return 0;
         List<AbstractGoods> production = info.getMaximumProduction();
         if (production != null) {
-            AbstractGoods ag = find(production, AbstractGoods.matches(goodsType));
+            AbstractGoods ag = AbstractGoods.findByType(production, goodsType);
             if (ag != null) return ag.getAmount();
         }
         return getTotalProductionOf(goodsType);
@@ -650,7 +650,7 @@ public abstract class WorkLocation extends UnitLocation
     public AbstractGoods getProductionDeficit(GoodsType goodsType) {
         ProductionInfo pi = getProductionInfo();
         return (pi == null) ? null
-            : find(pi.getProductionDeficit(), AbstractGoods.matches(goodsType));
+            : AbstractGoods.findByType(pi.getProductionDeficit(), goodsType);
     }
 
 

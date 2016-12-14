@@ -886,8 +886,7 @@ public class Colony extends Settlement implements Nameable, TradeLocation {
             }
             int production = productionCache.getNetProductionOf(type);
             if (info != null) {
-                AbstractGoods consumption = find(info.getConsumption(),
-                        AbstractGoods.matches(type));
+                AbstractGoods consumption = AbstractGoods.findByType(info.getConsumption(), type);
                 if (consumption != null) {
                     // add the amount the build queue itself will consume
                     production += consumption.getAmount();
