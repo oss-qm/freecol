@@ -22,6 +22,7 @@ package net.sf.freecol.common.model;
 import java.util.Collection;
 import java.util.Comparator;
 import java.util.function.Predicate;
+import java.util.List;
 
 import net.sf.freecol.common.model.GoodsType;
 import static net.sf.freecol.common.util.CollectionUtils.*;
@@ -234,6 +235,62 @@ public class AbstractGoods extends FreeColObject implements Named {
         return matchKey(key, AbstractGoods::getType);
     }
 
+    /**
+     * Check whether it is of the given {@link GoodsType}
+     *
+     * @param gt  The {@link GoodsType} to match against
+     * @return    True if matching
+     */
+    public final boolean isType(GoodsType gt) {
+        if ((gt == null) || (type == null))
+            return false;
+
+        return (type == gt || type.equals(gt));
+    }
+
+    /**
+     * Check whether any in the list is of given {@link GoodsType}
+     */
+    public static boolean anyIsType(List<AbstractGoods> l, GoodsType gt) {
+        if (l != null)
+            for (AbstractGoods ag : l)
+                if (ag.isType(gt))
+                    return true;
+
+        return false;
+    }
+
+    /**
+     * find any in list by type
+     */
+    public static AbstractGoods findByType(List<AbstractGoods> l, GoodsType gt) {
+        if (l != null)
+            for (AbstractGoods ag : l)
+                if (ag.getType() == gt)
+                    return ag;
+
+        return false;
+    }
+
+    public static AbstractGoods findByType(List<AbstractGoods> l, AbstractGoods ag) {
+        return findByType(l, ag.getType());
+    }
+
+    /**
+     * find any in list by type
+     */
+    public static AbstractGoods findByType(List<AbstractGoods> l, GoodsType gt) {
+        if (l != null)
+            for (AbstractGoods ag : l)
+                if (ag.getType() == gt)
+                    return ag;
+
+        return false;
+    }
+
+    public static AbstractGoods findByType(List<AbstractGoods> l, AbstractGoods ag) {
+        return findByType(l, ag.getType());
+    }
 
     // Interface Named
 
