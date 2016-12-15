@@ -389,6 +389,19 @@ public abstract class FreeColObject
     }
 
     /**
+     * Is any of the given abilities present in this object?
+     *
+     * @param id The object identifier.
+     * @return True if the ability is present.
+     */
+    public final boolean hasAnyAbility(String... abilities) {
+        for (String a : abilities)
+            if (hasAbility(id, null))
+                return true;
+        return false;
+    }
+
+    /**
      * Is an ability present in this object?
      *
      * @param id The object identifier.
