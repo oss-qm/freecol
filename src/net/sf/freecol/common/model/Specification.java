@@ -1963,7 +1963,7 @@ public final class Specification {
                                           String... abilities) {
         return transform(allTypes.values(),
                          type -> resultType.isInstance(type)
-                             && any(abilities, a -> type.hasAbility(a)),
+                             && type.hasAnyAbilities(abilities),
                          type -> resultType.cast(type));
     }
 
@@ -1981,7 +1981,7 @@ public final class Specification {
                                              String... abilities) {
         return transform(allTypes.values(),
                          type -> resultType.isInstance(type)
-                             && none(abilities, a -> type.hasAbility(a)),
+                             && !type.hasAnyAbility(abilities),
                          type -> resultType.cast(type));
     }
 
