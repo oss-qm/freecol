@@ -57,6 +57,16 @@ public class FoundingFather extends FreeColSpecObjectType {
         public String getKey() {
             return getEnumKey(this);
         }
+
+        public static String[] getAllKeys() {
+            FoundingFatherType[] v = values();
+            String[] result = new String[v.length];
+            for (int x=0; x<v.length; x++)
+                result[x] = getEnumKey(v[x]);
+            return result;
+        }
+
+        public static final String[] allKeys = getAllKeys();
     }
 
     /** The type of this FoundingFather. */
