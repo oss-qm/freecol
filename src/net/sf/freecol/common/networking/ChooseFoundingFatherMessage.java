@@ -44,10 +44,6 @@ public class ChooseFoundingFatherMessage extends AttributeMessage {
 
     public static final String TAG = "chooseFoundingFather";
     private static final String FOUNDING_FATHER_TAG = "foundingFather";
-    private static final List<String> fatherKeys = Collections.<String>
-        unmodifiableList(transform(FoundingFatherType.values(),
-                                   alwaysTrue(), FoundingFatherType::getKey));
-
 
     /**
      * Create a new {@code ChooseFoundingFatherMessage} with the specified
@@ -74,7 +70,7 @@ public class ChooseFoundingFatherMessage extends AttributeMessage {
         super(TAG, FOUNDING_FATHER_TAG, getStringAttribute(element, FOUNDING_FATHER_TAG));
 
         final Specification spec = game.getSpecification();
-        setFatherAttributes(transform(fatherKeys,
+        setFatherAttributes(transform(FoundingFatherType.allKeys,
                 k -> element.hasAttribute(k),
                 k -> spec.getFoundingFather(getStringAttribute(element, k))));
     }
@@ -133,7 +129,7 @@ public class ChooseFoundingFatherMessage extends AttributeMessage {
      */
     public final List<FoundingFather> getFathers(Game game) {
         final Specification spec = game.getSpecification();
-        return transform(fatherKeys, tid -> hasAttribute(tid),
+        return transform(FoundingFatherType.allKeys, tid -> hasAttribute(tid),
                          tid -> spec.getFoundingFather(getStringAttribute(tid)));
     }
 
