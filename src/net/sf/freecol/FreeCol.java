@@ -57,6 +57,7 @@ import net.sf.freecol.common.model.StringTemplate;
 import net.sf.freecol.common.option.OptionGroup;
 import static net.sf.freecol.common.util.CollectionUtils.*;
 import net.sf.freecol.common.util.LogBuilder;
+import net.sf.freecol.common.util.StrCat;
 import net.sf.freecol.server.FreeColServer;
 
 import org.apache.commons.cli.CommandLine;
@@ -995,8 +996,10 @@ public final class FreeCol {
      * @return A list of advantage types.
      */
     private static String getValidAdvantages() {
-        return transform(Advantages.values(), alwaysTrue(),
-                         a -> Messages.getName(a), Collectors.joining(","));
+        StrCat cat = new StrCat(",");
+        for (Advantages walk : Advantages.values())
+            cat.add(Messages.getName(walk));
+        return cat.toString();
     }
 
     /**
