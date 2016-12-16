@@ -227,13 +227,14 @@ public class LoginMessage extends DOMMessage {
             game = freeColServer.getGame(); // Restoring from existing game.
             present = getPlayerByName(game);
             if (present == null) {
+                StrCat cat = new StrCat(", ");
+                for (Player p : game.getLiveEuropeanPlayers())
+                    cat.add(p.getName());
+
                 return ChangeSet.clientError((ServerPlayer)null, StringTemplate
                     .template("server.userNameNotPresent")
                     .addName("%name%", userName)
-                    .addName("%names%",
-                        transform(game.getLiveEuropeanPlayers(),
-                                  alwaysTrue(), Player::getName,
-                            Collectors.joining(", "))));
+                    .addName("%names%", cat.toString()));
             } else if (present.isConnected()) {
                 // Another player already connected on the name
                 return ChangeSet.clientError((ServerPlayer)null, StringTemplate
@@ -264,13 +265,14 @@ public class LoginMessage extends DOMMessage {
             game = freeColServer.getGame(); // Restoring from existing game.
             present = getPlayerByName(game);
             if (present == null) {
+                StrCat cat = new StrCat(", ");
+                for (Player p : game.getLiveEuropeanPlayers())
+                    cat.add(p.getName());
+
                 return ChangeSet.clientError((ServerPlayer)null, StringTemplate
                     .template("server.userNameNotPresent")
                     .addName("%name%", userName)
-                    .addName("%names%",
-                        transform(game.getLiveEuropeanPlayers(),
-                                  alwaysTrue(), Player::getName,
-                            Collectors.joining(", "))));
+                    .addName("%names%", cat.toString()));
             } else if (present.isConnected()) {
                 // Another player already connected on the name
                 return ChangeSet.clientError((ServerPlayer)null, StringTemplate

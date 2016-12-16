@@ -39,6 +39,7 @@ import net.sf.freecol.common.model.Modifier;
 import net.sf.freecol.common.model.ResourceType;
 import net.sf.freecol.common.model.Scope;
 import net.sf.freecol.common.model.Specification;
+import net.sf.freecol.common.util.StrCat;
 import static net.sf.freecol.common.util.CollectionUtils.*;
 
 
@@ -93,11 +94,11 @@ public class ResourcesDetailPanel
         for (Modifier modifier : mods) {
             String text = ModifierFormat.getModifierAsString(modifier);
             if (modifier.hasScope()) {
-                String scopes = transform(modifier.getScopes(),
-                                          isNotNull(Scope::getType),
-                                          s -> Messages.getName(spec.findType(s.getType())),
-                                          Collectors.joining(", "));
-                if (!scopes.isEmpty()) text += " (" + scopes + ")";
+                StrCat cat = new StrCat(", ");
+                for (Scope s : modifier.getScopes())
+                    sb.add(Messages.getName(spec.findType(s.getType())));
+                if (!cat.empty())
+                    text += " (" + cat.toString() + ")";
             }
 
             GoodsType goodsType = spec.getGoodsType(modifier.getId());

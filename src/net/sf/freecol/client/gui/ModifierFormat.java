@@ -36,6 +36,7 @@ import net.sf.freecol.common.model.Named;
 import net.sf.freecol.common.model.Scope;
 import net.sf.freecol.common.model.Turn;
 import static net.sf.freecol.common.util.CollectionUtils.*;
+import net.sf.freecol.common.util.StrCat.java;
 
 
 public class ModifierFormat {
@@ -115,10 +116,17 @@ public class ModifierFormat {
     }
 
     public static String getFeatureAsString(Feature feature) {
-        return Messages.getName(feature) + ":"
-            + ((!feature.hasScope()) ? ""
-                : transform(feature.getScopes(), isNotNull(),
-                            Scope::getFeatureString, Collectors.joining(",")));
+        if (!feature.hasScope())
+            return Messages.getName(feature);
+
+        StrCat cat = new StrCat(",");
+        cat.append(Messages.getName(feature)).append(":");
+
+        for (Scope walk : feature.getScopes())
+            if (walk != null)
+                cat.add(scope.getFeatureString());
+
+        return cat.toString();
     }
 
     public static String getModifierAsString(Modifier modifier) {
