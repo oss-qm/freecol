@@ -32,7 +32,6 @@ import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import java.util.stream.Collectors;
 
 import javax.xml.stream.XMLStreamException;
 
@@ -478,17 +477,23 @@ public class EuropeanAIPlayer extends MissionAIPlayer {
         }
 
         if (randoms[cheatIndex++] < landUnitCheatPercent) {
-            final Predicate<Entry<UnitType, List<WorkerWish>>> bestWishPred = e -> {
+            /* find the maximum */
+            WorkerWish bestWish = null;
+            for (Entry<UnitType, List<WorkerWish>> e : workerWishes.entrySet()) {
                 UnitType ut = e.getKey();
-                return ut != null && ut.isAvailableTo(player)
-                    && europe.getUnitPrice(ut) != UNDEFINED
-                    && any(e.getValue());
-            };
-            WorkerWish bestWish = maximize(transform(workerWishes.entrySet(),
-                                                     bestWishPred,
-                                                     e -> first(e.getValue()),
-                                                     Collectors.toSet()),
-                ValuedAIObject.ascendingValueComparator);
+                List<WorkerWish> wishlist = e.getValue();
+                if (ut != null && ut.isAvailableTo(player)
+                               && europe.getUnitPrice(ut) != UNDEFINED
+                               && (!wishlist.isEmpty()))
+                {
+                    WorkerWish ww = first(wishlist);
+                    if ((bestWish == null) ||
+                       (ValuedAIObject.ascendingValueComparator.compare(bestWish, ww) < 0))
+                        bestWish = ww;
+
+                }
+            }
+
             int cost = (bestWish != null)
                 ? europe.getUnitPrice(bestWish.getUnitType())
                 : (player.getImmigration() < player.getImmigrationRequired() / 2)
