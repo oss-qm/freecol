@@ -19,15 +19,13 @@
 
 package net.sf.freecol.common.networking;
 
-import java.util.Collections;
-import java.util.stream.Collectors;
-
 import net.sf.freecol.FreeCol;
 import net.sf.freecol.common.model.Game;
 import net.sf.freecol.common.model.Nation;
 import net.sf.freecol.common.model.Player;
 import net.sf.freecol.common.model.StringTemplate;
 import net.sf.freecol.common.networking.ChangeSet.See;
+import net.sf.freecol.common.util.StrCat;
 import static net.sf.freecol.common.util.CollectionUtils.*;
 import net.sf.freecol.server.FreeColServer;
 import net.sf.freecol.server.FreeColServer.ServerState;
@@ -239,13 +237,14 @@ public class LoginMessage extends DOMMessage {
             serverGame = freeColServer.getGame(); // Restoring from existing.
             present = getPlayerByName(serverGame);
             if (present == null) {
+                StrCat cat = new StrCat(", ");
+                for (Player p : serverGame.getLiveEuropeanPlayers())
+                    cat.add(p.getName());
+
                 return ChangeSet.clientError((ServerPlayer)null, StringTemplate
                     .template("server.userNameNotPresent")
                     .addName("%name%", userName)
-                    .addName("%names%",
-                        transform(serverGame.getLiveEuropeanPlayers(),
-                                  alwaysTrue(), Player::getName,
-                                  Collectors.joining(", "))));
+                    .addName("%names%", cat.toString()));
             } else if (present.isConnected()) {
                 // Another player already connected on the name
                 return ChangeSet.clientError((ServerPlayer)null, StringTemplate
@@ -278,13 +277,14 @@ public class LoginMessage extends DOMMessage {
             serverGame = freeColServer.getGame(); // Restoring existing game.
             present = getPlayerByName(serverGame);
             if (present == null) {
+                StrCat cat = new StrCat(", ");
+                for (Player p : serverGame.getLiveEuropeanPlayers())
+                    cat.add(p.getName());
+
                 return ChangeSet.clientError((ServerPlayer)null, StringTemplate
                     .template("server.userNameNotPresent")
                     .addName("%name%", userName)
-                    .addName("%names%",
-                        transform(serverGame.getLiveEuropeanPlayers(),
-                                  alwaysTrue(), Player::getName,
-                            Collectors.joining(", "))));
+                    .addName("%names%", cat.toString()));
             } else if (present.isAI()) { // Allow to join over AI player
                 serverGame.changeAI(present, false);
             } else if (present.isConnected()) {

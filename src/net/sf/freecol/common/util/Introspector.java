@@ -23,7 +23,6 @@ import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
-import java.util.stream.Collectors;
 
 import static net.sf.freecol.common.util.CollectionUtils.*;
 import static net.sf.freecol.common.util.StringUtils.*;
@@ -382,10 +381,12 @@ public class Introspector {
         try {
             constructor = messageClass.getDeclaredConstructor(types);
         } catch (NoSuchMethodException | SecurityException ex) {
+            StrCat cat = new StrCat(",");
+            for (Class cls : types)
+                cat.add(cls.getName());
             throw new IntrospectorException("Unable to find constructor "
                 + lastPart(tag, ".") + "("
-                + transform(types, alwaysTrue(), Class::getName,
-                            Collectors.joining(","))
+                + cat.toString()
                 + ")", ex);
         }
         T instance;

@@ -28,13 +28,13 @@ import java.io.PrintStream;
 
 import java.util.Locale;
 import java.util.logging.Logger;
-import java.util.stream.Collectors;
 
 import net.sf.freecol.client.FreeColClient;
 import net.sf.freecol.common.io.FreeColDirectories;
 import net.sf.freecol.common.model.Player;
 import static net.sf.freecol.common.util.CollectionUtils.*;
 import net.sf.freecol.common.util.LogBuilder;
+import net.sf.freecol.common.util.StrCat;
 import net.sf.freecol.server.FreeColServer;
 
 
@@ -134,8 +134,13 @@ public class FreeColDebugger {
      * @return A string containing the modes as csv.
      */
     public static String getDebugModes() {
-        return transform(DebugMode.values(), m -> isInDebugMode(m),
-                         DebugMode::toString, Collectors.joining(","));
+        StrCat cat = new StrCat(",");
+
+        for (DebugMode m : DebugMode.values())
+            if (isInDebugMode(m))
+                cat.add(m.toString());
+
+        return cat.toString();
     }
 
     /**
