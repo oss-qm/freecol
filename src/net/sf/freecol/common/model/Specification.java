@@ -34,7 +34,6 @@ import java.util.function.Predicate;
 import java.util.function.Function;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import javax.xml.stream.XMLStreamException;
@@ -59,6 +58,7 @@ import net.sf.freecol.common.option.StringOption;
 import net.sf.freecol.common.option.TextOption;
 import net.sf.freecol.common.option.UnitListOption;
 import static net.sf.freecol.common.util.CollectionUtils.*;
+import net.sf.freecol.common.util.StrCat;
 
 
 /**
@@ -2043,10 +2043,13 @@ public final class Specification {
             return;
         }
 
+        StrCat cat = new StrCat(" ");
+        for (Role r : getRoles())
+            cat.add(r.getId());
+
         logger.info("Loading role backward compatibility fragment: "
             + ROLES_COMPAT_FILE_NAME + " with roles: "
-            + transform(getRoles(), alwaysTrue(), Role::getId,
-                        Collectors.joining(" ")));
+            + cat.toString());
     }
     // end @compat 0.10.x
 
@@ -3035,10 +3038,13 @@ public final class Specification {
                 return;
             }
 
+            StrCat cat = new StrCat(" ");
+            for (UnitChangeType uct : getUnitChangeTypeList())
+                cat.add(uct.getId());
+
             logger.info("Loading unit-change-types backward compatibility fragment: "
                 + UNIT_CHANGE_TYPES_COMPAT_FILE_NAME + " with changes: "
-                + transform(getUnitChangeTypeList(), alwaysTrue(),
-                            UnitChangeType::getId, Collectors.joining(" ")));
+                + cat.toString());
         }
     }
 
