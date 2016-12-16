@@ -49,6 +49,7 @@ import net.sf.freecol.common.io.FreeColDirectories;
 import net.sf.freecol.common.io.FreeColSavegameFile;
 import net.sf.freecol.common.io.FreeColTcFile;
 import net.sf.freecol.common.io.Mods;
+import net.sf.freecol.common.util.StrCat;
 import net.sf.freecol.common.logging.DefaultHandler;
 import net.sf.freecol.common.model.NationOptions.Advantages;
 import net.sf.freecol.common.model.Specification;
@@ -979,8 +980,10 @@ public final class FreeCol {
      * @return A list of advantage types.
      */
     private static String getValidAdvantages() {
-        return transform(Advantages.values(), alwaysTrue(),
-                         a -> Messages.getName(a), Collectors.joining(","));
+        StrCat cat = new StrCat(",");
+        for (Advantages walk : Advantages.values())
+            cat.add(Messages.getName(walk));
+        return cat.toString();
     }
 
     /**

@@ -347,10 +347,12 @@ public class Introspector {
         try {
             constructor = messageClass.getDeclaredConstructor(types);
         } catch (NoSuchMethodException | SecurityException ex) {
+            StrCat cat = new StrCat(",");
+            for (Class cls : types)
+                cat.add(cls.getName());
             throw new IntrospectorException("Unable to find constructor "
                 + lastPart(tag, ".") + "("
-                + transform(types, alwaysTrue(), Class::getName,
-                            Collectors.joining(","))
+                + cat.toString()
                 + ")", ex);
         }
         T instance;

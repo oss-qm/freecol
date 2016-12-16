@@ -20,8 +20,6 @@
 package net.sf.freecol.client.gui;
 
 import java.text.DecimalFormat;
-import java.util.function.Function;
-import java.util.stream.Collectors;
 
 import javax.swing.JLabel;
 
@@ -36,6 +34,7 @@ import net.sf.freecol.common.model.Named;
 import net.sf.freecol.common.model.Scope;
 import net.sf.freecol.common.model.Turn;
 import static net.sf.freecol.common.util.CollectionUtils.*;
+import net.sf.freecol.common.util.StrCat;
 
 
 public class ModifierFormat {
@@ -115,14 +114,23 @@ public class ModifierFormat {
     }
 
     public static String getFeatureAsString(Feature feature) {
-        return Messages.getName(feature) + ":"
-            + ((!feature.hasScope()) ? ""
-                : transform(feature.getScopes(), isNotNull(),
-                            Scope::getFeatureString, Collectors.joining(",")));
+        if (!feature.hasScope())
+            return Messages.getName(feature);
+
+        StrCat cat = new StrCat(",");
+        cat.append(Messages.getName(feature)).append(":");
+
+        for (Scope walk : feature.getScopes())
+            if (walk != null)
+                cat.add(scope.getFeatureString());
+
+        return cat.toString();
     }
 
     public static String getModifierAsString(Modifier modifier) {
-        return transform(getModifierStrings(modifier), isNotNull(),
-                         Function.identity(), Collectors.joining());
+        StringBuffer sb = new StringBuilder();
+        for (String s : getModifierStrings(modifier))
+            if (s != null) sb.append(s);
+        return sb.toString();
     }
 }
