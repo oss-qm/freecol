@@ -946,8 +946,9 @@ public class IndianSettlement extends Settlement implements TradeLocation {
     public List<Goods> getSellGoods(Unit unit) {
         // Collect all the candidate goods
         List<Goods> result = new ArrayList<>();
-        for (Goods g : transform(getCompactGoods(),
-                                 g2 -> willSell(g2.getType()))) {
+        for (Goods g : getCompactGoods()) {
+            if (!willSell(g.getType())) continue;
+
             int amount = g.getAmount();
             int retain = getWantedGoodsAmount(g.getType());
             if (retain >= amount) continue;
@@ -988,8 +989,10 @@ public class IndianSettlement extends Settlement implements TradeLocation {
      */
     public void tradeGoodsWithSettlement(IndianSettlement is) {
         final Specification spec = getSpecification();
-        for (GoodsType gt : transform(spec.getGoodsTypeList(),
-                                      GoodsType::getMilitary)) {
+
+        for (GoodsType gt : spec.getGoodsTypeList()) {
+            if (!gt.getMilitary()) continue;
+
             int goodsInStock = getGoodsCount(gt);
             if (goodsInStock <= 50) continue; // FIXME: magic number
             int goodsTraded = goodsInStock / 2;
@@ -1310,8 +1313,9 @@ public class IndianSettlement extends Settlement implements TradeLocation {
 
         int tiles = 0;
         int potential = 0;
-        for (Tile wt : transform(getOwnedTiles(),
-                                 t -> t != getTile() && !t.isOccupied())) {
+        for (Tile wt : getOwnedTiles()) {
+            if (!(wt != getTile() && !wt.isOccupied())) continue;
+
             // FIXME: make unitType brave
             potential += wt.getPotentialProduction(type, null);
             tiles++;
@@ -1599,7 +1603,9 @@ public class IndianSettlement extends Settlement implements TradeLocation {
         super.readChildren(xr);
 
         // @compat 0.10.1
-        for (Unit u : transform(getUnits(), u -> u.getLocation() != this)) {
+        for (Unit u : getUnits()) {
+            if (u.getLocation() == this) continue;
+
             u.setLocationNoUpdate(this);
             logger.warning("Fixing unit location"
                 + " from " + u.getLocation()

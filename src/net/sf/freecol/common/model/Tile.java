@@ -1710,9 +1710,11 @@ public final class Tile extends UnitLocation implements Named, Ownable {
         // Try applying all possible non-natural improvements.
         final List<TileImprovementType> improvements
             = getSpecification().getTileImprovementTypeList();
-        for (TileImprovementType ti : transform(improvements, ti ->
-                (!ti.isNatural() && ti.isTileTypeAllowed(tileType)
-                    && ti.getBonus(goodsType) > 0))) {
+
+        for (TileImprovementType ti : improvements) {
+            if (ti.isNatural() || !ti.isTileTypeAllowed(tileType)
+                    || ti.getBonus(goodsType) <= 0)
+
             potential = ti.getProductionModifier(goodsType).applyTo(potential);
         }
         return (int)potential;
@@ -1863,8 +1865,8 @@ public final class Tile extends UnitLocation implements Named, Ownable {
      * forcibly such as when a native settlement is removed.
      */
     public void seeTile() {
-        for (Player p : transform(getGame().getLiveEuropeanPlayers(),
-                                  p -> p.canSee(this))) {
+        for (Player p : getGame().getLiveEuropeanPlayers()) {
+            if (!p.canSee(this)) continue;
             seeTile(p);
         }
     }
@@ -1936,11 +1938,9 @@ public final class Tile extends UnitLocation implements Named, Ownable {
      */
     public void cacheUnseen(Player player, Tile copied) {
         if (cachedTiles == null) return;
-        for (Player p : transform(getGame().getLiveEuropeanPlayers(player),
-                p -> !p.canSee(this) && getCachedTile(p) == this)) {
-            if (copied == null) copied = getTileToCache();
-            setCachedTile(p, copied);
-        }
+        for (Player p : getGame().getLiveEuropeanPlayers(player))
+            if (!p.canSee(this) && getCachedTile(p) == this)
+                setCachedTile(p, copied == null ? getTileToCache() : copied);
     }
 
     /**
@@ -2056,7 +2056,9 @@ public final class Tile extends UnitLocation implements Named, Ownable {
         double defenderPower = -1.0, power;
 
         // Check the units on the tile...
-        for (Unit u : transform(getUnits(), u -> isLand() != u.isNaval())) {
+        for (Unit u : getUnits()) {
+            if (isLand() == u.isNaval()) continue;
+
             // On land, ships are normally docked in port and
             // cannot defend.  Except if beached (see below).
             // On ocean tiles, land units behave as ship cargo and
