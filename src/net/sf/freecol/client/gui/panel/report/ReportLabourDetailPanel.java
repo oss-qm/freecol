@@ -104,8 +104,9 @@ public final class ReportLabourDetailPanel extends ReportPanel
                 detailPanel.add(countLabel);
             }
         }
-        forEachMapEntry(unitLocations, e -> !(e.getKey() instanceof Colony),
-            e -> {
+
+        for (Map.Entry<Location, Integer> e : unitLocations.entrySet()) {
+            if (!(e.getKey() instanceof Colony)) {
                 String locationName
                     = Messages.message(e.getKey().getLocationLabel());
                 JButton linkButton = Utility.getLinkButton(locationName, null,
@@ -115,7 +116,9 @@ public final class ReportLabourDetailPanel extends ReportPanel
                 JLabel countLabel = new JLabel(e.getValue().toString());
                 countLabel.setForeground(Utility.LINK_COLOR);
                 detailPanel.add(countLabel);
-            });
+            }
+        }
+
         if (canTrain) {
             detailPanel.add(Utility.localizedLabel("report.labour.canTrain"),
                             "newline 20, span");

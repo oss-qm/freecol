@@ -159,10 +159,12 @@ public class ColonyTile extends WorkLocation {
         final Colony colony = getColony();
         ProductionInfo pi = new ProductionInfo();
         if (isColonyCenterTile()) {
+            final boolean cfOnlyNatural = getSpecification()
+                        .getBoolean(GameOptions.ONLY_NATURAL_IMPROVEMENTS);
+
             for (AbstractGoods output : getOutputs()) {
-                    boolean onlyNaturalImprovements = getSpecification()
-                        .getBoolean(GameOptions.ONLY_NATURAL_IMPROVEMENTS)
-                        && !output.getType().isFoodType();
+                    boolean onlyNaturalImprovements =
+                        cfOnlyNatural && !output.getType().isFoodType();
                     int potential = output.getAmount();
                     if (workTile.getTileItemContainer() != null) {
                         potential = workTile.getTileItemContainer()

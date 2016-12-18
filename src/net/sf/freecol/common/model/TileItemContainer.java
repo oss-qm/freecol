@@ -410,10 +410,11 @@ public class TileItemContainer extends FreeColGameObject {
     public int getTotalBonusPotential(GoodsType goodsType, UnitType unitType,
                                       int potential, boolean onlyNatural) {
         int result = potential;
-        for (TileItem item : transform(getTileItems(),
-                                       ti -> !onlyNatural || ti.isNatural())) {
-            result = item.applyBonus(goodsType, unitType, result);
-        }
+
+        for (TileItem item : getTileItems())
+            if (!onlyNatural || item.isNatural())
+                result = item.applyBonus(goodsType, unitType, result);
+
         return result;
     }
 
@@ -458,9 +459,10 @@ public class TileItemContainer extends FreeColGameObject {
      */
     public int getMoveCost(Tile fromTile, Tile targetTile, int basicMoveCost) {
         int moveCost = basicMoveCost;
-        for (TileItem item : transform(getTileItems(), ti ->
-                (ti instanceof TileImprovement
-                    && ((TileImprovement)ti).isComplete()))) {
+
+        for (TileItem item : getTileItems()) {
+            if (!(item instanceof TileImprovement && ((TileImprovement)item).isComplete()))
+                continue;
             Direction direction = targetTile.getDirection(fromTile);
             if (direction == null) return INFINITY;
             moveCost = Math.min(moveCost,
@@ -484,8 +486,8 @@ public class TileItemContainer extends FreeColGameObject {
         final Game game = getGame();
         List<TileItem> otherItems = tic.getTileItems();
         List<TileItem> result = new ArrayList<TileItem>();
-        for (TileItem item : transform(otherItems, ti ->
-                                       layer.compareTo(ti.getLayer()) >= 0)) {
+        for (TileItem item : otherItems) {
+            if (!(layer.compareTo(item.getLayer()) >= 0)) continue;
             if (item instanceof Resource) {
                 Resource resource = (Resource)item;
                 ResourceType type

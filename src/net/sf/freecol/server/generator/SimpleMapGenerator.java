@@ -24,6 +24,7 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Random;
 import java.util.Set;
@@ -255,9 +256,11 @@ public class SimpleMapGenerator implements MapGenerator {
 
         // Make new settlements.
         Set<IndianSettlement> newSettlements = new HashSet<>();
-        for (Tile iTile : transform(importGame.getMap().getAllTiles(),
-                                    isNotNull(Tile::getIndianSettlement))) {
+        Iterator<Tile> iterator = importGame.getMap().getWholeMapIterator();
+        while (iterator.hasNext()) {
+            Tile iTile = iterator.next();
             final IndianSettlement is = iTile.getIndianSettlement();
+            if (is == null) continue;
             if (is.getOwner() == null) continue;
             final Player owner = game
                 .getPlayerByNationId(is.getOwner().getNationId());
@@ -952,17 +955,18 @@ public class SimpleMapGenerator implements MapGenerator {
         Colony colony = new ServerColony(game, player, colonyName, colonyTile);
         player.addSettlement(colony);
         colony.placeSettlement(true);
-        for (Tile tile : transform(colonyTile.getSurroundingTiles(1,1), t ->
-                (!t.hasSettlement()
-                    && (t.getOwner() == null || !t.getOwner().isEuropean())))) {
+        for (Tile tile : colonyTile.getSurroundingTiles(1,1)) {
+            if (!(!tile.hasSettlement()
+                    && (tile.getOwner() == null || !tile.getOwner().isEuropean())))
+                continue;
             tile.changeOwnership(player, colony);
             if (tile.hasLostCityRumour()) tile.removeLostCityRumour();
         }
         buildColonyUnit.setLocation(colony);
         Tile ct = buildColonyUnit.getWorkTile();
         if (ct != null) {
-            for (TileType t : transform(spec.getTileTypeList(),
-                                        tt -> !tt.isWater())) {
+            for (TileType t : spec.getTileTypeList()) {
+                if (t.isWater()) continue;
                 ct.setType(t);
                 TileImprovementType plowType = map.getSpecification()
                     .getTileImprovementType("model.improvement.plow");

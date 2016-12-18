@@ -513,8 +513,10 @@ public final class DefaultTransferHandler extends TransferHandler {
             return false;
         }
 
-        for (Role role : transform(unit.getAvailableRoles(null),
-                                   r -> !r.isDefaultRole())) {
+        for (Role role : unit.getAvailableRoles(null)) {
+            if (role.isDefaultRole())
+                continue;
+
             List<AbstractGoods> required = unit.getGoodsDifference(role, 1);
             int count;
             if (required.size() == 1
