@@ -100,8 +100,9 @@ public abstract class UnitPanel extends MigPanel
         removeAll();
 
         if (portPanel != null) {
-            for (Unit unit : transform(portPanel.getUnitList(),
-                                       u -> accepts(u))) {
+            for (Unit unit : portPanel.getUnitList()) {
+                if (!accepts(u)) continue;
+
                 UnitLabel unitLabel
                     = new UnitLabel(portPanel.getFreeColClient(), unit);
                 TradeRoute tradeRoute = unit.getTradeRoute();

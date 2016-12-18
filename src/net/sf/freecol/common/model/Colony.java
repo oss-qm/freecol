@@ -406,9 +406,10 @@ public class Colony extends Settlement implements Nameable, TradeLocation {
         // and which are underproduced at present.
         Set<GoodsType> food = new HashSet<>();
         Set<GoodsType> nonFood = new HashSet<>();
-        for (AbstractGoods ag : transform(unit.getType().getConsumedGoods(),
-                g -> productionCache.getNetProductionOf(g.getType())
-                        < g.getAmount())) {
+
+        for (AbstractGoods ag : unit.getType().getConsumedGoods()) {
+            if (!(productionCache.getNetProductionOf(g.getType()) < g.getAmount()))
+                continue;
             if (ag.isFoodType()) {
                 food.addAll(ag.getType().getEquivalentTypes());
             } else {
@@ -2105,15 +2106,12 @@ public class Colony extends Settlement implements Nameable, TradeLocation {
                 t -> new TileImprovementSuggestion(t, null, INFINITY));
 
         // Consider improvements for all available colony tiles.
-        for (final ColonyTile ct : transform(getColonyTiles(),
-                WorkLocation::isAvailable)) {
-            final ToIntFunction<TileImprovementType> improve = cacheInt(ti ->
-                    ct.improvedBy(ti));
-            result.addAll(transform(spec.getTileImprovementTypeList(),
-                    ti -> !ti.isNatural() && improve.applyAsInt(ti) > 0,
-                    ti -> new TileImprovementSuggestion(ct.getWorkTile(),
-                            ti, improve.applyAsInt(ti))));
-        }
+        for (final ColonyTile ct : getColonyTiles())
+            if (ct.isAvailable())
+                for (TileImprovementType ti : spec.getTileImprovementTypeList())
+                    if (!ti.isNatural() && improve.applyAsInt(ti) > 0)
+                        result.add(new TileImprovementSuggestion(ct.getWorkTile(), ti, ct.improvedBy(ti)));
+
         result.sort(TileImprovementSuggestion.descendingAmountComparator);
         return result;
     }
@@ -2137,8 +2135,9 @@ public class Colony extends Settlement implements Nameable, TradeLocation {
 
         // We have an expert not doing the job of their expertise.
         // Check if there is a non-expert doing the job instead.
-        for (Unit nonExpert : transform(getUnits(), u ->
-                u.getWorkType() == expertise && u.getType() != expertType)) {
+        for (Unit nonExpert : getUnits()) {
+            if (!(u.getWorkType() == expertise && u.getType() != expertType))
+                continue;
 
             // We have found a unit of a different type doing the
             // job of this expert's expertise now check if the
@@ -2226,42 +2225,35 @@ public class Colony extends Settlement implements Nameable, TradeLocation {
         // Add a message for goods required for the current building if any.
         BuildableType currentlyBuilding = getCurrentlyBuilding();
         if (currentlyBuilding != null) {
-            final Function<AbstractGoods, StringTemplate> bMapper = ag ->
-                    StringTemplate.template("model.colony.buildableNeedsGoods")
+            for (AbstractGoods ag : currentlyBuilding.getRequiredGoods())
+                if (ag.getType() == goodsType && amount < ag.getAmount())
+                    result.add(StringTemplate.template("model.colony.buildableNeedsGoods")
                             .addName("%colony%", getName())
                             .addNamed("%buildable%", currentlyBuilding)
                             .addAmount("%amount%", ag.getAmount() - amount)
-                            .addNamed("%goodsType%", goodsType);
-            result.addAll(transform(currentlyBuilding.getRequiredGoods(),
-                    ag -> ag.getType() == goodsType
-                            && amount < ag.getAmount(),
-                    bMapper));
+                            .addNamed("%goodsType%", goodsType));
         }
 
         // Add insufficient production messages for each production location
         // that has a deficit in producing the goods type.
-        final Function<WorkLocation, ProductionInfo> piMapper = wl ->
-                getProductionInfo(wl);
-        final Predicate<WorkLocation> prodPred = isNotNull(piMapper);
-        final Function<WorkLocation, StringTemplate> pMapper = wl ->
-                getInsufficientProductionMessage(getProductionInfo(wl),
-                        wl.getProductionDeficit(goodsType));
-        result.addAll(transform(getWorkLocationsForProducing(goodsType),
-                prodPred, pMapper, toListNoNulls()));
+        for (WorkLocation wl : getWorkLocationsForProducing(goodsType)) {
+            ProductionInfo pi = getProductionInfo(wl);
+            if (pi != null)
+                result.add(getInsufficientProductionMessage(
+                    pi, wl.getProductionDeficit(goodsType)));
+        }
 
         // Add insufficient production messages for each consumption
         // location for the goods type where there is a consequent
         // deficit in production of a dependent goods.
-        final Function<WorkLocation, List<StringTemplate>> cMapper = wl -> {
-            final ProductionInfo info = getProductionInfo(wl);
-            final Function<AbstractGoods, StringTemplate> gMapper = ag ->
-                    getInsufficientProductionMessage(info,
-                            wl.getProductionDeficit(ag.getType()));
-            return transform(wl.getOutputs(), AbstractGoods::isStorable,
-                    gMapper, toListNoNulls());
-        };
-        result.addAll(transform(getWorkLocationsForConsuming(goodsType),
-                prodPred, cMapper, toAppendedList()));
+        for (WorkLocation wl : getWorkLocationsForConsuming(goodsType)) {
+            ProductionInfo pi = getProductionInfo(wl);
+            if (pi != null)
+                for (AbstractGoods ag : wl.getOutputs())
+                    if (ag.isStorable())
+                        result.add(getInsufficientProductionMessage(pi,
+                            wl.getProductionDeficit(ag.getType())));
+        }
 
         return result;
     }

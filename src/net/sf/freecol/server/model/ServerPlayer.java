@@ -716,8 +716,12 @@ public class ServerPlayer extends Player implements ServerModelObject {
         }
 
         // Clean up remaining tile ownerships
-        for (Tile t : transform(getGame().getMap().getAllTiles(),
-                                matchKeyEquals(this, Tile::getOwner))) {
+        for (Tile t : getGame().getMap().getAllTiles()) {
+
+            // skip out tiles that dont belong to the currently killed player
+            if ((t == null) || !equals(t.getOwner()))
+                continue;
+
             t.cacheUnseen();//+til
             t.changeOwnership(null, null);//-til
             cs.add(See.perhaps().always(this), t);
@@ -843,8 +847,10 @@ public class ServerPlayer extends Player implements ServerModelObject {
         final int age = game.getAge();
         EnumMap<FoundingFatherType, List<RandomChoice<FoundingFather>>> choices
             = new EnumMap<>(FoundingFatherType.class);
-        for (FoundingFather father : transform(spec.getFoundingFathers(),
-                ff -> !hasFather(ff) && ff.isAvailableTo(this))) {
+
+        for (FoundingFather father : spec.getFoundingFathers()) {
+            if (!(!hasFather(ff) && ff.isAvailableTo(this))) continue;
+
             FoundingFatherType type = father.getType();
             List<RandomChoice<FoundingFather>> rc = choices.get(type);
             if (rc == null) rc = new ArrayList<>();
@@ -907,8 +913,9 @@ public class ServerPlayer extends Player implements ServerModelObject {
         }
 
         int bonus = 0;
-        for (HistoryEvent h : transform(getHistory(),
-                matchKeyEquals(getId(), HistoryEvent::getPlayerId))) {
+        for (HistoryEvent h : getHistory()) {
+            if (!Utils.equals(getId(), h.getPlayerId())) continue;
+
             switch (h.getEventType()) {
             case INDEPENDENCE:
                 switch (h.getScore()) {
@@ -1008,8 +1015,8 @@ public class ServerPlayer extends Player implements ServerModelObject {
      */
     public Set<Tile> exploreMap(boolean reveal) {
         Set<Tile> result = new HashSet<>();
-        for (Tile t : transform(getGame().getMap().getAllTiles(),
-                                t -> hasExplored(t) != reveal)) {
+        for (Tile t : getGame().getMap().getAllTiles())
+            if (t->hasExplored(t) == reveal) continue;
             t.setExplored(this, reveal);//-vis(this)
             result.add(t);
         }
@@ -1053,7 +1060,8 @@ public class ServerPlayer extends Player implements ServerModelObject {
         HashMap<Tile, Settlement> claims = new HashMap<>();
         Settlement claimant;
         for (Tile t : tiles) t.changeOwnership(null, null);//-til
-        for (Tile tile : transform(tiles, t -> !t.isOccupied())) {
+        for (Tile tile : tiles) {
+            if (t.isOccupied()) continue;
             votes.clear();
             for (Tile t : tile.getSurroundingTiles(1)) {
                 claimant = t.getOwningSettlement();
@@ -1259,8 +1267,8 @@ public class ServerPlayer extends Player implements ServerModelObject {
         boolean ret = false;
         StringBuilder sb = new StringBuilder(32);
         sb.append("Flush market for ").append(getId()).append(':');
-        for (GoodsType goodsType : transform(spec.getGoodsTypeList(),
-                                             gt -> csFlushMarket(gt, cs))) {
+        for (GoodsType goodsType : spec.getGoodsTypeList()) {
+            if (!csFlushMarket(gt, cs)) continue;
             sb.append(' ').append(goodsType.getId());
             ret = true;
         }
@@ -1449,8 +1457,8 @@ public class ServerPlayer extends Player implements ServerModelObject {
         // Propagate tension change as settlement alarm to all
         // settlements except the one that originated it (if any).
         if (isIndian()) {
-            for (IndianSettlement is : transform(getIndianSettlements(),
-                    i -> i != origin && i.hasContacted(player))) {
+            for (IndianSettlement is : getIndianSettlements()) {
+                if (i == origin || !i.hasContacted(player)) continue;
                 ((ServerIndianSettlement)is).csModifyAlarm(player, add,
                                                            false, cs);//+til
             }
@@ -1759,8 +1767,9 @@ outer:  for (Effect effect : effects) {
                                              goodsTypes, random)).isStorable());
 
         // Remove standard amount, and the extra amount.
-        for (GoodsType type : transform(goodsTypes,
-                                        gt -> market.hasBeenTraded(gt))) {
+        for (GoodsType type : goodsTypes) {
+            if (!market.hasBeenTraded(type)) contine;
+
             boolean add = market.getAmountInMarket(type)
                 < type.getInitialAmount();
             int amount = game.getTurn().getNumber() / 10;
@@ -1893,8 +1902,9 @@ outer:  for (Effect effect : effects) {
             }
 
             // Calm down a bit at the whole-tribe level.
-            for (Player enemy : transform(game.getLiveEuropeanPlayers(this),
-                                          p -> getTension(p).getValue() > 0)) {
+            for (Player enemy : game.getLiveEuropeanPlayers(this)) {
+                if (getTension(p).getValue() <= 0) continue;
+
                 int change = -getTension(enemy).getValue()/100 - 4;
                 csModifyTension(enemy, change, cs);//+til
             }
@@ -1932,12 +1942,17 @@ outer:  for (Effect effect : effects) {
                 && (atWarWith(u.getOwner()) || u.hasAbility(Ability.PIRACY)));
         // For all colonies that are able to bombard, search neighbouring
         // tiles for targets, and fire!
-        for (Colony c : transform(getColonies(), Colony::canBombardEnemyShip)) {
+        for (Colony c : getColonies()) {
+            if (!c.canBombardEnemyShip()) continue;
+
             Tile tile = c.getTile();
-            for (Unit u : transform(flatten(tile.getSurroundingTiles(1, 1),
-                                            Tile::getUnits),
-                                    bombardUnit)) {
-                csCombat(c, u, null, random, cs);
+            for (t : tile.getSurroundingTiles(1, 1)) {
+                for (Unit u : t.getUnits()) {
+                    if ((u.getOwner() != this && u.isNaval() && !u.getTile().isLand() &&
+                        (atWarWith(u.getOwner()) || u.hasAbility(Ability.PIRACY))) {
+                        csCombat(c, u, null, random, cs);
+                    }
+                }
             }
         }
     }
@@ -2032,11 +2047,11 @@ outer:  for (Effect effect : effects) {
                 break;
 
             case "model.event.resetNativeAlarm":
-                for (Player p : transform(game.getLiveNativePlayers(),
-                                          p -> p.hasContacted(this))) {
+                for (Player p : game.getLiveNativePlayers()) {
+                    if (!p.hasContacted(this)) continue;
                     p.setTension(this, new Tension(Tension.TENSION_MIN));
-                    for (IndianSettlement is : transform(p.getIndianSettlements(),
-                                                         is -> is.hasContacted(this))) {
+                    for (IndianSettlement is : p.getIndianSettlements()) {
+                        if (is.hasContacted(this)) continue;
                         is.getTile().cacheUnseen();//+til
                         is.setAlarm(this, new Tension(Tension.TENSION_MIN));//-til
                         cs.add(See.only(this), is);
@@ -2094,7 +2109,8 @@ outer:  for (Effect effect : effects) {
                 break;
 
             case "model.event.movementChange":
-                for (Unit u : transform(getUnits(), u -> u.getMovesLeft() > 0)) {
+                for (Unit u : getUnits()) {
+                    if (u.getMovesLeft() <= 0) continue;
                     u.setMovesLeft(u.getInitialMovesLeft());
                     cs.addPartial(See.only(this), u, "movesLeft");
                 }
@@ -2627,8 +2643,8 @@ outer:  for (Effect effect : effects) {
             // FIXME: just the tension
             cs.add(See.perhaps().always(this), defenderPlayer);
             csChangeStance(Stance.PEACE, defenderPlayer, true, cs);
-            for (IndianSettlement is : transform(defenderPlayer.getIndianSettlements(),
-                                                 is -> is.hasContacted(this))) {
+            for (IndianSettlement is : defenderPlayer.getIndianSettlements()) {
+                if (!is.hasContacted(this)) continue;
                 is.getAlarm(this).setValue(Tension.SURRENDERED);
                 // Only update attacker with settlements that have
                 // been seen, as contact can occur with its members.
@@ -2849,9 +2865,9 @@ outer:  for (Effect effect : effects) {
         }
 
         // Remove goods party modifiers as they apply to a different monarch.
-        for (Modifier m : transform(colony.getModifiers(),
-                matchKey(Specification.COLONY_GOODS_PARTY_SOURCE,
-                         Modifier::getSource))) colony.removeModifier(m);
+        for (Modifier m : colony.getModifiers()) {
+            if (m.getSource() == Specification.COLONY_GOODS_PARTY_SOURCE)
+                colony.removeModifier(m);
 
         // Hand over the colony.  Inform former owner of loss of owned
         // tiles, and process possible increase in line of sight.
@@ -3617,8 +3633,9 @@ outer:  for (Effect effect : effects) {
      * @param cs A {@code ChangeSet} to update.
      */
     public void csLoseLocation(Location loc, ChangeSet cs) {
-        for (TradeRoute tr : transform(getTradeRoutes(),
-                                       r -> r.removeMatchingStops(loc))) {
+        for (TradeRoute tr : getTradeRoutes()) {
+            if (!r.removeMatchingStops(loc)) continue;
+
             for (Unit u : tr.getAssignedUnits()) {
                 u.setTradeRoute(null);
                 cs.add(See.only(this), u);
@@ -3734,8 +3751,9 @@ outer:  for (Effect effect : effects) {
             building.dispose();
             // Have any abilities been removed that gate other production,
             // e.g. removing docks should shut down fishing.
-            for (WorkLocation wl : transform(colony.getAllWorkLocations(),
-                                             w -> !w.isEmpty() && !w.canBeWorked())) {
+            for (WorkLocation wl : colony.getAllWorkLocations()) {
+                if (!(!w.isEmpty() && !w.canBeWorked())) continue;
+
                 changed |= colony.ejectUnits(wl, wl.getUnitList());//-til
                 logger.info("Units ejected from workLocation "
                     + wl.getId() + " on loss of "

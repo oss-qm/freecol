@@ -453,10 +453,9 @@ public final class SelectDestinationDialog extends FreeColDialog<Location>
         }
 
         // Find all the player accessible settlements except the current one.
-        td.addAll(transform(player.getSettlements(),
-                            s -> s != inSettlement && unitCanReach(unit, s),
-                            s -> new Destination(s, unit.getTurnsToReach(s),
-                                                 unit, goodsTypes)));
+        for (Settlement s : player.getSettlements())
+            if ((s != inSettlement) && unitCanReach(unit, s))
+                td.add(new Destination(s, unit.getTurnsToReach(s), unit, goodsTypes));
 
         // Find all other player accessible settlements.  Build a list
         // of accessible settlement locations and do a bulk path search

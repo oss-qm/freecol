@@ -58,8 +58,8 @@ public class TypeCountMap<T extends FreeColSpecObjectType> {
     }
 
     public void add(TypeCountMap<T> other) {
-        forEachMapEntry(other.values,
-                        e -> incrementCount(e.getKey(), e.getValue()));
+        for (Entry<T,Integer> e : other.values)
+            incrementCount(e.getKey(), e.getValue());
     }
 
     public void clear() {

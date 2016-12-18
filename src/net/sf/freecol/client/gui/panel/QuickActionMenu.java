@@ -216,9 +216,11 @@ public final class QuickActionMenu extends JPopupMenu {
         final InGameController igc = freeColClient.getInGameController();
 
         boolean added = false;
-        for (Unit unit : transform(loc.getUnitList(), u ->
-                (u.isCarrier() && u.canCarryUnits() && u.canAdd(tempUnit)
-                    && tempUnit.getLocation() != u))) {
+        for (Unit unit : loc.getUnitList()) {
+            if (!u.isCarrier() || !u.canCarryUnits() || !u.canAdd(tempUnit)
+                    || tempUnit.getLocation() == u)
+                continue;
+
             StringTemplate template
                 = StringTemplate.template("quickActionMenu.board")
                     .addStringTemplate("%unit%",
@@ -238,8 +240,10 @@ public final class QuickActionMenu extends JPopupMenu {
         final InGameController igc = freeColClient.getInGameController();
 
         boolean added = false;
-        for (Unit unit : transform(loc.getUnits(), u ->
-                (u.isCarrier() && u.canCarryGoods() && u.canAdd(goods)))) {
+        for (Unit unit : loc.getUnits()) {
+            if (!u.isCarrier() || !u.canCarryGoods() || !u.canAdd(goods))
+                continue;
+
             StringTemplate template
                 = StringTemplate.template("quickActionMenu.loadOnTo")
                     .addStringTemplate("%unit%",
@@ -415,8 +419,10 @@ public final class QuickActionMenu extends JPopupMenu {
         boolean separatorNeeded = false;
 
         if (spec.getBoolean(GameOptions.ALLOW_STUDENT_SELECTION)) {
-            for (Unit teacher : transform(unit.getColony().getTeachers(), u ->
-                    unit.canBeStudent(u) && u.isInColony())) {
+            for (Unit teacher : unit.getColony().getTeachers()) {
+                if (!unit.canBeStudent(teacher) || !teacher.isInColony())
+                    continue;
+
                 JMenuItem menuItem = null;
                 ImageIcon teacherIcon
                     = new ImageIcon(lib.getSmallerUnitImage(teacher));
@@ -663,8 +669,10 @@ public final class QuickActionMenu extends JPopupMenu {
         UnitLocation uloc = (unit.isInEurope()) ? unit.getOwner().getEurope()
             : unit.getSettlement();
         if (uloc == null) return false;
-        for (Role r : transform(unit.getAvailableRoles(null),
-                                r2 -> r2 != role)) {
+
+        for (Role r : unit.getAvailableRoles(null)) {
+            if (r == role) continue;
+
             JMenuItem newItem;
             if (r.isDefaultRole()) { // Always valid
                 newItem = createRoleItem(unitLabel, role, roleCount, r, 0, 0);
@@ -841,8 +849,10 @@ public final class QuickActionMenu extends JPopupMenu {
                                       ag.getType(), ag.getAmount());
 
         boolean added = false;
-        for (Unit unit : transform(europe.getUnits(), u ->
-                (u.isCarrier() && u.canCarryGoods() && u.canAdd(goods)))) {
+        for (Unit unit : europe.getUnits()) {
+            if (!u.isCarrier() || !u.canCarryGoods() || !u.canAdd(goods))
+                continue;
+
             StringTemplate template = StringTemplate.template("loadOnTo")
                 .addStringTemplate("%unit%",
                     unit.getLabel(Unit.UnitLabelType.NATIONAL));

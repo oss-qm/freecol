@@ -138,8 +138,9 @@ public final class ReportRequirementsPanel extends ReportPanel {
         Set<GoodsType> productionWarning = new HashSet<>();
 
         // Check if all unit requirements are met.
-        for (Unit expert : transform(colony.getUnits(),
-                                     u -> u.getSkillLevel() > 0)) {
+        for (Unit expert : colony.getUnits()) {
+            if (u.getSkillLevel() <= 0) continue;
+
             Unit better = colony.getBetterExpert(expert);
             if (better != null
                 && !badAssignmentWarning.contains(expert.getType())) {
@@ -181,8 +182,9 @@ public final class ReportRequirementsPanel extends ReportPanel {
                     && info != null
                     && !info.hasMaximumProduction()
                     && !productionWarning.contains(goodsType)) {
-                    forEach(map(building.getInputs(), AbstractGoods::getType),
-                        gt -> addProductionWarning(doc, colony, goodsType, gt));
+                    for (AbstractGoods in : building.getInputs())
+                        addProductionWarning(doc, colony, goodsType, in.getType());
+
                     productionWarning.add(goodsType);
                 }
             }

@@ -273,11 +273,10 @@ public class SimpleCombatModel extends CombatModel {
 
         // @compat 0.11.0
         // Any modifier with the default modifier index needs to be fixed
-        for (Modifier m : transform(result,
-                matchKeyEquals(Modifier.DEFAULT_MODIFIER_INDEX,
-                               Modifier::getModifierIndex))) {
-            m.setModifierIndex(Modifier.GENERAL_COMBAT_INDEX);
-        }
+        for (Modifier m : result)
+            if (Utils.equals(Modifier.DEFAULT_MODIFIER_INDEX, m.getModifierIndex()))
+                m.setModifierIndex(Modifier.GENERAL_COMBAT_INDEX);
+
         // end @compat 0.11.0
 
         return result;
@@ -298,9 +297,8 @@ public class SimpleCombatModel extends CombatModel {
         // Goods penalty always applies
         int goodsCount = attacker.getGoodsSpaceTaken();
         if (goodsCount > 0) {
-            result.addAll(transform(spec.getModifiers(Modifier.CARGO_PENALTY),
-                    alwaysTrue(),
-                    m -> new Modifier(m).setValue(m.getValue() * goodsCount)));
+            for (Modifier m : spec.getModifiers(Modifier.CARGO_PENALTY))
+                result.add(new Modifier(m).setValue(m.getValue() * goodsCount));
         }
     }
 
@@ -466,11 +464,10 @@ public class SimpleCombatModel extends CombatModel {
 
         // @compat 0.11.0
         // Any modifier with the default modifier index needs to be fixed
-        for (Modifier m : transform(result,
-                matchKeyEquals(Modifier.DEFAULT_MODIFIER_INDEX,
-                               Modifier::getModifierIndex))) {
-            m.setModifierIndex(Modifier.GENERAL_COMBAT_INDEX);
-        }
+        for (Modifier m : result)
+            if (Utils.equals(Modifier.DEFAULT_MODIFIER_INDEX, m.getModifierIndex))
+                m.setModifierIndex(Modifier.GENERAL_COMBAT_INDEX);
+
         // end @compat 0.11.0
 
         return result;
@@ -489,9 +486,8 @@ public class SimpleCombatModel extends CombatModel {
         // Cargo penalty always applies
         int goodsCount = defender.getVisibleGoodsCount();
         if (goodsCount > 0) {
-            result.addAll(transform(spec.getModifiers(Modifier.CARGO_PENALTY),
-                    alwaysTrue(),
-                    m -> new Modifier(m).setValue(m.getValue() * goodsCount)));
+            for (Modifier m : spec.getModifiers(Modifier.CARGO_PENALTY))
+                result.add(new Modifier(m).setValue(m.getValue() * goodsCount));
         }
     }
 

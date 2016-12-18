@@ -552,7 +552,11 @@ public final class Specification {
         nationTypes.clear();
         nationTypes.addAll(indianNationTypes);
         nationTypes.addAll(europeanNationTypes);
-        REFNationTypes.addAll(transform(europeanNationTypes, NationType::isREF));
+
+        for (NationType nt : europeanNationTypes)
+            if (nt.isREF())
+                REFNationTypes.add(nt);
+
         europeanNationTypes.removeAll(REFNationTypes);
 
         experts.clear();
@@ -2076,12 +2080,11 @@ public final class Specification {
         // scope was left hanging.
         FoundingFather brebeuf
             = getFoundingFather("model.foundingFather.fatherJeanDeBrebeuf");
-        for (Scope scope : transform(flatten(brebeuf.getAbilities(),
-                                             Ability::getScopes),
-                                     matchKeyEquals("model.ability.missionary",
-                                                    Scope::getAbilityId))) {
-            scope.setAbilityId(Ability.ESTABLISH_MISSION);
-        }
+
+        for (Ability a : brebeuf.getAbilities())
+            for (Scope s : a.getScopes())
+                if (s.getAbilityId().equals("model.ability.missionary"))
+                    s.setAbilityId(Ability.ESTABLISH_MISSION);
 
         // Coronado gained an ability in freecol
         FoundingFather coronado
@@ -2107,8 +2110,8 @@ public final class Specification {
             });
 
         // Nation FOUND_COLONY -> FOUNDS_COLONIES
-        for (EuropeanNationType ent : transform(europeanNationTypes,
-                nt -> nt.hasAbility(Ability.FOUND_COLONY))) {
+        for (EuropeanNationType ent : europeanNationTypes) {
+            if (!ent.hasAbility(Ability.FOUND_COLONY)) continue;
             ent.removeAbilities(Ability.FOUND_COLONY);
             ent.addAbility(new Ability(Ability.FOUNDS_COLONIES, ent, true));
         }
@@ -2174,8 +2177,9 @@ public final class Specification {
         // ability to have man-o-war.  Older specs used
         // INDEPENDENCE_DECLARED but we can not directly use that or
         // the REF gets access to colonialRegulars.
-        for (NationType ent : transform(europeanNationTypes,
-                nt -> nt.isREF() && !nt.hasAbility(Ability.INDEPENDENT_NATION))) {
+        for (NationType ent : europeanNationTypes) {
+            if (!(nt.isREF() && !nt.hasAbility(Ability.INDEPENDENT_NATION)))
+                continue;
             ent.addAbility(new Ability(Ability.INDEPENDENT_NATION));
         }
 
@@ -2185,28 +2189,28 @@ public final class Specification {
             });
 
         // Unit type indexes moved into the spec
-        final Predicate<Modifier> goodsPred = m ->
-            allTypes.get(m.getId()) instanceof GoodsType;
-        for (Modifier mod : transform(flatten(unitTypeList,
-                    UnitType::getModifiers), goodsPred)) {
-            mod.setModifierIndex(Modifier.EXPERT_PRODUCTION_INDEX);
-        }
+        for (UnitType ut : unitTypeList())
+            if (modifiers != null)
+                for (Modifier m : modifiers)
+                    if (allTypes.get(m.getId()) instanceof GoodsType)
+                        m.setModifierIndex(Modifier.EXPERT_PRODUCTION_INDEX);
 
         // Father production modifiers have moved to the spec
-        for (Modifier mod : transform(flatten(foundingFathers,
-                    FoundingFather::getModifiers), goodsPred)) {
-            mod.setModifierIndex(Modifier.FATHER_PRODUCTION_INDEX);
-        }
+        for (FoundingFather ff : foundingFathers)
+            for (Modifier mod : ff.getModifiers())
+                if (allTypes.get(m.getId()) instanceof GoodsType)
+                        mod.setModifierIndex(Modifier.FATHER_PRODUCTION_INDEX);
 
         // Tile improvement type modifier index has moved to the spec
-        for (Modifier mod : transform(flatten(tileImprovementTypeList,
-                    TileImprovementType::getModifiers), goodsPred)) {
-            mod.setModifierIndex(Modifier.IMPROVEMENT_PRODUCTION_INDEX);
-        }
+        for (TileImprovementType tit : tileImprovementTypeList)
+            for (Modifier mod : tit.getModifiers())
+                if (allTypes.get(m.getId()) instanceof GoodsType)
+                    mod.setModifierIndex(Modifier.IMPROVEMENT_PRODUCTION_INDEX);
 
         // Building type modifier indexes have moved to the spec
         for (BuildingType bt : buildingTypeList) {
-            for (Modifier mod : transform(bt.getModifiers(), goodsPred)) {
+            for (Modifier mod : bt.getModifiers()) {
+                if (!(allTypes.get(m.getId()) instanceof GoodsType)) continue;
                 mod.setModifierIndex((bt.hasAbility(Ability.AUTO_PRODUCTION))
                     ? Modifier.AUTO_PRODUCTION_INDEX
                     : Modifier.BUILDING_PRODUCTION_INDEX);
@@ -2214,10 +2218,10 @@ public final class Specification {
         }
 
         // European nation type production modifier indexes moved to the spec
-        for (Modifier mod : transform(flatten(europeanNationTypes,
-                    EuropeanNationType::getModifiers), goodsPred)) {
-            mod.setModifierIndex(Modifier.NATION_PRODUCTION_INDEX);
-        }
+        for (EuropeanNationType ent : europeanNationTypes)
+            for (Modifier mod : ent.getModifiers())
+                if (allTypes.get(m.getId()) instanceof GoodsType)
+                    mod.setModifierIndex(Modifier.NATION_PRODUCTION_INDEX);
 
         // TownHall, Chapel et al now have unattended production types
         // (replacing modifiers).
@@ -2233,11 +2237,11 @@ public final class Specification {
         }
         GoodsType crossesType = getGoodsType("model.goods.crosses");
         int a = 1;
-        for (BuildingType bt : transform(new BuildingType[] {
+        for (BuildingType bt : new BuildingType[] {
                     getBuildingType("model.building.chapel"),
                     getBuildingType("model.building.church"),
-                    getBuildingType("model.building.cathedral") },
-                bt -> bt.hasModifier("model.goods.crosses"))) {
+                    getBuildingType("model.building.cathedral") }) {
+            if (!bt.hasModifier("model.goods.crosses")) continue;
             AbstractGoods ag = new AbstractGoods(crossesType, a);
             a++;
             ProductionType pt = new ProductionType(ag, true, null);
@@ -2267,9 +2271,9 @@ public final class Specification {
         if (first(getAbilities(Ability.AMBUSH_TERRAIN)) == null){
             Ability ambush = new Ability(Ability.AMBUSH_TERRAIN, null, true);
             addAbility(ambush);
-            for (TileType tt : transform(getTileTypeList(), tt ->
-                    ((tt.isElevation() || tt.isForested())
-                        && !tt.hasAbility(Ability.AMBUSH_TERRAIN)))) {
+            for (TileType tt : getTileTypeList()) {
+                if (!((tt.isElevation() || tt.isForested())
+                        && !tt.hasAbility(Ability.AMBUSH_TERRAIN))) continue;
                 tt.addAbility(new Ability(Ability.AMBUSH_TERRAIN, tt, true));
             }
         }
@@ -2297,12 +2301,11 @@ public final class Specification {
         {
             FoundingFather revere
                 = getFoundingFather("model.foundingFather.paulRevere");
-            for (Scope scope : transform(flatten(revere.getAbilities(Ability.AUTOMATIC_EQUIPMENT),
-                                                 Ability::getScopes),
-                                         matchKeyEquals("model.equipment.muskets",
-                                                        Scope::getType))) {
-                scope.setType("model.role.soldier");
-            }
+
+            for (Ability a : revere.getAbilities(Ability.AUTOMATIC_EQUIPMENT))
+                for (Scope scope : a.getScopeList())
+                    if (scope.getType().equals("model.equipment.muskets"))
+                        scope.setType("model.role.soldier");
         }
         // end @compat 0.10.7
 

@@ -90,16 +90,17 @@ public class ServerEurope extends Europe implements ServerModelObject {
 
         // Sell any excess
         final ServerPlayer owner = (ServerPlayer)getOwner();
-        for (AbstractGoods ag : transform(required,
-                g -> (g.getAmount() < 0
-                    && owner.canTrade(g.getType(), Market.Access.EUROPE)))) {
+        for (AbstractGoods ag : required) {
+            if (!((g.getAmount() < 0 && owner.canTrade(g.getType(), Market.Access.EUROPE))))
+                continue;
             int rm = owner.sell(null, ag.getType(), -ag.getAmount());
             if (rm > 0) {
                 owner.addExtraTrade(new AbstractGoods(ag.getType(), rm));
             }
         }
         // Buy what is needed
-        for (AbstractGoods ag : transform(required, AbstractGoods::isPositive)) {
+        for (AbstractGoods ag : required) {
+            if (!ag.isPositive()) continue;
             int m = owner.buy(null, ag.getType(), ag.getAmount());
             if (m > 0) {
                 owner.addExtraTrade(new AbstractGoods(ag.getType(), -m));
@@ -296,10 +297,9 @@ public class ServerEurope extends Europe implements ServerModelObject {
     public void csNewTurn(Random random, LogBuilder lb, ChangeSet cs) {
         logger.finest("ServerEurope.csNewTurn, for " + this);
 
-        for (Unit unit : transform(getUnits(),
-                                   u -> u.isNaval() && u.isDamaged())) {
-            ((ServerUnit)unit).csRepairUnit(cs);
-        }
+        for (Unit unit : getUnits())
+            if (u.isNaval() && u.isDamaged())
+                ((ServerUnit)unit).csRepairUnit(cs);
     }
 
     /**

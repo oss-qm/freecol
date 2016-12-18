@@ -483,16 +483,18 @@ public final class FeatureContainer {
      */
     public void replaceSource(FreeColSpecObjectType oldSource,
                               FreeColSpecObjectType newSource) {
-        for (Ability ability : transform(getAbilities(null, null, null),
-                a -> oldSource == null || a.getSource() == oldSource)) {
+        for (Ability ability : getAbilities(null, null, null)) {
+            if (!(oldSource == null || a.getSource() == oldSource))
+                continue;
             removeAbility(ability);
             Ability newAbility = new Ability(ability);
             newAbility.setSource(newSource);
             addAbility(newAbility);
         }
 
-        for (Modifier modifier : transform(getModifiers(null, null, null),
-                m -> oldSource == null || m.getSource() == oldSource)) {
+        for (Modifier modifier : getModifiers(null, null, null)) {
+            if (!(m -> oldSource == null || m.getSource() == oldSource))
+                continue;
             removeModifier(modifier);
             Modifier newModifier = new Modifier(modifier);
             newModifier.setSource(newSource);

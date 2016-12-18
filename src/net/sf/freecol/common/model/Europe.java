@@ -387,7 +387,8 @@ public class Europe extends UnitLocation
         Player player = getOwner();
         Market market = player.getMarket();
         int price = 0;
-        for (AbstractGoods ag : transform(goods, AbstractGoods::isPositive)) {
+        for (AbstractGoods ag : goods) {
+            if (!ag.isPositive()) continue;
             GoodsType goodsType = ag.getType();
             // Refuse to trade in boycotted goods
             if (!player.canTrade(goodsType)) {
@@ -635,8 +636,9 @@ public class Europe extends UnitLocation
         // @compat 0.10.1
         // Sometimes units in a Europe element have a missing
         // location.  It should always be this Europe instance.
-        for (Unit u : transform(getUnits(), isNull(Unit::getLocation))) {
-            u.setLocationNoUpdate(this);
+        for (Unit u : getUnits()) {
+            if (u.getLocation() == null)
+                u.setLocationNoUpdate(this);
         }
         // end @compat
     }

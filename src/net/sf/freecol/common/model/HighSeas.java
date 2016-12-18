@@ -187,7 +187,9 @@ public class HighSeas extends UnitLocation {
     protected void writeChildren(FreeColXMLWriter xw) throws XMLStreamException {
         super.writeChildren(xw);
 
-        for (Location destination : transform(destinations, isNotNull())) {
+        for (Location destination : destinations) {
+            if (destination == null) continue;
+
             xw.writeStartElement(DESTINATION_TAG);
 
             xw.writeLocationAttribute(ID_ATTRIBUTE_TAG, destination);

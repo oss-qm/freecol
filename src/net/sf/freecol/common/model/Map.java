@@ -2274,8 +2274,8 @@ public class Map extends FreeColGameObject implements Location {
                 // relies on the map being attached to the game, which
                 // is not necessarily true in the test suite.
                 Position position = new Position(tile.getX(), tile.getY());
-                for (Position p : transform(Direction.values(), alwaysTrue(),
-                        d -> new Position(position, d))) {
+                for (Direction d : Direction.values()) {
+                    Position p = new Position(position, d);
                     if (isValid(p)) {
                         Tile t = getTile(p);
                         if (t.getHighSeasCount() < 0) {
@@ -2322,7 +2322,9 @@ public class Map extends FreeColGameObject implements Location {
      * Fix the region parent/child relationships.
      */
     public void fixupRegions() {
-        for (Region r : transform(regions, r -> !r.isPacific())) {
+        for (Region r : regions) {
+            if (r.isPacific()) continue;
+
             Region p = r.getParent();
             // Mountains and Rivers were setting their parent to the
             // discoverable land region they are created within.  Move them

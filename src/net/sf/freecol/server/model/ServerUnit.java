@@ -289,10 +289,11 @@ public class ServerUnit extends Unit implements ServerModelObject {
         }
 
         // Cancel other co-located improvements of the same type
-        for (Unit unit : transform(tile.getUnits(),
-                u -> (u.getWorkImprovement() != null
+        for (Unit unit : tile.getUnits()) {
+            if (!(u.getWorkImprovement() != null
                     && u.getWorkImprovement().getType() == ti.getType()
-                    && u.getState() == UnitState.IMPROVING))) {
+                    && u.getState() == UnitState.IMPROVING)) continue;
+
             unit.setWorkLeft(-1);
             unit.setWorkImprovement(null);
             unit.setState(UnitState.ACTIVE);
@@ -378,11 +379,13 @@ public class ServerUnit extends Unit implements ServerModelObject {
                 || tile.getColony() != null
                 || tile.getFirstUnit() == null
                 || (enemy = tile.getFirstUnit().getOwner()) == player) continue;
-            for (Unit enemyUnit : transform(tile.getUnits(), u ->
-                    (u.isNaval()
+
+            for (Unit u : tile.getUnits()) {
+                    (!(u.isNaval()
                         && ((u.isOffensiveUnit() && player.atWarWith(enemy))
-                            || pirate || u.hasAbility(Ability.PIRACY))))) {
-                double power = combatModel.getOffencePower(enemyUnit, this);
+                            || pirate || u.hasAbility(Ability.PIRACY)))) continue;
+
+                double power = combatModel.getOffencePower(u, this);
                 totalAttackPower += power;
                 if (power > attackPower) {
                     attacker = enemyUnit;
@@ -650,8 +653,9 @@ public class ServerUnit extends Unit implements ServerModelObject {
      * @param cs A {@code ChangeSet} to update.
      */
     private void csActivateSentries(Tile tile, ChangeSet cs) {
-        for (Unit u : transform(tile.getUnits(),
-                                matchKey(UnitState.SENTRY, Unit::getState))) {
+        for (Unit u : tile.getUnits()) {
+            if (u.getState() != UnitState.SENTRY) continue;
+
             u.setState(UnitState.ACTIVE);
             cs.add(See.perhaps(), u);
         }
@@ -775,8 +779,9 @@ public class ServerUnit extends Unit implements ServerModelObject {
 
             // Check for new contacts.
             Set<ServerPlayer> pending = new HashSet<>();
-            for (Tile t : transform(newTile.getSurroundingTiles(1, 1),
-                                    nt -> nt != null && nt.isLand())) {
+            for (Tile t : newTile.getSurroundingTiles(1, 1)) {
+                if (!(nt != null && nt.isLand())) continue;
+
                 settlement = t.getSettlement();
                 ServerPlayer other = (settlement != null)
                     ? (ServerPlayer)settlement.getOwner()
@@ -846,10 +851,11 @@ public class ServerUnit extends Unit implements ServerModelObject {
                 csActivateSentries(t, cs);
             }
         } else { // water
-            for (Tile t : transform(newTile.getSurroundingTiles(1, 1),
-                    nt -> (nt != null && !nt.isLand()
+            for (Tile t : newTile.getSurroundingTiles(1, 1)) {
+                if (!(nt != null && !nt.isLand()
                         && nt.getFirstUnit() != null
-                        && nt.getFirstUnit().getOwner() != serverPlayer))) {
+                        && nt.getFirstUnit().getOwner() != serverPlayer)) continue;
+
                 csActivateSentries(t, cs);
             }
         }
@@ -988,8 +994,8 @@ public class ServerUnit extends Unit implements ServerModelObject {
                     setWorkLeft(turns);
                     if (ti.isRoad() && ti.isComplete()) {
                         ti.updateRoadConnections(true);
-                        for (Tile t : transform(loc.getTile().getSurroundingTiles(1,1),
-                                                Tile::hasRoad)) {
+                        for (Tile t : loc.getTile().getSurroundingTiles(1,1)) {
+                            if (!t.hasRoad()) continue;
                             cs.add(See.perhaps(), t);
                         }
                         locDirty = true;
