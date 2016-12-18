@@ -526,7 +526,8 @@ public final class InGameController extends Controller {
 
         if (teleport) { // Teleport in the units.
             Set<Tile> seen = new HashSet<>();
-            for (Unit u : transform(serverPlayer.getUnitList(), Unit::isNaval)) {
+            for (Unit u : serverPlayer.getUnitList()) {
+                if (!u.isNaval()) continue;
                 Tile entry = u.getEntryLocation().getTile();
                 u.setLocation(entry);//-vis(serverPlayer)
                 u.setWorkLeft(-1);
@@ -541,7 +542,8 @@ public final class InGameController extends Controller {
             serverPlayer.invalidateCanSeeTiles();//+vis(serverPlayer)
         } else {
             // Put navy on the high seas, with 1-turn sail time
-            for (Unit u : transform(serverPlayer.getUnitList(), Unit::isNaval)) {
+            for (Unit u : serverPlayer.getUnitList()) {
+                if (!u.isNaval()) continue;
                 u.setWorkLeft(1);
                 u.setDestination(u.getEntryLocation());
                 u.setLocation(u.getOwner().getHighSeas());//-vis: safe!map
@@ -969,8 +971,8 @@ public final class InGameController extends Controller {
             settlement.equipForRole(unit, spec.getDefaultRole(), 0);
 
             // Coronado
-            for (ServerPlayer sp : transform(game.getConnectedPlayers(serverPlayer),
-                    p -> p.hasAbility(Ability.SEE_ALL_COLONIES))) {
+            for (ServerPlayer sp : game.getConnectedPlayers(serverPlayer)) {
+                if (!sp.hasAbility(Ability.SEE_ALL_COLONIES)) continue;
                 cs.add(See.only(sp), sp.exploreForSettlement(settlement));//-vis(sp)
                 sp.invalidateCanSeeTiles();//+vis(sp)
                 cs.addMessage(sp,
@@ -1239,9 +1241,8 @@ public final class InGameController extends Controller {
 
         if (settlement != null && serverPlayer.isEuropean()) {
             // Define Coronado to make all colony-owned tiles visible
-            for (ServerPlayer sp
-                     : transform(getGame().getConnectedPlayers(serverPlayer),
-                         p -> p.hasAbility(Ability.SEE_ALL_COLONIES))) {
+            for (ServerPlayer sp : getGame().getConnectedPlayers(serverPlayer)) {
+                if (!sp.hasAbility(Ability.SEE_ALL_COLONIES)) continue;
                 sp.exploreTile(tile);
                 cs.add(See.only(sp), tile);
                 sp.invalidateCanSeeTiles();//+vis(sp)
@@ -1386,8 +1387,8 @@ public final class InGameController extends Controller {
             ((ServerUnit)u).csRemove(See.only(serverPlayer), null, cs);
             lost = true;
         }
-        for (Unit u : transform(serverPlayer.getHighSeas().getUnitList(),
-                                matchKey(europe, Unit::getDestination))) {
+        for (Unit u : serverPlayer.getHighSeas().getUnitList()) {
+            if (europe != u.getDestination()) continue;
             seized.addStringTemplate(u.getLabel());
             ((ServerUnit)u).csRemove(See.only(serverPlayer), null, cs);
             lost = true;
@@ -1420,14 +1421,15 @@ public final class InGameController extends Controller {
         // Generalized continental army muster.
         // Do not use UnitType.getTargetType.
         java.util.Map<UnitType, List<Unit>> unitMap = new HashMap<>();
-        for (Colony colony : transform(serverPlayer.getColonies(),
-                                       c -> c.getSoL() > 50)) {
+        for (Colony colony : serverPlayer.getColonies()) {
+            if (!(colony.getSoL() > 50)) continue;
             List<Unit> allUnits = colony.getAllUnitsList();
             int limit = (allUnits.size() + 2) * (colony.getSoL() - 50) / 100;
 
             unitMap.clear();
-            for (Unit unit : transform(allUnits,
-                    u -> u.getUnitChange(UnitChangeType.INDEPENDENCE) != null)) {
+            for (Unit unit : allUnits) {
+                if (unit.getUnitChange(UnitChangeType.INDEPENDENCE) == null)
+                    continue;
                 appendToMapList(unitMap, unit.getType(), unit);
             }
             for (Entry<UnitType, List<Unit>> entry : unitMap.entrySet()) {
@@ -2193,8 +2195,8 @@ public final class InGameController extends Controller {
         serverPlayer.invalidateCanSeeTiles();//+vis(serverPlayer)
 
         // No one likes the undead.
-        for (Player p : transform(game.getLivePlayers(serverPlayer),
-                                  p2 -> serverPlayer.hasContacted(p2))) {
+        for (Player p : game.getLivePlayers(serverPlayer)) {
+            if (!serverPlayer.hasContacted(p)) continue;
             serverPlayer.csChangeStance(Stance.WAR, (ServerPlayer)p, true, cs);
         }
 
@@ -2510,9 +2512,9 @@ public final class InGameController extends Controller {
 
         // Update with colony tile, and tiles now owned.
         cs.add(See.only(serverPlayer), tile);
-        for (Tile t : transform(tile.getSurroundingTiles(1, colony.getRadius()),
-                t2 -> (t2.getOwningSettlement() == colony
-                    && !ownedTiles.contains(t2)))) {
+        for (Tile t : tile.getSurroundingTiles(1, colony.getRadius())) {
+            if (!(t.getOwningSettlement() == colony && !ownedTiles.contains(t)))
+                continue;
             cs.add(See.perhaps(), t);
         }
 
@@ -3538,8 +3540,8 @@ public final class InGameController extends Controller {
         if (getGame().getSpecification()
             .getBoolean(GameOptions.CLEAR_HAMMERS_ON_CONSTRUCTION_SWITCH)
             && current != colony.getCurrentlyBuilding()) {
-            for (AbstractGoods ag : transform(current.getRequiredGoods(),
-                    g -> !g.getType().isStorable())) {
+            for (AbstractGoods ag : current.getRequiredGoods()) {
+                if (ag.getType().isStorable()) continue;
                 colony.removeGoods(ag.getType());
             }
         }

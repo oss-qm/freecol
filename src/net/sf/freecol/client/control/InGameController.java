@@ -3775,11 +3775,12 @@ public final class InGameController extends FreeColClientHolder {
         boolean update = false;
         if (getClientOptions().getBoolean(ClientOptions.AUTOLOAD_EMIGRANTS)
             && unit.isInEurope()) {
-            for (Unit u : transform(unit.getOwner().getEurope().getUnitList(),
-                    u -> (!u.isNaval()
+            for (Unit u : unit.getOwner().getEurope().getUnitList()) {
+                if ((!u.isNaval()
                         && u.getState() == UnitState.SENTRY
-                        && unit.canAdd(u)))) {
-                update |= askEmbark(u, unit);
+                        && unit.canAdd(u))) {
+                    update |= askEmbark(u, unit);
+                }
             }
         }
 
