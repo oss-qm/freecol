@@ -77,8 +77,9 @@ public final class ReportIndianPanel extends ReportPanel {
         reportPanel.setLayout(new MigLayout("wrap 6, fillx, insets 0",
                                             "[]20px[center]", "[top]"));
         boolean needsSeperator = false;
-        for (Player opponent : CollectionUtils.transform(getGame().getLiveNativePlayers(),
-                                         p -> player.hasContacted(p))) {
+        for (Player opponent : getGame().getLiveNativePlayers()) {
+            if (!player.hasContacted(opponent)) continue;
+
             if (needsSeperator) {
                 reportPanel.add(new JSeparator(JSeparator.HORIZONTAL),
                     "newline 20, span, growx, wrap 20");

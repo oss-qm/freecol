@@ -23,6 +23,7 @@ import java.awt.Component;
 import java.awt.event.ActionListener;
 import java.io.File;
 import java.util.logging.Logger;
+import java.util.Map;
 
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
@@ -37,6 +38,7 @@ import net.sf.freecol.client.FreeColClient;
 import net.sf.freecol.client.gui.SwingGUI;
 import net.sf.freecol.common.i18n.Messages;
 import net.sf.freecol.common.io.FreeColDirectories;
+import net.sf.freecol.common.model.Nation;
 import net.sf.freecol.common.model.NationOptions;
 import net.sf.freecol.common.model.NationOptions.NationState;
 import net.sf.freecol.common.model.Specification;
@@ -232,19 +234,22 @@ public final class StartGamePanel extends FreeColPanel {
      */
     private boolean checkVictoryConditions() {
         Specification spec = getSpecification();
-        if (singlePlayerGame
+
+        if (!(singlePlayerGame
             && spec.getBoolean(GameOptions.VICTORY_DEFEAT_EUROPEANS)
-            && !spec.getBoolean(GameOptions.VICTORY_DEFEAT_REF)) {
-            int n = count(getGame().getNationOptions().getNations().entrySet(),
-                          e -> (e.getKey().getType().isEuropean()
-                              && !e.getKey().isUnknownEnemy()
-                              && e.getValue() != NationState.NOT_AVAILABLE));
-            if (n == 0) {
-                getGUI().showInformationMessage("info.noEuropeans");
-                return false;
-            }
+            && !spec.getBoolean(GameOptions.VICTORY_DEFEAT_REF)))
+            return true;
+
+        for (Map.Entry<Nation,NationState> e :
+                getGame().getNationOptions().getNations().entrySet()) {
+            Nation nation = e.getKey();
+            if (nation.getType().isEuropean() && !nation.isUnknownEnemy()
+                    && e.getValue() != NationState.NOT_AVAILABLE)
+                return true;
         }
-        return true;
+
+        getGUI().showInformationMessage("info.noEuropeans");
+        return false;
     }
 
     /**

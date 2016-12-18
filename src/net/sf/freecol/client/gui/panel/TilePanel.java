@@ -137,9 +137,9 @@ public final class TilePanel extends FreeColPanel {
             final UnitType colonist = spec.getDefaultUnitType();
             JLabel label = null;
             boolean first = true;
-            for (AbstractGoods output
-                     : iterable(flatten(tileType.getAvailableProductionTypes(false),
-                                        ProductionType::getOutputs))) {
+            for (ProductionType pt : tileType.getAvailableProductionTypes(false)) {
+                for (AbstractGoods output : pt.getOutputs()) {
+
                 GoodsType gt = output.getType();
                 int amount = output.getAmount();
                 if (tile.getTileItemContainer() != null) {
@@ -185,7 +185,7 @@ public final class TilePanel extends FreeColPanel {
                             + "/" + Messages.getName(expert));
                     }
                 }
-            }
+            }}
         }
 
         Player debugPlayer = FreeColDebugger.debugDisplayColonyValuePlayer();

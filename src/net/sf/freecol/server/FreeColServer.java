@@ -702,8 +702,8 @@ public final class FreeColServer {
 
         switch (this.serverState) {
         case PRE_GAME: // Send the updated game to the clients.
-            for (Player player : transform(game.getLivePlayers(),
-                                           p -> !p.isAI())) {
+            for (Player player : game.getLivePlayers()) {
+                if (player.isAI()) continue;
                 ServerPlayer serverPlayer = (ServerPlayer)player;
                 serverPlayer.invalidateCanSeeTiles();
                 ChangeSet cs = new ChangeSet();

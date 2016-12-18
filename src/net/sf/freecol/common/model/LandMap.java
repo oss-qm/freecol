@@ -311,11 +311,14 @@ public class LandMap {
      */
     private boolean hasAdjacentLand(int x, int y) {
         final Position p = new Position(x, y);
-        final Predicate<Direction> landPred = d -> {
+
+        for (Direction d : Direction.values()) {
             Position n = new Position(p, d);
-            return isLand(n.getX(), n.getY());
-        };
-        return any(Direction.values(), landPred);
+            if (isLand(n.getX(), n.getY()))
+                return true;
+        }
+
+        return false;
     }
 
     /**
@@ -366,13 +369,16 @@ public class LandMap {
                     2 * distanceToEdge - Math.min(y, getHeight()-y))));
 
         final Position p = new Position(x, y);
-        final Predicate<Direction> landPred = d -> {
+
+        int cnt = 0;
+        for (Direction d : Direction.values()) {
             Position n = new Position(p, d);
-            return isLand(n.getX(), n.getY());
-        };
-        if (count(Direction.values(), landPred) > r) {
-            setLand(x, y, distanceToEdge, random);
+            if (isLand(n.getX(), n.getY()))
+                cnt++;
         }
+
+        if (cnt > r)
+            setLand(x, y, distanceToEdge, random);
     }
 
     /**

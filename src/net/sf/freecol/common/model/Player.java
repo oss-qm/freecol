@@ -1346,11 +1346,12 @@ public class Player extends FreeColGameObject implements Nameable {
      */
     protected boolean recalculateBellsBonus() {
         boolean ret = false;
-        for (Ability ability : transform(getAbilities(Ability.ADD_TAX_TO_BELLS),
-                                         isNotNull(Ability::getSource))) {
+        List<Modifier> modlist = getModifiers("model.goods.bells");
+        for (Ability ability : getAbilities(Ability.ADD_TAX_TO_BELLS)) {
             FreeColObject source = ability.getSource();
-            for (Modifier modifier : transform(getModifiers("model.goods.bells"),
-                                               matchKeyEquals(source, Modifier::getSource))) {
+            if (source == null) continue;
+            for (Modifier modifier : modlist) {
+                if (!Utils.equals(source, modifier.getSource())) continue;
                 modifier.setValue(tax);
                 ret = true;
             }
@@ -1580,7 +1581,9 @@ public class Player extends FreeColGameObject implements Nameable {
         java.util.Map<UnitType, HashMap<String, Integer>> unitHash
             = new HashMap<>();
         List<AbstractUnit> units = new ArrayList<>();
-        for (Unit unit : transform(getUnits(), Unit::isOffensiveUnit)) {
+        for (Unit unit : getUnits()) {
+            if (!unit.isOffensiveUnit()) continue;
+
             UnitType unitType = defaultType;
             if (unit.getType().getOffence() > 0
                 || unit.hasAbility(Ability.EXPERT_SOLDIER)) {
@@ -3625,8 +3628,8 @@ public class Player extends FreeColGameObject implements Nameable {
 
         Set<GoodsType> highProduction = new HashSet<>();
         Set<GoodsType> goodProduction = new HashSet<>();
-        for (Tile t : transform(tile.getSurroundingTiles(1,1),
-                                isNotNull(Tile::getType))) {
+        for (Tile t : tile.getSurroundingTiles(1,1)) {
+            if (t.getType() == null) continue;
             if (t.getSettlement() != null) { // Should not happen, tested above
                 values.set(ColonyValueCategory.A_OVERRIDE.ordinal(),
                            NoValueType.SETTLED.getDouble());
@@ -3670,9 +3673,9 @@ public class Player extends FreeColGameObject implements Nameable {
                 }
             }
 
-            for (Unit u : transform(t.getUnits(),
-                                    u -> !owns(u) && u.isOffensiveUnit()
-                                        && atWarWith(u.getOwner()))) {
+            for (Unit u : t.getUnits()) {
+                if (!(!owns(u) && u.isOffensiveUnit() && atWarWith(u.getOwner())))
+                    continue;
                 values.set(ColonyValueCategory.A_ADJACENT.ordinal(),
                     values.get(ColonyValueCategory.A_ADJACENT.ordinal())
                     * MOD_ENEMY_UNIT[1]);
@@ -3716,9 +3719,9 @@ public class Player extends FreeColGameObject implements Nameable {
                     }
                 }
 
-                for (Unit u : transform(t.getUnits(),
-                                        u -> (!owns(u) && u.isOffensiveUnit()
-                                            && atWarWith(u.getOwner())))) {
+                for (Unit u : t.getUnits()) {
+                    if (!((!owns(u) && u.isOffensiveUnit() && atWarWith(u.getOwner()))))
+                        continue;
                     values.set(ColonyValueCategory.A_NEARBY.ordinal(),
                         values.get(ColonyValueCategory.A_NEARBY.ordinal())
                         * MOD_ENEMY_UNIT[radius]);
@@ -3990,14 +3993,15 @@ public class Player extends FreeColGameObject implements Nameable {
 
         if (xw.validFor(this)) {
 
-            for (Ability ability : transform(getSortedAbilities(),
-                                             Ability::isIndependent)) {
+            for (Ability ability : getSortedAbilities()) {
+                if (!ability.isIndependent()) continue;
                 ability.toXML(xw);
             }
 
             final int turn = getGame().getTurn();
-            for (Modifier modifier : transform(getSortedModifiers(), m ->
-                    m.isTemporary() && !m.isOutOfDate(turn))) {
+            for (Modifier modifier : getSortedModifiers()) {
+                if (!(modifier.isTemporary() && !modifier.isOutOfDate(turn)))
+                    continue;
                 modifier.toXML(xw);
             }
 
@@ -4197,7 +4201,8 @@ public class Player extends FreeColGameObject implements Nameable {
         // @compat 0.10.7
         // Fixup production modifiers deriving from founding fathers
         final Specification spec = getSpecification();
-        for (Modifier m : transform(getModifiers(), isNotNull(Modifier::getSource))) {
+        for (Modifier m : getModifiers()) {
+            if (m.getSource() == null) continue;
             String type = spec.fatherGoodsFixMap.get(m.getSource().getId());
             if (type != null && m.getId().equals(type)) {
                 m.requireNegatedPersonScope();

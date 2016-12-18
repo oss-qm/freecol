@@ -178,8 +178,8 @@ public final class Server extends Thread {
      *     to send to.
      */
     public void sendToAll(DOMMessage message, Connection exceptConnection) {
-        for (Connection conn : transform(connections.values(),
-                                         c -> c != exceptConnection)) {
+        for (Connection conn : connections.values()) {
+            if (conn == exceptConnection) continue;
             if (conn.isAlive()) {
                 try {
                     conn.sendAndWait(message);
@@ -260,11 +260,13 @@ public final class Server extends Thread {
             logger.fine("Wait for Server.run to complete.");
         }
 
-        for (Connection c : transform(this.connections.values(),
-                                      Connection::isAlive)) {
-            c.sendDisconnect();
-            c.close();
+        for (Connection c : this.connections.values()) {
+            if (c.isAlive()) {
+                c.sendDisconnect();
+                c.close();
+            }
         }
+
         this.connections.clear();
 
         this.freeColServer.removeFromMetaServer();

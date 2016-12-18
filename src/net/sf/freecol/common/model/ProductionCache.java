@@ -25,7 +25,6 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.function.Function;
 
 import net.sf.freecol.common.option.GameOptions;
 import static net.sf.freecol.common.util.CollectionUtils.*;
@@ -144,18 +143,17 @@ public class ProductionCache {
             ProductionInfo info = null;
             if (consumer instanceof Building) {
                 Building building = (Building)consumer;
-                final Function<AbstractGoods, AbstractGoods> mapper = ag -> {
+                List<AbstractGoods> outputs = new ArrayList<>();
+                for (AbstractGoods ag : building.getOutputs()) {
                     GoodsType outputType = ag.getType();
                     AbstractGoods newOutput
                         = new AbstractGoods(production.get(outputType));
                     newOutput.setAmount(newOutput.getAmount()
                         + getGoodsCount(outputType));
-                    return newOutput;
-                };
-                List<AbstractGoods> outputs = transform(building.getOutputs(),
-                                                        alwaysTrue(), mapper);
-                goodsUsed.addAll(transform(outputs, alwaysTrue(),
-                                           AbstractGoods::getType));
+
+                    outputs.add(newOutput);
+                    goodsUsed.add(outputType);
+                }
                 info = building.getAdjustedProductionInfo(goods, outputs);
             } else if (consumer instanceof Unit) {
                 info = ((Unit)consumer).getProductionInfo(goods);

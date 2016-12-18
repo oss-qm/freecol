@@ -106,8 +106,8 @@ public class ServerColony extends Colony implements ServerModelObject {
 
         Building building;
         List<BuildingType> buildingTypes = spec.getBuildingTypeList();
-        for (BuildingType buildingType : transform(buildingTypes, bt ->
-                bt.isAutomaticBuild() || isAutomaticBuild(bt))) {
+        for (BuildingType buildingType : buildingTypes) {
+            if (!buildingType.isAutomaticBuild() || isAutomaticBuild(buildingType)) continue;
             addBuilding(new ServerBuilding(getGame(), this, buildingType));
         }
         // Set up default production queues.  Do this after calling
@@ -120,8 +120,9 @@ public class ServerColony extends Colony implements ServerModelObject {
             buildQueue.add(spec.getBuildingType("model.building.docks"));
             addPortAbility();
         }
-        for (UnitType unitType : transform(spec.getUnitTypesWithAbility(Ability.BORN_IN_COLONY),
-                                           UnitType::needsGoodsToBuild)) {
+
+        for (UnitType unitType : spec.getUnitTypesWithAbility(Ability.BORN_IN_COLONY)) {
+            if (!unitType.needsGoodsToBuild()) continue;
             populationQueue.add(unitType);
         }
     }
@@ -274,10 +275,10 @@ public class ServerColony extends Colony implements ServerModelObject {
             case NONE:
                 return buildable;
             case NOT_BUILDING:
-                for (GoodsType goodsType : transform(spec.getGoodsTypeList(),
-                        gt -> (gt.isBuildingMaterial()
-                            && !gt.isStorable()
-                            && getTotalProductionOf(gt) > 0))) {
+                for (GoodsType goodsType : spec.getGoodsTypeList()) {
+                    if (!((goodsType.isBuildingMaterial()
+                            && !goodsType.isStorable()
+                            && getTotalProductionOf(goodsType) > 0))) continue;
                     // Production is idle
                     cs.addMessage(owner,
                         new ModelMessage(MessageType.WARNING,
@@ -364,8 +365,8 @@ public class ServerColony extends Colony implements ServerModelObject {
             oldOwner.reassignTiles(owned, this);//-til
 
             // Make sure units are ejected when a tile is claimed.
-            for (Tile t : transform(owned,
-                    t2 -> t2 != tile && t2.getOwningSettlement() != this)) {
+            for (Tile t : owned) {
+                if (!(t != tile && t.getOwningSettlement() != this)) continue;
                 ColonyTile ct = getColonyTile(t);
                 ejectUnits(ct, ct.getUnits());
             }
@@ -556,10 +557,11 @@ public class ServerColony extends Colony implements ServerModelObject {
                 for (AbstractGoods goods : productionInfo.getProduction()) {
                     UnitType expert = spec.getExpertForProducing(goods.getType());
                     int experience = goods.getAmount() / workLocation.getUnitCount();
-                    for (Unit unit : transform(workLocation.getUnits(),
-                            u -> u.getExperienceType() == goods.getType()
-                            && u.getUnitChange(UnitChangeType.EXPERIENCE,
-                                               expert) != null)) {
+                    for (Unit unit : workLocation.getUnits()) {
+                        if (!(unit.getExperienceType() == goods.getType()
+                            && unit.getUnitChange(UnitChangeType.EXPERIENCE,
+                                               expert) != null)) continue;
+
                         unit.setExperience(unit.getExperience() + experience);
                         cs.addPartial(See.only(owner), unit, "experience");
                     }
@@ -751,8 +753,9 @@ public class ServerColony extends Colony implements ServerModelObject {
         // levels that will be exceeded next turn
         int limit = getWarehouseCapacity();
         int adjustment = limit / GoodsContainer.CARGO_SIZE;
-        for (Goods goods : transform(getCompactGoods(),
-                                     AbstractGoods::isStorable)) {
+        for (Goods goods : getCompactGoods()) {
+            if (!goods.isStorable()) continue;
+
             GoodsType type = goods.getType();
             ExportData exportData = getExportData(type);
             int low = exportData.getLowLevel() * adjustment;
@@ -816,8 +819,8 @@ public class ServerColony extends Colony implements ServerModelObject {
         }
 
         // Check for free buildings
-        for (BuildingType buildingType : transform(spec.getBuildingTypeList(),
-                bt -> isAutomaticBuild(bt))) {
+        for (BuildingType buildingType : spec.getBuildingTypeList()) {
+            if (!isAutomaticBuild(buildingType)) continue;
             buildBuilding(new ServerBuilding(getGame(), this,
                                              buildingType));//-til
         }
@@ -831,7 +834,8 @@ public class ServerColony extends Colony implements ServerModelObject {
         // production probably means we forgot to reset the build
         // queue.  Thus, if hammers are being produced it is worth
         // warning about, but not if producing tools.
-        for (BuildQueue<?> queue : transform(queues, BuildQueue::isEmpty)) {
+        for (BuildQueue<?> queue : queues) {
+            if (queue.isEmpty()) continue;
             if (none(spec.getGoodsTypeList(), g ->
                     (g.isBuildingMaterial()
                         && !g.isRawMaterial()
@@ -868,8 +872,8 @@ public class ServerColony extends Colony implements ServerModelObject {
         // before checking for completion of training.  This is a rare
         // case so it is not worth reordering the work location calls
         // to csNewTurn.
-        for (WorkLocation workLocation : transform(getCurrentWorkLocations(),
-                                                   WorkLocation::canTeach)) {
+        for (WorkLocation workLocation : getCurrentWorkLocations()) {
+            if (!workLocation.canTeach()) continue;
             ServerBuilding building = (ServerBuilding)workLocation;
             for (Unit teacher : building.getUnits()) {
                 building.csCheckTeach(teacher, cs);

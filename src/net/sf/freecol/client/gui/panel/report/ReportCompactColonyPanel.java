@@ -223,8 +223,10 @@ public final class ReportCompactColonyPanel extends ReportPanel
             // FIXME: this needs to be merged with the requirements
             // checking code, but that in turn should be opened up
             // so the AI can use it...
-            for (WorkLocation wl :transform(colony.getAvailableWorkLocations(),
-                                            WorkLocation::canBeWorked)) {
+            for (WorkLocation wl : colony.getAvailableWorkLocations()) {
+                if (!wl.canBeWorked())
+                    continue;
+
                 if (wl.canTeach()) {
                     for (Unit u : wl.getUnits()) {
                         teachers.put(u, u.getNeededTurnsOfTraining()
@@ -585,12 +587,13 @@ public final class ReportCompactColonyPanel extends ReportPanel
                 c = cAlarm;
                 if (n == 1) {
                     TileImprovementSuggestion tis = first(s.tileSuggestions);
-                    if (any(tis.tile.getUnits(),
-                            u -> (u.getState() == Unit.UnitState.IMPROVING
+                    for (Unit u : tis.tile.getUnits()) {
+                        if (u.getState() == Unit.UnitState.IMPROVING
                                 && u.getWorkImprovement() != null
-                                && u.getWorkImprovement().getType()
-                                    == tis.tileImprovementType))) {
-                        c = cWarn; // Work is underway
+                                && u.getWorkImprovement().getType() == tis.tileImprovementType) {
+                            c = cWarn; // Work is underway
+                            break;
+                        }
                     }
                     t = stpld("report.colony.tile." + ti.getSuffix()
                               + ".specific")

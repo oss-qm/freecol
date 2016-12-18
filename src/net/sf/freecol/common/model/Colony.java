@@ -410,9 +410,10 @@ public class Colony extends Settlement implements Nameable, TradeLocation {
         // and which are underproduced at present.
         Set<GoodsType> food = new HashSet<>();
         Set<GoodsType> nonFood = new HashSet<>();
-        for (AbstractGoods ag : transform(unit.getType().getConsumedGoods(),
-                g -> productionCache.getNetProductionOf(g.getType())
-                        < g.getAmount())) {
+
+        for (AbstractGoods ag : unit.getType().getConsumedGoods()) {
+            if (!(productionCache.getNetProductionOf(ag.getType()) < ag.getAmount()))
+                continue;
             if (ag.isFoodType()) {
                 food.addAll(ag.getType().getEquivalentTypes());
             } else {
@@ -2278,8 +2279,9 @@ loop:   for (WorkLocation wl : getWorkLocationsForProducing(goodsType)) {
 
         // We have an expert not doing the job of their expertise.
         // Check if there is a non-expert doing the job instead.
-        for (Unit nonExpert : transform(getUnits(), u ->
-                u.getWorkType() == expertise && u.getType() != expertType)) {
+        for (Unit nonExpert : getUnits()) {
+            if (!(nonExpert.getWorkType() == expertise && nonExpert.getType() != expertType))
+                continue;
 
             // We have found a unit of a different type doing the
             // job of this expert's expertise now check if the

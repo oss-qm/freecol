@@ -365,8 +365,8 @@ public class ServerGame extends Game implements ServerModelObject {
         boolean ready = false;
         lb.add("Spanish succession scores[");
         final String sep = ", ";
-        for (Player player : transform(getLiveEuropeanPlayers(),
-                                       p -> !p.isREF())) {
+        for (Player player : getLiveEuropeanPlayers()) {
+            if (player.isREF()) continue;
             // Has anyone met the triggering limit?
             boolean ok = strongLimit.evaluate(player);
             ready |= ok;
