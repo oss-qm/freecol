@@ -98,7 +98,8 @@ public class Occupation {
 
         // Try the available production types for the best production.
         final Colony colony = wl.getColony();
-        for (ProductionType pt : transform(productionTypes, isNotNull())) {
+        for (ProductionType pt : productionTypes) {
+            if (pt == null) continue;
             lb.add("\n      try=", pt);
 
             for (GoodsType gt : workTypes) {

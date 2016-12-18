@@ -262,8 +262,8 @@ public class AIColony extends AIObject implements PropertyChangeListener {
         // included in any new colony plan.
         exploreLCRs();
         stealTiles(lb);
-        for (Tile t : transform(tile.getSurroundingTiles(1,1),
-                t2 -> !player.owns(t2) && player.canClaimForSettlement(t2))) {
+        for (Tile t : tile.getSurroundingTiles(1,1)) {
+            if (player.owns(t) || !player.canClaimForSettlement(t)) continue;
             AIMessage.askClaimLand(t, this, 0);
             if (player.owns(t)) lb.add(", claimed tile ", t);
         }
@@ -359,8 +359,8 @@ public class AIColony extends AIObject implements PropertyChangeListener {
             nextRearrange = Math.max(0, Math.min(nextRearrange, when-1));
         }
         int warehouse = colony.getWarehouseCapacity();
-        for (GoodsType g : transform(spec.getStorableGoodsTypeList(),
-                                     gt -> !gt.isFoodType())) {
+        for (GoodsType g : spec.getStorableGoodsTypeList()) {
+            if (g.isFoodType()) continue;
             int have = colony.getGoodsCount(g);
             int net = colony.getAdjustedNetProductionOf(g);
             if (net >= 0 && (have >= warehouse || g.limitIgnored())) continue;
@@ -445,12 +445,15 @@ public class AIColony extends AIObject implements PropertyChangeListener {
         // Goods required to equip for any available role should only be
         // partially exported.
         final UnitType dUT = spec.getDefaultUnitType(player);
-        for (AbstractGoods ag : transform(flatten(spec.getRoles(),
-                                                  r -> r.isAvailableTo(player, dUT),
-                                                  Role::getRequiredGoods),
-                                          g -> fullExport.contains(g.getType()))) {
-            fullExport.remove(ag.getType());
-            partExport.add(ag.getType());
+        for (Role r : spec.getRoles()) {
+            if (!r.isAvailableTo(player, dUT)) continue;
+
+            for (AbstractGoods ag : r.getRequiredGoods()) {
+                if (!fullExport.contains(ag.getType())) continue;
+
+                fullExport.remove(ag.getType());
+                partExport.add(ag.getType());
+            }
         }
 
         if (colony.getOwner().getMarket() == null) {
@@ -485,8 +488,10 @@ public class AIColony extends AIObject implements PropertyChangeListener {
                 || u.hasAbility(Ability.EXPERT_SCOUT));
         List<Unit> scouts = transform(tile.getUnits(), explorerPred,
                                       Function.identity(), scoutComparator);
-        for (Tile t : transform(tile.getSurroundingTiles(1,1),
-                                Tile::hasLostCityRumour)) {
+
+        for (Tile t : tile.getSurroundingTiles(1,1)) {
+            if (!t.hasLostCityRumour()) continue;
+
             Direction direction = tile.getDirection(t);
             for (;;) {
                 if (scouts.isEmpty()) return;
@@ -580,10 +585,12 @@ public class AIColony extends AIObject implements PropertyChangeListener {
         for (Unit u : colony.getTile().getUnits()) lb.add(" ", u);
         List<GoodsType> libertyGoods = getSpecification()
             .getLibertyGoodsTypeList();
-        out: for (Unit u : transform(colony.getTile().getUnits(),
-                                     Unit::isPerson)) {
-            for (WorkLocation wl : transform(colony.getAvailableWorkLocations(),
-                                             w -> w.canAdd(u))) {
+
+
+        out: for (Unit u : colony.getTile().getUnits()) {
+            if (!u.isPerson()) continue;
+            for (WorkLocation wl : colony.getAvailableWorkLocations()) {
+                if (!wl.canAdd(u)) continue;
                 for (GoodsType type : libertyGoods) {
                     if (wl.getPotentialProduction(type, u.getType()) > 0
                         && AIMessage.askWork(getAIUnit(u), wl)
@@ -1149,14 +1156,12 @@ public class AIColony extends AIObject implements PropertyChangeListener {
         if (isBadlyDefended()) {
             Role role = first(spec.getMilitaryRoles());
             Player owner = colony.getOwner();
-            final Predicate<Unit> rolePred = u ->
-                (u.roleIsAvailable(role)
-                    && (u.hasDefaultRole()
-                        || Role.isCompatibleWith(role, u.getRole())));
-            if (any(colony.getTile().getUnits(), rolePred)) {
-                for (AbstractGoods ag : role.getRequiredGoods()) {
+            for (Unit u : colony.getTile().getUnits()) {
+                if (u.roleIsAvailable(role)
+                        && (u.hasDefaultRole() || Role.isCompatibleWith(role, u.getRole())))
+                for (AbstractGoods ag : role.getRequiredGoods())
                     required.incrementCount(ag.getType(), ag.getAmount());
-                }
+                break;
             }
         }
 
@@ -1238,8 +1243,9 @@ public class AIColony extends AIObject implements PropertyChangeListener {
      */
     public void updateTileImprovementPlans(LogBuilder lb) {
         List<TileImprovementPlan> newPlans = new ArrayList<>();
-        for (WorkLocation wl : transform(colony.getAvailableWorkLocations(),
-                                         w -> w instanceof ColonyTile)) {
+        for (WorkLocation wl : colony.getAvailableWorkLocations()) {
+            if (!(wl instanceof ColonyTile)) continue;
+
             Tile workTile = wl.getWorkTile();
             ColonyTile colonyTile = (ColonyTile)wl;
             if (workTile.getOwningSettlement() != colony

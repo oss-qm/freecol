@@ -559,9 +559,10 @@ public final class Monarch extends FreeColGameObject implements Named {
                 boolean progress = false;
                 // Under capacity?  Add ships until all units can be
                 // transported at once.
-                for (AbstractUnit ship : transform(ivf.getNavalUnitsList(),
-                        u -> u.getType(spec).canCarryUnits()
-                            && u.getType(spec).getSpace() > 0)) {
+                for (AbstractUnit ship : ivf.getNavalUnitsList()) {
+                    if (ship.getType(spec).canCarryUnits() && ship.getType(spec).getSpace() > 0)
+                        continue;
+
                     ship.setNumber(ship.getNumber() + 1);
                     progress = true;
                 }

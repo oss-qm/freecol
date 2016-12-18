@@ -110,16 +110,19 @@ public class ProductionInfo {
      * @return A list of {@code AbstractGoods}.
      */
     public List<AbstractGoods> getConsumptionDeficit() {
-        final Function<AbstractGoods, AbstractGoods> mapper = ag -> {
+        if (this.maximumConsumption.isEmpty())
+            return WorkLocation.EMPTY_LIST;
+
+        List<AbstractGoods> result = new ArrayList<>();
+        for (AbstractGoods ag : this.consumption) {
             AbstractGoods agMax = AbstractGoods.findByType(this.maximumConsumption, ag);
+
             int amount = (agMax == null) ? 0
                 : agMax.getAmount() - ag.getAmount();
-            return (amount == 0) ? null
-                : new AbstractGoods(ag.getType(), amount);
-        };
-        return (this.maximumConsumption.isEmpty()) ? WorkLocation.EMPTY_LIST
-            : transform(this.consumption, alwaysTrue(), mapper,
-                        toListNoNulls());
+            if (amount == 0)
+                result.add(new AbstractGoods(ag.getType(), amount));
+        }
+        return result;
     }
 
     /**

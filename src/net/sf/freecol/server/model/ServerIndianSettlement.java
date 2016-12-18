@@ -413,8 +413,8 @@ public class ServerIndianSettlement extends IndianSettlement
             tile.updateIndianSettlement(newOwner);
 
             int radius = getMissionaryLineOfSight();
-            for (Tile t : transform(tile.getSurroundingTiles(1, radius),
-                    t2 -> newOwner.exploreTile(t2) || !newOwner.canSee(t2))) {
+            for (Tile t : tile.getSurroundingTiles(1, radius)) {
+                if (!(newOwner.exploreTile(t) || !newOwner.canSee(t))) continue;
                 cs.add(See.only(newOwner), t);
             }
             cs.add(See.perhaps().always(newOwner), tile);

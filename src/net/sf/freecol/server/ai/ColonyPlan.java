@@ -683,8 +683,8 @@ public class ColonyPlan {
         }
 
         Player player = colony.getOwner();
-        for (BuildingType type : transform(spec().getBuildingTypeList(),
-                                           bt -> colony.canBuild(bt))) {
+        for (BuildingType type : spec().getBuildingTypeList()) {
+            if (!colony.canBuild(type)) continue;
             boolean expectFail = false;
 
             // Exempt defence and export from the level check.
@@ -710,9 +710,9 @@ public class ColonyPlan {
                 if (!colony.hasAbility(Ability.PRODUCE_IN_WATER)
                     && colony.getTile().isShore()) {
                     int landFood = 0, seaFood = 0;
-                    for (Tile t : transform(colony.getTile().getSurroundingTiles(1,1),
-                            t2 -> (t2.getOwningSettlement() == colony
-                                || player.canClaimForSettlement(t2)))) {
+                    for (Tile t : colony.getTile().getSurroundingTiles(1,1)) {
+                        if (!(t.getOwningSettlement() == colony
+                                || player.canClaimForSettlement(t))) continue;
                         for (AbstractGoods ag : t.getSortedPotential()) {
                             if (ag.isFoodType()) {
                                 if (t.isLand()) {
@@ -791,8 +791,8 @@ public class ColonyPlan {
             wagonNeed = (wagons <= 0) ? 0.0 : (wagons > 3) ? 1.0
                 : wagons / 3.0;
         }
-        for (UnitType unitType : transform(spec().getUnitTypeList(),
-                                           ut -> colony.canBuild(ut))) {
+        for (UnitType unitType : spec().getUnitTypeList()) {
+            if (!colony.canBuild(unitType)) continue;
             if (unitType.hasAbility(Ability.NAVAL_UNIT)) {
                 ; // FIXME: decide to build a ship
             } else if (unitType.isDefensive()) {
@@ -853,8 +853,8 @@ public class ColonyPlan {
                 || colony.getGoodsCount(g) < colony.getWarehouseCapacity();
         };
         forEachMapEntry(production, fullPred, e -> {
-                for (WorkLocation wl : transform(e.getValue().keySet(),
-                        w -> (w.canBeWorked() || w.canAutoProduce()))) {
+                for (WorkLocation wl : e.getValue().keySet()) {
+                    if (!wl.canBeWorked() && !wl.canAutoProduce()) continue;
                     workPlans.add(new WorkLocationPlan(getAIMain(), wl, e.getKey()));
                 }
             });
@@ -1074,7 +1074,8 @@ public class ColonyPlan {
         int bestValue = colony.getAdjustedNetProductionOf(outputType);
         Unit special = null;
         best.clear();
-        for (Unit u : transform(todo, u2 -> wl.canAdd(u2))) {
+        for (Unit u : todo) {
+            if (!wl.canAdd(u)) continue;
             Location oldLoc = u.getLocation();
             GoodsType oldWork = u.getWorkType();
             u.setLocation(wl);
@@ -1522,7 +1523,8 @@ plans:          for (WorkLocationPlan w : getFoodPlans()) {
                 workers.remove(u);
             } else break;
         }
-        for (Unit u : transform(col.getUnits(), u -> !u.hasDefaultRole())) {
+        for (Unit u : col.getUnits()) {
+            if (u.hasDefaultRole()) continue;
             logger.warning("assignWorkers bogus role for " + u);
             u.changeRole(spec().getDefaultRole(), 0);
         }

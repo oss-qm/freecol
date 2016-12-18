@@ -115,10 +115,6 @@ public class EuropeanAIPlayer extends MissionAIPlayer {
 
     private static final Logger logger = Logger.getLogger(EuropeanAIPlayer.class.getName());
 
-    /** Predicate to select units that can be equipped. */
-    private static final Predicate<Unit> equipPred = u ->
-        u.hasDefaultRole() && u.hasAbility(Ability.CAN_BE_EQUIPPED);
-
     /** Predicate to select party modifiers. */
     private static final Predicate<Modifier> partyPred
         = matchKey(Specification.COLONY_GOODS_PARTY_SOURCE,
@@ -462,7 +458,9 @@ public class EuropeanAIPlayer extends MissionAIPlayer {
         if (!europe.isEmpty()
             && scoutsNeeded() > 0
             && randoms[cheatIndex++] < equipScoutCheatPercent) {
-            for (Unit u : transform(europe.getUnits(), equipPred)) {
+            for (Unit u : europe.getUnits()) {
+                if (!(u.hasDefaultRole() && u.hasAbility(Ability.CAN_BE_EQUIPPED)))
+                    continue;
                 cheatGold(europe.priceGoods(u.getGoodsDifference(scoutRole, 1)), lb);
                 if (getAIUnit(u).equipForRole(spec.getRoleWithAbility(Ability.SPEAK_WITH_CHIEF, null))) {
                     lb.add(" to equip scout ", u, ", ");
@@ -475,7 +473,9 @@ public class EuropeanAIPlayer extends MissionAIPlayer {
         if (!europe.isEmpty()
             && pioneersNeeded() > 0
             && randoms[cheatIndex++] < equipPioneerCheatPercent) {
-            for (Unit u : transform(europe.getUnits(), equipPred)) {
+            for (Unit u : europe.getUnits()) {
+                if (!(u.hasDefaultRole() && u.hasAbility(Ability.CAN_BE_EQUIPPED)))
+                    continue;
                 cheatGold(europe.priceGoods(u.getGoodsDifference(pioneerRole, 1)), lb);
                 if (getAIUnit(u).equipForRole(spec.getRoleWithAbility(Ability.IMPROVE_TERRAIN, null))) {
                     lb.add(" to equip pioneer ", u, ", ");
@@ -537,8 +537,8 @@ public class EuropeanAIPlayer extends MissionAIPlayer {
             //   crush the weak
             List<Player> enemies = new ArrayList<>();
             List<Player> preferred = new ArrayList<>();
-            for (Player p : transform(game.getLivePlayers(player),
-                                      x -> player.atWarWith(x))) {
+            for (Player p : game.getLivePlayers(player)) {
+                if (!(player.atWarWith(p))) continue;
                 enemies.add(p);
                 double strength = getStrengthRatio(p);
                 if (strength < 3.0/2.0 && strength > 2.0/3.0) {
@@ -1590,8 +1590,8 @@ public class EuropeanAIPlayer extends MissionAIPlayer {
         double navalAverage = 0.0;
         double navalStrength = 0.0;
         int nPlayers = 0;
-        for (Player p : transform(getGame().getLiveEuropeanPlayers(player),
-                                  x -> !x.isREF())) {
+        for (Player p : getGame().getLiveEuropeanPlayers(player)) {
+            if (p.isREF()) continue;
             NationSummary ns = getNationSummary(p);
             if (ns == null) continue;
             if (p == player) {
