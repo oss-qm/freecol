@@ -103,10 +103,9 @@ public final class ReportMilitaryPanel extends ReportUnitPanel {
      */
     @Override
     protected void gatherData() {
-        for (Unit unit : CollectionUtils.transform(getMyPlayer().getUnitList(),
-                                                   u -> isReportable(u))) {
-            addUnit(unit, unit.getRole().getId());
-        }
+        for (Unit unit : getMyPlayer().getUnitList())
+            if (isReportable(unit))
+                addUnit(unit, unit.getRole().getId());
     }
 
     /**

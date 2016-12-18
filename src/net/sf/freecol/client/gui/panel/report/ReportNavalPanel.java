@@ -68,10 +68,9 @@ public final class ReportNavalPanel extends ReportUnitPanel {
      */
     @Override
     protected void gatherData() {
-        for (Unit unit : CollectionUtils.transform(getMyPlayer().getUnitList(),
-                                                   u -> isReportable(u))) {
-            addUnit(unit, "naval");
-        }
+        for (Unit unit : getMyPlayer().getUnitList())
+            if (isReportable(unit))
+                addUnit(unit, "naval");
     }
 
     /**

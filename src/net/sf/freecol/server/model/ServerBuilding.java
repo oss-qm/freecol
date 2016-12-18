@@ -202,9 +202,9 @@ public class ServerBuilding extends Building implements TurnTaker {
      * @param cs A {@code ChangeSet} to update.
      */
     private void csRepairUnits(ChangeSet cs) {
-        for (Unit unit : transform(getTile().getUnitList(), u ->
-                (u.isDamaged()
-                    && getType().hasAbility(Ability.REPAIR_UNITS, u.getType())))) {
+        for (Unit unit : getTile().getUnitList()) {
+            if (!(unit.isDamaged() && getType().hasAbility(Ability.REPAIR_UNITS, unit.getType())))
+                continue;
             ((ServerUnit) unit).csRepairUnit(cs);
         }
     }

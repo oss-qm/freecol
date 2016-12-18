@@ -31,6 +31,7 @@ import net.sf.freecol.common.model.Modifier.ModifierType;
 import net.sf.freecol.common.model.UnitChangeType.UnitChange;
 import static net.sf.freecol.common.util.CollectionUtils.*;
 import net.sf.freecol.common.util.LogBuilder;
+import net.sf.freecol.common.util.Utils;
 import static net.sf.freecol.common.util.RandomUtils.*;
 
 
@@ -273,9 +274,9 @@ public class SimpleCombatModel extends CombatModel {
 
         // @compat 0.11.0
         // Any modifier with the default modifier index needs to be fixed
-        for (Modifier m : transform(result,
-                matchKeyEquals(Modifier.DEFAULT_MODIFIER_INDEX,
-                               Modifier::getModifierIndex))) {
+        for (Modifier m : result) {
+            if (!Utils.equals(Modifier.DEFAULT_MODIFIER_INDEX, m.getModifierIndex()))
+                continue;
             m.setModifierIndex(Modifier.GENERAL_COMBAT_INDEX);
         }
         // end @compat 0.11.0
@@ -465,9 +466,9 @@ public class SimpleCombatModel extends CombatModel {
 
         // @compat 0.11.0
         // Any modifier with the default modifier index needs to be fixed
-        for (Modifier m : transform(result,
-                matchKeyEquals(Modifier.DEFAULT_MODIFIER_INDEX,
-                               Modifier::getModifierIndex))) {
+        for (Modifier m : result) {
+            if (!Utils.equals(Modifier.DEFAULT_MODIFIER_INDEX, m.getModifierIndex()))
+                continue;
             m.setModifierIndex(Modifier.GENERAL_COMBAT_INDEX);
         }
         // end @compat 0.11.0

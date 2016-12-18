@@ -121,10 +121,14 @@ public class NationOptions extends FreeColSpecObject {
         super(specification);
 
         this.nationalAdvantages = FreeCol.getAdvantages();
-        if (specification != null) {
-            int counter = 0, maxEuropeans = FreeCol.getEuropeanCount();
-            for (Nation nation : transform(specification.getNations(),
-                    n -> !n.isUnknownEnemy() && !n.getType().isREF())) {
+
+        if (specification == null)
+            return;
+
+        int counter = 0, maxEuropeans = FreeCol.getEuropeanCount();
+
+        for (Nation nation : specification.getNations()) {
+            if (!nation.isUnknownEnemy() && !nation.getType().isREF()) {
                 if (nation.getType().isEuropean() && nation.isSelectable()) {
                     if (counter < maxEuropeans) {
                         nations.put(nation, NationState.AVAILABLE);
