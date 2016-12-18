@@ -128,6 +128,13 @@ public abstract class BuildableType extends FreeColSpecObjectType {
         requiredAbilities.put(tag, value);
     }
 
+    private boolean checkAnyAvail(FreeColObject[] fco, String key) {
+        for (FreeColObject o : fco)
+            if (o.hasAbility(key))
+                return true;
+        return false;
+    }
+
     /**
      * Is this buildable available to a given FreeColObject?
      *
@@ -135,9 +142,11 @@ public abstract class BuildableType extends FreeColSpecObjectType {
      * @return True if the buildable is available.
      */
     public boolean isAvailableTo(FreeColObject... fco) {
-        return (requiredAbilities == null) ? true
-                : all(requiredAbilities.entrySet(),
-                e -> e.getValue() == any(fco, o -> o.hasAbility(e.getKey())));
+        if (requiredAbilities != null)
+            for (Entry<String, Boolean> e : requiredAbilities.entrySet())
+                if (e.getValue() != checkAnyAvail(fco, e.getKey()))
+                    return false;
+        return true;
     }
 
     /**
