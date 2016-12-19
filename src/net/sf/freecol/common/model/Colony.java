@@ -1828,19 +1828,28 @@ public class Colony extends Settlement implements Nameable, TradeLocation {
             return null; // No automatic assignment
         final GoodsType expertProduction
                 = teacher.getType().getExpertProduction();
-        final Predicate<Unit> teacherPred = u ->
-                u.getTeacher() == null && u.canBeStudent(teacher);
         // Always pick the student with the least skill first.
         // Break ties by favouring the one working in the teacher's trade,
         // otherwise first applicant wins.
-        final Comparator<Unit> skillComparator
-                = Comparator.comparingInt(Unit::getSkillLevel);
-        final Comparator<Unit> tradeComparator
-                = Comparator.comparingInt(u ->
-                (u.getWorkType() == expertProduction) ? 0 : 1);
-        final Comparator<Unit> fullComparator
-                = skillComparator.thenComparing(tradeComparator);
-        return minimize(getUnits(), teacherPred, fullComparator);
+        Unit min_unit = null;
+        int  min_skill = Integer.MAX_VALUE;
+
+        for (Unit u : getUnits()) {
+            if (!(u.getTeacher() == null && u.canBeStudent(teacher)))
+                continue;
+
+            int level = u.getSkillLevel();
+            if ((min_unit == null) || (level < min_skill)) {
+                min_unit = u;
+                min_skill = level;
+            } else if ((level == min_skill) &&
+                       (min_unit.getWorkType() != expertProduction) &&
+                       (u.getWorkType() == expertProduction)) {
+                min_unit = u;
+            }
+        }
+
+        return min_unit;
     }
 
 
