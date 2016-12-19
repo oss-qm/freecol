@@ -155,12 +155,12 @@ public class ModifierTest extends FreeColTestCase {
         assertFalse(modifier1.appliesTo(carpenter));
 
         List<Modifier> result
-            = toList(featureContainer.getModifiers("test", frigate, null));
+            = featureContainer.getModifiers("test", frigate, null);
         assertEquals(3, result.size());
         assertEquals(((1 + 3) * 1.5f) + ((1 + 3) * 1.5f) * 30 / 100,
             FeatureContainer.applyModifiers(1, null, result));
 
-        result = toList(featureContainer.getModifiers("test", carpenter, null));
+        result = featureContainer.getModifiers("test", carpenter, null);
         assertEquals(2, result.size());
         assertEquals(1.5f + (1.5f * 30) / 100,
             FeatureContainer.applyModifiers(1, null, result));
@@ -172,12 +172,12 @@ public class ModifierTest extends FreeColTestCase {
         assertTrue(modifier2.appliesTo(frigate));
         assertTrue(modifier2.appliesTo(carpenter));
 
-        result = toList(featureContainer.getModifiers("test", frigate, null));
+        result = featureContainer.getModifiers("test", frigate, null);
         assertEquals(3, result.size());
         assertEquals(((1 + 3) * 1.5f) + ((1 + 3) * 1.5f) * 30 / 100,
             FeatureContainer.applyModifiers(1, null, result));
 
-        result = toList(featureContainer.getModifiers("test", carpenter, null));
+        result = featureContainer.getModifiers("test", carpenter, null);
         assertEquals(2, result.size());
         assertEquals(1.5f + (1.5f * 30) / 100,
             FeatureContainer.applyModifiers(1, null, result));
@@ -210,10 +210,10 @@ public class ModifierTest extends FreeColTestCase {
         FeatureContainer featureContainer = new FeatureContainer();
         featureContainer.addModifier(modifier1);
         featureContainer.addModifier(modifier2);
-        List<Modifier> modifiers = toList(featureContainer.getModifiers("test", frigate, 15));
+        List<Modifier> modifiers = featureContainer.getModifiers("test", frigate, 15);
         assertEquals(1, modifiers.size());
         assertEquals(modifier1, first(modifiers));
-        modifiers = toList(featureContainer.getModifiers("test", frigate, 35));
+        modifiers = featureContainer.getModifiers("test", frigate, 35);
         assertEquals(1, modifiers.size());
         assertEquals(modifier2, first(modifiers));
     }

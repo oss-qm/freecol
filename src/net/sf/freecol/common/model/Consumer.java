@@ -21,7 +21,6 @@ package net.sf.freecol.common.model;
 
 import java.util.Comparator;
 import java.util.List;
-import java.util.stream.Stream;
 
 
 /**
@@ -91,13 +90,25 @@ public interface Consumer {
 
 
     /**
+     * Fill in the modifier set with the given id. The modifier most
+     * relevant to consumers is "consumeOnlySurplusProduction", which
+     * implies that the consumer does not consume stored goods (used
+     * by the country and stables).
+     *
+     * @param result The list to fill {@code Modifier}s into.
+     * @param id The object identifier.
+     */
+    public void fillModifiers(List<Modifier> result, String id);
+
+
+    /**
      * Get the modifier set with the given id. The modifier most
      * relevant to consumers is "consumeOnlySurplusProduction", which
      * implies that the consumer does not consume stored goods (used
      * by the country and stables).
      *
      * @param id The object identifier.
-     * @return The stream of {@code Modifier}s found.
+     * @return The list of {@code Modifier}s found.
      */
-    public Stream<Modifier> getModifiers(String id);
+    public List<Modifier> getModifiers(String id);
 }

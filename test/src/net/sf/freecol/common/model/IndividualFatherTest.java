@@ -253,16 +253,16 @@ public class IndividualFatherTest extends FreeColTestCase {
         Unit unit = colony.getFirstUnit();
         townHall.add(unit);
 
-        assertTrue(none(player.getModifiers("model.goods.bells")));
-        assertTrue(none(colony.getModifiers("model.goods.bells")));
+        assertTrue(player.getModifiers("model.goods.bells").size() == 0);
+        assertTrue(colony.getModifiers("model.goods.bells").size() == 0);
         int expected = 4;
         assertEquals(expected, townHall.getTotalProductionOf(bellsType));
 
         player.addFather(thomasJefferson);
         expected += expected * 0.5; // Add Jefferson bonus
         assertEquals(1, count(player.getModifiers("model.goods.bells")));
-        assertTrue(none(colony.getModifiers("model.goods.bells")));
-        assertEquals(1, count(townHall.getProductionModifiers(bellsType, null)));
+        assertTrue(colony.getModifiers("model.goods.bells").size() == 0);
+        assertTrue(townHall.getProductionModifiers(bellsType, null).size() == 1);
         assertEquals(expected, townHall.getTotalProductionOf(bellsType));
     }
 
@@ -336,7 +336,7 @@ public class IndividualFatherTest extends FreeColTestCase {
         player.recalculateBellsBonus();
 
         assertTrue(player.hasAbility(Ability.ADD_TAX_TO_BELLS));
-        List<Modifier> modifiers = toList(player.getModifiers("model.goods.bells"));
+        List<Modifier> modifiers = player.getModifiers("model.goods.bells");
         assertEquals(1, count(modifiers));
 
         Modifier paineModifier = first(modifiers);
