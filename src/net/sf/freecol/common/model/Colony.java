@@ -2065,18 +2065,25 @@ public class Colony extends Settlement implements Nameable, TradeLocation {
      * @return True if the goods can be produced.
      */
     public boolean canProduce(GoodsType goodsType) {
-        return (getNetProductionOf(goodsType) > 0)
-                ? true // Obviously:-)
+        if (getNetProductionOf(goodsType) > 0) return true; // Obviously:-)
 
-                // Breeding requires the breedable number to be present
-                : (goodsType.isBreedable())
-                ? getGoodsCount(goodsType) >= goodsType.getBreedingNumber()
+        // Breeding requires the breedable number to be present
+        if (goodsType.isBreedable())
+            return getGoodsCount(goodsType) >= goodsType.getBreedingNumber();
 
-                // Is there a work location that can produce the goods, with
-                // positive generic production potential and all inputs satisfied?
-                : any(getWorkLocationsForProducing(goodsType),
-                wl -> wl.getGenericPotential(goodsType) > 0
-                        && all(wl.getInputs(), ag -> canProduce(ag.getType())));
+        // Is there a work location that can produce the goods, with
+        // positive generic production potential and all inputs satisfied?
+loop:   for (WorkLocation wl : getWorkLocationsForProducing(goodsType)) {
+            if (wl.getGenericPotential(goodsType) > 0) {
+                for (AbstractGoods ag : wl.getInputs()) {
+                    if (!canProduce(ag.getType()))
+                        continue loop;
+                }
+                return true;
+            }
+        }
+
+        return false;
     }
 
 
