@@ -184,8 +184,12 @@ public class ColonyTest extends FreeColTestCase {
     }
 
     private int countParties(Colony colony) {
-        return count(colony.getModifiers("model.goods.bells"),
-            m -> Specification.COLONY_GOODS_PARTY_SOURCE.equals(m.getSource()));
+        Modifier mods = colony.getModifiers("model.goods.bells");
+        int cnt = 0;
+        for (Modifier m : mods)
+            if (Specification.COLONY_GOODS_PARTY_SOURCE.equals(m.getSource()))
+                cnt++;
+        return cnt;
     }
 
     public void testTeaParty() {

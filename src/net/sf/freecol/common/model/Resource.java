@@ -20,7 +20,7 @@
 package net.sf.freecol.common.model;
 
 import java.util.logging.Logger;
-import java.util.stream.Stream;
+import java.util.List;
 
 import javax.xml.stream.XMLStreamException;
 
@@ -233,10 +233,10 @@ public class Resource extends TileItem {
      * {@inheritDoc}
      */
     @Override
-    public Stream<Modifier> getProductionModifiers(GoodsType goodsType,
+    public void fillProductionModifiers(List<Modifier> result, GoodsType goodsType,
                                                    UnitType unitType) {
-        return (goodsType == null) ? Stream.<Modifier>empty()
-            : getType().getModifiers(goodsType.getId(), unitType);
+        if (goodsType != null)
+            getType().fillModifiers(result, goodsType.getId(), unitType);
     }
 
     /**

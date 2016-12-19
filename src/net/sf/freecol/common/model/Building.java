@@ -23,7 +23,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.logging.Logger;
-import java.util.stream.Stream;
 
 import javax.xml.stream.XMLStreamException;
 
@@ -143,22 +142,21 @@ public class Building extends WorkLocation
      * *multiplicative* modifiers, as this would capture the master blacksmith
      * doubling.
      *
+     * @param result The list to fill into
      * @param id The String identifier
      * @param turn The turn number of type {@link Turn}
      * @param unitType The optional {@code UnitType} to produce them.
      * @return A stream of the applicable modifiers.
      */
-    public Stream<Modifier> getCompetenceModifiers(String id,
+    private void fillCompetenceModifiers(List<Modifier> result, String id,
         UnitType unitType, int turn) {
         final float competence = getCompetenceFactor();
-        return (competence == 1.0f) // Floating comparison OK!
-            ? unitType.getModifiers(id, getType(), turn)
-            : map(unitType.getModifiers(id, getType(), turn),
-                m -> {
-                    return (m.getType() == Modifier.ModifierType.ADDITIVE)
-                        ? new Modifier(m).setValue(m.getValue() * competence)
-                        : m;
-                });
+        if (competence == 1.0f) // Floating comparison OK!
+            fillModifiers(result, id, getType(), turn);
+        else
+            for (Modifier m : unitType.getModifiers(id, getType(), turn))
+                result.add((m.getType() == Modifier.ModifierType.ADDITIVE)
+                        ? new Modifier(m).setValue(m.getValue() * competence) : m);
     }
 
     /**
@@ -561,7 +559,7 @@ public class Building extends WorkLocation
      * {@inheritDoc}
      */
     @Override
-    public Stream<Modifier> getProductionModifiers(GoodsType goodsType,
+    public void fillProductionModifiers(List<Modifier> result, GoodsType goodsType,
                                                    UnitType unitType) {
         final BuildingType type = getType();
         final String id = (goodsType == null) ? null : goodsType.getId();
@@ -569,15 +567,15 @@ public class Building extends WorkLocation
         final Player owner = getOwner();
         final int turn = getGame().getTurn();
 
-        return (unitType != null)
-            // With a unit, unit specific bonuses apply
-            ? concat(this.getModifiers(id, unitType, turn),
-                     colony.getProductionModifiers(goodsType, unitType, this),
-                     getCompetenceModifiers(id, unitType, turn),
-                     owner.getModifiers(id, unitType, turn))
-            // With no unit, only the building-specific bonuses
-            : concat(colony.getModifiers(id, type, turn),
-                     owner.getModifiers(id, type, turn));
+        if (unitType == null) {
+            colony.fillModifiers(result, id, type, turn);
+            owner.fillModifiers(result, id, type, turn);
+        } else {
+            this.fillModifiers(result, id, unitType, turn);
+            colony.fillProductionModifiers(result, goodsType, unitType, this);
+            fillCompetenceModifiers(result, id, unitType, turn);
+            owner.fillModifiers(result, id, unitType, turn);
+        }
     }
 
     /**
@@ -652,10 +650,10 @@ public class Building extends WorkLocation
      * {@inheritDoc}
      */
     @Override
-    public Stream<Modifier> getModifiers(String id, FreeColSpecObjectType fcgot,
+    public void fillModifiers(List<Modifier> result, String id, FreeColSpecObjectType fcgot,
                                          int turn) {
         // Buildings have no modifiers independent of type
-        return getType().getModifiers(id, fcgot, turn);
+        getType().fillModifiers(result, id, fcgot, turn);
     }
 
 

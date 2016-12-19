@@ -19,6 +19,7 @@
 
 package net.sf.freecol.common.model;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
@@ -26,7 +27,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import java.util.stream.Stream;
 
 import javax.xml.stream.XMLStreamException;
 
@@ -872,12 +872,28 @@ public abstract class WorkLocation extends UnitLocation
      * unit type.  If no unit is specified the unattended production
      * is calculated.
      *
+     * @param result    The result list to fill into.
      * @param goodsType The {@code GoodsType} to produce.
      * @param unitType The optional {@code UnitType} to produce them.
-     * @return A stream of the applicable modifiers.
      */
-    public abstract Stream<Modifier> getProductionModifiers(GoodsType goodsType,
+    public abstract void fillProductionModifiers(List<Modifier> result, GoodsType goodsType,
                                                             UnitType unitType);
+
+    /**
+     * Gets the production modifiers for the given type of goods and
+     * unit type.  If no unit is specified the unattended production
+     * is calculated.
+     *
+     * @param goodsType The {@code GoodsType} to produce.
+     * @param unitType The optional {@code UnitType} to produce them.
+     * @return A list of the applicable modifiers.
+     */
+    public List<Modifier> getProductionModifiers(GoodsType goodsType,
+                                                            UnitType unitType) {
+        List<Modifier> result = new ArrayList<>();
+        fillProductionModifiers(result, goodsType, unitType);
+        return result;
+    }
 
     /**
      * Get the production types available for this work location.
