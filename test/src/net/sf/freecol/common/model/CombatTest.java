@@ -116,11 +116,11 @@ public class CombatTest extends FreeColTestCase {
         assertFalse(colonist.hasAbility(Ability.AMBUSH_PENALTY));
 
         final Modifier bigMovementPenalty
-            = first(spec().getModifiers(Modifier.BIG_MOVEMENT_PENALTY));
+            = first(spec().getModifiers(Modifier.BIG_MOVEMENT_PENALTY);
         final Modifier attackModifier
             = first(spec().getModifiers(Modifier.ATTACK_BONUS));
         final List<Modifier> veteranModifiers
-            = toList(veteranType.getModifiers(Modifier.OFFENCE));
+            = veteranType.getModifiers(Modifier.OFFENCE);
         assertEquals(1, veteranModifiers.size());
         final Modifier veteranModifier = first(veteranModifiers);
 
@@ -139,7 +139,7 @@ public class CombatTest extends FreeColTestCase {
 
         final Modifier fortifiedModifier
             = first(spec().getModifiers(Modifier.FORTIFIED));
-        final List<Modifier> hillsModifiers = toList(hills.getDefenceModifiers());
+        final List<Modifier> hillsModifiers = hills.getDefenceModifiers();
         assertEquals(1, hillsModifiers.size());
         Modifier hillsModifier = first(hillsModifiers);
 
@@ -311,8 +311,8 @@ public class CombatTest extends FreeColTestCase {
 
         Set<Modifier> defenceModifiers = combatModel
             .getDefensiveModifiers(attacker, colonist);
-        forEach(soldierRole.getModifiers(Modifier.DEFENCE),
-                m -> assertTrue(defenceModifiers.contains(m)));
+        for (Modifier m : soldierRole.getModifiers(Modifier.DEFENCE))
+            assertTrue(defenceModifiers.contains(m));
     }
 
     public void testDefendSettlement() {
@@ -345,8 +345,8 @@ public class CombatTest extends FreeColTestCase {
 
         Set<Modifier> defenceModifiers = combatModel
             .getDefensiveModifiers(attacker, defender);
-        forEach(nativeDragoonRole.getModifiers(Modifier.DEFENCE),
-                m -> assertTrue(defenceModifiers.contains(m)));
+        for (Modifier m : nativeDragoonRole.getModifiers(Modifier.DEFENCE))
+            assertTrue(defenceModifiers.contains(m));
     }
 
     public void testAttackIgnoresMovementPoints() throws Exception {

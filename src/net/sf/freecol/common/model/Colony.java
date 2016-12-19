@@ -32,7 +32,6 @@ import java.util.function.Function;
 import java.util.function.ToIntFunction;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import java.util.stream.Stream;
 
 import javax.xml.stream.XMLStreamException;
 
@@ -2058,23 +2057,24 @@ public class Colony extends Settlement implements Nameable, TradeLocation {
 
 
     /**
-     * Get the current production {@code Modifier}, which is
+     * Fill in the current production {@code Modifier}, which is
      * generated from the current production bonus.
      *
+     * @param result The {@code List} to fill into.
      * @param goodsType The {@code GoodsType} to produce.
      * @param unitType An optional {@code UnitType} to do the work.
      * @param wl The {@link WorkLocation}
      * @return A stream of suitable {@code Modifier}s.
      */
-    public Stream<Modifier> getProductionModifiers(GoodsType goodsType,
+    public void fillProductionModifiers(List<Modifier> result, GoodsType goodsType,
                                                    UnitType unitType, WorkLocation wl) {
-        if (productionBonus == 0) return Stream.<Modifier>empty();
+        if (productionBonus == 0) return;
         int bonus = (int)Math.floor(productionBonus * wl.getRebelFactor());
         Modifier mod = new Modifier(goodsType.getId(), bonus,
                 Modifier.ModifierType.ADDITIVE,
                 Specification.SOL_MODIFIER_SOURCE);
         mod.setModifierIndex(Modifier.COLONY_PRODUCTION_INDEX);
-        return Stream.of(mod);
+        result.add(mod);
     }
 
     /**
@@ -2450,12 +2450,12 @@ loop:   for (WorkLocation wl : getWorkLocationsForProducing(goodsType)) {
         final int turn = getGame().getTurn();
         List<Modifier> mods;
 
-        mods = toList(goodsType.getModifiers(Modifier.LIBERTY));
+        mods = goodsType.getModifiers(Modifier.LIBERTY);
         if (!mods.isEmpty()) {
             modifyLiberty((int)applyModifiers(amount, turn, mods));
         }
 
-        mods = toList(goodsType.getModifiers(Modifier.IMMIGRATION));
+        mods = goodsType.getModifiers(Modifier.IMMIGRATION);
         if (!mods.isEmpty()) {
             int migration = (int)applyModifiers(amount, turn, mods);
             modifyImmigration(migration);

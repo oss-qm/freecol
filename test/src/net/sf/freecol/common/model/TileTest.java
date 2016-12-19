@@ -20,7 +20,6 @@
 package net.sf.freecol.common.model;
 
 import java.util.List;
-import java.util.stream.Stream;
 
 import static net.sf.freecol.common.util.CollectionUtils.*;
 import net.sf.freecol.util.test.FreeColTestCase;
@@ -525,9 +524,12 @@ public class TileTest extends FreeColTestCase {
                                 mineralsResource));
     }
 
-    private boolean hasBonusFrom(Stream<Modifier> modifierSet,
+    private boolean hasBonusFrom(List<Modifier> modifierSet,
                                  FreeColSpecObjectType source) {
-        return any(modifierSet, matchKeyEquals(source, Modifier::getSource));
+        for (Modifier m : modifierSet)
+            if (Utils.equals(source, m.getSource()))
+                return true;
+        return false;
     }
 
 

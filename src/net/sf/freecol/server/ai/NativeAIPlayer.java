@@ -816,7 +816,7 @@ public class NativeAIPlayer extends MissionAIPlayer {
         for (NativeTradeItem nti : nt.getUnitToSettlement()) {
             if (nti.priceIsSet()) continue;
             int price = (int)FeatureContainer.applyModifiers(1.0f / anger
-                * is.getPriceToBuy(nti.getGoods()), turn, modifiers);
+                * is.getPriceToBuy(nti.getGoods()), turn, new ArrayList<>(modifiers));
             for (int h = nti.getHaggleCount(); h >= 0; h--) {
                 price = NativeTrade.haggleUp(price);
             }
@@ -837,7 +837,7 @@ public class NativeAIPlayer extends MissionAIPlayer {
         }
         for (NativeTradeItem nti : nt.getSettlementToUnit()) {
             int price = (int)FeatureContainer.applyModifiers((float)anger
-                * is.getPriceToSell(nti.getGoods()), turn, modifiers);
+                * is.getPriceToSell(nti.getGoods()), turn, new ArrayList<>(modifiers));
             for (int h = nti.getHaggleCount(); h >= 0; h--) {
                 price = NativeTrade.haggleDown(price);
             }
