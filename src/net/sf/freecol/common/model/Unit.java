@@ -28,7 +28,6 @@ import java.util.Set;
 import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 import java.util.logging.Logger;
 
 import javax.xml.stream.XMLStreamException;
@@ -3229,12 +3228,13 @@ public class Unit extends GoodsLocation
      */
     public int getLineOfSight() {
         final int turn = getGame().getTurn();
-        return (int)applyModifiers(unitType.getLineOfSight(), turn,
-            Stream.concat(this.getModifiers(Modifier.LINE_OF_SIGHT_BONUS,
-                                            unitType, turn),
-                ((hasTile() && getTile().isExplored())
-                    ? getTile().getType().getModifiers(Modifier.LINE_OF_SIGHT_BONUS, unitType, turn)
-                    : Stream.<Modifier>empty())));
+        List<Modifier> modifiers = new ArrayList<>();
+
+        this.fillModifiers(modifiers, Modifier.LINE_OF_SIGHT_BONUS, unitType, turn);
+        if (hasTile() && getTile().isExplored())
+            getTile().getType().fillModifiers(modifiers, Modifier.LINE_OF_SIGHT_BONUS, unitType, turn);
+
+        return (int)applyModifiers(unitType.getLineOfSight(), turn, modifiers);
     }
 
     /**
@@ -4314,17 +4314,16 @@ public class Unit extends GoodsLocation
      * {@inheritDoc}
      */
     @Override
-    public Stream<Modifier> getModifiers(String id, FreeColSpecObjectType fcgot,
+    public void fillModifiers(List<Modifier> result, String id, FreeColSpecObjectType fcgot,
                                          int turn) {
-        final Player owner = getOwner();
-        final UnitType unitType = getType();
+        // UnitType modifiers always apply.
+        getType().fillModifiers(result, id, fcgot, turn);
 
-        return concat(// UnitType modifiers always apply.
-                      unitType.getModifiers(id, fcgot, turn),
-                      // The player's modifiers apply.
-                      owner.getModifiers(id, fcgot, turn),
-                      // Role modifiers apply.
-                      role.getModifiers(id, fcgot, turn));
+        // The player's modifiers apply.
+        getOwner().fillModifiers(result, id, fcgot, turn);
+
+        // Role modifiers apply.
+        role.fillModifiers(result, id, fcgot, turn);
     }
 
 
