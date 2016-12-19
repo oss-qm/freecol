@@ -2622,9 +2622,18 @@ loop:       if (wl.getGenericPotential(goodsType) > 0) {
         // units outside the colony as well, use
         // @see Tile#getDefendingUnit instead.
         final CombatModel cm = getGame().getCombatModel();
-        final Comparator<Unit> comp
-                = cachingDoubleComparator(u -> cm.getDefencePower(attacker, u));
-        return maximize(getUnits(), comp);
+
+        int max_defense = 0;
+        Unit max_unit = null;
+        for (Unit u : getUnits()) {
+            int defpwr = cm.getDefencePower(attacker, u);
+            if ((max_unit == null) || (defpwr > max_defense)) {
+                max_defense = defpwr;
+                max_unit = u;
+            }
+        }
+
+        return max_unit;
     }
 
     /**
