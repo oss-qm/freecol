@@ -689,13 +689,13 @@ public class BuildingTest extends FreeColTestCase {
         List<Modifier> modifiers;
 
         Colony colony = getStandardColony(2);
-        modifiers = toList(colony.getModifiers(Modifier.DEFENCE));
+        modifiers = colony.getModifiers(Modifier.DEFENCE);
         assertEquals(1, modifiers.size());
         Modifier modifier = first(modifiers);
         assertEquals(50f, modifier.getValue());
         assertEquals(ModifierType.PERCENTAGE, modifier.getType());
 
-        modifiers = toList(stockadeType.getModifiers(Modifier.DEFENCE));
+        modifiers = stockadeType.getModifiers(Modifier.DEFENCE);
         assertEquals(1, modifiers.size());
         modifier = first(modifiers);
         assertEquals(100f, modifier.getValue());
@@ -703,7 +703,7 @@ public class BuildingTest extends FreeColTestCase {
         assertEquals(0f, stockadeType.applyModifiers(0f, turn,
                 Modifier.MINIMUM_COLONY_SIZE));
 
-        modifiers = toList(fortType.getModifiers(Modifier.DEFENCE));
+        modifiers = fortType.getModifiers(Modifier.DEFENCE);
         assertEquals(1, modifiers.size());
         modifier = first(modifiers);
         assertEquals(150f, modifier.getValue());
@@ -711,7 +711,7 @@ public class BuildingTest extends FreeColTestCase {
         assertEquals(0f, stockadeType.applyModifiers(0f, turn,
                 Modifier.MINIMUM_COLONY_SIZE));
 
-        modifiers = toList(fortressType.getModifiers(Modifier.DEFENCE));
+        modifiers = fortressType.getModifiers(Modifier.DEFENCE);
         assertEquals(1, modifiers.size());
         modifier = first(modifiers);
         assertEquals(200f, modifier.getValue());
@@ -827,6 +827,13 @@ public class BuildingTest extends FreeColTestCase {
                      colony.getNetProductionOf(horsesType));
     }
 
+    public static boolean anyMod(List<Modifier> mods, Modifier modifier) {
+        for (Modifier m : mods)
+            if (m == modifier)
+                return true;
+        return false;
+    }
+
     public void testTownhallProduction() {
         final Game game = getGame();
         game.setMap(getTestMap(true));
@@ -843,7 +850,7 @@ public class BuildingTest extends FreeColTestCase {
         for (Unit u : building.getUnits()) u.setLocation(tile);
 
         assertTrue("No initial modifiers",
-                   none(colony.getModifiers("model.goods.bells")));
+                   colony.getModifiers("model.goods.bells").size() == 0);
         assertEquals("Initial bell production", 1,
                      building.getTotalProductionOf(bellsType));
 
@@ -858,29 +865,25 @@ public class BuildingTest extends FreeColTestCase {
         // Add Jefferson.
         FoundingFather jefferson = spec()
             .getFoundingFather("model.foundingFather.thomasJefferson");
-        List<Modifier> modifiers = toList(jefferson.getModifiers("model.goods.bells"));
+        List<Modifier> modifiers = jefferson.getModifiers("model.goods.bells");
         assertEquals("Jefferson modifier size", 1, modifiers.size());
         Modifier bellsModifier = first(modifiers);
         owner.addFather(jefferson);
 
         // Jefferson is a property of the player...
         assertTrue("Jefferson should be present in player",
-            any(owner.getModifiers("model.goods.bells"),
-                m -> m == bellsModifier));
+            anyMod(owner.getModifiers("model.goods.bells"), bellsModifier));
         assertTrue("Jefferson should be present in player in building scope",
-            any(owner.getModifiers("model.goods.bells", townHallType, turn),
-                m -> m ==  bellsModifier));
+            anyMod(owner.getModifiers("model.goods.bells", townHallType, turn), bellsModifier));
         assertFalse("Jefferson should not be present in player in unit scope",
-            any(owner.getModifiers("model.goods.bells", freeColonistType, turn),
-                m -> m == bellsModifier));
+            anyMod(owner.getModifiers("model.goods.bells", freeColonistType, turn), bellsModifier));
+
         // ...not the colony,
         assertFalse("Jefferson modifier should not be present in colony",
-            any(colony.getModifiers("model.goods.bells"),
-                m -> m == bellsModifier));
+            anyMod(colony.getModifiers("model.goods.bells"), bellsModifier));
         // ...and the building modifiers do not have it.
         assertFalse("Jefferson modifier should not be present in building modifiers",
-            any(building.getModifiers("model.goods.bells"),
-                m -> m == bellsModifier));
+            anyMod(building.getModifiers("model.goods.bells"), bellsModifier));
 
         // 3(colonist)
         assertEquals("Production(Colonist/Jefferson)", 3,
@@ -1005,7 +1008,7 @@ public class BuildingTest extends FreeColTestCase {
                             : output.getAmount();
                         if (expect != output.getAmount()) {
                             assertTrue("Modifiers expected",
-                                count(type.getModifiers(outputType.getId())) > 0);
+                                type.getModifiers().size() > 0);
                         }
                         assertEquals("Wrong productivity for " + type
                             + " in " + building, expect, productivity);

@@ -144,7 +144,7 @@ public class NationTypeTest extends FreeColTestCase {
         Colony colony = getStandardColony();
         colony.getOwner().changeNationType(spec().getNationType("model.nationType.building"));
 
-        List<Modifier> modifiers = toList(colony.getOwner().getModifiers("model.goods.hammers"));
+        List<Modifier> modifiers = colony.getOwner().getModifiers("model.goods.hammers");
         assertEquals(1, modifiers.size());
 
         BuildingType carpenterHouse = spec().getBuildingType("model.building.carpenterHouse");
@@ -157,7 +157,7 @@ public class NationTypeTest extends FreeColTestCase {
 
         colony.getOwner().changeNationType(spec().getNationType("model.nationType.furTrapping"));
 
-        modifiers = toList(colony.getOwner().getModifiers("model.goods.coats"));
+        modifiers = colony.getOwner().getModifiers("model.goods.coats");
         assertEquals(1, modifiers.size());
 
         BuildingType traderHouse = spec().getBuildingType("model.building.furTraderHouse");

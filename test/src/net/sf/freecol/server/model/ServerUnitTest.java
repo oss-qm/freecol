@@ -484,10 +484,9 @@ public class ServerUnitTest extends FreeColTestCase {
                      colony.getGoodsCount(lumberType));
 
         // Upgrade to lumber mill
-        assertTrue(none(colony.getModifiers(Modifier.TILE_TYPE_CHANGE_PRODUCTION)));
+        assertTrue(colony.getModifiers(Modifier.TILE_TYPE_CHANGE_PRODUCTION).size() == 0);
         colony.getBuilding(carpenterHouseType).upgrade();
-        assertEquals(1,
-            count(colony.getModifiers(Modifier.TILE_TYPE_CHANGE_PRODUCTION)));
+        assertTrue(colony.getModifiers(Modifier.TILE_TYPE_CHANGE_PRODUCTION).size() == 1);
 
         // Almost clear another tile
         Tile tile2 = tile.getNeighbourOrNull(Direction.N);
