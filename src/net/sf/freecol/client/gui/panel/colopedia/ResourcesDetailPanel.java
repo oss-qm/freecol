@@ -19,6 +19,7 @@
 
 package net.sf.freecol.client.gui.panel.colopedia;
 
+import java.util.Collections;
 import java.util.List;
 
 import javax.swing.JButton;
@@ -88,8 +89,8 @@ public class ResourcesDetailPanel
         panel.add(Utility.localizedLabel("colopedia.resource.bonusProduction"));
         JPanel goodsPanel = new JPanel();
         goodsPanel.setOpaque(false);
-        List<Modifier> mods = sort(type.getModifiers(),
-                                   Modifier.ascendingModifierIndexComparator);
+        List<Modifier> mods = type.getModifiers();
+        Collections.sort(mods, Modifier.ascendingModifierIndexComparator);
         for (Modifier modifier : mods) {
             String text = ModifierFormat.getModifierAsString(modifier);
             if (modifier.hasScope()) {

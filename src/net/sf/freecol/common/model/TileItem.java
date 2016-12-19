@@ -19,8 +19,9 @@
 
 package net.sf.freecol.common.model;
 
+import java.util.ArrayList;
 import java.util.logging.Logger;
-import java.util.stream.Stream;
+import java.util.List;
 
 import javax.xml.stream.XMLStreamException;
 
@@ -121,14 +122,28 @@ public abstract class TileItem extends FreeColGameObject
                                        UnitType unitType);
 
     /**
+     * Fill in the production modifiers for the given type of goods and unit.
+     *
+     * @param result The {@code List} to fill into.
+     * @param goodsType The {@code GoodsType} to produce.
+     * @param unitType The optional {@code unitType} to produce them.
+     */
+    public abstract void fillProductionModifiers(List<Modifier> mods, GoodsType goodsType,
+                                                            UnitType unitType);
+
+    /**
      * Gets the production modifiers for the given type of goods and unit.
      *
      * @param goodsType The {@code GoodsType} to produce.
      * @param unitType The optional {@code unitType} to produce them.
      * @return A stream of the applicable modifiers.
      */
-    public abstract Stream<Modifier> getProductionModifiers(GoodsType goodsType,
-                                                            UnitType unitType);
+    public List<Modifier> getProductionModifiers(GoodsType goodsType,
+                                                            UnitType unitType) {
+        List<Modifier> result = new ArrayList<>();
+        fillProductionModifiers(result, goodsType, unitType);
+        return result;
+    }
 
     /**
      * Is this a natural TileItem?

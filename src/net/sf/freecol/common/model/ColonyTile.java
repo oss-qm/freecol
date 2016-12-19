@@ -22,7 +22,6 @@ package net.sf.freecol.common.model;
 import java.util.Collections;
 import java.util.List;
 import java.util.logging.Logger;
-import java.util.stream.Stream;
 
 import javax.xml.stream.XMLStreamException;
 
@@ -453,9 +452,9 @@ public class ColonyTile extends WorkLocation {
      * {@inheritDoc}
      */
     @Override
-    public Stream<Modifier> getProductionModifiers(GoodsType goodsType,
+    public void fillProductionModifiers(List<Modifier> result, GoodsType goodsType,
                                                    UnitType unitType) {
-        if (!canProduce(goodsType, unitType)) return Stream.<Modifier>empty();
+        if (!canProduce(goodsType, unitType)) return;
 
         final Tile workTile = getWorkTile();
         final TileType type = workTile.getType();
@@ -463,22 +462,24 @@ public class ColonyTile extends WorkLocation {
         final Colony colony = getColony();
         final Player owner = colony.getOwner();
         final int turn = getGame().getTurn();
-        return (unitType != null)
+
+        if (unitType != null) {
             // Unit modifiers apply
-            ? concat(workTile.getProductionModifiers(goodsType, unitType),
-                     colony.getProductionModifiers(goodsType, unitType, this),
-                     unitType.getModifiers(id, type, turn),
-                     ((owner == null) ? null
-                         : owner.getModifiers(id, unitType, turn)))
+            workTile.fillProductionModifiers(result, goodsType, unitType);
+            colony.fillProductionModifiers(result, goodsType, unitType, this);
+            unitType.fillModifiers(result, id, type, turn);
+            if (owner != null)
+                owner.fillModifiers(result, id, unitType, turn);
+        } else if (isColonyCenterTile()) {
             // Unattended only possible in center, colony modifiers apply
-            : (isColonyCenterTile())
-            ? concat(workTile.getProductionModifiers(goodsType, null),
-                     colony.getProductionModifiers(goodsType, null, this),
-                     colony.getModifiers(id, null, turn),
-                     ((owner == null) ? null
-                         : owner.getModifiers(id, type, turn)))
-            // Otherwise impossible
-            : Stream.<Modifier>empty();
+            workTile.fillProductionModifiers(result, goodsType, null);
+            colony.fillProductionModifiers(result, goodsType, null, this);
+            colony.fillModifiers(result, id, null, turn);
+            if (owner != null)
+                owner.fillModifiers(result, id, type, turn);
+        }
+
+        // Otherwise impossible
     }
 
     /**

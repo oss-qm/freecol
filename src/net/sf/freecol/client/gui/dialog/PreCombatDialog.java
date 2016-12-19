@@ -20,6 +20,7 @@
 package net.sf.freecol.client.gui.dialog;
 
 import java.awt.Font;
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
@@ -136,7 +137,7 @@ public class PreCombatDialog extends FreeColConfirmDialog {
         Font bigFont = FontLibrary.createFont(FontLibrary.FontType.NORMAL,
             FontLibrary.FontSize.SMALLER, Font.BOLD, lib.getScaleFactor());
         float offenceResult
-            = FeatureContainer.applyModifiers(0f, turn, attackModifiers);
+            = FeatureContainer.applyModifiers(0f, turn, new ArrayList<>(attackModifiers));
         JLabel finalOffenceLabel = Utility.localizedLabel("finalResult");
         finalOffenceLabel.setFont(bigFont);
         panel.add(new JSeparator(JSeparator.HORIZONTAL),
@@ -149,7 +150,7 @@ public class PreCombatDialog extends FreeColConfirmDialog {
         panel.add(finalOffenceResult);
 
         float defenceResult
-            = FeatureContainer.applyModifiers(0f, turn, defenceModifiers);
+            = FeatureContainer.applyModifiers(0f, turn, new ArrayList<>(defenceModifiers));
         JLabel finalDefenceLabel = Utility.localizedLabel("finalResult");
         finalDefenceLabel.setFont(bigFont);
         panel.add(finalDefenceLabel, "skip");
