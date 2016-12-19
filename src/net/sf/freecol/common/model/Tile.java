@@ -33,7 +33,6 @@ import java.util.function.ToIntFunction;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 import javax.xml.stream.XMLStreamException;
 
@@ -1661,15 +1660,24 @@ public final class Tile extends UnitLocation implements Named, Ownable {
     /**
      * Get the production modifiers for this tile.
      *
+     * @param result The {@code List} to fill into.
      * @param goodsType The {@code GoodsType} to produce.
      * @param unitType An optional {@code UnitType} to do the work.
      * @return A stream of production {@code Modifier}s.
      */
-    public Stream<Modifier> getProductionModifiers(GoodsType goodsType,
+    public void fillProductionModifiers(List<Modifier> result, GoodsType goodsType,
                                                    UnitType unitType) {
-        return (canProduce(goodsType, unitType) && tileItemContainer != null)
-            ? tileItemContainer.getProductionModifiers(goodsType, unitType)
-            : Stream.<Modifier>empty();
+        if (canProduce(goodsType, unitType) && tileItemContainer != null)
+            tileItemContainer.fillProductionModifiers(result, goodsType, unitType);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public List<Modifier> getProductionModifiers(GoodsType goodsType, UnitType unitType) {
+        List<Modifier> result = new ArrayList<>();
+        fillProductionModifiers(result, goodsType, unitType);
+        return result;
     }
 
     /**

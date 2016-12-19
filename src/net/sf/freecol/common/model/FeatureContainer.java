@@ -20,12 +20,13 @@ package net.sf.freecol.common.model;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.logging.Logger;
-import java.util.stream.Stream;
 
 import static net.sf.freecol.common.util.CollectionUtils.*;
 
@@ -102,7 +103,7 @@ public final class FeatureContainer {
      * Is the given set of abilities non-empty and contains no
      * false-valued members?
      *
-     * @param abilities A stream of {@code Ability}s to check.
+     * @param abilities A list of {@code Ability}s to check.
      * @return True if the abilities are `satisfied'.
      */
     public static boolean hasAbility(List<Ability> abilities) {
@@ -221,30 +222,53 @@ public final class FeatureContainer {
 
 
     /**
-     * Gets the set of modifiers with the given identifier from this
+     * Fills in the set of modifiers with the given identifier from this
      * container.
      *
+     * @param result The {@code List} to fill into.
      * @param id The object identifier.
      * @param fcgot An optional {@code FreeColSpecObjectType} the
      *     modifier applies to.
      * @param turn An optional applicable {@code Turn}.
-     * @return A stream of {@code Modifier}s.
      */
-    public Stream<Modifier> getModifiers(String id,
+    public void fillModifiers(List<Modifier> result,
+                                         String id,
                                          FreeColSpecObjectType fcgot,
                                          Turn turn) {
-        if (!modifiersPresent()) return Stream.<Modifier>empty();
-        Set<Modifier> mset = new HashSet<>();
+        if (!modifiersPresent()) return;
         synchronized (modifiersLock) {
             if (id == null) {
-                for (Set<Modifier> ms : modifiers.values()) mset.addAll(ms);
+                for (Set<Modifier> ms : modifiers.values())
+                    for (Modifier m : ms)
+                        if (m.appliesTo(fcgot, turn))
+                            result.add(m);
             } else {
                 Set<Modifier> ms = modifiers.get(id);
-                if (ms != null) mset.addAll(ms);
+                if (ms != null)
+                    for (Modifier m : ms)
+                        result.add(m);
             }
         }
-        removeInPlace(mset, m -> !m.appliesTo(fcgot, turn));
-        return (mset.isEmpty()) ? Stream.<Modifier>empty() : mset.stream();
+    }
+
+    /**
+     * Get a {@code List} of modifiers with the given identifier from this
+     * container.
+     *
+     * @param result The list to fill into.
+     * @param id The object identifier.
+     * @param fcgot An optional {@code FreeColSpecObjectType} the
+     *     modifier applies to.
+     * @param turn An optional applicable {@code Turn}.
+     * @return A list of {@code Modifier}s.
+     */
+    public List<Modifier> getModifiers(String id,
+                             FreeColSpecObjectType fcgot,
+                             Turn turn) {
+        if (!modifiersPresent()) return Collections.<Modifier>emptyList();
+        List<Modifier> result = new ArrayList<>();
+        fillModifiers(result, id, fcgot, turn);
+        return result;
     }
 
     /**
@@ -272,39 +296,14 @@ public final class FeatureContainer {
      * @return The modified number.
      */
     public static float applyModifiers(float number, Turn turn,
-                                       Collection<Modifier> mods) {
-        return (mods == null || mods.isEmpty()) ? number
-            : applyModifiers_internal(number, turn,
-                sort(mods, Modifier.ascendingModifierIndexComparator));
-    }
+                                       List<Modifier> modifiers) {
+        if (modifiers == null)
+            return number;
 
-    /**
-     * Applies a stream of modifiers to the given float value.
-     *
-     * @param number The number to modify.
-     * @param turn An optional applicable {@code Turn}.
-     * @param mods The {@code Modifier}s to apply.
-     * @return The modified number.
-     */
-    public static float applyModifiers(float number, Turn turn,
-                                       Stream<Modifier> mods) {
-        return (mods == null) ? number
-            : applyModifiers_internal(number, turn,
-                sort(mods, Modifier.ascendingModifierIndexComparator));
-    }
+        Collections.sort(modifiers, Modifier.ascendingModifierIndexComparator);
 
-    /**
-     * Implement applyModifiers.
-     *
-     * @param number The number to modify.
-     * @param turn An optional applicable {@code Turn}.
-     * @param mods The {@code Modifier}s to apply.
-     * @return The modified number.
-     */
-    private static float applyModifiers_internal(float number, Turn turn,
-                                                 Collection<Modifier> mods) {
         float result = number;
-        for (Modifier m : mods) {
+        for (Modifier m : modifiers) {
             float value = m.getValue(turn);
             if (Float.compare(value, Modifier.UNKNOWN) == 0) {
                 return value;
@@ -514,7 +513,7 @@ public final class FeatureContainer {
             sb.append(']');
         }
         siz = sb.length();
-        for (Modifier modifier : iterable(getModifiers(null, null, null))) {
+        for (Modifier modifier : getModifiers(null, null, null)) {
             sb.append(' ').append(modifier);
         }
         if (sb.length() > siz) {

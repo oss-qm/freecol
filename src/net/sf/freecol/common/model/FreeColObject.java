@@ -29,12 +29,13 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.io.StringReader;
 import java.io.StringWriter;
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import java.util.stream.Stream;
 
 import javax.xml.stream.XMLStreamException;
 
@@ -563,7 +564,7 @@ public abstract class FreeColObject
      */
     public boolean hasModifier(String id, FreeColSpecObjectType fcgot,
                                Turn turn) {
-        return any(getModifiers(id, fcgot, turn));
+        return getModifiers(id, fcgot, turn).size() != 0;
     }
 
     /**
@@ -573,7 +574,7 @@ public abstract class FreeColObject
      * @return True if the key is present.
      */
     public final boolean containsModifierKey(String key) {
-        return any(getModifiers(key));
+        return getModifiers(key).size() != 0;
     }
 
     /**
@@ -582,7 +583,18 @@ public abstract class FreeColObject
      * @return A list of modifiers.
      */
     public final List<Modifier> getSortedModifiers() {
-        return sort(getModifiers(), Modifier.ascendingModifierIndexComparator);
+        List<Modifier> result = getModifiers();
+        Collections.sort(result, Modifier.ascendingModifierIndexComparator);
+        return result;
+    }
+
+    /**
+     * Fill in the modifiers of this object.
+     *
+     * @param result list to fill in the modifiers.
+     */
+    public final void fillModifiers(List<Modifier> result) {
+        fillModifiers(result, null);
     }
 
     /**
@@ -590,18 +602,46 @@ public abstract class FreeColObject
      *
      * @return A set of modifiers.
      */
-    public final Stream<Modifier> getModifiers() {
-        return getModifiers(null);
+    public final List<Modifier> getModifiers() {
+        List<Modifier> result = new ArrayList<>();
+        fillModifiers(result);
+        return result;
     }
 
     /**
-     * Gets the set of modifiers with the given identifier from this object.
+     * Fill in the set of modifiers with the given identifier from this object.
+     *
+     * @param list The list to fill into.
+     * @param id The object identifier.
+     */
+    public final void fillModifiers(List<Modifier> result, String id) {
+        fillModifiers(result, id, null);
+    }
+
+    /**
+     * Get the set of modifiers with the given identifier from this object.
      *
      * @param id The object identifier.
+     *
      * @return A set of modifiers.
      */
-    public final Stream<Modifier> getModifiers(String id) {
-        return getModifiers(id, null);
+    public final List<Modifier> getModifiers(String id) {
+        List<Modifier> result = new ArrayList<>();
+        fillModifiers(result, id);
+        return result;
+    }
+
+    /**
+     * Fill in the set of modifiers with the given identifier from this object.
+     *
+     * @param result The list to fill into.
+     * @param id The object identifier.
+     * @param fcgot An optional {@code FreeColSpecObjectType} the
+     *     modifier applies to.
+     */
+    public final void fillModifiers(List<Modifier> result, String id,
+                                               FreeColSpecObjectType fcgot) {
+        fillModifiers(result, id, fcgot, null);
     }
 
     /**
@@ -610,31 +650,50 @@ public abstract class FreeColObject
      * @param id The object identifier.
      * @param fcgot An optional {@code FreeColSpecObjectType} the
      *     modifier applies to.
-     * @return A set of modifiers.
+     * @return A list of modifiers.
      */
-    public final Stream<Modifier> getModifiers(String id,
+    public final List<Modifier> getModifiers(String id,
                                                FreeColSpecObjectType fcgot) {
-        return getModifiers(id, fcgot, null);
+        List<Modifier> result = new ArrayList<>();
+        fillModifiers(result, id, fcgot);
+        return result;
+    }
+
+    /**
+     * Fills in the set of modifiers with the given identifier from this object.
+     *
+     * Subclasses with complex modifier handling may override this
+     * routine.
+     *
+     * @param result The list to fill into.
+     * @param id The object identifier.
+     * @param fcgot An optional {@code FreeColSpecObjectType} the
+     *     modifier applies to.
+     * @param turn An optional applicable {@code Turn}.
+     */
+    public void fillModifiers(List<Modifier> result, String id,
+                                         FreeColSpecObjectType fcgot,
+                                         Turn turn) {
+        FeatureContainer fc = getFeatureContainer();
+        if (fc != null)
+            fc.fillModifiers(result, id, fcgot, turn);
     }
 
     /**
      * Gets the set of modifiers with the given identifier from this object.
-     *
-     * Subclasses with complex modifier handling may override this
-     * routine.
      *
      * @param id The object identifier.
      * @param fcgot An optional {@code FreeColSpecObjectType} the
      *     modifier applies to.
      * @param turn An optional applicable {@code Turn}.
-     * @return A set of modifiers.
+     * @return A list of modifiers.
      */
-    public Stream<Modifier> getModifiers(String id,
+    public List<Modifier> getModifiers(String id,
                                          FreeColSpecObjectType fcgot,
                                          Turn turn) {
-        FeatureContainer fc = getFeatureContainer();
-        return (fc == null) ? Stream.<Modifier>empty()
-            : fc.getModifiers(id, fcgot, turn);
+        List<Modifier> result = new ArrayList<>();
+        fillModifiers(result, id, fcgot, turn);
+        return result;
     }
 
     /**
@@ -675,20 +734,7 @@ public abstract class FreeColObject
      * @return The modified number.
      */
     public static final float applyModifiers(float number, Turn turn,
-                                             Collection<Modifier> mods) {
-        return FeatureContainer.applyModifiers(number, turn, mods);
-    }
-
-    /**
-     * Applies a stream of modifiers to the given number.
-     *
-     * @param number The number to modify.
-     * @param turn An optional applicable {@code Turn}.
-     * @param mods The {@code Modifier}s to apply.
-     * @return The modified number.
-     */
-    public static final float applyModifiers(float number, Turn turn,
-                                             Stream<Modifier> mods) {
+                                             List<Modifier> mods) {
         return FeatureContainer.applyModifiers(number, turn, mods);
     }
 
@@ -753,7 +799,7 @@ public abstract class FreeColObject
      * @return A list of defence {@code Modifier}s.
      */
     public List<Modifier> getDefenceModifiers() {
-        return toList(getModifiers(Modifier.DEFENCE));
+        return getModifiers(Modifier.DEFENCE);
     }
 
 

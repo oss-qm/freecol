@@ -1927,7 +1927,7 @@ outer:  for (Effect effect : effects) {
         }
 
         // Some modifiers are special
-        for (Modifier m : iterable(father.getModifiers())) {
+        for (Modifier m : father.getModifiers()) {
             if (Modifier.LINE_OF_SIGHT_BONUS.equals(m.getId())) {
                 // Check for tiles that are now visible.  They need to be
                 // explored, and always updated so that units are visible.

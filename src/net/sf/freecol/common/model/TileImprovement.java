@@ -25,7 +25,6 @@ import java.util.Map;
 import java.util.function.Function;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 import javax.xml.stream.XMLStreamException;
 
@@ -502,17 +501,16 @@ public class TileImprovement extends TileItem implements Named {
      * {@inheritDoc}
      */
     @Override
-    public Stream<Modifier> getProductionModifiers(GoodsType goodsType,
+    public void fillProductionModifiers(List<Modifier> result, GoodsType goodsType,
                                                    UnitType unitType) {
         final Specification spec = getSpecification();
         Modifier m;
-        return (goodsType != null && isComplete()
+        if (goodsType != null && isComplete()
             && !(/* unattended */ !isNatural() && unitType == null
                 && !goodsType.isFoodType()
                 && spec.getBoolean(GameOptions.ONLY_NATURAL_IMPROVEMENTS))
             && (m = getProductionModifier(goodsType)) != null)
-            ? Stream.of(m)
-            : Stream.<Modifier>empty();
+            result.add(m);
     }
 
     /**

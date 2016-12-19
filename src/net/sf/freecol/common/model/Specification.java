@@ -34,7 +34,6 @@ import java.util.function.Predicate;
 import java.util.function.Function;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import java.util.stream.Stream;
 
 import javax.xml.stream.XMLStreamException;
 
@@ -947,9 +946,11 @@ public final class Specification {
      * @param id The object identifier to look for.
      * @return A stream of {@code Modifier}s.
      */
-    public Stream<Modifier> getModifiers(String id) {
+    public List<Modifier> getModifiers(String id) {
         List<Modifier> result = allModifiers.get(id);
-        return (result == null) ? Stream.<Modifier>empty() : result.stream();
+        return ((result == null)
+            ? Collections.<Modifier>emptyList()
+            : new ArrayList<Modifier>(result)); // copy to allow modification
     }
 
 
@@ -2303,7 +2304,7 @@ public final class Specification {
 
         // @compat 0.11.3
         // Added the cargo penalty modifier
-        if (none(getModifiers(Modifier.CARGO_PENALTY))) {
+        if (getModifiers(Modifier.CARGO_PENALTY).size() == 0) {
             addModifier(new Modifier(Modifier.CARGO_PENALTY, -12.5f,
                     Modifier.ModifierType.PERCENTAGE, CARGO_PENALTY_SOURCE,
                     Modifier.GENERAL_COMBAT_INDEX));
@@ -2323,7 +2324,7 @@ public final class Specification {
         // @compat 0.11.5
         // Added a modifier to hardy pioneer
         UnitType hardyPioneer = getUnitType("model.unit.hardyPioneer");
-        if (none(hardyPioneer.getModifiers(Modifier.TILE_TYPE_CHANGE_PRODUCTION))) {
+        if (hardyPioneer.getModifiers(Modifier.TILE_TYPE_CHANGE_PRODUCTION).size() == 0) {
             Modifier m = new Modifier(Modifier.TILE_TYPE_CHANGE_PRODUCTION,
                 2.0f, Modifier.ModifierType.MULTIPLICATIVE);
             Scope scope = new Scope();

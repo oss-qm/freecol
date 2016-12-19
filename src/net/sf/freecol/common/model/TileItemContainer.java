@@ -22,7 +22,6 @@ package net.sf.freecol.common.model;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Logger;
-import java.util.stream.Stream;
 
 import javax.xml.stream.XMLStreamException;
 
@@ -419,11 +418,11 @@ public class TileItemContainer extends FreeColGameObject {
      * @param unitType The optional {@code unitType} to produce them.
      * @return A stream of the applicable {@code Modifier}s.
      */
-    public Stream<Modifier> getProductionModifiers(GoodsType goodsType,
+    public void fillProductionModifiers(List<Modifier> result, GoodsType goodsType,
                                                    UnitType unitType) {
         synchronized (tileItems) {
-            return flatten(tileItems,
-                ti -> ti.getProductionModifiers(goodsType, unitType));
+            for (TileItem ti : tileItems)
+                ti.fillProductionModifiers(result, goodsType, unitType);
         }
     }
 
