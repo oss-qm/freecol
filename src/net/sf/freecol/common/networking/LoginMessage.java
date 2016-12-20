@@ -194,7 +194,7 @@ public class LoginMessage extends DOMMessage {
             }
 
             // Complete initialization...
-            serverPlayer.initialize(game, game.getLivePlayerList().isEmpty(),
+            serverPlayer.initialize(game, game.getLivePlayers().isEmpty(),
                                     nation);
 
             // ... but override player name.

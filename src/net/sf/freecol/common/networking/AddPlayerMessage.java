@@ -75,16 +75,6 @@ public class AddPlayerMessage extends DOMMessage {
     // Public interface
 
     /**
-     * Get the attached players.
-     *
-     * @return The list of {@code Player}s to add.
-     */
-    public List<Player> getPlayers() {
-        return this.players;
-    }
-
-
-    /**
      * Handle a "addPlayer"-message.
      *
      * @param server The {@code FreeColServer} handling the message.
