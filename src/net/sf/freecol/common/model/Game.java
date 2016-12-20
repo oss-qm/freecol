@@ -22,6 +22,8 @@ package net.sf.freecol.common.model;
 import java.lang.ref.WeakReference;
 import java.io.StringReader;
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -31,7 +33,6 @@ import java.util.NoSuchElementException;
 import java.util.UUID;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import java.util.function.Predicate;
 import java.util.stream.Stream;
 
 import javax.xml.stream.XMLStreamException;
@@ -579,19 +580,10 @@ public class Game extends FreeColGameObject {
     /**
      * Get all the players in the game.
      *
-     * @return The list of {@code Player}s.
+     * @return The {@code Collection} of {@code Player}s.
      */
-    public List<Player> getPlayerList() {
+    public Collection<Player> getPlayers() {
         return this.players;
-    }
-
-    /**
-     * Get all the players in the game as a stream.
-     *
-     * @return The list of {@code Player}s.
-     */
-    public Stream<Player> getPlayers() {
-        return this.players.stream();
     }
 
     /**
@@ -600,27 +592,7 @@ public class Game extends FreeColGameObject {
      * @param comparator The {@code Comparator} to sort with.
      */
     public void sortPlayers(Comparator<Player> comparator) {
-        this.players.sort(comparator);
-    }
-
-    /**
-     * Get players in the game.
-     *
-     * @param predicate A {@code Predicate} to select suitable players with.
-     * @return A list of {@code Player}s.
-     */
-    public List<Player> getPlayerList(Predicate<Player> predicate) {
-        return transform(this.players, predicate);
-    }
-
-    /**
-     * Get players in the game.
-     *
-     * @param predicate A {@code Predicate} to select suitable players with.
-     * @return The stream of {@code Player}s.
-     */
-    public Stream<Player> getPlayers(Predicate<Player> predicate) {
-        return getPlayerList(predicate).stream();
+        Collections.sort(this.players, comparator);
     }
 
     /**
@@ -635,6 +607,22 @@ public class Game extends FreeColGameObject {
     }
 
     /**
+     * Get alive {@code Player} identified by its nation.
+     *
+     * @param nation The {@code Nation} to search for.
+     * @return The {@code Player} of the given nation, or null if
+     *     not found or already dead.
+     */
+    public final Player getLivePlayerByNation(Nation nation) {
+        if (this.players == null)
+            for (Player p : this.players)
+                if (!p.isUnknownEnemy() && !p.isDead() && p.getNation() == nation)
+                    return p;
+
+        return null;
+    }
+
+    /**
      * Get a {@code Player} identified by its nation identifier.
      *
      * @param nationId The nation identifier to search for.
@@ -642,7 +630,25 @@ public class Game extends FreeColGameObject {
      *     not found.
      */
     public Player getPlayerByNationId(String nationId) {
-        return find(this.players, matchKeyEquals(nationId, Player::getNationId));
+        if ((players != null) || (nationId != null))
+        {
+            for (Player walk : players) {
+                if (walk == null)
+                    continue;
+                if (nationId.equals(walk.getNationId()))
+                    return walk;
+            }
+        }
+        return null;
+    }
+
+    private static void addPlayerNotExcluded(List<Player> result,
+                                             Player player,
+                                             Player[] exclude) {
+        for (Player e : exclude)
+            if (e == player) return;
+
+        result.add(player);
     }
 
     /**
@@ -650,72 +656,62 @@ public class Game extends FreeColGameObject {
      * excluding supplied ones.
      *
      * @param exclude The {@code Player}s to exclude.
-     * @return A list of live {@code Player}s, without the excluded ones.
+     * @return A {@code Collection} of live {@code Player}s, without the excluded ones.
      */
-    public List<Player> getLivePlayerList(final Player... exclude) {
-        final Predicate<Player> livePred = p ->
-            !p.isUnknownEnemy() && !p.isDead() && !any(exclude, matchKey(p));
-        return getPlayerList(livePred);
-    }
+    public Collection<Player> getLivePlayers(final Player... exclude) {
+        List<Player> result = new ArrayList<>();
 
-    /**
-     * Get a stream of the live players in the game, optionally excluding
-     * supplied ones.
-     *
-     * @param exclude The {@code Player}s to exclude.
-     * @return A stream of live {@code Player}s, without the
-     *     excluded ones.
-     */
-    public Stream<Player> getLivePlayers(final Player... exclude) {
-        return getLivePlayerList(exclude).stream();
+        for (Player p : this.players)
+            if (p.isLive())
+                addPlayerNotExcluded(result, p, exclude);
+
+        return result;
     }
 
     /**
      * Get a list of the live European players in this game.
      *
      * @param exclude {@code Player}s to exclude.
-     * @return A list of live European {@code Player}s in this game,
+     * @return A {@code Collection} of live European {@code Player}s in this game,
      *     without the excluded ones.
      */
-    public List<Player> getLiveEuropeanPlayerList(final Player... exclude) {
-        final Predicate<Player> europeanPred = p ->
-            !p.isUnknownEnemy() && !p.isDead() && p.isEuropean()
-                && !any(exclude, matchKey(p));
-        return getPlayerList(europeanPred);
+    public List<Player> getLiveEuropeanPlayers(final Player... exclude) {
+        List<Player> result = new ArrayList<>();
+
+        for (Player p : this.players)
+            if (p.isLiveEuropean())
+                addPlayerNotExcluded(result, p, exclude);
+
+        return result;
     }
 
     /**
-     * Get a stream of the live European players in this game.
+     * Get a list of the live European players in this game.
      *
      * @param exclude {@code Player}s to exclude.
-     * @return A stream of live European {@code Player}s in this game,
+     * @return A {@code Collection} of live European {@code Player}s in this game,
      *     without the excluded ones.
      */
-    public Stream<Player> getLiveEuropeanPlayers(final Player... exclude) {
-        return getLiveEuropeanPlayerList(exclude).stream();
+    public List<Player> getLiveEuropeanPlayers(List<Player> exclude) {
+        Player[] array = new Player[exclude.size()];
+        exclude.toArray(array);
+        return getLiveEuropeanPlayers(array);
     }
 
     /**
      * Get a list of the live native players in this game.
      *
      * @param exclude {@code Player}s to exclude.
-     * @return A list of live native {@code Player}s in this game.
+     * @return A {@code Collection} of live native {@code Player}s in this game.
      */
-    public List<Player> getLiveNativePlayerList(final Player... exclude) {
-        final Predicate<Player> nativePred = p ->
-            !p.isUnknownEnemy() && !p.isDead() && p.isIndian()
-                && !any(exclude, matchKey(p));
-        return getPlayerList(nativePred);
-    }
+    public Collection<Player> getLiveNativePlayers(final Player... exclude) {
+        List<Player> result = new ArrayList<>();
 
-    /**
-     * Get a stream of the live native players in this game.
-     *
-     * @param exclude {@code Player}s to exclude.
-     * @return A stream of live native {@code Player}s in this game.
-     */
-    public Stream<Player> getLiveNativePlayers(final Player... exclude) {
-        return getLiveNativePlayerList(exclude).stream();
+        for (Player p : this.players)
+            if (p.isLiveNative())
+                addPlayerNotExcluded(result, p, exclude);
+
+        return result;
     }
 
     /**
@@ -766,7 +762,10 @@ public class Game extends FreeColGameObject {
      * @return The {@code Player} or null if none found.
      */
     public Player getPlayerByName(String name) {
-        return find(players, matchKeyEquals(name, Player::getName));
+        for (Player p : players)
+            if (Utils.equals(name, p.getName()))
+                return p;
+        return null;
     }
 
     /**
@@ -863,7 +862,10 @@ public class Game extends FreeColGameObject {
      * @return True if an undead player is present.
      */
     public boolean isInRevengeMode() {
-        return any(getPlayers(), Player::isUndead);
+        for (Player p : this.players)
+            if (p.isUndead())
+                return true;
+        return false;
     }
 
     /**
@@ -900,10 +902,12 @@ public class Game extends FreeColGameObject {
      */
     public void setMap(Map newMap) {
         if (this.map != newMap) {
-            for (HighSeas hs : transform(getLivePlayers(), alwaysTrue(),
-                    Player::getHighSeas, toListNoNulls())) {
-                hs.removeDestination(this.map);
-                hs.addDestination(newMap);
+            for (Player p : getLivePlayers()) {
+                HighSeas hs = p.getHighSeas();
+                if (hs != null) {
+                    hs.removeDestination(this.map);
+                    hs.addDestination(newMap);
+                }
             }
         }
         this.map = newMap;
@@ -1121,7 +1125,10 @@ public class Game extends FreeColGameObject {
      * @return True if all players are ready to launch.
      */
     public boolean allPlayersReadyToLaunch() {
-        return all(getLiveEuropeanPlayerList(), Player::isReady);
+        for (Player p : this.players)
+            if (p.isLiveEuropean() && (!p.isReady()))
+                return false;
+        return true;
     }
 
     /**
@@ -1131,7 +1138,7 @@ public class Game extends FreeColGameObject {
      * @return A stream of all the {@code Colony}s in the game.
      */
     public Stream<Colony> getAllColonies(Player player) {
-        return flatten(getLiveEuropeanPlayerList(player), Player::getColonies);
+        return flatten(getLiveEuropeanPlayers(player), Player::getColonies);
     }
 
     /**
@@ -1302,9 +1309,10 @@ public class Game extends FreeColGameObject {
         if (map != null) {
             result = Math.min(result, getMap().checkIntegrity(fix));
         }
-        for (Player player : getPlayerList()) {
+
+        for (Player player : this.players)
             result = Math.min(result, player.checkIntegrity(fix));
-        }
+
         return result;
     }
 
@@ -1419,7 +1427,8 @@ public class Game extends FreeColGameObject {
 
         nationOptions.toXML(xw);
 
-        List<Player> players = sort(getPlayers());
+        List<Player> players = new ArrayList<>(this.players);
+        Collections.sort(players);
         Player unknown = getUnknownEnemy();
         if (unknown != null) players.add(unknown);
         for (Player p : players) p.toXML(xw);
@@ -1484,9 +1493,9 @@ public class Game extends FreeColGameObject {
 
         // Make sure all work locations have rational default production
         // now that all tiles are defined.
-        for (Colony c : getAllColoniesList(null)) {
-            c.updateProductionTypes();
-        }
+        for (Player p : getLiveEuropeanPlayers(players))
+            for (Colony c : p.getColonies())
+                c.updateProductionTypes();
     }
 
     /**

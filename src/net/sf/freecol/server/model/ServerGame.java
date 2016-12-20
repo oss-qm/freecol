@@ -653,7 +653,7 @@ public class ServerGame extends Game implements TurnTaker {
     @Override
     public void csNewTurn(Random random, LogBuilder lb, ChangeSet cs) {
         lb.add("GAME ", getId(), ", ");
-        for (Player player : getLivePlayerList()) {
+        for (Player player : getLivePlayers()) {
             ((ServerPlayer)player).csNewTurn(random, lb, cs);
         }
 
