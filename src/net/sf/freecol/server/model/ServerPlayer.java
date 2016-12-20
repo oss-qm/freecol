@@ -632,7 +632,7 @@ public class ServerPlayer extends Player implements ServerModelObject {
         cs.addDead(this);
 
         // Clean up missions and remove tension/alarm/stance.
-        for (Player other : getGame().getLivePlayerList(this)) {
+        for (Player other : getGame().getLivePlayers(this)) {
             if (isEuropean() && other.isIndian()) {
                 for (IndianSettlement is : other.getIndianSettlementList()) {
                     ServerIndianSettlement sis = (ServerIndianSettlement)is;
@@ -1668,7 +1668,7 @@ outer:  for (Effect effect : effects) {
 
         // Do not need to update the clients here, these changes happen
         // while it is not their turn.
-        for (Player p : getGame().getLiveEuropeanPlayerList(this)) {
+        for (Player p : getGame().getLiveEuropeanPlayers(this)) {
             Market market = p.getMarket();
             if (market != null) market.addGoodsToMarket(type, amount);
         }
@@ -1765,7 +1765,7 @@ outer:  for (Effect effect : effects) {
             for (IndianSettlement is : allSettlements) {
                 java.util.Map<Player, Tension.Level> oldLevel = new HashMap<>();
                 oldLevels.put(is, oldLevel);
-                for (Player enemy : game.getLiveEuropeanPlayerList(this)) {
+                for (Player enemy : game.getLiveEuropeanPlayers(this)) {
                     Tension alarm = is.getAlarm(enemy);
                     oldLevel.put(enemy,
                         (alarm == null) ? null : alarm.getLevel());
@@ -1775,7 +1775,7 @@ outer:  for (Effect effect : effects) {
             // Do the settlement alarms first.
             for (IndianSettlement is : allSettlements) {
                 java.util.Map<Player, Integer> extra = new HashMap<>();
-                for (Player enemy : game.getLiveEuropeanPlayerList(this)) {
+                for (Player enemy : game.getLiveEuropeanPlayers(this)) {
                     extra.put(enemy, 0);
                 }
 
@@ -1959,7 +1959,7 @@ outer:  for (Effect effect : effects) {
             String eventId = event.getId();
             switch (eventId) {
             case "model.event.resetBannedMissions":
-                for (Player p : game.getLiveNativePlayerList()) {
+                for (Player p : game.getLiveNativePlayers()) {
                     if (p.missionsBanned(this)) {
                         p.removeMissionBan(this);
                         cs.add(See.only(this), p);
@@ -4477,7 +4477,7 @@ outer:  for (Effect effect : effects) {
             Stance sta = getStance(s);
             boolean war = sta == Stance.WAR;
             if (sta == Stance.UNCONTACTED) continue;
-            for (Player p : game.getLiveEuropeanPlayerList(this)) {
+            for (Player p : game.getLiveEuropeanPlayers(this)) {
                 ServerPlayer sp = (ServerPlayer) p;
                 if (p == s || !p.hasContacted(this)
                     || !p.hasContacted(s)) continue;

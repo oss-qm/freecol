@@ -1468,7 +1468,7 @@ public class EuropeanAIPlayer extends MissionAIPlayer {
         final ServerPlayer serverPlayer = (ServerPlayer)getPlayer();
         lb.mark();
 
-        for (Player p : getGame().getLivePlayerList(serverPlayer)) {
+        for (Player p : getGame().getLivePlayers(serverPlayer)) {
             Stance newStance = determineStance(p);
             if (newStance != serverPlayer.getStance(p)) {
                 if (newStance == Stance.WAR && peaceHolds(p)) {
