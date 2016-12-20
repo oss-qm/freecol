@@ -1314,7 +1314,7 @@ public class ChangeSet {
      * @return The updated {@code ChangeSet}.
      */
     public ChangeSet addGlobalHistory(Game game, HistoryEvent history) {
-        for (Player p : game.getLiveEuropeanPlayerList()) {
+        for (Player p : game.getLiveEuropeanPlayers()) {
             addHistory((ServerPlayer)p, history);
         }
         return this;
@@ -1330,7 +1330,7 @@ public class ChangeSet {
      */
     public ChangeSet addGlobalMessage(Game game, ServerPlayer omit,
                                       ModelMessage message) {
-        for (Player p : game.getLiveEuropeanPlayerList()) {
+        for (Player p : game.getLiveEuropeanPlayers()) {
             if (p == (Player)omit) continue;
             addMessage((ServerPlayer)p, message);
         }
