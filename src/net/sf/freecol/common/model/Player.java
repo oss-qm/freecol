@@ -742,6 +742,18 @@ public class Player extends FreeColGameObject implements Nameable {
             || playerType == PlayerType.ROYAL;
     }
 
+    public final boolean isLive() {
+        return (!isUnknownEnemy() && !isDead());
+    }
+
+    public final boolean isLiveEuropean() {
+        return (!isUnknownEnemy() && !isDead() && isEuropean());
+    }
+
+    public final boolean isLiveNative() {
+        return (!isUnknownEnemy() && !isDead() && isIndian());
+    }
+
     /**
      * Is this a native player?
      *
@@ -2827,7 +2839,7 @@ public class Player extends FreeColGameObject implements Nameable {
 
                 // All missions if using enhanced missionaries.
                 if (spec.getBoolean(GameOptions.ENHANCED_MISSIONARIES))
-                    for (Player other : getGame().getLiveNativePlayerList(this))
+                    for (Player other : getGame().getLiveNativePlayers(this))
                         for (IndianSettlement is : getIndianSettlementsWithMissionaryList(this))
                             vismap.setVisible(is);
 

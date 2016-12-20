@@ -102,7 +102,7 @@ public final class PreGameController extends Controller {
 
         // Check that no two players have the same nation
         List<Nation> nations = new ArrayList<>();
-        for (Player p : game.getLivePlayerList()) {
+        for (Player p : game.getLivePlayers()) {
             final Nation nation = spec.getNation(p.getNationId());
             if (nations.contains(nation)) {
                 setLaunching(false);

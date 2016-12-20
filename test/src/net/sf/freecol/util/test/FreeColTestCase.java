@@ -458,7 +458,7 @@ public class FreeColTestCase extends TestCase {
             map.resetHighSeasCount();
             if (exploredByAll) {
                 map.forEachTile(t -> {
-                        for (Player p : game.getLiveEuropeanPlayerList()) {
+                        for (Player p : game.getLiveEuropeanPlayers()) {
                             t.setExplored(p, true);
                         }
                     });

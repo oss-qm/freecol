@@ -459,14 +459,13 @@ public final class SelectDestinationDialog extends FreeColDialog<Location>
         // of accessible settlement locations and do a bulk path search
         // to determine the travel times, and create Destinations from
         // the results.
-        final Predicate<Player> tradePred = p ->
-            p.hasContacted(player) && (canTrade || !p.isEuropean());
-        final Function<Player, Stream<Location>> settlementTileMapper = p ->
-            transform(p.getSettlements(),
-                      s -> canReach.test(s) && s.hasContacted(p),
-                      s -> (Location)s.getTile()).stream();
-        List<Location> locs = toList(flatten(game.getLivePlayers(player),
-                                             tradePred, settlementTileMapper));
+        List<Location> locs = new ArrayList<>();
+        for (Player op : game.getLivePlayers(player))
+            if (op.hasContacted(player) && (canTrade || !op.isEuropean()))
+                for (Settlement s : op.getSettlements())
+                    if (canReach.test(s) && s.hasContacted(op))
+                        locs.add(s.getTile());
+
         MultipleAdjacentDecider md = new MultipleAdjacentDecider(locs);
         unit.search(unit.getLocation(), md.getGoalDecider(), null,
                     FreeColObject.INFINITY, null);

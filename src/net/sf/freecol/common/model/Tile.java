@@ -2497,7 +2497,7 @@ public final class Tile extends UnitLocation implements Named, Ownable {
 
         // Save the cached tiles to saved games.
         if (xw.validForSave() && cachedTiles != null) {
-            for (Player p : getGame().getLiveEuropeanPlayerList()) {
+            for (Player p : getGame().getLiveEuropeanPlayers()) {
                 Tile t = getCachedTile(p);
                 if (t == null) continue;
 
