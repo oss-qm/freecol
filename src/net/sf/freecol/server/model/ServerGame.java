@@ -654,7 +654,7 @@ public class ServerGame extends Game implements ServerModelObject {
     @Override
     public void csNewTurn(Random random, LogBuilder lb, ChangeSet cs) {
         lb.add("GAME ", getId(), ", ");
-        for (Player player : getLivePlayerList()) {
+        for (Player player : getLivePlayers()) {
             ((ServerPlayer)player).csNewTurn(random, lb, cs);
         }
 

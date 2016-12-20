@@ -600,7 +600,7 @@ public final class FreeColServer {
     public void endGame() {
         changeServerState(ServerState.END_GAME);
         ChangeSet cs = new ChangeSet();
-        for (Player p : getGame().getLiveEuropeanPlayerList()) {
+        for (Player p : getGame().getLiveEuropeanPlayers()) {
             ServerPlayer sp = (ServerPlayer)p;
             if (sp.isAdmin()) continue;
             sp.send(new ChangeSet()
@@ -1131,7 +1131,7 @@ public final class FreeColServer {
         int savegameVersion = fis.getSavegameVersion();
         // @compat 0.10.x
         if (savegameVersion < 12) {
-            for (Player p : serverGame.getPlayerList()) {
+            for (Player p : serverGame.getPlayers()) {
                 p.setReady(true); // Players in running game must be ready
                 // @compat 0.10.5
                 if (p.isIndian()) {
@@ -1201,7 +1201,7 @@ public final class FreeColServer {
 
         serverGame.sortPlayers(Player.playerComparator);
 
-        for (Player player : serverGame.getLivePlayerList()) {
+        for (Player player : serverGame.getLivePlayers()) {
             if (player.isAI()) {
                 ServerPlayer aiPlayer = (ServerPlayer)player;
                 addAIConnection(aiPlayer);
@@ -1289,14 +1289,14 @@ public final class FreeColServer {
             // Initial stances and randomizations for all players.
             spec.generateDynamicOptions();
             Random random = getServerRandom();
-            for (Player player : serverGame.getLivePlayerList()) {
+            for (Player player : serverGame.getLivePlayers()) {
                 ((ServerPlayer)player).randomizeGame(random);
                 if (player.isIndian()) {
                     // Indian players know about each other, but
                     // European colonial players do not.
                     final int alarm = (Tension.Level.HAPPY.getLimit()
                         + Tension.Level.CONTENT.getLimit()) / 2;
-                    for (Player other : serverGame.getLiveNativePlayerList(player)) {
+                    for (Player other : serverGame.getLiveNativePlayers(player)) {
                         player.setStance(other, Stance.PEACE);
                         for (IndianSettlement is : player.getIndianSettlementList()) {
                             is.setAlarm(other, new Tension(alarm));
@@ -1345,7 +1345,7 @@ public final class FreeColServer {
      * @param reveal If true, reveal, if false, hide.
      */
     public void exploreMapForAllPlayers(boolean reveal) {
-        for (Player player : getGame().getLiveEuropeanPlayerList()) {
+        for (Player player : getGame().getLiveEuropeanPlayers()) {
             ((ServerPlayer)player).exploreMap(reveal);
         }
 
@@ -1360,7 +1360,7 @@ public final class FreeColServer {
             fogOfWarSetting.setValue(FreeColDebugger.getNormalGameFogOfWar());
         }
 
-        for (Player player : getGame().getLiveEuropeanPlayerList()) {
+        for (Player player : getGame().getLiveEuropeanPlayers()) {
             ((ServerPlayer)player).getConnection().sendReconnect();
         }
     }
