@@ -988,7 +988,7 @@ public final class InGameController extends Controller {
             }
             serverPlayer.addSettlement(settlement);
             settlement.placeSettlement(true);//-vis(serverPlayer),-til
-            for (Player p : getGame().getLivePlayerList(serverPlayer)) {
+            for (Player p : getGame().getLivePlayers(serverPlayer)) {
                 ((IndianSettlement)settlement).setAlarm(p, (p.isIndian())
                     ? new Tension(Tension.Level.CONTENT.getLimit())
                     : serverPlayer.getTension(p));//-til

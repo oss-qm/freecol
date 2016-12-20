@@ -79,8 +79,8 @@ public class NationDetailPanel extends ColopediaGameObjectTypePanel<Nation> {
         if (getId().equals(id)) return;
 
         Nation nation = getSpecification().getNation(id);
-        Player player = CollectionUtils.find(getGame().getLivePlayers(),
-                             p -> p.getNation() == nation);
+        Player player = getGame().getLivePlayerByNation(nation);
+
         NationType currentNationType = (player == null) ? nation.getType()
             : player.getNationType();
 
