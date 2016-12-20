@@ -160,7 +160,7 @@ public final class FindSettlementPanel extends FreeColPanel
             = new DefaultListModel<>();
         Object selected = this.settlementList.getSelectedValue();
 
-        for (Player player : getGame().getLivePlayerList()) {
+        for (Player player : getGame().getLivePlayers()) {
             boolean ok;
             switch (displayListOption) {
             case ONLY_NATIVES:

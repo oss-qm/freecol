@@ -154,7 +154,7 @@ public class DebugMenu extends JMenu {
             });
         this.add(cvpMenu);
         cvpMenu.addSeparator();
-        for (Player p : game.getLiveEuropeanPlayerList()) {
+        for (Player p : game.getLiveEuropeanPlayers()) {
             final JRadioButtonMenuItem cv2
                 = Utility.localizedRadioButtonMenuItem(p.getCountryLabel(),
                     FreeColDebugger.debugDisplayColonyValuePlayer() == p);
