@@ -21,26 +21,27 @@ package net.sf.freecol.common.model;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.Iterator;
 import java.util.List;
-import java.util.function.Function;
-import java.util.function.Predicate;
-
-import javax.xml.stream.XMLStreamException;
 
 import static net.sf.freecol.common.util.CollectionUtils.*;
-
 
 /**
  * An {@code Iterator} of {@link Unit}s that can be made active.
  */
 public class UnitIterator implements Iterator<Unit> {
 
+    public enum Type {
+        ACTIVE,
+        GOING_TO
+    };
+
     /** The player that owns the units. */
     private final Player owner;
 
-    /** The admission predicate. */
-    private final Predicate<Unit> predicate;
+    /** The admission type. */
+    private final Type type;
 
     /** The current cache of units. */
     private final List<Unit> units = new ArrayList<>();
@@ -51,16 +52,23 @@ public class UnitIterator implements Iterator<Unit> {
      *
      * @param owner The {@code Player} that needs an iterator
      *     of it's units.
-     * @param predicate A {@code Predicate} for deciding
+     * @param type the iterator's {@code Type} for deciding
      *     whether a {@code Unit} should be included in the
      *     {@code Iterator} or not.
      */
-    public UnitIterator(Player owner, Predicate<Unit> predicate) {
+    public UnitIterator(Player owner, Type t) {
+        this.type = t;
         this.owner = owner;
-        this.predicate = predicate;
         update();
     }
 
+    private boolean testUnit(Unit u) {
+        switch (type) {
+            case ACTIVE:   return u.couldMove();
+            case GOING_TO: return u.goingToDestination();
+        }
+        return false;
+    }
 
     /**
      * Update the internal units list with units that satisfy the
@@ -68,8 +76,11 @@ public class UnitIterator implements Iterator<Unit> {
      */
     private final void update() {
         this.units.clear();
-        this.units.addAll(transform(owner.getUnits(), u -> predicate.test(u),
-                          Function.identity(), Unit.locComparator));
+        for (Unit u : owner.getUnits())
+            if (testUnit(u))
+                this.units.add(u);
+
+        Collections.sort(units, Unit.locComparator);
     }
 
     /**
@@ -79,7 +90,7 @@ public class UnitIterator implements Iterator<Unit> {
      * @return True if the operation succeeds.
      */
     public boolean setNext(Unit unit) {
-        if (this.predicate.test(unit)) { // Of course, it has to be valid...
+        if (testUnit(unit)) { // Of course, it has to be valid...
             final Unit sentinel = first(this.units);
             while (!this.units.isEmpty()) {
                 if (this.units.get(0) == unit) return true;
@@ -119,9 +130,9 @@ public class UnitIterator implements Iterator<Unit> {
      */
     @Override
     public boolean hasNext() {
-        // Try to find a unit that still satisfies the predicate.
+        // Try to find a unit that still satisfies the condition.
         while (!this.units.isEmpty()) {
-            if (predicate.test(this.units.get(0))) {
+            if (testUnit(this.units.get(0))) {
                 return true; // Still valid
             }
             this.units.remove(0);
