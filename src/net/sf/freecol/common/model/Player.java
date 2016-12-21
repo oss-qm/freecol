@@ -361,11 +361,11 @@ public class Player extends FreeColGameObject implements Nameable {
 
     /** An iterator for the player units that are still active this turn. */
     private final UnitIterator nextActiveUnitIterator
-        = new UnitIterator(this, Unit::couldMove);
+        = new UnitIterator(this, UnitIterator.Type.ACTIVE);
 
     /** An iterator for the player units that have a destination to go to. */
     private final UnitIterator nextGoingToUnitIterator
-        = new UnitIterator(this, Unit::goingToDestination);
+        = new UnitIterator(this, UnitIterator.Type.GOING_TO);
 
     /**
      * The HighSeas is a Location that enables Units to travel between
