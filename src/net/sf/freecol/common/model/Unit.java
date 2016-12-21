@@ -1019,6 +1019,13 @@ public class Unit extends GoodsLocation
         return getTile() != null;
     }
 
+    public boolean anyHasTile(List<Unit> units) {
+        if (units != null)
+            for (Unit u : units)
+                if (u.hasTile()) return true;
+        return false;
+    }
+
     /**
      * Gets the work location this unit is working in.
      *
