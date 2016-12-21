@@ -987,7 +987,7 @@ public class Player extends FreeColGameObject implements Nameable {
      *     world or a nation is in rebellion against us.
      */
     public boolean isWorkForREF() {
-        return (any(getUnits(), Unit::hasTile))
+        return Unit.anyHasTile(getUnits())
             ? true // Work to do still if there exists a unit in the new world
             : !getRebels().isEmpty();
     }
