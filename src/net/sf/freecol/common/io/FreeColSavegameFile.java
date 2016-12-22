@@ -22,6 +22,7 @@ package net.sf.freecol.common.io;
 import java.io.File;
 import java.io.IOException;
 import java.io.BufferedInputStream;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
 import javax.xml.stream.XMLStreamException;
@@ -92,8 +93,11 @@ public class FreeColSavegameFile extends FreeColDataFile {
         throws IOException, XMLStreamException {
         final FreeColXMLReader xr = this.getSavedGameFreeColXMLReader();
         xr.nextTag();
-        List<String> ret = transform(attributes, alwaysTrue(),
-                                     a -> xr.getAttribute(a, (String)null));
+
+        List<String> ret = new ArrayList<>();
+        for (String a : attributes)
+            ret.add(xr.getAttribute(a, (String)null));
+
         xr.close();
         return ret;
     }

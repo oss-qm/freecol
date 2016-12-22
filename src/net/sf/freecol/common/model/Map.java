@@ -993,12 +993,15 @@ public class Map extends FreeColGameObject implements Location {
             // as we do not have the terrain type and thus can not
             // calculate costs, but relent if the unexplored tile borders
             // an explored one on the same contiguity.
-            Tile closest = (realStart instanceof Tile)
-                ? getClosestTile((Tile)realStart,
-                    transform(((Tile)realEnd).getSurroundingTiles(1, 1),
-                        t -> t.isExplored()
-                            && isSameContiguity(t, realStart)))
-                : null;
+            Tile closest = null;
+            if (realStart instanceof Tile) {
+                List<Tile> tl = new ArrayList<>();
+                for (Tile t : ((Tile)realEnd).getSurroundingTiles(1, 1))
+                    if (t.isExplored() && isSameContiguity(t, realStart))
+                        tl.add(t);
+                closest = getClosestTile((Tile)realStart, tl);
+            }
+
             path = (closest == null) ? null
                 : findPath(unit, realStart, closest, carrier, costDecider, lb);
             if (path != null) {

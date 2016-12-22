@@ -22,7 +22,6 @@ package net.sf.freecol.common.model;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
-import java.util.function.Function;
 import java.util.logging.Logger;
 
 import javax.xml.stream.XMLStreamException;
@@ -483,13 +482,24 @@ public class NativeTrade extends FreeColGameObject {
      * @param n The number of items to offer.
      */
     public void limitSettlementToUnit(int n) {
-        List<NativeTradeItem> best = transform(this.settlementToUnit,
-            NativeTradeItem::priceIsValid, Function.identity(),
-            NativeTradeItem.descendingPriceComparator);
-        if (best.size() <= n) return;
-        for (NativeTradeItem nti : best.subList(n, best.size())) {
-            nti.setPrice(NativeTradeItem.PRICE_INVALID);
+        /** create a list of valid items -- sorted by price **/
+        NativeTradeItem[] best = new NativeTradeItem[settlementToUnit.size()];
+        int idx = 0;
+        for (NativeTradeItem i : this.settlementToUnit) {
+            if (i.priceIsValid()) {
+                best[idx] = i;
+                idx++;
+            }
         }
+        Arrays.sort(best, NativeTradeItem.descendingPriceComparator);
+
+        /** if less then limit, there's nothing to do **/
+        if (idx <= n)
+            return;
+
+        /** mark the remaining as invalid **/
+        for (int x=n; x<idx; x++)
+            best[x].setPrice(NativeTradeItem.PRICE_INVALID);
     }
 
     /**

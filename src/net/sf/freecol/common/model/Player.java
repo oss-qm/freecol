@@ -32,9 +32,7 @@ import java.util.List;
 import java.util.Map.Entry;
 import java.util.Random;
 import java.util.Set;
-import java.util.function.Function;
 import java.util.logging.Logger;
-import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import javax.xml.stream.XMLStreamException;
@@ -1012,9 +1010,11 @@ public class Player extends FreeColGameObject implements Nameable {
      * @return A list of nations in rebellion against us.
      */
     public List<Player> getRebels() {
-        return transform(getGame().getLiveEuropeanPlayers(this),
-                         p -> (p.getREFPlayer() == this
-                             && (p.isRebel() || p.isUndead())));
+        List<Player> result = new ArrayList<>();
+        for (Player p : getGame().getLiveEuropeanPlayers(this))
+            if (p.getREFPlayer() == this && (p.isRebel() || p.isUndead()))
+                result.add(p);
+        return result;
     }
 
     /**
@@ -1514,12 +1514,11 @@ public class Player extends FreeColGameObject implements Nameable {
      * @return A map of father id to {@code Turn}s.
      */
     public java.util.Map<String, Integer> getElectionTurns() {
-        return transform(getHistory(),
-                         matchKey(HistoryEvent.HistoryEventType.FOUNDING_FATHER,
-                                  HistoryEvent::getEventType),
-                         Function.identity(),
-                         Collectors.toMap(he -> he.getReplacement("%father%").getId(),
-                                          HistoryEvent::getTurn));
+        java.util.Map<String, Integer> result = new java.util.HashMap<>();
+        for (HistoryEvent he : getHistory())
+            if (HistoryEvent.HistoryEventType.FOUNDING_FATHER.equals(he.getEventType()))
+                result.put(he.getReplacement("%father%").getId(), he.getTurn());
+        return result;
     }
 
     /**
@@ -2034,7 +2033,11 @@ public class Player extends FreeColGameObject implements Nameable {
      * @return A list of suitable carriers.
      */
     public List<Unit> getCarriersForUnit(Unit unit) {
-        return transform(getUnitList(), u -> u.couldCarry(unit));
+        List<Unit> result = new ArrayList<>();
+        for (Unit u : getUnitList())
+            if (u.couldCarry(unit))
+                result.add(u);
+        return result;
     }
 
     /**
@@ -2633,7 +2636,11 @@ public class Player extends FreeColGameObject implements Nameable {
      */
     public List<ModelMessage> getNewModelMessages() {
         synchronized (this.modelMessages) {
-            return transform(this.modelMessages, m -> !m.hasBeenDisplayed());
+            List<ModelMessage> result = new ArrayList<>();
+            for (ModelMessage m : this.modelMessages)
+                if (!m.hasBeenDisplayed())
+                    result.add(m);
+            return result;
         }
     }
 
@@ -3533,8 +3540,10 @@ public class Player extends FreeColGameObject implements Nameable {
         final int FOOD_VERY_LOW = 1;
 
         // Multiplicative modifiers, to be applied to value later
-        List<Double> values = transform(ColonyValueCategory.values(),
-                                        alwaysTrue(), v -> 1.0);
+        // FIXME: use an array
+        List<Double> values = new ArrayList<>();
+        for (ColonyValueCategory v : ColonyValueCategory.values())
+            values.add(1.0);
 
         // Penalize certain problems more in the initial colonies.
         double development = Math.min(LOW_SETTLEMENT_NUMBER,
