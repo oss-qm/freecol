@@ -39,9 +39,11 @@ import net.sf.freecol.client.gui.ImageLibrary;
 import net.sf.freecol.client.gui.action.ColopediaAction.PanelType;
 import net.sf.freecol.client.gui.panel.*;
 import net.sf.freecol.common.i18n.Messages;
+import net.sf.freecol.common.model.Ability;
 import net.sf.freecol.common.model.AbstractUnit;
 import net.sf.freecol.common.model.EuropeanNationType;
 import net.sf.freecol.common.model.IndianNationType;
+import net.sf.freecol.common.model.Modifier;
 import net.sf.freecol.common.model.NationType;
 import net.sf.freecol.common.model.UnitType;
 import net.sf.freecol.common.util.RandomChoice;
@@ -140,24 +142,25 @@ public class NationTypeDetailPanel
             }
         }
 
-        List<JLabel> abilities
-            = transform(nationType.getAbilities(), alwaysTrue(),
-                        a -> getAbilityComponent(a), toListNoNulls());
-        if (!abilities.isEmpty()) {
-            label = Utility.localizedLabel("abilities");
-            label.setFont(boldFont);
-            panel.add(label, "newline 20, span");
-            for (JLabel a : abilities) panel.add(a);
+        boolean first = true;
+        for (Ability a : nationType.getAbilities()) {
+            if (first) {
+                label = Utility.localizedLabel("abilities");
+                label.setFont(boldFont);
+                panel.add(label, "newline 20, span");
+                first = false;
+            }
+            panel.add(getAbilityComponent(a));
         }
 
-        List<JComponent> modifiers
-            = transform(nationType.getModifiers(), alwaysTrue(),
-                        m -> getModifierComponent(m), toListNoNulls());
-        if (!modifiers.isEmpty()) {
-            label = Utility.localizedLabel("modifiers");
-            label.setFont(boldFont);
-            panel.add(label, "newline 20, span");
-            for (JComponent m : modifiers) panel.add(m);
+        first = true;
+        for (Modifier m : nationType.getModifiers()) {
+            if (first) {
+                label = Utility.localizedLabel("modifiers");
+                label.setFont(boldFont);
+                panel.add(label, "newline 20, span");
+            }
+            panel.add(getModifierComponent(m));
         }
     }
 
