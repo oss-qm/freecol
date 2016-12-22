@@ -1394,8 +1394,11 @@ public class EuropeanAIPlayer extends MissionAIPlayer {
                 if (u.isPerson()) nWorkers++;
         }
         Europe europe = player.getEurope();
-        nEuropean = (europe == null) ? 0
-            : count(europe.getUnits(), Unit::isPerson);
+
+        if (europe != null)
+            for (Unit u : europe.getUnits())
+                if (u.isPerson())
+                    nEuropean++;
 
         // If would be good to have at least two colonies, and at least
         // one port.  After that, determine the ratio of workers to colonies
@@ -2641,8 +2644,11 @@ public class EuropeanAIPlayer extends MissionAIPlayer {
         } else if (goodsType.isBreedable()) {
             // Refuse if we already have this type under production in
             // multiple places.
-            int n = count(getPlayer().getSettlements(),
-                          s -> s.getGoodsCount(goodsType) > 0);
+            int n = 0;
+            for (Settlement s : getPlayer().getSettlements())
+                if (s.getGoodsCount(goodsType) > 0)
+                    n++;
+
             ret = n < 2;
             if (ret) {
                 lb.add("accepted: breedable-type-", goodsType.getSuffix(),
@@ -2666,8 +2672,13 @@ public class EuropeanAIPlayer extends MissionAIPlayer {
             // don't want these goods to be boycotted.
             final List<GoodsType> goodsTypes = getSpecification()
                 .getStorableGoodsTypeList();
-            int averageIncome = sum(goodsTypes,
-                gt -> getPlayer().getIncomeAfterTaxes(gt)) / goodsTypes.size();
+
+            int averageIncome = 0;
+            Player pl = getPlayer();
+            for (GoodsType gt : goodsTypes)
+                averageIncome += pl.getIncomeAfterTaxes(gt);
+            averageIncome = averageIncome / goodsTypes.size();
+
             int income = getPlayer().getIncomeAfterTaxes(toBeDestroyed.getType());
             ret = income <= 0 || income > averageIncome;
             lb.add(((ret) ? "accepted" : "rejected"),
