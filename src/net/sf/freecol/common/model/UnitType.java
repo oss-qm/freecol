@@ -42,10 +42,6 @@ public final class UnitType extends BuildableType implements Consumer {
 
     public static final String TAG = "unit-type";
 
-    /** Comparator for defence ability. */
-    public static final Comparator<UnitType> defenceComparator
-            = Comparator.comparingDouble(UnitType::getDefence);
-
     /** The default offence value. */
     public static final int DEFAULT_OFFENCE = 0;
 
