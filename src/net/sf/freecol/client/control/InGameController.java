@@ -1340,9 +1340,11 @@ public final class InGameController extends FreeColClientHolder {
         }
 
         // Disembark selected units able to move.
-        final List<Unit> disembarkable
-            = transform(unit.getUnits(),
-                        u -> u.getMoveType(tile).isProgress());
+        final List<Unit> disembarkable = new ArrayList<>();
+        for (Unit u : unit.getUnits())
+            if (u.getMoveType(tile).isProgress())
+                disembarkable.add(u);
+
         if (disembarkable.isEmpty()) return false; // Fail, did not find one
         for (Unit u : disembarkable) changeState(u, UnitState.ACTIVE);
         if (disembarkable.size() == 1) {

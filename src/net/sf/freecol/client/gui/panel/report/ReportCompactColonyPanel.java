@@ -28,9 +28,9 @@ import java.util.Comparator;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -921,9 +921,11 @@ public final class ReportCompactColonyPanel extends ReportPanel
         // Field: The number of potential colony tiles that need
         // exploring.
         // Colour: cAlarm
-        Set<Tile> tiles = transform(rTileSuggestions,
-                                    TileImprovementSuggestion::isExploration,
-                                    ts -> ts.tile, Collectors.toSet());
+        Set<Tile> tiles = new HashSet<>();
+        for (TileImprovementSuggestion tis : rTileSuggestions)
+            if (tis.isExploration())
+                tiles.add(tis.tile);
+
         reportPanel.add((tiles.isEmpty()) ? new JLabel()
             : newLabel(Integer.toString(tiles.size()), null, cAlarm,
                        stpld("report.colony.exploring.summary")));

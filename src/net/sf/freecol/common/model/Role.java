@@ -393,7 +393,11 @@ public class Role extends BuildableType {
      */
     public static List<Role> getAvailableRoles(Player player, UnitType type,
                                                List<Role> roles) {
-        return transform(roles, r -> r.isAvailableTo(player, type));
+        List<Role> result = new ArrayList<>();
+        for (Role r : roles)
+            if (r.isAvailableTo(player, type))
+                result.add(r);
+        return result;
     }
 
     /**

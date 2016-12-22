@@ -24,12 +24,11 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map.Entry;
 import java.util.Random;
 import java.util.Set;
-import java.util.function.Function;
-import java.util.function.Predicate;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -78,7 +77,6 @@ import net.sf.freecol.common.model.UnitType;
 import net.sf.freecol.common.model.pathfinding.CostDeciders;
 import net.sf.freecol.common.model.pathfinding.GoalDeciders;
 import net.sf.freecol.common.option.GameOptions;
-import net.sf.freecol.common.util.CachingFunction;
 import static net.sf.freecol.common.util.CollectionUtils.*;
 import net.sf.freecol.common.util.LogBuilder;
 import net.sf.freecol.common.util.RandomChoice;
@@ -114,11 +112,6 @@ import net.sf.freecol.server.model.ServerPlayer;
 public class EuropeanAIPlayer extends MissionAIPlayer {
 
     private static final Logger logger = Logger.getLogger(EuropeanAIPlayer.class.getName());
-
-    /** Predicate to select party modifiers. */
-    private static final Predicate<Modifier> partyPred
-        = matchKey(Specification.COLONY_GOODS_PARTY_SOURCE,
-                   Modifier::getSource);
 
     /** Maximum number of turns to travel to a building site. */
     private static final int buildingRange = 5;
@@ -441,17 +434,29 @@ public class EuropeanAIPlayer extends MissionAIPlayer {
                 // benefit of `temporary' cheat code).  If we do not
                 // do this, AI colonies accumulate heaps of party
                 // modifiers because of the cheat boycott removal.
-                final CachingFunction<Colony, Modifier> partyModifierMapper
-                    = new CachingFunction<>(c ->
-                        first(transform(c.getModifiers(), partyPred)));
+                List<Colony> cols = new ArrayList<>();
+                for (Colony c : player.getColonies()) {
+                    for (Modifier m : c.getModifiers()) {
+                        if (Specification.COLONY_GOODS_PARTY_SOURCE == m.getSource()) {
+                            cols.add(c);
+                            break;
+                        }
+                    }
+                }
+
                 Colony party = getRandomMember(logger, "end boycott",
-                    transform(player.getColonies(),
-                              isNotNull(c -> partyModifierMapper.apply(c))),
+                    cols,
                     air);
                 if (party != null) {
-                    party.removeModifier(partyModifierMapper.apply(party));
-                    lb.add("lift-boycott at ", party, ", ");
-                    player.logCheat("lift boycott at " + party.getName());
+                    for (Iterator<Modifier> it = party.getModifiers().iterator(); it.hasNext();) {
+                        Modifier m = it.next();
+                        if (Specification.COLONY_GOODS_PARTY_SOURCE == m.getSource()) {
+                            it.remove();
+                            lb.add("lift-boycott at ", party, ", ");
+                            player.logCheat("lift boycott at " + party.getName());
+                            break;
+                        }
+                    }
                 }
             }
         }
@@ -608,26 +613,34 @@ public class EuropeanAIPlayer extends MissionAIPlayer {
             : (0.0f < naval && naval < 0.5f)
             ? (int)(naval * offensiveNavalUnitCheatPercent)
             : -1;
-        final Function<UnitType, RandomChoice<UnitType>> mapper = ut ->
-            new RandomChoice<>(ut, 100000 / europe.getUnitPrice(ut));
+
         if (randoms[cheatIndex++] < nNaval) {
-            cheatUnit(transform(spec.getUnitTypeList(),
-                                ut -> ut.hasAbility(Ability.NAVAL_UNIT)
-                                    && ut.isAvailableTo(player)
-                                    && ut.hasPrice()
-                                    && ut.isOffensive(),
-                                mapper), "offensive-naval", lb);
+            List<RandomChoice<UnitType>> choices = new ArrayList<>();
+            for (UnitType ut : spec.getUnitTypeList()) {
+                if (ut.hasAbility(Ability.NAVAL_UNIT)
+                        && ut.isAvailableTo(player)
+                        && ut.hasPrice()
+                        && ut.isOffensive()) {
+                    choices.add(new RandomChoice<>(ut, 100000 / europe.getUnitPrice(ut)));
+                }
+            }
+            cheatUnit(choices, "offensive-naval", lb);
         }
+
         // Only cheat carriers if they have work to do.
         int nCarrier = (nNavalCarrier > 0) ? transportNavalUnitCheatPercent
             : -1;
         if (randoms[cheatIndex++] < nCarrier) {
-            cheatUnit(transform(spec.getUnitTypeList(),
-                                ut -> ut.hasAbility(Ability.NAVAL_UNIT)
-                                    && ut.isAvailableTo(player)
-                                    && ut.hasPrice()
-                                    && ut.getSpace() > 0,
-                                mapper), "transport-naval", lb);
+            List<RandomChoice<UnitType>> choices = new ArrayList<>();
+            for (UnitType ut : spec.getUnitTypeList()) {
+                if (ut.hasAbility(Ability.NAVAL_UNIT)
+                        && ut.isAvailableTo(player)
+                        && ut.hasPrice()
+                        && ut.getSpace() > 0) {
+                    choices.add(new RandomChoice<>(ut, 100000 / europe.getUnitPrice(ut)));
+                }
+            }
+            cheatUnit(choices, "transport-naval", lb);
         }
 
         if (lb.grew("\n  Cheats: ")) lb.shrink(", ");
@@ -1149,11 +1162,15 @@ public class EuropeanAIPlayer extends MissionAIPlayer {
      */
     public List<WorkerWish> getWorkerWishesAt(Location loc, UnitType type) {
         List<Wish> demand = transportDemand.get(Location.upLoc(loc));
-        return (demand == null) ? Collections.<WorkerWish>emptyList()
-            : transform(demand,
-                        w -> w instanceof WorkerWish
-                            && ((WorkerWish)w).getUnitType() == type,
-                        w -> (WorkerWish)w);
+        if (demand == null)
+            Collections.<WorkerWish>emptyList();
+
+        List<WorkerWish> result = new ArrayList<>();
+        for (Wish w : demand)
+            if (w instanceof WorkerWish && ((WorkerWish)w).getUnitType() == type)
+                result.add((WorkerWish)w);
+
+        return result;
     }
 
     /**
@@ -1165,11 +1182,15 @@ public class EuropeanAIPlayer extends MissionAIPlayer {
      */
     public List<GoodsWish> getGoodsWishesAt(Location loc, GoodsType type) {
         List<Wish> demand = transportDemand.get(Location.upLoc(loc));
-        return (demand == null) ? Collections.<GoodsWish>emptyList()
-            : transform(demand,
-                        w -> w instanceof GoodsWish
-                            && ((GoodsWish)w).getGoodsType() == type,
-                        w -> (GoodsWish)w);
+        if (demand == null)
+            Collections.<GoodsWish>emptyList();
+
+        List<GoodsWish> result = new ArrayList<>();
+        for (Wish w : demand)
+            if (w instanceof GoodsWish && ((GoodsWish)w).getGoodsType() == type)
+                result.add((GoodsWish)w);
+
+        return result;
     }
 
     /**
@@ -1481,8 +1502,13 @@ public class EuropeanAIPlayer extends MissionAIPlayer {
      * @return A list of wishes.
      */
     public List<Wish> getWishes() {
-        return sort(flatten(getAIColonies(), aic -> aic.getWishes().stream()),
-                    ValuedAIObject.descendingValueComparator);
+        List<Wish> result = new ArrayList<>();
+
+        for (AIColony aic : getAIColonies())
+            result.addAll(aic.getWishes());
+
+        Collections.sort(result, ValuedAIObject.descendingValueComparator);
+        return result;
     }
 
 

@@ -23,8 +23,8 @@ import java.awt.Dimension;
 import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.image.BufferedImage;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Stream;
 
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
@@ -145,14 +145,18 @@ public class TerrainDetailPanel
                   "span, growx");
     }
 
-    private void addProduction(JPanel panel, Stream<AbstractGoods> production) {
+    private void addProduction(JPanel panel, List<AbstractGoods> production) {
         // Positive production only
-        List<AbstractGoods> pro = transform(production, AbstractGoods::isPositive);
+        List<AbstractGoods> pro = new ArrayList<AbstractGoods>();
+        for (AbstractGoods ag : production)
+            if (ag.isPositive())
+                pro.add(ag);
+
         String tag = null;
         switch (pro.size()) {
         case 0:
             panel.add(new JLabel(), "wrap");
-            break;
+            return; // skip the list walk at the end - we know its empty anyways
         case 1:
             tag = "span";
             break;

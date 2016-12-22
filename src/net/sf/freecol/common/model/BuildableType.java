@@ -157,10 +157,14 @@ public abstract class BuildableType extends FreeColSpecObjectType {
      * @return A deep copy of the list of required goods.
      */
     public List<AbstractGoods> getRequiredGoods() {
-        return (this.requiredGoods == null)
-                ? Collections.<AbstractGoods>emptyList()
-                : transform(this.requiredGoods, alwaysTrue(),
-                ag -> new AbstractGoods(ag.getType(), ag.getAmount()));
+        if (this.requiredGoods == null)
+            return Collections.<AbstractGoods>emptyList();
+
+        List<AbstractGoods> result = new ArrayList<>();
+        for (AbstractGoods ag : this.requiredGoods)
+            result.add(new AbstractGoods(ag.getType(), ag.getAmount()));
+
+        return result;
     }
 
     /**

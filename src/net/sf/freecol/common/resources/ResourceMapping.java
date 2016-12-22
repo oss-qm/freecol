@@ -19,13 +19,13 @@
 
 package net.sf.freecol.common.resources;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.function.Function;
 import java.util.logging.Logger;
-import java.util.stream.Collectors;
 import static net.sf.freecol.common.util.CollectionUtils.*;
 
 
@@ -293,8 +293,11 @@ public final class ResourceMapping {
      * @return A list of keys.
      */
     public List<String> getImageKeys(String prefix) {
-        return transform(imageResources.keySet(),
-                         k -> k.startsWith(prefix));
+        List<String> result = new ArrayList<>();
+        for (String k : imageResources.keySet())
+            if (k.startsWith(prefix))
+                result.add(k);
+        return result;
     }
 
     /**
@@ -306,8 +309,11 @@ public final class ResourceMapping {
      * @return A list of keys.
      */
     public List<String> getImageKeys(String prefix, String suffix) {
-        return transform(imageResources.keySet(),
-                         k -> k.startsWith(prefix) && k.endsWith(suffix));
+        List<String> result = new ArrayList<>();
+        for (String k : imageResources.keySet())
+            if (k.startsWith(prefix) && k.endsWith(suffix))
+                result.add(k);
+        return result;
     }
 
     /**
@@ -317,8 +323,11 @@ public final class ResourceMapping {
      * @return The set of keys.
      */
     public Set<String> getImageKeySet(String prefix) {
-        return transform(imageResources.keySet(), k -> k.startsWith(prefix),
-                         Function.identity(), Collectors.toSet());
+        Set<String> result = new HashSet<>();
+        for (String k : imageResources.keySet())
+            if (k.startsWith(prefix))
+                result.add(k);
+        return result;
     }
 
     /**

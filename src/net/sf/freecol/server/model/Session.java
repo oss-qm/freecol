@@ -173,9 +173,11 @@ public abstract class Session {
      * @param cs A {@code ChangeSet} to update.
      */
     public static void completeAll(ChangeSet cs) {
-        List<Session> sessions;
+        List<Session> sessions = new ArrayList<>();
         synchronized (sessionLock) {
-            sessions = transform(allSessions.values(), s -> !s.isComplete());
+            for (Session s : allSessions.values())
+                if (!s.isComplete())
+                    sessions.add(s);
             allSessions.clear();
         }
         for (Session ts : sessions) ts.complete(cs);

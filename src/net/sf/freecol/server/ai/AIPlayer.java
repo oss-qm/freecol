@@ -196,8 +196,12 @@ public abstract class AIPlayer extends AIObject {
      */
     public List<AIColony> getAIColonies() {
         final AIMain aiMain = getAIMain();
-        return transform(getPlayer().getColonies(), alwaysTrue(),
-                         c -> aiMain.getAIColony(c), toListNoNulls());
+        List<AIColony> result = new ArrayList<>();
+        for (Colony c : getPlayer().getColonies()) {
+            AIColony aic = aiMain.getAIColony(c);
+            if (aic != null) result.add(aic);
+        }
+        return result;
     }
 
     /**

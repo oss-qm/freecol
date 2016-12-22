@@ -154,8 +154,10 @@ public class TerrainGenerator {
         if (landTileTypes == null) {
             // Do not generate elevated and water tiles at this time
             // they are created elsewhere.
-            landTileTypes = transform(spec.getTileTypeList(),
-                                      t -> !t.isElevation() && !t.isWater());
+            landTileTypes = new ArrayList<>();
+            for (TileType tt : spec.getTileTypeList())
+                if (!tt.isElevation() && !tt.isWater())
+                    landTileTypes.add(tt);
         }
         return getRandomTileType(landTileTypes, latitude);
     }
@@ -168,9 +170,11 @@ public class TerrainGenerator {
      */
     private TileType getRandomOceanTileType(int latitude) {
         if (oceanTileTypes == null) {
-            oceanTileTypes = transform(spec.getTileTypeList(),
-                                       t -> t.isWater() && t.isHighSeasConnected()
-                                           && !t.isDirectlyHighSeasConnected());
+            oceanTileTypes = new ArrayList<>();
+            for (TileType tt : spec.getTileTypeList())
+                if (tt.isWater() && tt.isHighSeasConnected()
+                                 && !tt.isDirectlyHighSeasConnected())
+                    oceanTileTypes.add(tt);
         }
         return getRandomTileType(oceanTileTypes, latitude);
     }
@@ -967,7 +971,10 @@ public class TerrainGenerator {
         // Connect all new regions to their geographic parent and add to
         // the map.
         List<ServerRegion> geographic
-            = transform(fixed, ServerRegion::isGeographic);
+            = new ArrayList<>();
+        for (ServerRegion sr : fixed)
+            if (sr.isGeographic())
+                geographic.add(sr);
         for (ServerRegion sr : newRegions) {
             for (ServerRegion gr : geographic) {
                 if (gr.containsCenter(sr)) {

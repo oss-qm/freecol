@@ -26,9 +26,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-import java.util.function.Function;
 import java.util.function.Predicate;
-import java.util.stream.Collectors;
 import java.util.logging.Logger;
 
 import javax.xml.stream.XMLStreamException;
@@ -902,7 +900,13 @@ public class Unit extends GoodsLocation
      */
     public List<Role> getAvailableRoles(List<Role> roles) {
         if (roles == null) roles = getSpecification().getRoles();
-        return transform(roles, r -> roleIsAvailable(r));
+
+        List<Role> result = new ArrayList<>();
+        for (Role r : roles)
+            if (roleIsAvailable(r))
+                result.add(r);
+
+        return result;
     }
 
     /**
@@ -1931,9 +1935,14 @@ public class Unit extends GoodsLocation
     public Location getRepairLocation() {
         final Player player = getOwner();
         final Colony notHere = getTile().getColony();
-        final Predicate<Colony> repairPred = c ->
-            c != notHere && c.hasAbility(Ability.REPAIR_UNITS);
-        Location loc = getClosestColony(transform(player.getColonies(), repairPred));
+
+        List<Colony> candidates = new ArrayList<>();
+        for (Colony c : player.getColonies())
+            if (c != notHere && c.hasAbility(Ability.REPAIR_UNITS))
+                candidates.add(c);
+
+        Location loc = getClosestColony(candidates);
+
         return (loc != null) ? loc : player.getEurope();
     }
 
@@ -3623,13 +3632,15 @@ public class Unit extends GoodsLocation
      * @return The missionary trade bonuses.
      */
     public Set<Modifier> getMissionaryTradeModifiers(boolean sense) {
-        final Function<Modifier, Modifier> mapper = m -> {
-            Modifier mod = new Modifier(m);
-            if (!sense) mod.setValue(-m.getValue());
-            return mod;
-        };
-        return transform(getModifiers(Modifier.MISSIONARY_TRADE_BONUS),
-                         m -> m.getValue() != 0, mapper, Collectors.toSet());
+        Set<Modifier> result = new HashSet<>();
+        for (Modifier m : getModifiers(Modifier.MISSIONARY_TRADE_BONUS))
+            if (m.getValue() != 0) {
+                Modifier mod = new Modifier(m);
+                if (!sense) mod.setValue(-m.getValue());
+                result.add(mod);
+            }
+
+        return result;
     }
 
     /**

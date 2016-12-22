@@ -20,6 +20,7 @@
 
 package net.sf.freecol.server.model;
 
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
@@ -670,9 +671,11 @@ public class ServerUnit extends Unit implements ServerModelObject {
      * @return A list of new tiles to see.
      */
     public List<Tile> collectNewTiles(Tile tile) {
-        final int los = getLineOfSight();
-        return transform(tile.getSurroundingTiles(0, los),
-                         t -> !getOwner().canSee(t));
+        List<Tile> result = new ArrayList<>();
+        for (Tile t : tile.getSurroundingTiles(0, getLineOfSight()))
+            if (!getOwner().canSee(t))
+                result.add(t);
+        return result;
     }
 
     /**

@@ -30,10 +30,8 @@ import java.util.List;
 import java.util.Map.Entry;
 import java.util.Random;
 import java.util.Set;
-import java.util.function.Function;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import java.util.stream.Collectors;
 
 import net.sf.freecol.FreeCol;
 import net.sf.freecol.common.FreeColException;
@@ -802,17 +800,20 @@ public class ServerPlayer extends Player implements ServerModelObject {
         }
 
         // Select one from each father type
-        final Function<FoundingFatherType, FoundingFather> mapper = ft -> {
-            List<RandomChoice<FoundingFather>> rc = choices.get(ft);
-            return (rc == null) ? null
-                : RandomChoice.getWeightedRandom(logger,
-                    "Choose founding father", rc, random);
-        };
-        List<FoundingFather> fathers = transform(FoundingFatherType.values(),
-            alwaysTrue(), mapper, toListNoNulls());
         LogBuilder lb = new LogBuilder(64);
         lb.add("Random fathers for ", getDebugName(), ":");
-        for (FoundingFather f : fathers) lb.add(" ", f.getSuffix());
+
+        List<FoundingFather> fathers = new ArrayList<FoundingFather>();
+        for (FoundingFatherType ft : FoundingFatherType.values()) {
+            List<RandomChoice<FoundingFather>> rc = choices.get(ft);
+            if (rc != null) {
+                FoundingFather f = RandomChoice.getWeightedRandom(logger,
+                    "Choose founding father", rc, random);
+                lb.add(" ", f.getSuffix());
+                fathers.add(f);
+            }
+        }
+
         lb.log(logger, Level.INFO);
         return fathers;
     }
@@ -914,8 +915,11 @@ public class ServerPlayer extends Player implements ServerModelObject {
      * @see #hasExplored
      */
     public Set<Tile> exploreTiles(Collection<? extends Tile> tiles) {
-        return transform(tiles, t -> exploreTile(t), (Tile t) -> t,
-                         Collectors.toSet());
+        Set<Tile> result = new HashSet<Tile>();
+        for (Tile t : tiles)
+            if (exploreTile(t))
+                result.add(t);
+        return result;
     }
 
     /**
@@ -1660,8 +1664,11 @@ outer:  for (Effect effect : effects) {
     }
 
     public Unit getUnitForEffect(Colony colony, Effect effect, Random random) {
-        List<Unit> units = transform(colony.getAllUnits(),
-                                     u -> effect.appliesTo(u.getType()));
+        List<Unit> units = new ArrayList<Unit>();
+        for (Unit u : colony.getAllUnits())
+            if (effect.appliesTo(u.getType()))
+                units.add(u);
+
         return (units.isEmpty()) ? null
             : getRandomMember(logger, "Select unit for effect", units, random);
     }
@@ -1953,13 +1960,18 @@ outer:  for (Effect effect : effects) {
                 List<Colony> colonies = (hasAbility(Ability.SEE_ALL_COLONIES))
                     ? getGame().getAllColonies(null)
                     : getColonies();
-                Set<Tile> tiles
-                    = transform(concat(flatten(colonies,
-                                               c -> c.getVisibleTiles().stream()),
-                                       flatten(getUnits(),
-                                               u -> u.getVisibleTiles().stream())),
-                                t -> !canSee(t), Function.identity(),
-                                Collectors.toSet());
+
+                Set<Tile> tiles = new HashSet<Tile>();
+                for (Colony c : colonies)
+                    for (Tile t : c.getVisibleTiles())
+                        if (!canSee(t))
+                            tiles.add(t);
+
+                for (Unit u : getUnits())
+                    for (Tile t : u.getVisibleTiles())
+                        if (!canSee(t))
+                            tiles.add(t);
+
                 exploreTiles(tiles); // Explore the new tiles
                 cs.add(See.only(this), tiles);
                 visibilityChange = true;
@@ -2071,9 +2083,14 @@ outer:  for (Effect effect : effects) {
      */
     public List<BuildingType> getFreeBuildingTypes() {
         final Specification spec = getGame().getSpecification();
-        return transform(flatten(getFathers(), ff -> ff.getEvents().stream()),
-                         matchKeyEquals("model.event.freeBuilding", Event::getId),
-                         ev -> spec.getBuildingType(ev.getValue()));
+
+        List<BuildingType> result = new ArrayList<BuildingType>();
+        for (FoundingFather ff : getFathers())
+            for (Event ev : ff.getEvents())
+                if (ev.getId().equals("model.event.freeBuilding"))
+                    result.add(spec.getBuildingType(ev.getValue()));
+
+        return result;
     }
 
     /**
@@ -2977,8 +2994,12 @@ outer:  for (Effect effect : effects) {
                                      ChangeSet cs) {
         boolean captureRepairing = getSpecification()
             .getBoolean(GameOptions.CAPTURE_UNITS_UNDER_REPAIR);
-        List<Unit> units = transform(colony.getTile().getUnits(),
-            u -> u.isNaval() && !(captureRepairing && u.isDamaged()));
+
+        List<Unit> units = new ArrayList<Unit>();
+        for (Unit u : colony.getTile().getUnits())
+            if (u.isNaval() && !(captureRepairing && u.isDamaged()))
+                units.add(u);
+
         if (!units.isEmpty()) {
             final ServerPlayer shipPlayer = (ServerPlayer)colony.getOwner();
             final Unit ship = units.get(0);
@@ -3332,8 +3353,11 @@ outer:  for (Effect effect : effects) {
 
         // Former missionary owner knows that the settlement fell.
         if (missionaryOwner != null) {
-            List<Tile> surrounding = transform(centerTile.getSurroundingTiles(1, radius),
-                                               t -> !owned.contains(t));
+            List<Tile> surrounding = new ArrayList<Tile>();
+            for (Tile t : centerTile.getSurroundingTiles(1, radius))
+                if (!owned.contains(t))
+                    surrounding.add(t);
+
             cs.add(See.only(missionaryOwner), owned);
             cs.add(See.only(missionaryOwner), surrounding);
             cs.addRemove(See.only(missionaryOwner), centerTile, settlement);
@@ -3739,8 +3763,12 @@ outer:  for (Effect effect : effects) {
     private void csSinkColonyShips(Unit attacker, Colony colony, ChangeSet cs) {
         boolean captureRepairing = getSpecification()
             .getBoolean(GameOptions.CAPTURE_UNITS_UNDER_REPAIR);
-        List<Unit> units = transform(colony.getTile().getUnits(),
-            u -> u.isNaval() && !(captureRepairing && u.isDamaged()));
+
+        List<Unit> units = new ArrayList<Unit>();
+        for (Unit u : colony.getTile().getUnits())
+            if (u.isNaval() && !(captureRepairing && u.isDamaged()))
+                units.add(u);
+
         if (!units.isEmpty()) {
             final ServerPlayer shipPlayer = (ServerPlayer)colony.getOwner();
             final ServerPlayer attackerPlayer = (ServerPlayer)attacker.getOwner();
@@ -4091,8 +4119,12 @@ outer:  for (Effect effect : effects) {
                                  ChangeSet cs) {
         if (checkGold(price)) {
             final Specification spec = getSpecification();
-            List<AbstractUnit> naval
-                = transform(mercs, au -> au.getType(spec).isNaval());
+
+            List<AbstractUnit> naval = new ArrayList<AbstractUnit>();
+            for (AbstractUnit au : mercs)
+                if (au.getType(spec).isNaval())
+                    naval.add(au);
+
             Tile dst;
             if (naval.isEmpty()) { // Deliver to first settlement
                 dst = getFirstColony().getTile();

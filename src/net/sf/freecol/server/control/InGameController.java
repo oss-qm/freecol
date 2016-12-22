@@ -29,11 +29,8 @@ import java.util.List;
 import java.util.Map.Entry;
 import java.util.Random;
 import java.util.Set;
-import java.util.function.Function;
-import java.util.function.Predicate;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import java.util.stream.Collectors;
 
 import net.sf.freecol.FreeCol;
 import net.sf.freecol.common.debug.FreeColDebugger;
@@ -587,13 +584,14 @@ public final class InGameController extends Controller {
                 .<ModelMessage>addStringTemplate("%ref%", serverPlayer.getNationLabel()));
 
         // Who surrenders?
-        final Predicate<Unit> surrenderPred = u -> //-vis(both)
-            (u.hasTile() && !u.isNaval() && !u.isOnCarrier()
+        List<Unit> surrenderUnits = new ArrayList<>();
+        for (Unit u : serverPlayer.getUnits()) {
+            if (!(u.hasTile() && !u.isNaval() && !u.isOnCarrier()
                 && serverPlayer.csChangeOwner(u, independent,
-                    UnitChangeType.CAPTURE, null, cs));
-        List<Unit> surrenderUnits
-            = transform(serverPlayer.getUnits(), surrenderPred);
-        for (Unit u : surrenderUnits) {
+                    UnitChangeType.CAPTURE, null, cs)))
+                continue;
+            surrenderUnits.add(u);
+
             u.setMovesLeft(0);
             u.setState(Unit.UnitState.ACTIVE);
             cs.add(See.perhaps().always(serverPlayer), u.getTile());
@@ -1463,8 +1461,12 @@ public final class InGameController extends Controller {
                        b.getTension(serverPlayer).getValue();
             }};
 
-        List<Player> natives = transform(game.getLiveNativePlayers(),
-            p -> p.hasContacted(serverPlayer), Function.identity(), comp);
+        List<Player> natives = new ArrayList<>();
+        for (Player p : game.getLiveNativePlayers())
+            if (p.hasContacted(serverPlayer))
+                natives.add(p);
+        Collections.sort(natives, comp);
+
         if (!natives.isEmpty()) {
             ServerPlayer good = (ServerPlayer)first(natives);
             logger.info("Native ally following independence: " + good);
@@ -3282,10 +3284,14 @@ public final class InGameController extends Controller {
         }
 
         // Collect roles that cause a change, ordered by simplest change
-        for (Arrangement a : transform(arrangements,
-                a -> a.role != a.unit.getRole() && a.role != defaultRole,
-                Function.identity(),
-                Comparator.<Arrangement>reverseOrder())) {
+        List<Arrangement> ar = new ArrayList<>();
+        for (Arrangement a : arrangements)
+            if (a.role != a.unit.getRole() && a.role != defaultRole)
+                ar.add(a);
+        Collections.sort(ar);
+        Collections.reverse(ar);
+
+        for (Arrangement a : ar) {
             if (!colony.equipForRole(a.unit, a.role, a.roleCount)) {
                 return serverPlayer.clientError("Failed to equip "
                     + a.unit.getId() + " for role " + a.role
@@ -3437,9 +3443,11 @@ public final class InGameController extends Controller {
 
             // Update settlement tile with new information, and any
             // newly visible tiles, possibly with enhanced radius.
-            Set<Tile> tiles = transform(tile.getSurroundingTiles(1, radius),
-                t -> !serverPlayer.canSee(t) && (t.isLand() || t.isShore()),
-                Function.identity(), Collectors.toSet());
+            List<Tile> tiles = new ArrayList<>();
+            for (Tile t : tile.getSurroundingTiles(1, radius))
+                if (!serverPlayer.canSee(t) && (t.isLand() || t.isShore()))
+                    tiles.add(t);
+
             cs.add(See.only(serverPlayer), serverPlayer.exploreTiles(tiles));
 
             // If the unit was promoted, update it completely, otherwise just
