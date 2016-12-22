@@ -783,8 +783,10 @@ public class DebugUtils {
                     inEurope.add(u);
                 }
             }
-            forEachMapEntry(units,
-                e -> logEurope(aiMain, lb, e.getKey(), e.getValue()));
+
+            for (java.util.Map.Entry<String,List<Unit>> e : units.entrySet())
+                logEurope(aiMain, lb, e.getKey(), e.getValue());
+
             lb.add("\n->", Messages.message("immigrants"), "\n\n");
             for (UnitType unitType : p.getEurope().getRecruitables()) {
                 lb.add(Messages.getName(unitType), "\n");

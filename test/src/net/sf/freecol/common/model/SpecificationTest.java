@@ -273,7 +273,7 @@ public final class SpecificationTest extends FreeColTestCase {
         roleAbilities.put("model.role.nativeDragoon", expectAbilities);
 
         // Verify
-        forEachMapEntry(roleAbilities, e -> {
+        for (Entry<String, Map<String, Boolean>> e : roleAbilities) {
                 Role role = spec.getRole(e.getKey());
                 Map<String, Boolean> required = role.getRequiredAbilities();
                 Map<String, Boolean> expect = e.getValue();
@@ -287,7 +287,7 @@ public final class SpecificationTest extends FreeColTestCase {
                 }
                 assertEquals(role.getId() + " excess abilities", 0,
                              expect.size());
-            });
+        }
 
         Role role;
         role = spec.getRole("model.role.default");

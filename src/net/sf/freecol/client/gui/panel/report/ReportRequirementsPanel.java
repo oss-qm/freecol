@@ -182,8 +182,9 @@ public final class ReportRequirementsPanel extends ReportPanel {
                     && info != null
                     && !info.hasMaximumProduction()
                     && !productionWarning.contains(goodsType)) {
-                    forEach(map(building.getInputList(), AbstractGoods::getType),
-                        gt -> addProductionWarning(doc, colony, goodsType, gt));
+                    for (AbstractGoods in : building.getInputList())
+                        addProductionWarning(doc, colony, goodsType, in.getType());
+
                     productionWarning.add(goodsType);
                 }
             }

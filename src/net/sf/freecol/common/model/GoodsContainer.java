@@ -24,7 +24,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
-import java.util.function.Predicate;
 import java.util.logging.Logger;
 
 import javax.xml.stream.XMLStreamException;
@@ -295,13 +294,12 @@ public class GoodsContainer extends FreeColGameObject implements Ownable {
                 this.storedGoods.clear();
                 return;
             }
-            final Predicate<Entry<GoodsType, Integer>> hiPred = e -> {
+
+            for (Map.Entry<GoodsType, Integer> e : this.storedGoods.entrySet()) {
                 final GoodsType gt = e.getKey();
-                return gt.isStorable() && !gt.limitIgnored()
-                    && e.getValue() > newAmount;
-            };
-            forEachMapEntry(this.storedGoods, hiPred,
-                            e -> this.storedGoods.put(e.getKey(), newAmount));
+                if (gt.isStorable() && !gt.limitIgnored() && e.getValue() > newAmount)
+                    this.storedGoods.put(e.getKey(), newAmount);
+            }
         }
     }
 
@@ -346,14 +344,14 @@ public class GoodsContainer extends FreeColGameObject implements Ownable {
         final Game game = getGame();
         List<Goods> result = new ArrayList<>();
         synchronized (this.storedGoods) {
-            forEachMapEntry(this.storedGoods, e -> {
+            for (Map.Entry<GoodsType, Integer> e : this.storedGoods.entrySet()) {
                     int amount = e.getValue();
                     while (amount > 0) {
                         result.add(new Goods(game, parent, e.getKey(),
                                 ((amount >= CARGO_SIZE) ? CARGO_SIZE : amount)));
                         amount -= CARGO_SIZE;
                     }
-                });
+            }
         }
         return result;
     }
@@ -621,12 +619,12 @@ public class GoodsContainer extends FreeColGameObject implements Ownable {
         StringBuilder sb = new StringBuilder(128);
         sb.append('[').append(getId()).append(" [");
         // Do not bother to synchronize containers for display
-        forEachMapEntry(storedGoods, e ->
-            sb.append(e.getKey()).append('=').append(e.getValue()).append(sep));
+        for (Map.Entry<GoodsType, Integer> e : storedGoods.entrySet())
+            sb.append(e.getKey()).append('=').append(e.getValue()).append(sep);
         sb.setLength(sb.length() - sep.length());
         sb.append("][");
-        forEachMapEntry(oldStoredGoods, e ->
-            sb.append(e.getKey()).append('=').append(e.getValue()).append(sep));
+        for (Map.Entry<GoodsType, Integer> e : oldStoredGoods.entrySet())
+            sb.append(e.getKey()).append('=').append(e.getValue()).append(sep);
         sb.setLength(sb.length() - sep.length());
         sb.append("]]");
         return sb.toString();
