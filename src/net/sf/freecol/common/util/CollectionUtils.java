@@ -985,38 +985,6 @@ public class CollectionUtils {
     }
 
     /**
-     * Apply a consumer to the entries of a map.
-     *
-     * @param <K> The map key type.
-     * @param <V> The map value type.
-     * @param map The {@code Map} to apply to.
-     * @param consumer A {@code Consumer} to apply.
-     */
-    public static <K,V> void forEachMapEntry(Map<K,V> map,
-                                             Consumer<Entry<K,V>> consumer) {
-        if (map != null && !map.isEmpty() && consumer != null) {
-            forEach_internal(map.entrySet().stream(), alwaysTrue(), consumer);
-        }
-    }
-
-    /**
-     * Apply a consumer to the entries of a map that match a predicate.
-     *
-     * @param <K> The map key type.
-     * @param <V> The map value type.
-     * @param map The {@code Map} to apply to.
-     * @param predicate The {@code Predicate} to match.
-     * @param consumer A {@code Consumer} to apply.
-     */
-    public static <K,V> void forEachMapEntry(Map<K,V> map,
-                                             Predicate<Entry<K,V>> predicate,
-                                             Consumer<Entry<K,V>> consumer) {
-        if (map != null && !map.isEmpty() && consumer != null) {
-            forEach_internal(map.entrySet().stream(), predicate, consumer);
-        }
-    }
-
-    /**
      * Apply a consumer to the members of an array.
      *
      * @param <T> The array member type.

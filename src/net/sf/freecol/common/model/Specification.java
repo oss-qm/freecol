@@ -2088,11 +2088,11 @@ public final class Specification {
                               "model.goods.bells");
         fatherGoodsFixMap.put("model.foundingFather.williamPenn",
                               "model.goods.crosses");
-        forEachMapEntry(fatherGoodsFixMap, e -> {
-                FoundingFather father = getFoundingFather(e.getKey());
-                forEach(father.getModifiers(e.getValue()),
-                        Modifier::requireNegatedPersonScope);
-            });
+        for (Map.Entry<String, String> e : fatherGoodsFixMap.entrySet()) {
+            FoundingFather father = getFoundingFather(e.getKey());
+            for (Modifier m : father.getModifiers(e.getValue()))
+                m.requireNegatedPersonScope();
+        };
 
         // Nation FOUND_COLONY -> FOUNDS_COLONIES
         for (EuropeanNationType ent : europeanNationTypes) {
@@ -2168,9 +2168,9 @@ public final class Specification {
                 ent.addAbility(new Ability(Ability.INDEPENDENT_NATION));
 
         // Resource type modifiers had the wrong priority
-        forEach(flatten(resourceTypeList, ResourceType::getModifiers), m -> {
+        for (ResourceType rt : resourceTypeList)
+            for (Modifier m : rt.getModifiers())
                 m.setModifierIndex(Modifier.RESOURCE_PRODUCTION_INDEX);
-            });
 
         // Unit type indexes moved into the spec
         for (UnitType ut : unitTypeList)
@@ -2268,17 +2268,15 @@ public final class Specification {
         goodsType.setMilitary();
 
         // automaticEquipment scope types are now roles
-        forEach(flatten(flatten(indianNationTypes,
-                                nt -> nt.getAbilities(Ability.AUTOMATIC_EQUIPMENT)),
-                        Ability::getScopes),
-            scope -> {
-                String type = scope.getType();
-                if ("model.equipment.indian.muskets".equals(type)) {
-                    scope.setType("model.role.nativeDragoon");
-                } else if ("model.equipment.indian.horses".equals(type)) {
-                    scope.setType("model.role.armedBrave");
+        for (IndianNationType nt : indianNationTypes)
+            for (Ability ability : nt.getAbilities(Ability.AUTOMATIC_EQUIPMENT))
+                for (Scope scope : ability.getScopes()) {
+                    String type = scope.getType();
+                    if ("model.equipment.indian.muskets".equals(type))
+                        scope.setType("model.role.nativeDragoon");
+                    else if ("model.equipment.indian.horses".equals(type))
+                        scope.setType("model.role.armedBrave");
                 }
-            });
 
         // Limit Revere auto-equip of muskets to the soldier role
         {

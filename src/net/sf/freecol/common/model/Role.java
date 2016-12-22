@@ -24,6 +24,7 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 
 import javax.xml.stream.XMLStreamException;
 
@@ -408,8 +409,8 @@ public class Role extends BuildableType {
     public String toFullString() {
         StringBuilder sb = new StringBuilder(32);
         sb.append("[Role ").append(getSuffix());
-        forEachMapEntry(getRequiredAbilities(), e ->
-            sb.append(' ').append(e.getKey()).append('=').append(e.getValue()));
+        for (Map.Entry<String,Boolean> e : getRequiredAbilities().entrySet())
+            sb.append(' ').append(e.getKey()).append('=').append(e.getValue());
         sb.append(']');
         return sb.toString();
     }

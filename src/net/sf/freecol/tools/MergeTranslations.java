@@ -71,25 +71,25 @@ public class MergeTranslations {
 
             if (targetFile.exists()) {
                 Map<String, String> targetProperties = readFile(targetFile);
-
-                List<Entry<String,String>> missingProperties
-                    = transform(sourceProperties.entrySet(),
-                                e -> !targetProperties.containsKey(e.getKey()));
-                if (!missingProperties.isEmpty()) {
                     try (
                         Writer out = Utils.getFileUTF8AppendWriter(targetFile)
                     ) {
-                        out.write("### Merged from trunk on "
-                                + DateFormat.getDateTimeInstance().format(new Date())
-                                + " ###\n");
-                        for (Entry<?,?> entry : missingProperties) {
+                        boolean first = true;
+                        for (Entry<?,?> entry : sourceProperties.entrySet()) {
+                            if (targetProperties.containsKey(entry.getKey())) continue;
+                            if (first) {
+                                out.write("### Merged from trunk on "
+                                            + DateFormat.getDateTimeInstance().format(new Date())
+                                            + " ###\n");
+                                first = false;
+                            }
+
                             out.write((String) entry.getKey());
                             out.write("=");
                             out.write((String) entry.getValue());
                             out.write("\n");
                         }
                     }
-                }
             } else {
                 System.out.println("Copying " + name + " from trunk.");
                 try (

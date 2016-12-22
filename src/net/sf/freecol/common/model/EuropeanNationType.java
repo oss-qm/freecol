@@ -229,8 +229,8 @@ public class EuropeanNationType extends NationType {
         EuropeanNationType parent = xr.getType(spec, EXTENDS_TAG,
                                                EuropeanNationType.class, this);
         if (parent != this) {
-            forEachMapEntry(parent.startingUnitMap, e ->
-                startingUnitMap.put(e.getKey(), new HashMap<>(e.getValue())));
+            for (Map.Entry<String, Map<String, AbstractUnit>> e : parent.startingUnitMap.entrySet())
+                startingUnitMap.put(e.getKey(), new HashMap<>(e.getValue()));
         }
 
         super.readChildren(xr);

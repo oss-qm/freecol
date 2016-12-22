@@ -26,7 +26,6 @@ import javax.xml.stream.XMLStreamException;
 
 import net.sf.freecol.common.io.FreeColXMLReader;
 import net.sf.freecol.common.io.FreeColXMLWriter;
-import static net.sf.freecol.common.util.CollectionUtils.*;
 
 
 /**
@@ -286,9 +285,9 @@ public class UnitTypeChange extends FreeColSpecObjectType {
         StringBuilder sb = new StringBuilder(32);
         sb.append('[').append(newUnitType)
             .append(' ').append(Integer.toString(turnsToLearn));
-        forEachMapEntry(changeTypes,
-            e -> sb.append(' ').append(tags.get(e.getKey()))
-                   .append('/').append(e.getValue()));
+        for (Map.Entry<ChangeType, Integer> e : changeTypes.entrySet())
+            sb.append(' ').append(tags.get(e.getKey()))
+                   .append('/').append(e.getValue());
         sb.append(']');
         return sb.toString();
     }

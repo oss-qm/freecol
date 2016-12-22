@@ -27,6 +27,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Random;
 import java.util.Set;
@@ -1429,9 +1430,10 @@ public class ServerPlayer extends Player implements ServerModelObject {
                 changed = true;
                 // the only effects of a disaster that can be reversed
                 // are the modifiers
-                forEach(flatten(bankruptcy.getEffects(),
-                                e -> e.getObject().getModifiers()),
-                    m -> cs.addModifier(this, this, m, false));
+                for (RandomChoice<Effect> e : bankruptcy.getEffects())
+                    for (Modifier m : e.getObject().getModifiers())
+                        cs.addModifier(this, this, m, false);
+
                 cs.addMessage(this,
                     new ModelMessage(MessageType.GOVERNMENT_EFFICIENCY,
                                      "model.player.disaster.bankruptcy.stop",
@@ -1538,7 +1540,7 @@ public class ServerPlayer extends Player implements ServerModelObject {
 outer:  for (Effect effect : effects) {
             mm = null;
             if (colony == null) {
-                forEach(effect.getModifiers(), modifier -> {
+                for (Modifier modifier : effect.getModifiers()) {
                         if (modifier.getDuration() > 0) {
                             Modifier timedModifier = Modifier
                                 .makeTimedModifier(modifier.getId(), modifier, getGame().getTurn());
@@ -1547,7 +1549,7 @@ outer:  for (Effect effect : effects) {
                         } else {
                             cs.addModifier(this, this, modifier, true);
                         }
-                    });
+                }
             } else {
                 if (null != effect.getId()) {
                     switch (effect.getId()) {
@@ -1635,7 +1637,7 @@ outer:  for (Effect effect : effects) {
                     default:
                         mm = new ModelMessage(MessageType.DEFAULT,
                                               effect.getId(), colony);
-                        forEach(effect.getModifiers(), m -> {
+                        for (Modifier m : effect.getModifiers()) {
                                 if (m.getDuration() > 0) {
                                     Modifier timedModifier = Modifier
                                         .makeTimedModifier(m.getId(), m, getGame().getTurn());
@@ -1644,7 +1646,7 @@ outer:  for (Effect effect : effects) {
                                 } else {
                                     cs.addModifier(this, colony, m, true);
                                 }
-                            });
+                        }
                         colonyDirty |= first(effect.getModifiers()) != null;
                         break;
                     }
@@ -1846,13 +1848,15 @@ outer:  for (Effect effect : effects) {
                               extra.get(enemy) + missionAlarm);
                 }
                 // Apply modifiers, and commit the total change.
-                forEachMapEntry(extra, e -> e.getValue() != 0, e -> {
+                for (Map.Entry<Player, Integer> e : extra.entrySet()) {
+                    if (e.getValue() != 0) {
                         final Player player = e.getKey();
                         int change = (int)player.applyModifiers((float)e.getValue(),
                             game.getTurn(), Modifier.NATIVE_ALARM_MODIFIER);
                         ((ServerIndianSettlement)is)
                             .csModifyAlarm(player, change, true, cs);//+til
-                    });
+                    }
+                }
             }
 
             // Calm down a bit at the whole-tribe level.
@@ -1866,11 +1870,10 @@ outer:  for (Effect effect : effects) {
             // Now collect the settlements that changed.
             // Update those that changed, and add messages for selected
             // worsening relation transitions.
-            for (IndianSettlement is : allSettlements) {
-                forEachMapEntry(oldLevels.get(is), e ->
+            for (IndianSettlement is : allSettlements)
+                for (Map.Entry<Player, Tension.Level> e : oldLevels.get(is).entrySet())
                     ((ServerIndianSettlement)is)
-                        .csCheckTension(e.getKey(), e.getValue(), cs));
-            }
+                        .csCheckTension(e.getKey(), e.getValue(), cs);
 
             // All updated, start the turn for the settlements.
             for (IndianSettlement is : allSettlements) {
