@@ -23,6 +23,7 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Random;
 import java.util.logging.Logger;
@@ -1106,12 +1107,12 @@ public class IndianSettlement extends Settlement implements TradeLocation {
 
         double d = randomInt(logger, "Goods at " + getName(), random, 10)
             * 0.1 + 1.0;
-        forEachMapEntry(goodsMap, e -> {
+        for (Map.Entry<GoodsType, Integer> e : goodsMap.entrySet()) {
                 int i = e.getValue();
                 if (!e.getKey().isFoodType()) i = (int)Math.round(d * e.getValue());
                 i = Math.min(i, GoodsContainer.CARGO_SIZE);
                 if (i > 0) addGoods(e.getKey(), i);
-            });
+        };
     }
 
     /**

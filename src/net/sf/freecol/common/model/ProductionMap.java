@@ -217,9 +217,9 @@ public class ProductionMap {
     public String toString() {
         StringBuilder sb = new StringBuilder(64);
         sb.append('[');
-        forEachMapEntry(cache, e ->
+        for (Map.Entry<GoodsType, Object> e : cache.entrySet())
             sb.append(' ').append(e.getKey().getSuffix())
-              .append(':').append(e.getValue().toString()));
+              .append(':').append(e.getValue().toString());
         sb.append(" ]");
         return sb.toString();
     }

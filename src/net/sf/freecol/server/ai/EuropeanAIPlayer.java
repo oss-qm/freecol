@@ -814,13 +814,13 @@ public class EuropeanAIPlayer extends MissionAIPlayer {
         }
         if (!tipMap.isEmpty()) {
             lb.add("\n  Improvements:");
-            forEachMapEntry(tipMap, e -> {
+            for (Entry<Tile, TileImprovementPlan> e : tipMap.entrySet()) {
                     Tile t = e.getKey();
                     TileImprovementPlan tip = e.getValue();
                     AIUnit pioneer = tip.getPioneer();
                     lb.add(" ", t, "=", tip.getType().getSuffix());
                     if (pioneer != null) lb.add("/", pioneer.getUnit());
-                });
+            }
         }
     }
 
@@ -1058,12 +1058,12 @@ public class EuropeanAIPlayer extends MissionAIPlayer {
         }
         if (!transportDemand.isEmpty()) {
             lb.add("\n  Transport Demand:");
-            forEachMapEntry(transportDemand, e -> {
+            for (Entry<Location, List<Wish>> e : transportDemand.entrySet()) {
                     Location ld = e.getKey();
                     lb.add("\n    ", ld, "[");
                     for (Wish w : e.getValue()) lb.add(" ", w);
                     lb.add(" ]");
-                });
+            };
         }
     }
 
@@ -1293,7 +1293,7 @@ public class EuropeanAIPlayer extends MissionAIPlayer {
 
         if (!workerWishes.isEmpty()) {
             lb.add("\n  Wishes (workers):");
-            forEachMapEntry(workerWishes, e -> {
+            for (Entry<UnitType, List<WorkerWish>> e : workerWishes.entrySet()) {
                     UnitType ut = e.getKey();
                     List<WorkerWish> wl = e.getValue();
                     if (!wl.isEmpty()) {
@@ -1303,11 +1303,11 @@ public class EuropeanAIPlayer extends MissionAIPlayer {
                                 "(", ww.getValue(), ")");
                         }
                     }
-                });
+            }
         }
         if (!goodsWishes.isEmpty()) {
             lb.add("\n  Wishes (goods):");
-            forEachMapEntry(goodsWishes, e -> {
+            for (Entry<GoodsType, List<GoodsWish>> e : goodsWishes.entrySet()) {
                     GoodsType gt = e.getKey();
                     List<GoodsWish> gl = e.getValue();
                     if (!gl.isEmpty()) {
@@ -1317,7 +1317,7 @@ public class EuropeanAIPlayer extends MissionAIPlayer {
                                 "(", gw.getValue(), ")");
                         }
                     }
-                });
+            }
         }
     }
 
