@@ -320,4 +320,14 @@ public final class ResourceMapping {
         return transform(imageResources.keySet(), k -> k.startsWith(prefix),
                          Function.identity(), Collectors.toSet());
     }
+
+    /**
+     * Clean out image resources
+     */
+    public void cleanImageResources() {
+        for (ImageResource value : imageResources.values()) {
+            if (value != null)
+                value.clean();
+        }
+    }
 }
