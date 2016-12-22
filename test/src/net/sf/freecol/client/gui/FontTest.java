@@ -51,9 +51,9 @@ public class FontTest extends FreeColTestCase {
         try {
             Font font = new Font("Serif", Font.PLAIN, 1);
             assertNotNull(font);
-            forEachMapEntry(specialCharacters, e ->
+            for (Entry<Character, String> e : specialCharacters)
                 assertTrue(font.getName() + " can not display " + e.getValue(),
-                           font.canDisplay(e.getKey())));
+                           font.canDisplay(e.getKey()));
         } catch (Exception e) {
             fail(e.toString());
         }

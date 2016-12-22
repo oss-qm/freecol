@@ -177,10 +177,12 @@ public class ColonyTile extends WorkLocation {
                     pi.addProduction(production);
             }
         } else {
-            for (AbstractGoods output : getOutputList()) {
-                GoodsType gt = output.getType();
-                    int n = sum(getUnitList(), u -> getUnitProduction(u, gt));
-                    if (n > 0) pi.addProduction(new AbstractGoods(gt, n));
+            for (AbstractGoods ag : getOutputList()) {
+                GoodsType gt = ag.getType();
+                int n = 0;
+                for (Unit u : getUnitList())
+                    n += getUnitProduction(u, gt);
+                if (n > 0) pi.addProduction(new AbstractGoods(gt, n));
             }
         }
         return pi;

@@ -2103,11 +2103,11 @@ public final class Specification {
                               "model.goods.bells");
         fatherGoodsFixMap.put("model.foundingFather.williamPenn",
                               "model.goods.crosses");
-        forEachMapEntry(fatherGoodsFixMap, e -> {
-                FoundingFather father = getFoundingFather(e.getKey());
-                forEach(father.getModifiers(e.getValue()),
-                        Modifier::requireNegatedPersonScope);
-            });
+        for (Map.Entry<String, String> e : fatherGoodsFixMap.entrySet()) {
+            FoundingFather father = getFoundingFather(e.getKey());
+            for (Modifier m : father.getModifiers(e.getValue()))
+                m.requireNegatedPersonScope();
+        };
 
         // Nation FOUND_COLONY -> FOUNDS_COLONIES
         for (EuropeanNationType ent : europeanNationTypes) {
@@ -2183,9 +2183,9 @@ public final class Specification {
                 ent.addAbility(new Ability(Ability.INDEPENDENT_NATION));
 
         // Resource type modifiers had the wrong priority
-        forEach(flatten(resourceTypeList, ResourceType::getModifiers), m -> {
+        for (ResourceType rt : resourceTypeList)
+            for (Modifier m : rt.getModifiers())
                 m.setModifierIndex(Modifier.RESOURCE_PRODUCTION_INDEX);
-            });
 
         // Unit type indexes moved into the spec
         for (UnitType ut : unitTypeList)

@@ -26,6 +26,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map.Entry;
 import java.util.Random;
 import java.util.Set;
 import java.util.logging.Logger;
@@ -753,13 +754,12 @@ public class SimpleMapGenerator implements MapGenerator {
         for (RandomChoice<UnitType> rc : skills)
             scale.put(rc.getObject().getExpertProduction(), 1);
 
-        for (Tile t: tile.getSurroundingTiles(1)) {
-            forEachMapEntry(scale, e -> {
+        for (Tile t: tile.getSurroundingTiles(1))
+            for (Entry<GoodsType, Integer> e : scale.entrySet()) {
                     GoodsType goodsType = e.getKey();
                     scale.put(goodsType, e.getValue()
                         + t.getPotentialProduction(goodsType, null));
-                });
-        }
+            }
 
         List<RandomChoice<UnitType>> choices = new ArrayList<>();
         for (RandomChoice<UnitType> rc : skills) {

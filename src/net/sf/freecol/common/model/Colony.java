@@ -1853,12 +1853,14 @@ public class Colony extends Settlement implements Nameable, TradeLocation {
     public boolean isUnderSiege() {
         int friendlyUnits = 0;
         int enemyUnits = 0;
-        for (Unit u : iterable(flatten(getColonyTiles(),
-                ct -> ct.getWorkTile().getUnitList()))) {
-            if (u.getOwner() == getOwner()) {
-                if (u.isDefensiveUnit()) friendlyUnits++;
-            } else if (getOwner().atWarWith(u.getOwner())) {
-                if (u.isOffensiveUnit()) enemyUnits++;
+
+        for (ColonyTile ct : getColonyTiles()) {
+            for (Unit u : ct.getUnitList()) {
+                if (u.getOwner() == getOwner()) {
+                    if (u.isDefensiveUnit()) friendlyUnits++;
+                } else if (getOwner().atWarWith(u.getOwner())) {
+                    if (u.isOffensiveUnit()) enemyUnits++;
+                }
             }
         }
         return enemyUnits > friendlyUnits;
@@ -2624,7 +2626,7 @@ loop:   for (WorkLocation wl : getWorkLocationsForProducing(goodsType)) {
 
 
     // Interface Location (from Settlement via GoodsLocation via UnitLocation)
-    //   UnitLocation.units is not used in Colony.  getUnits/List is defined
+    //   UnitLocation.units is not used in Colony.  getUnitList is defined
     //   to return the union of the units in the work locations, which may
     //   or not be the best idea.  Another choice would be to return all
     //   the units in the work locations, plus those present on the tile,
