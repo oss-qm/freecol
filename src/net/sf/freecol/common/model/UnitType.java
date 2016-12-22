@@ -534,12 +534,14 @@ public final class UnitType extends BuildableType implements Consumer {
     public NoBuildReason canBeBuiltInColony(Colony colony,
                                             List<BuildableType> assumeBuilt) {
         // Non-person units need a BUILD ability, present or assumed.
-        if (!hasAbility(Ability.PERSON)
-            && !colony.ableToBuild(this)
-            && none(assumeBuilt, bt -> bt.ableToBuild(this))) {
-            return Colony.NoBuildReason.MISSING_BUILD_ABILITY;
-        }
-        return Colony.NoBuildReason.NONE;
+        if (hasAbility(Ability.PERSON) || colony.ableToBuild(this))
+            return Colony.NoBuildReason.NONE;
+
+        for (BuildableType bt : assumeBuilt)
+            if (bt.ableToBuild(this))
+                return Colony.NoBuildReason.NONE;
+
+        return Colony.NoBuildReason.MISSING_BUILD_ABILITY;
     }
 
     @Override

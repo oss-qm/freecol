@@ -518,12 +518,16 @@ public class FreeColTestCase extends TestCase {
         }
 
         public IndianSettlementBuilder player(Player player){
-            if (player == null
-                || none(game.getPlayers(), matchKey(player))) {
-                throw new IllegalArgumentException("Indian player not in game");
+            if (player != null) {
+                for (Player p : game.getPlayers()) {
+                    if (p == player) {
+                        this.indianPlayer = player;
+                        return this;
+                    }
+                }
             }
-            this.indianPlayer = player;
-            return this;
+
+            throw new IllegalArgumentException("Indian player not in game");
         }
 
         public IndianSettlementBuilder initialBravesInCamp(int nBraves){

@@ -230,8 +230,10 @@ public class River {
      * @return true if the given tile is next to this river.
      */
     public boolean isNextToSelf(Tile tile) {
-        return any(Direction.longSides,
-            d -> this.contains(tile.getNeighbourOrNull(d)));
+        for (Direction d : Direction.longSides)
+            if (this.contains(tile.getNeighbourOrNull(d)))
+                return true;
+        return false;
     }
 
     /**
@@ -241,11 +243,12 @@ public class River {
      * @return true if the given tile is next to a river, lake or sea.
      */
     public boolean isNextToWater(Tile tile) {
-        return any(Direction.longSides,
-            d -> {
-                Tile t = tile.getNeighbourOrNull(d);
-                return t != null && (!t.isLand() || t.hasRiver());
-            });
+        for (Direction d : Direction.longSides) {
+            Tile t = tile.getNeighbourOrNull(d);
+            if (t != null && (!t.isLand() || t.hasRiver()))
+                return true;
+        }
+        return false;
     }
 
     /**
@@ -255,7 +258,10 @@ public class River {
      * @return true if this river already contains the given tile.
      */
     public boolean contains(Tile tile) {
-        return any(getSections(), rs -> rs.getTile() == tile);
+        for (RiverSection rs : getSections())
+            if (rs.getTile() == tile)
+                return true;
+        return false;
     }
 
     /**

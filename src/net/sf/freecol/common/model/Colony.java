@@ -1113,13 +1113,12 @@ public class Colony extends Settlement implements Nameable, TradeLocation {
                 && !getTile().isCoastland()) {
             return NoBuildReason.COASTAL;
         } else {
-            if (any(buildableType.getRequiredAbilities().entrySet(),
-                    e -> e.getValue() != hasAbility(e.getKey()))) {
-                return NoBuildReason.MISSING_ABILITY;
-            }
-            if (!all(buildableType.getLimits(), l -> l.evaluate(this))) {
-                return NoBuildReason.LIMIT_EXCEEDED;
-            }
+            for (Entry<String,Boolean> e : buildableType.getRequiredAbilities().entrySet())
+                if (e.getValue() != hasAbility(e.getKey()))
+                    return NoBuildReason.MISSING_ABILITY;
+            for (Limit l : buildableType.getLimits())
+                if (!l.evaluate(this))
+                    return NoBuildReason.LIMIT_EXCEEDED;
         }
         if (assumeBuilt == null) {
             assumeBuilt = Collections.<BuildableType>emptyList();
@@ -2658,8 +2657,10 @@ loop:   for (WorkLocation wl : getWorkLocationsForProducing(goodsType)) {
     @Override
     public boolean contains(Locatable locatable) {
         if (locatable instanceof Unit) {
-            return any(getAvailableWorkLocationsList(),
-                    wl -> wl.contains(locatable));
+            for (WorkLocation wl : getAvailableWorkLocationsList())
+                if (wl.contains(locatable))
+                    return true;
+            return false;
         }
         return super.contains(locatable);
     }

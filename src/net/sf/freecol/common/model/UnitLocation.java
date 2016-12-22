@@ -234,8 +234,10 @@ public abstract class UnitLocation extends FreeColGameObject implements Location
      * @see Unit#isCarrier
      */
     public boolean hasCarrierWithSpace(int space) {
-        return any(getUnits(), u -> u.isCarrier() && !u.isDamaged()
-            && u.getSpaceLeft() >= space);
+        for (Unit u : getUnits())
+            if (u.isCarrier() && !u.isDamaged() && u.getSpaceLeft() >= space)
+                return true;
+        return false;
     }
 
     /**
