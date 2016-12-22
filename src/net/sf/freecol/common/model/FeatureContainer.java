@@ -422,14 +422,14 @@ public final class FeatureContainer {
                 ca = new HashMap<>(c.abilities);
             }
             synchronized (abilitiesLock) {
-                forEachMapEntry(ca, e -> {
+                for (Map.Entry<String, Set<Ability>> e : ca.entrySet()) {
                         Set<Ability> abilitySet = abilities.get(e.getKey());
                         if (abilitySet == null) {
                             abilitySet = new HashSet<>();
                             abilities.put(e.getKey(), abilitySet);
                         }
                         abilitySet.addAll(e.getValue());
-                    });
+                }
             }
         }
 
@@ -440,14 +440,14 @@ public final class FeatureContainer {
                 cm = new HashMap<>(c.modifiers);
             }
             synchronized (modifiersLock) {
-                forEachMapEntry(cm, e -> {
+                for (Map.Entry<String, Set<Modifier>> e : cm.entrySet()) {
                         Set<Modifier> modifierSet = modifiers.get(e.getKey());
                         if (modifierSet == null) {
                             modifierSet = new HashSet<>();
                             modifiers.put(e.getKey(), modifierSet);
                         }
                         modifierSet.addAll(e.getValue());
-                    });
+                }
             }
         }
     }

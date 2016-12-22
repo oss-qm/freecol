@@ -1595,9 +1595,9 @@ public class Player extends FreeColGameObject implements Nameable {
             roleMap.put(roleId, (count == null) ? 1 : count + 1);
             unitHash.put(unitType, roleMap);
         }
-        forEachMapEntry(unitHash, te ->
-            forEachMapEntry(te.getValue(), re ->
-                units.add(new AbstractUnit(te.getKey(), re.getKey(), re.getValue()))));
+        for (Entry<UnitType, HashMap<String, Integer>> te : unitHash.entrySet())
+            for (Entry<String, Integer> re : te.getValue().entrySet())
+                units.add(new AbstractUnit(te.getKey(), re.getKey(), re.getValue()));
         return units;
     }
 

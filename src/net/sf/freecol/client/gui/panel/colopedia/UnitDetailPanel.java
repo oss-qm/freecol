@@ -177,8 +177,8 @@ public class UnitDetailPanel extends ColopediaGameObjectTypePanel<UnitType> {
             panel.add(Utility.localizedLabel("colopedia.unit.requirements"), "newline, top");
             JTextPane textPane = Utility.getDefaultTextPane();
             StyledDocument doc = textPane.getStyledDocument();
-            forEachMapEntry(type.getRequiredAbilities(),
-                e -> appendRequiredAbility(doc, e.getKey(), e.getValue()));
+            for (Map.Entry<String,Boolean> e : type.getRequiredAbilities().entrySet())
+                appendRequiredAbility(doc, e.getKey(), e.getValue());
             panel.add(textPane, "span, width 60%");
         }
 
