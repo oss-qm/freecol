@@ -95,9 +95,12 @@ public class ImageResource extends Resource
             if (image == null) {
                 BufferedImage baseImage = loadImage(getResourceLocator());
 
-                loadedImages = transform(alternativeLocators, alwaysTrue(),
-                                         uri -> loadImage(uri),
-                                         toListNoNulls());
+                loadedImages = new ArrayList<>();
+                for (URI uri : alternativeLocators) {
+                    BufferedImage bi = loadImage(uri);
+                    if (bi != null) loadedImages.add(bi);
+                }
+
                 if (baseImage != null) loadedImages.add(baseImage);
                 loadedImages.sort(biComp);
                 image = (baseImage != null) ? baseImage : first(loadedImages);

@@ -20,11 +20,10 @@
 package net.sf.freecol.common.model;
 
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.function.Function;
 import java.util.logging.Logger;
-import java.util.stream.Collectors;
 
 import javax.xml.stream.XMLStreamException;
 
@@ -295,9 +294,14 @@ public class TileImprovement extends TileItem implements Named {
      */
     public Map<Direction, Integer> getConnections() {
         final List<Direction> dirns = getConnectionDirections();
-        return (dirns == null) ? Collections.<Direction, Integer>emptyMap()
-            : transform(dirns, d -> isConnectedTo(d), Function.identity(),
-                        Collectors.toMap(Function.identity(), d -> magnitude));
+        if (dirns == null)
+            return Collections.<Direction, Integer>emptyMap();
+
+        Map<Direction, Integer> result = new HashMap<>();
+        for (Direction d : dirns)
+            if (isConnectedTo(d))
+                result.put(d, magnitude);
+        return result;
     }
 
     /**

@@ -101,9 +101,12 @@ public class ServerListMessage extends DOMMessage {
      */
     @Override
     public Element toXMLElement() {
+        List<DOMMessage> ml = new ArrayList<>();
+        for (ServerInfo srv : this.servers)
+            ml.add(new RegisterServerMessage(srv));
+
         return new DOMMessage(TAG)
-            .<DOMMessage>addMessages(transform(this.servers, alwaysTrue(),
-                                   si -> new RegisterServerMessage(si)))
+            .<DOMMessage>addMessages(ml)
             .toXMLElement();
     }
 }

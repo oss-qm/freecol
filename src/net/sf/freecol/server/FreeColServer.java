@@ -26,14 +26,16 @@ import java.io.IOException;
 import java.net.BindException;
 import java.net.InetAddress;
 import java.net.Socket;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map.Entry;
 import java.util.Properties;
 import java.util.Random;
 import java.util.Timer;
 import java.util.jar.JarEntry;
 import java.util.jar.JarOutputStream;
-import java.util.function.Predicate;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -1274,14 +1276,14 @@ public final class FreeColServer {
         }
 
         // Fill in missing available players
-        final Predicate<Entry<Nation, NationState>> availablePred = e ->
-            !e.getKey().isUnknownEnemy()
-                && e.getValue() != NationState.NOT_AVAILABLE
-                && serverGame.getPlayerByNationId(e.getKey().getId()) == null;
-        serverGame.updatePlayers(transform(serverGame.getNationOptions()
-                .getNations().entrySet(),
-                availablePred, e -> makeAIPlayer(e.getKey()),
-                Player.playerComparator));
+        List<ServerPlayer> plrs = new ArrayList<>();
+        for (Entry<Nation, NationState> e : serverGame.getNationOptions().getNations().entrySet())
+            if (!e.getKey().isUnknownEnemy()
+                    && e.getValue() != NationState.NOT_AVAILABLE
+                    && serverGame.getPlayerByNationId(e.getKey().getId()) == null)
+                plrs.add(makeAIPlayer(e.getKey()));
+        Collections.sort(plrs, Player.playerComparator);
+        serverGame.updatePlayers(plrs);
 
         // We need a fake unknown enemy player
         if (serverGame.getUnknownEnemy() == null) {

@@ -32,6 +32,7 @@ import java.awt.RenderingHints;
 import java.awt.TexturePaint;
 import java.awt.image.BufferedImage;
 import java.awt.image.RescaleOp;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
@@ -556,8 +557,11 @@ public final class ImageLibrary {
                                                 Dimension size,
                                                 Set<String> overlayCache) {
         final String prefix = "image.tileoverlay." + type.getId() + ".r";
-        final List<String> keys = transform(overlayCache,
-                                            k -> k.startsWith(prefix));
+        List<String> keys = new ArrayList<>();
+        for (String k : overlayCache)
+            if (k.startsWith(prefix))
+                keys.add(k);
+
         return getRandomizedImage(keys, id, size);
     }
 

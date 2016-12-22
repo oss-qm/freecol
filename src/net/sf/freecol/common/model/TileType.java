@@ -230,8 +230,14 @@ public final class TileType extends FreeColSpecObjectType
      * @return A list of {@code ResourceType}s.
      */
     public List<ResourceType> getResourceTypes() {
-        return (resourceTypes == null) ? Collections.<ResourceType>emptyList()
-            : transform(resourceTypes, alwaysTrue(), RandomChoice::getObject);
+        if (resourceTypes == null)
+            return Collections.<ResourceType>emptyList();
+
+        List<ResourceType> result = new ArrayList<>();
+        for (RandomChoice<ResourceType> rc : resourceTypes)
+            result.add(rc.getObject());
+
+        return result;
     }
 
     /**

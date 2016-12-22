@@ -21,10 +21,9 @@ package net.sf.freecol.common.model;
 
 import java.util.ArrayList;
 import java.util.Comparator;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-import java.util.function.Function;
-import java.util.stream.Collectors;
 
 import javax.xml.stream.XMLStreamException;
 
@@ -471,9 +470,11 @@ public final class GoodsType extends FreeColSpecObjectType {
      *     must include this one.
      */
     public Set<GoodsType> getEquivalentTypes() {
-        return transform(getSpecification().getGoodsTypeList(),
-                         gt -> gt == this || gt.getStoredAs() == this,
-                         Function.identity(), Collectors.toSet());
+        Set<GoodsType> result = new HashSet<>();
+        for (GoodsType gt : getSpecification().getGoodsTypeList())
+            if (gt == this || gt.getStoredAs() == this)
+                result.add(gt);
+        return result;
     }
 
     /**

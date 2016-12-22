@@ -19,6 +19,7 @@
 
 package net.sf.freecol.server.model;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 import java.util.logging.Logger;
@@ -193,10 +194,13 @@ public class ServerEurope extends Europe implements ServerModelObject {
      */
     public List<RandomChoice<UnitType>> generateRecruitablesList() {
         final Player owner = getOwner();
-        return transform(getSpecification().getUnitTypeList(),
-                         ut -> ut.isRecruitable()
-                             && owner.hasAbility(Ability.CAN_RECRUIT_UNIT, ut),
-                         ut -> new RandomChoice<>(ut, ut.getRecruitProbability()));
+
+        List<RandomChoice<UnitType>> result = new ArrayList<>();
+        for (UnitType ut : getSpecification().getUnitTypeList())
+            if (ut.isRecruitable() && owner.hasAbility(Ability.CAN_RECRUIT_UNIT, ut))
+                result.add(new RandomChoice<>(ut, ut.getRecruitProbability()));
+
+        return result;
     }
 
     /**

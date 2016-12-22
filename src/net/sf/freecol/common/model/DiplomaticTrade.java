@@ -318,7 +318,11 @@ public class DiplomaticTrade extends FreeColGameObject {
      * @return A list of {@code TradeItem}s offered by the player.
      */
     public List<TradeItem> getItemsGivenBy(Player player) {
-        return transform(this.items, matchKey(player, TradeItem::getSource));
+        List<TradeItem> result = new ArrayList<>();
+        for (TradeItem item : this.items)
+            if (player == item.getSource())
+                result.add(item);
+        return result;
     }
 
     /**
@@ -368,10 +372,11 @@ public class DiplomaticTrade extends FreeColGameObject {
      * @return A list of {@code Goods} offered in this trade.
      */
     public List<Goods> getGoodsGivenBy(Player player) {
-        return transform(this.items,
-                         ti -> ti instanceof GoodsTradeItem
-                             && ti.getSource() == player,
-                         TradeItem::getGoods);
+        List<Goods> result = new ArrayList<>();
+        for (TradeItem ti : this.items)
+            if (ti instanceof GoodsTradeItem && ti.getSource() == player)
+                result.add(ti.getGoods());
+        return result;
     }
 
     /**
@@ -393,10 +398,11 @@ public class DiplomaticTrade extends FreeColGameObject {
      * @return A list of {@code Unit}s offered in this trade.
      */
     public List<Unit> getUnitsGivenBy(Player player) {
-        return transform(this.items,
-                         ti -> ti instanceof UnitTradeItem
-                             && ti.getSource() == player,
-                         TradeItem::getUnit);
+        List<Unit> result = new ArrayList<>();
+        for (TradeItem ti : this.items)
+            if (ti instanceof UnitTradeItem && ti.getSource() == player)
+                result.add(ti.getUnit());
+        return result;
     }
 
     /**

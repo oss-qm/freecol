@@ -408,8 +408,11 @@ public final class UnitType extends BuildableType implements Consumer {
      * @return a list of expert roles
      */
     public List<Role> getExpertRoles() {
-        return transform(getSpecification().getRoles(),
-                matchKey(this, Role::getExpertUnit));
+        List<Role> result = new ArrayList<>();
+        for (Role r : getSpecification().getRoles())
+            if (this == r.getExpertUnit())
+                result.add(r);
+        return result;
     }
 
     /**
@@ -583,10 +586,17 @@ public final class UnitType extends BuildableType implements Consumer {
      */
     @Override
     public List<AbstractGoods> getConsumedGoods() {
-        return (consumption == null) ? Collections.<AbstractGoods>emptyList()
-                : transform(consumption.keySet(),
-                gt -> consumption.getCount(gt) != 0,
-                gt -> new AbstractGoods(gt, consumption.getCount(gt)));
+        if (consumption == null)
+            return Collections.<AbstractGoods>emptyList();
+
+        List<AbstractGoods> result = new ArrayList<>();
+        for (GoodsType gt : consumption.keySet()) {
+            int cnt = consumption.getCount(gt);
+            if (cnt != 0) continue;
+                result.add(new AbstractGoods(gt, cnt));
+        }
+
+        return result;
     }
 
     /**

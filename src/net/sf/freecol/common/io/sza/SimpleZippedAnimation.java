@@ -35,7 +35,6 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-import java.util.function.Function;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 
@@ -261,13 +260,17 @@ public final class SimpleZippedAnimation implements Iterable<AnimationEvent> {
      * @return The scaled animation.
      */
     public SimpleZippedAnimation createScaledVersion(final float scale) {
-        final Function<AnimationEvent, AnimationEvent> scaleEvent = ae ->
-            (ae instanceof ImageAnimationEventImpl)
+        List<AnimationEvent> el = new ArrayList<>();
+        for (AnimationEvent ae : this.events) {
+            el.add(
+                (ae instanceof ImageAnimationEventImpl)
                 ? ((ImageAnimationEventImpl)ae).createScaledVersion(scale)
-                : ae;
-        return new SimpleZippedAnimation(transform(this.events, alwaysTrue(),
-                                                   scaleEvent),
-            (int)(this.width * scale), (int)(this.height * scale));
+                : ae
+            );
+        }
+
+        return new SimpleZippedAnimation(
+            el, (int)(this.width * scale), (int)(this.height * scale));
     }
 
     /**

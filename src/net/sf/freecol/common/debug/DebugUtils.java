@@ -21,12 +21,11 @@ package net.sf.freecol.common.debug;
 
 import java.awt.event.ActionEvent;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
-import java.util.function.Function;
-import java.util.function.Predicate;
 import java.util.logging.Logger;
 
 import javax.swing.JMenu;
@@ -126,12 +125,14 @@ public class DebugUtils {
         final Specification spec = game.getSpecification();
         final GUI gui = freeColClient.getGUI();
         final Player player = freeColClient.getMyPlayer();
-        final Function<BuildingType, ChoiceItem<BuildingType>> mapper = bt ->
-            new ChoiceItem<BuildingType>(Messages.getName(bt), bt);
 
-        BuildingType buildingType = gui.getChoice(null, title, "cancel",
-            transform(spec.getBuildingTypeList(), alwaysTrue(), mapper,
-                      Comparator.naturalOrder()));
+        List<ChoiceItem<BuildingType>> choices = new ArrayList<ChoiceItem<BuildingType>>();
+        for (BuildingType bt : spec.getBuildingTypeList())
+            choices.add(new ChoiceItem<BuildingType>(Messages.getName(bt), bt));
+        Collections.sort(choices);
+
+        BuildingType buildingType = gui.getChoice(null, title, "cancel", choices);
+
         if (buildingType == null) return;
 
         final Game sGame = server.getGame();
@@ -179,14 +180,15 @@ public class DebugUtils {
         final Specification sSpec = sGame.getSpecification();
         final Player sPlayer = sGame.getFreeColGameObject(player.getId(),
                                                           Player.class);
-        final Predicate<FoundingFather> noFatherPred = f ->
-            !sPlayer.hasFather(f);
-        final Function<FoundingFather, ChoiceItem<FoundingFather>> mapper
-            = f -> new ChoiceItem<FoundingFather>(Messages.getName(f), f);
 
-        FoundingFather father = gui.getChoice(null, fatherTitle, "cancel",
-            transform(sSpec.getFoundingFathers(), noFatherPred, mapper,
-                      Comparator.naturalOrder()));
+        List<ChoiceItem<FoundingFather>> choices = new ArrayList<ChoiceItem<FoundingFather>>();
+        for (FoundingFather ff : sSpec.getFoundingFathers())
+            if (!player.hasFather(ff))
+                choices.add(new ChoiceItem<FoundingFather>(Messages.getName(ff), ff));
+        Collections.sort(choices);
+
+        FoundingFather father = gui.getChoice(null, fatherTitle, "cancel", choices);
+
         if (father != null) {
             server.getInGameController()
                 .addFoundingFather((ServerPlayer)sPlayer, father);
@@ -341,19 +343,26 @@ public class DebugUtils {
                                                           Player.class);
         final Tile sTile = sGame.getFreeColGameObject(tile.getId(), Tile.class);
         final GUI gui = freeColClient.getGUI();
-        final Function<UnitType, ChoiceItem<UnitType>> mapper = ut ->
-            new ChoiceItem<UnitType>(Messages.getName(ut), ut);
+
+        List<ChoiceItem<UnitType>> choices = new ArrayList<ChoiceItem<UnitType>>();
+        for (UnitType ut : sSpec.getUnitTypeList())
+            choices.add(new ChoiceItem<UnitType>(Messages.getName(ut), ut));
+        Collections.sort(choices);
 
         UnitType unitChoice = gui.getChoice(null,
             StringTemplate.template("prompt.selectUnitType"), "cancel",
-            transform(sSpec.getUnitTypeList(), alwaysTrue(), mapper,
-                      Comparator.naturalOrder()));
+            choices);
+
         if (unitChoice == null) return;
 
         // Is there a server-unit with space left?
-        Unit sCarrier = (sTile.isLand() || unitChoice.isNaval()) ? null
-            : find(sTile.getUnits(), u ->
-                u.isNaval() && u.getSpaceLeft() >= unitChoice.getSpaceTaken());
+        Unit sCarrier = null;
+        if (!(sTile.isLand() || unitChoice.isNaval()))
+            for (Unit u : sTile.getUnits())
+                if (u.isNaval() && u.getSpaceLeft() >= unitChoice.getSpaceTaken()) {
+                    sCarrier = u;
+                    break;
+                }
 
         ServerUnit sUnit
             = new ServerUnit(sGame, ((sCarrier != null) ? sCarrier : sTile),
@@ -387,15 +396,16 @@ public class DebugUtils {
         final Game sGame = server.getGame();
         final Specification sSpec = sGame.getSpecification();
         final GUI gui = freeColClient.getGUI();
-        final Predicate<GoodsType> goodsPred = gt ->
-            !gt.isFoodType() || gt == sSpec.getPrimaryFoodType();
-        final Function<GoodsType, ChoiceItem<GoodsType>> mapper = gt ->
-            new ChoiceItem<GoodsType>(Messages.getName(gt), gt);
+
+        List<ChoiceItem<GoodsType>> choices = new ArrayList<ChoiceItem<GoodsType>>();
+        for (GoodsType gt : sSpec.getGoodsTypeList())
+            if (!gt.isFoodType() || gt == sSpec.getPrimaryFoodType())
+                choices.add(new ChoiceItem<GoodsType>(Messages.getName(gt), gt));
 
         GoodsType goodsType = gui.getChoice(null,
             StringTemplate.template("prompt.selectGoodsType"), "cancel",
-            transform(sSpec.getGoodsTypeList(), goodsPred, mapper,
-                      Comparator.naturalOrder()));
+            choices);
+
         if (goodsType == null) return;
 
         String amount = gui.getInput(null,
@@ -428,14 +438,14 @@ public class DebugUtils {
     public static void applyDisaster(final FreeColClient freeColClient,
                                      final Colony colony) {
         final GUI gui = freeColClient.getGUI();
-        final Function<RandomChoice<Disaster>,
-                       ChoiceItem<Disaster>> mapper = rc ->
-            new ChoiceItem<Disaster>(Messages.getName(rc.getObject()) + " "
+
+        List<ChoiceItem<Disaster>> disasters = new ArrayList<ChoiceItem<Disaster>>();
+        for (RandomChoice<Disaster> rc : colony.getDisasterChoices())
+            disasters.add(new ChoiceItem<Disaster>(Messages.getName(rc.getObject()) + " "
                                      + Integer.toString(rc.getProbability()),
-                                     rc.getObject());
-        List<ChoiceItem<Disaster>> disasters
-            = transform(colony.getDisasterChoices(), alwaysTrue(), mapper,
-                        Comparator.naturalOrder());
+                                     rc.getObject()));
+        Collections.sort(disasters);
+
         if (disasters.isEmpty()) {
             gui.showErrorMessage(StringTemplate
                 .template("error.disasterNotAvailable")
@@ -479,13 +489,16 @@ public class DebugUtils {
             ServerColony.class);
         final GUI gui = freeColClient.getGUI();
         final Game game = freeColClient.getGame();
-        final Function<Player, ChoiceItem<Player>> mapper = p ->
-            new ChoiceItem<Player>(Messages.message(p.getCountryLabel()), p);
+
+        List<ChoiceItem<Player>> choices = new ArrayList<ChoiceItem<Player>>();
+        for (Player p : game.getLiveEuropeanPlayers(colony.getOwner()))
+            choices.add(new ChoiceItem<Player>(Messages.message(p.getCountryLabel()), p));
+        Collections.sort(choices);
 
         Player player = gui.getChoice(null,
             StringTemplate.template("prompt.selectOwner"), "cancel",
-            transform(game.getLiveEuropeanPlayers(colony.getOwner()),
-                      alwaysTrue(), mapper, Comparator.naturalOrder()));
+            choices);
+
         if (player == null) return;
 
         ServerPlayer sPlayer = sGame.getFreeColGameObject(player.getId(),
@@ -514,14 +527,17 @@ public class DebugUtils {
         final FreeColServer server = freeColClient.getFreeColServer();
         final GUI gui = freeColClient.getGUI();
         final Game game = unit.getGame();
-        final Function<Player, ChoiceItem<Player>> mapper = p ->
-            new ChoiceItem<Player>(Messages.message(p.getCountryLabel()), p);
+
+        List<ChoiceItem<Player>> choices = new ArrayList<ChoiceItem<Player>>();
+        for (Player p : game.getLivePlayers())
+            if (unit.getType().isAvailableTo(p))
+                choices.add(new ChoiceItem<Player>(Messages.message(p.getCountryLabel()), p));
+        Collections.sort(choices);
 
         Player player = gui.getChoice(null,
             StringTemplate.template("prompt.selectOwner"), "cancel",
-            transform(game.getLivePlayers(),
-                      p -> unit.getType().isAvailableTo(p), mapper,
-                      Comparator.naturalOrder()));
+            choices);
+
         if (player == null || unit.getOwner() == player) return;
 
         final Game sGame = server.getGame();
@@ -555,13 +571,16 @@ public class DebugUtils {
         final Game sGame = server.getGame();
         final Unit sUnit = sGame.getFreeColGameObject(unit.getId(), Unit.class);
         final GUI gui = freeColClient.getGUI();
-        final Function<Role, ChoiceItem<Role>> roleMapper = r ->
-            new ChoiceItem<Role>(r.getId(), r);
+
+        List<ChoiceItem<Role>> choices = new ArrayList<ChoiceItem<Role>>();
+        for (Role r : sGame.getSpecification().getRoles())
+            choices.add(new ChoiceItem<Role>(r.getId(), r));
+        Collections.sort(choices);
 
         Role roleChoice = gui.getChoice(null,
             StringTemplate.template("prompt.selectRole"), "cancel",
-            transform(sGame.getSpecification().getRoles(), alwaysTrue(),
-                      roleMapper, Comparator.naturalOrder()));
+            choices);
+
         if (roleChoice == null) return;
 
         sUnit.changeRole(roleChoice, roleChoice.getMaximumCount());
@@ -965,15 +984,17 @@ public class DebugUtils {
     public static void setColonyGoods(final FreeColClient freeColClient,
                                       final Colony colony) {
         final Specification spec = colony.getSpecification();
-        final Predicate<GoodsType> goodsPred = gt ->
-            !gt.isFoodType() || gt == spec.getPrimaryFoodType();
-        final Function<GoodsType, ChoiceItem<GoodsType>> mapper = gt ->
-            new ChoiceItem<GoodsType>(Messages.getName(gt), gt);
+
+        List<ChoiceItem<GoodsType>> choices = new ArrayList<ChoiceItem<GoodsType>>();
+        for (GoodsType gt : spec.getGoodsTypeList())
+            if (!gt.isFoodType() || gt == spec.getPrimaryFoodType())
+                choices.add(new ChoiceItem<GoodsType>(Messages.getName(gt), gt));
+        Collections.sort(choices);
 
         GoodsType goodsType = freeColClient.getGUI().getChoice(null,
             StringTemplate.template("prompt.selectGoodsType"), "cancel",
-            transform(spec.getGoodsTypeList(), goodsPred, mapper,
-                      Comparator.naturalOrder()));
+            choices);
+
         if (goodsType == null) return;
 
         String response = freeColClient.getGUI().getInput(null,
@@ -1015,12 +1036,14 @@ public class DebugUtils {
         final ServerPlayer sPlayer = sGame.getFreeColGameObject(player.getId(),
             ServerPlayer.class);
         final GUI gui = freeColClient.getGUI();
-        final Function<MonarchAction, ChoiceItem<MonarchAction>> mapper = a ->
-            new ChoiceItem<MonarchAction>(a);
 
-        MonarchAction action = gui.getChoice(null, monarchTitle, "cancel",
-            transform(MonarchAction.values(), alwaysTrue(), mapper,
-                      Comparator.naturalOrder()));
+        List<ChoiceItem<MonarchAction>> choices = new ArrayList<ChoiceItem<MonarchAction>>();
+        for (MonarchAction a : MonarchAction.values())
+            choices.add(new ChoiceItem<MonarchAction>(a));
+        Collections.sort(choices);
+
+        MonarchAction action = gui.getChoice(null, monarchTitle, "cancel", choices);
+
         if (action == null) return;
 
         server.getInGameController().setMonarchAction(sPlayer, action);
@@ -1040,15 +1063,17 @@ public class DebugUtils {
         final Game sGame = server.getGame();
         final Tile sTile = sGame.getFreeColGameObject(tile.getId(),
                                                       Tile.class);
-        final Predicate<RumourType> realRumourPred = r ->
-            r != RumourType.NO_SUCH_RUMOUR;
-        final Function<RumourType, ChoiceItem<RumourType>> mapper = r ->
-            new ChoiceItem<RumourType>(r.toString(), r);
+
+        List<ChoiceItem<RumourType>> choices = new ArrayList<ChoiceItem<RumourType>>();
+        for (RumourType r : RumourType.values())
+            if (r != RumourType.NO_SUCH_RUMOUR)
+                choices.add(new ChoiceItem<RumourType>(r.toString(), r));
+        Collections.sort(choices);
 
         RumourType rumourChoice = freeColClient.getGUI().getChoice(null,
             StringTemplate.template("prompt.selectLostCityRumour"), "cancel",
-            transform(RumourType.values(), realRumourPred, mapper,
-                      Comparator.naturalOrder()));
+            choices);
+
         if (rumourChoice == null) return;
 
         tile.getTileItemContainer().getLostCityRumour().setType(rumourChoice);

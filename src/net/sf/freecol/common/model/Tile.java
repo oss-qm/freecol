@@ -23,16 +23,14 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map.Entry;
 import java.util.Random;
 import java.util.Set;
-import java.util.function.Function;
 import java.util.function.Predicate;
-import java.util.function.ToIntFunction;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import java.util.stream.Collectors;
 
 import javax.xml.stream.XMLStreamException;
 
@@ -527,8 +525,11 @@ public final class Tile extends UnitLocation implements Named, Ownable {
      * @return True if this is a river corner.
      */
     public boolean isRiverCorner() {
-        List<Tile> tiles = transform(getSurroundingTiles(0, 1),
-                                     Tile::isOnRiver);
+        List<Tile> tiles = new ArrayList<>();
+        for (Tile t : getSurroundingTiles(0, 1))
+            if (t.isOnRiver())
+                tiles.add(t);
+
         switch (tiles.size()) {
         case 0: case 1:
             return false;
@@ -612,9 +613,11 @@ public final class Tile extends UnitLocation implements Named, Ownable {
      * @return A set of {@code Tile}s with the required contiguity.
      */
     public Set<Tile> getContiguityAdjacent(final int contiguity) {
-        return transform(getSurroundingTiles(1, 1),
-                         matchKey(contiguity, Tile::getContiguity),
-                         Function.identity(), Collectors.toSet());
+        Set<Tile> result = new HashSet<>();
+        for (Tile t : getSurroundingTiles(1, 1))
+            if (t.getContiguity() == contiguity)
+                result.add(t);
+        return result;
     }
 
     /**
@@ -1305,8 +1308,12 @@ public final class Tile extends UnitLocation implements Named, Ownable {
      * @return A list of adjacent {@code Colony}s.
      */
     public List<Colony> getAdjacentColonies() {
-        return transform(getSurroundingTiles(0,1), isNotNull(Tile::getColony),
-                         Tile::getColony);
+        List<Colony> result = new ArrayList<Colony>();
+        for (Tile t : getSurroundingTiles(0,1)) {
+            Colony c = t.getColony();
+            if (c != null) result.add(c);
+        }
+        return result;
     }
 
     /**
@@ -1395,13 +1402,20 @@ public final class Tile extends UnitLocation implements Named, Ownable {
      * @return A list of land {@code Tile}s.
      */
     public List<Tile> getSafestSurroundingLandTiles(Player player) {
-        final Predicate<Tile> safeTilePred = t ->
-            (t.isLand()
-                && (!t.hasSettlement() || player.owns(t.getSettlement())));
-        final Comparator<Tile> defenceComp
-            = cachingDoubleComparator(Tile::getDefenceValue).reversed();
-        return transform(getSurroundingTiles(0, 1), safeTilePred,
-                         Function.identity(), defenceComp);
+       // FIXME: move this to Tile.java
+       final Comparator<Tile> defenceComp
+            = new Comparator<Tile>() {
+                public int compare(Tile a, Tile b) {
+                    return Double.compare(b.getDefenceValue(), a.getDefenceValue());
+                }
+            };
+
+        List<Tile> result = new ArrayList<>();
+        for (Tile t : getSurroundingTiles(0, 1))
+           if (t.isLand() && (!t.hasSettlement() || player.owns(t.getSettlement())))
+             result.add(t);
+        Collections.sort(result, defenceComp);
+        return result;
     }
 
     /**
@@ -1448,9 +1462,12 @@ public final class Tile extends UnitLocation implements Named, Ownable {
      * @return A list of suitable {@code Tile}s.
      */
     public List<Tile> getSafeAnchoringTiles(Unit unit) {
-        return transform(getSurroundingTiles(0, 1),
-                         t -> (!t.isLand() && t.isHighSeasConnected()
-                             && !t.isDangerousToShip(unit)));
+        List<Tile> result = new ArrayList<>();
+        for (Tile t : getSurroundingTiles(0, 1))
+            if (!t.isLand() && t.isHighSeasConnected()
+                             && !t.isDangerousToShip(unit))
+                result.add(t);
+        return result;
     }
 
 
@@ -1739,9 +1756,11 @@ public final class Tile extends UnitLocation implements Named, Ownable {
             = getSpecification().getTileImprovementTypeList();
 
         // Collect all the possible tile type changes.
-        List<TileType> tileTypes = transform(improvements,
-            ti -> !ti.isNatural() && ti.getChange(getType()) != null,
-            ti -> ti.getChange(getType()));
+        List<TileType> tileTypes = new ArrayList<>();
+        for (TileImprovementType ti : improvements)
+            if (!ti.isNatural() && ti.getChange(getType()) != null)
+                tileTypes.add(ti.getChange(getType()));
+
         tileTypes.add(0, getType()); //...including the noop case.
 
         // Find the maximum production under each tile type change.
@@ -1780,12 +1799,6 @@ public final class Tile extends UnitLocation implements Named, Ownable {
         // Defend against calls while partially read.
         if (getType() == null) return Collections.<AbstractGoods>emptyList();
 
-        final ToIntFunction<GoodsType> productionMapper = cacheInt(gt ->
-            getPotentialProduction(gt, unitType));
-        final Predicate<GoodsType> productionPred = gt ->
-            productionMapper.applyAsInt(gt) > 0;
-        final Function<GoodsType, AbstractGoods> goodsMapper = gt ->
-            new AbstractGoods(gt, productionMapper.applyAsInt(gt));
         final Comparator<AbstractGoods> goodsComp
             = ((owner == null || owner.getMarket() == null)
                 ? AbstractGoods.descendingAmountComparator
@@ -1793,8 +1806,15 @@ public final class Tile extends UnitLocation implements Named, Ownable {
         // It is necessary to consider all farmed goods, since the
         // tile might have a resource that produces goods not produced
         // by the tile type.
-        return transform(getSpecification().getFarmedGoodsTypeList(),
-                         productionPred, goodsMapper, goodsComp);
+        List<AbstractGoods> result = new ArrayList<>();
+        for (GoodsType gt : getSpecification().getFarmedGoodsTypeList()) {
+            int i = getPotentialProduction(gt, unitType);
+            if (i > 0)
+                result.add(new AbstractGoods(gt, i));
+        }
+
+        Collections.sort(result, goodsComp);
+        return result;
     }
 
     /**

@@ -25,10 +25,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map.Entry;
 import java.util.Random;
-import java.util.function.Function;
-import java.util.function.Predicate;
 import java.util.logging.Logger;
-import java.util.stream.Collectors;
 
 import javax.xml.stream.XMLStreamException;
 
@@ -1026,14 +1023,11 @@ public class IndianSettlement extends Settlement implements TradeLocation {
      */
     public void updateWantedGoods() {
         final Specification spec = getSpecification();
-        final Function<GoodsType, GoodsType> identity = Function.identity();
-        final java.util.Map<GoodsType, Integer> prices
-            = transform(spec.getGoodsTypeList(),
-                        gt -> !gt.getMilitary() && gt.isStorable(),
-                        identity,
-                        Collectors.toMap(identity,
-                            gt -> getNormalGoodsPriceToBuy(gt,
-                                GoodsContainer.CARGO_SIZE)));
+
+        java.util.Map<GoodsType, Integer> prices = new HashMap<GoodsType, Integer>();
+        for (GoodsType gt : spec.getGoodsTypeList())
+            if (!gt.getMilitary() && gt.isStorable())
+                prices.put(gt, getNormalGoodsPriceToBuy(gt, GoodsContainer.CARGO_SIZE));
 
         int wantedIndex = 0;
         for (Entry<GoodsType, Integer> e
@@ -1084,18 +1078,17 @@ public class IndianSettlement extends Settlement implements TradeLocation {
      */
     public Goods getRandomGift(Random random) {
         final Specification spec = getSpecification();
-        final Predicate<GoodsType> goodsPred = gt ->
-            getGoodsCount(gt) >= GIFT_THRESHOLD + KEEP_RAW_MATERIAL;
-        final Function<GoodsType, Goods> newGoodsMapper = gt ->
-            new Goods(getGame(), this, gt,
-                Math.min(randomInt(logger, "Gift amount", random,
+
+        List<Goods> result = new ArrayList<>();
+        for (GoodsType gt : spec.getNewWorldGoodsTypeList())
+            if (getGoodsCount(gt) >= GIFT_THRESHOLD + KEEP_RAW_MATERIAL)
+                result.add(new Goods(getGame(), this, gt,
+                    Math.min(randomInt(logger, "Gift amount", random,
                                    getGoodsCount(gt) - KEEP_RAW_MATERIAL
                                        - GIFT_MINIMUM) + GIFT_MINIMUM,
-                         GIFT_MAXIMUM));
-        return getRandomMember(logger, "Gift type",
-                               transform(spec.getNewWorldGoodsTypeList(),
-                                         goodsPred, newGoodsMapper),
-                               random);
+                         GIFT_MAXIMUM)));
+
+        return getRandomMember(logger, "Gift type", result, random);
     }
 
     /**
