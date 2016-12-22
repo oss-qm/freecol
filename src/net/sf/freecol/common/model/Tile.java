@@ -28,7 +28,6 @@ import java.util.List;
 import java.util.Map.Entry;
 import java.util.Random;
 import java.util.Set;
-import java.util.function.Predicate;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -1218,8 +1217,10 @@ public final class Tile extends UnitLocation implements Named, Ownable {
      * @return True if land locked.
      */
     public boolean isLandLocked() {
-        return (!isLand()) ? false
-            : all(getSurroundingTiles(1, 1), Tile::isLand);
+        if (!isLand()) return false;
+        for (Tile t : getSurroundingTiles(1, 1))
+            if (!t.isLand()) return false;
+        return true;
     }
 
     /**
@@ -1232,7 +1233,10 @@ public final class Tile extends UnitLocation implements Named, Ownable {
      * @return True if this {@code Tile} is on the shore.
      */
     public boolean isShore() {
-        return any(getSurroundingTiles(1, 1), t -> t.isLand() != this.isLand());
+        for (Tile t : getSurroundingTiles(1, 1))
+            if (t.isLand() != this.isLand())
+                return true;
+        return false;
     }
 
 
@@ -1288,7 +1292,9 @@ public final class Tile extends UnitLocation implements Named, Ownable {
      *     unexplored.
      */
     public boolean hasUnexploredAdjacent() {
-        return !all(getSurroundingTiles(1, 1), Tile::isExplored);
+        for (Tile t : getSurroundingTiles(1, 1))
+            if (!t.isExplored()) return true;
+        return false;
     }
 
     /**
@@ -1444,15 +1450,15 @@ public final class Tile extends UnitLocation implements Named, Ownable {
      */
     public boolean isDangerousToShip(Unit ship) {
         final Player player = ship.getOwner();
-        final Predicate<Tile> dangerPred = t -> {
+        for (Tile t : getSurroundingTiles(0, 1)) {
             Settlement settlement = t.getSettlement();
-            return (settlement == null) ? false
-                : !player.owns(settlement)
+            if ((settlement != null) && !player.owns(settlement)
                     && settlement.canBombardEnemyShip()
                     && (player.atWarWith(settlement.getOwner())
-                        || ship.hasAbility(Ability.PIRACY));
-        };
-        return any(getSurroundingTiles(0, 1), dangerPred);
+                        || ship.hasAbility(Ability.PIRACY)))
+                return true;
+        }
+        return false;
     }
 
     /**
@@ -1580,7 +1586,7 @@ public final class Tile extends UnitLocation implements Named, Ownable {
         for (Tile t : getSurroundingTiles(1)) {
             if (!t.isLand()) landLocked = false;
 
-            for (Entry<GoodsType, Integer> e : goodsMap)
+            for (Entry<GoodsType, Integer> e : goodsMap.entrySet())
                 e.setValue(e.getValue()
                     + t.getPotentialProduction(e.getKey(),
                         spec.getDefaultUnitType(owner)));

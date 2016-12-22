@@ -58,7 +58,9 @@ public interface Scoped {
      */
     default boolean appliesTo(FreeColObject object) {
         List<Scope> scopes = getScopes();
-        return (scopes == null || scopes.isEmpty()) ? true
-            : any(scopes, s -> s.appliesTo(object));
+        if (scopes == null || scopes.isEmpty()) return true;
+        for (Scope s : scope)
+            if (s.appliesTo(object)) return true;
+        return false;
     }
 }

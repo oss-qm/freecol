@@ -2042,11 +2042,14 @@ public final class InGameController extends Controller {
             // Are there humans left?
             // FIXME: see if this can be relaxed so we can run large
             // AI-only simulations.
-            boolean onlyAI = all(game.getConnectedPlayers(), Player::isAI);
+            boolean onlyAI = true;
+            for (Player p : game.getConnectedPlayers())
+                if (!p.isAI()) { onlyAI = false; break; }
+
             if (onlyAI) {
                 winner = null;
                 int winner_score = 0;
-                for (Player p : game.getConnectedPlayers()) {
+                for (ServerPlayer p : game.getConnectedPlayers()) {
                     int score = p.getScore();
                     if (winner == null || score > winner_score) {
                         winner = p;

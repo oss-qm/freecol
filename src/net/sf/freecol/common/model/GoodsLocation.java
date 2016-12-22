@@ -88,7 +88,10 @@ public abstract class GoodsLocation extends UnitLocation {
      * @return True if the goods were all added.
      */
     public final boolean addGoods(List<AbstractGoods> goods) {
-        return all(goods, ag -> addGoods(ag));
+        for (AbstractGoods ag : goods)
+            if (!addGoods(ag))
+                return false;
+        return true;
     }
 
     /**
@@ -131,7 +134,10 @@ public abstract class GoodsLocation extends UnitLocation {
      * @return True if the goods are all present.
      */
     public final boolean containsGoods(List<AbstractGoods> goods) {
-        return all(goods, ag -> ag.getAmount() <= getGoodsCount(ag.getType()));
+        for (AbstractGoods ag : goods)
+            if (ag.getAmount() <= getGoodsCount(ag.getType()))
+                return true;
+        return false;
     }
 
     /**

@@ -221,8 +221,10 @@ public class ProductionCache {
      */
     public boolean isProducing(GoodsType goodsType) {
         update();
-        return any(productionAndConsumption.values(),
-                   pi -> AbstractGoods.anyIsType(pi.getProduction(), goodsType));
+        for (ProductionInfo pi : productionAndConsumption.values())
+            if (AbstractGoods.anyIsType(pi.getProduction(), goodsType))
+                return true;
+        return false;
     }
 
     /**
@@ -233,8 +235,10 @@ public class ProductionCache {
      */
     public boolean isConsuming(GoodsType goodsType) {
         update();
-        return any(productionAndConsumption.values(),
-                   pi -> AbstractGoods.anyIsType(pi.getConsumption(), goodsType));
+        for (ProductionInfo pi : productionAndConsumption.values())
+            if (AbstractGoods.anyIsType(pi.getConsumption(), goodsType))
+                return true;
+        return false;
     }
 
     /**
