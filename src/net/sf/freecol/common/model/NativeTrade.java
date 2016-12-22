@@ -231,8 +231,12 @@ public class NativeTrade extends FreeColGameObject {
      *     be made and space available.
      */
     public boolean canBuy() {
-        return getBuy() && !atWar() && this.unit.getSpaceLeft() > 0
-            && any(getSettlementToUnit(), NativeTradeItem::priceIsValid);
+        if (getBuy() && !atWar() && this.unit.getSpaceLeft() > 0)
+            for (NativeTradeItem i : getSettlementToUnit())
+                if (i.priceIsValid())
+                    return true;
+
+        return false;
     }
 
     /**
@@ -259,8 +263,12 @@ public class NativeTrade extends FreeColGameObject {
      * @return True if not blocked, at peace, and there are sales to be made.
      */
     public boolean canSell() {
-        return getSell() && !atWar()
-            && any(getUnitToSettlement(), NativeTradeItem::priceIsValid);
+        if (getSell() && !atWar())
+            for (NativeTradeItem i : getUnitToSettlement())
+                if (i.priceIsValid())
+                    return true;
+
+        return false;
     }
 
     /**

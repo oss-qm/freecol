@@ -70,6 +70,7 @@ import net.sf.freecol.common.model.StringTemplate;
 import net.sf.freecol.common.model.TradeLocation;
 import net.sf.freecol.common.model.TradeRoute;
 import net.sf.freecol.common.model.TradeRouteStop;
+import net.sf.freecol.common.util.Utils;
 import static net.sf.freecol.common.util.CollectionUtils.*;
 
 
@@ -226,7 +227,10 @@ public final class TradeRouteInputPanel extends FreeColPanel
 
         @Override
         public boolean canImport(JComponent c, DataFlavor[] flavors) {
-            return any(flavors, matchKeyEquals(DefaultTransferHandler.flavor));
+            for (DataFlavor df : flavors)
+                if (Utils.equals(DefaultTransferHandler.flavor, df))
+                    return true;
+            return false;
         }
     }
 
@@ -341,7 +345,10 @@ public final class TradeRouteInputPanel extends FreeColPanel
          */
         @Override
         public boolean canImport(JComponent c, DataFlavor[] flavors) {
-            return any(flavors, matchKeyEquals(STOP_FLAVOR));
+            for (DataFlavor df : flavors)
+                if (Utils.equals(STOP_FLAVOR, df))
+                    return true;
+            return false;
         }
 
         /**

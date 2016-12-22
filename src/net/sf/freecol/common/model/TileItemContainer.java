@@ -448,8 +448,10 @@ public class TileItemContainer extends FreeColGameObject {
      */
     public boolean canProduce(GoodsType goodsType, UnitType unitType) {
         synchronized (tileItems) {
-            return any(tileItems, ti -> ti.canProduce(goodsType, unitType));
+            for (TileItem ti : tileItems)
+                if (ti.canProduce(goodsType, unitType)) return true;
         }
+        return false;
     }
 
     /**

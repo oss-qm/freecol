@@ -28,9 +28,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Random;
-import java.util.function.Function;
-import java.util.function.Predicate;
-import java.util.function.ToIntFunction;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -926,14 +923,16 @@ public class REFAIPlayer extends EuropeanAIPlayer {
                         return Integer.MIN_VALUE;
                     }
                     // Do not chase the same unit!
-                    final Predicate<UnitSeekAndDestroyMission> unitPred = m ->
-                        m != null && m.getTarget() instanceof Unit
-                            && (Unit)m.getTarget() == target;
-                    final Function<AIUnit, UnitSeekAndDestroyMission> missionMapper = aiu ->
-                        aiu.getMission(UnitSeekAndDestroyMission.class);
-                    if (any(transform(getAIUnits(), aiu -> aiu != aiUnit,
-                                      missionMapper), unitPred))
-                        return Integer.MIN_VALUE;
+                    for (AIUnit aiu : getAIUnits()) {
+                        if (aiu != aiUnit) {
+                            Mission m = aiu.getMission(UnitSeekAndDestroyMission.class);
+                            if (m != null
+                                    && m.getTarget() instanceof Unit
+                                    && (Unit)m.getTarget() == target)
+                                return Integer.MIN_VALUE;
+                        }
+                    }
+
                     // The REF is more interested in colonies.
                     value /= 2;
                 }

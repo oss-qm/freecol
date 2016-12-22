@@ -571,7 +571,10 @@ public class IndianSettlement extends Settlement implements TradeLocation {
      * @return True if any European player has spoken with the chief.
      */
     public boolean hasAnyScouted() {
-        return any(contactLevels.keySet(), p -> hasScouted(p));
+        for (Player p : contactLevels.keySet())
+            if (hasScouted(p))
+                return true;
+        return false;
     }
 
     /**

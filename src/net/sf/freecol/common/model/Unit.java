@@ -26,7 +26,6 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-import java.util.function.Predicate;
 import java.util.logging.Logger;
 
 import javax.xml.stream.XMLStreamException;
@@ -710,13 +709,19 @@ public class Unit extends GoodsLocation
                 // and no one else is working on it
                 Tile tile;
                 if (!workImprovement.isComplete()
-                    && (tile = workImprovement.getTile()) != null
-                    && tile.getTileItemContainer() != null
-                    && none(tile.getUnitList(), u ->
-                        u != this && u.getState() == UnitState.IMPROVING
-                             && u.getWorkImprovement() == workImprovement)) {
-                    workImprovement.getTile().getTileItemContainer()
-                        .removeTileItem(workImprovement);
+                        && (tile = workImprovement.getTile()) != null
+                        && tile.getTileItemContainer() != null) {
+                    boolean pred = true;
+                    for (Unit u : tile.getUnitList()) {
+                        if (u != this && u.getState() == UnitState.IMPROVING
+                                 && u.getWorkImprovement() == workImprovement) {
+                            pred = false;
+                            break;
+                        }
+                    }
+                    if (pred)
+                        workImprovement.getTile().getTileItemContainer()
+                            .removeTileItem(workImprovement);
                 }
                 setWorkImprovement(null);
             }
@@ -2307,11 +2312,14 @@ public class Unit extends GoodsLocation
                 return MoveType.MOVE_NO_ACCESS_SETTLEMENT;
             }
         } else { // moving to sea, check for embarkation
-            return (defender == null || !getOwner().owns(defender))
-                ? MoveType.MOVE_NO_ACCESS_EMBARK
-                : (any(target.getUnitList(), u -> u.canAdd(this)))
-                ? MoveType.EMBARK
-                : MoveType.MOVE_NO_ACCESS_FULL;
+            if (defender == null || !getOwner().owns(defender))
+                return MoveType.MOVE_NO_ACCESS_EMBARK;
+
+            for (Unit u : target.getUnitList())
+                if (u.canAdd(this))
+                    return MoveType.EMBARK;
+
+            return MoveType.MOVE_NO_ACCESS_FULL;
         }
     }
 
@@ -2510,12 +2518,14 @@ public class Unit extends GoodsLocation
      *      seas or can make a move to a neighbouring high seas tile.
      */
     public boolean hasHighSeasMove() {
-        return (canMoveToHighSeas())
-            ? true
-            : (hasTile() && getMovesLeft() > 0)
-            ? any(getTile().getSurroundingTiles(1, 1),
-                Tile::isDirectlyHighSeasConnected)
-            : false;
+        if (canMoveToHighSeas()) return true;
+
+        if (hasTile() && getMovesLeft() > 0)
+            for (Tile t : getTile().getSurroundingTiles(1, 1))
+                if (t.isDirectlyHighSeasConnected())
+                    return true;
+
+        return false;
     }
 
     /**
@@ -3256,17 +3266,18 @@ public class Unit extends GoodsLocation
                         || !getOwner().atWarWith(first.getOwner())) {
                         return false;
                     }
-                    final Predicate<Unit> attackerPred = u -> {
+
+                    for (Unit u : tile.getUnitList()) {
                         PathNode p;
-                        return (u.canAttack(unit)
-                            && cm.calculateCombatOdds(u, unit).win >= threat
-                            && (p = u.findPath(start)) != null
-                            && p.getTotalTurns() < range);
-                    };
-                    if (any(transform(tile.getUnitList(), attackerPred))) {
-                        found = path;
-                        return true;
+                        if (u.canAttack(unit)
+                                && cm.calculateCombatOdds(u, unit).win >= threat
+                                && (p = u.findPath(start)) != null
+                                && p.getTotalTurns() < range) {
+                            found = path;
+                            return true;
+                        }
                     }
+
                     return false;
                 }
             };
