@@ -31,7 +31,6 @@ import java.util.Random;
 import java.util.Set;
 import java.util.function.Function;
 import java.util.function.Predicate;
-import java.util.function.ToIntFunction;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
@@ -543,15 +542,15 @@ public class ServerPlayer extends Player implements ServerModelObject {
 
         // It is necessary to still have a carrier.
         final Europe europe = getEurope();
-        final ToIntFunction<UnitType> unitPricer = ut -> {
-            int p = europe.getUnitPrice(ut);
-            return (p == UNDEFINED) ? Integer.MAX_VALUE : p;
-        };
         int goldNeeded = 0;
         if (!hasCarrier) {
-            int price = (europe == null) ? Integer.MAX_VALUE
-                : min(spec.getUnitTypesWithAbility(Ability.NAVAL_UNIT),
-                      unitPricer);
+            int price = Integer.MAX_VALUE;
+            if (europe != null)
+                for (UnitType ut : spec.getUnitTypesWithAbility(Ability.NAVAL_UNIT)) {
+                    int p = europe.getUnitPrice(ut);
+                    if ((p != UNDEFINED) && (p < price))
+                        price = p;
+                }
             if (price == Integer.MAX_VALUE || !checkGold(price)) {
                 logger.info(getName() + " dead, can not buy carrier.");
                 return IS_DEAD;
@@ -567,10 +566,15 @@ public class ServerPlayer extends Player implements ServerModelObject {
             logger.info(getName() + " dead, can not recruit.");
             return IS_DEAD;
         }
+
         UnitType unitType = null;
-        int price = Math.min(europe.getRecruitPrice(),
-                             min(spec.getUnitTypesWithAbility(Ability.FOUND_COLONY),
-                                 unitPricer));
+        int price = europe.getRecruitPrice();
+        for (UnitType ut : spec.getUnitTypesWithAbility(Ability.FOUND_COLONY)) {
+            int p = europe.getUnitPrice(ut);
+            if ((p != UNDEFINED) && (p < price))
+                price = p;
+        }
+
         goldNeeded += price;
         if (checkGold(goldNeeded)) {
             logger.info(getName() + " alive, can buy colonist.");
