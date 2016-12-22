@@ -215,8 +215,10 @@ public class ColonyTile extends WorkLocation {
         if (productionType.getUnattended()) {
             if (newType == null) {
                 // Tile type stays the same, return the sum of any food bonues.
-                return sum(getSpecification().getFoodGoodsTypeList(),
-                           gt -> ti.getBonus(gt));
+                int n = 0;
+                for (GoodsType gt : getSpecification().getFoodGoodsTypeList())
+                    n += ti.getBonus(gt);
+                return n;
             }
 
             // Tile type change.
@@ -235,9 +237,10 @@ public class ColonyTile extends WorkLocation {
                 if (goodsType.isFoodType()) {
                     food -= ag.getAmount();
                 } else if (colony.isConsuming(goodsType)) {
-                    int change = -ag.getAmount()
-                        + sum(newProd, AbstractGoods.matches(goodsType),
-                              AbstractGoods::getAmount);
+                    int change = -ag.getAmount();
+                    for (AbstractGoods ag2 : newProd)
+                        if (goodsType == ag2.getType())
+                            change += ag2.getAmount();
                     if (change < 0
                         && change + colony.getNetProductionOf(goodsType) < 0) {
                         // The change drives the net production (more?)
@@ -273,9 +276,11 @@ public class ColonyTile extends WorkLocation {
      */
     @Override
     public int evaluateFor(Player player) {
-        return super.evaluateFor(player)
-            + sum(getProductionInfo().getProduction(),
-                  ag -> ag.evaluateFor(player));
+        int n = super.evaluateFor(player);
+        for (AbstractGoods ag : getProductionInfo().getProduction())
+            n += ag.evaluateFor(player);
+
+        return n;
     }
 
 

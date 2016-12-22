@@ -177,8 +177,9 @@ public class UnitSeekAndDestroyMission extends Mission {
 
         // Add a big bonus for treasure trains on the tile.
         // Do not cheat and look at the value.
-        value += 1000 * count(tile.getUnits(),
-            u -> u.canCarryTreasure() && u.getTreasureAmount() > 0);
+        for (Unit u : tile.getUnits())
+            if (u.canCarryTreasure() && u.getTreasureAmount() > 0)
+                value += 1000;
 
         if (defender.isNaval()) {
             if (tile.isLand()) value += 500; // Easy win

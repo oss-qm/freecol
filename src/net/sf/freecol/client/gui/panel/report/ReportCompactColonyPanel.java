@@ -554,8 +554,10 @@ public final class ReportCompactColonyPanel extends ReportPanel
         // Field: The number of potential colony tiles that need
         // exploring.
         // Colour: Always cAlarm
-        int n = count(s.tileSuggestions,
-                      TileImprovementSuggestion::isExploration);
+        int n = 0;
+        for (TileImprovementSuggestion tis : s.tileSuggestions)
+            if (tis.isExploration()) n++;
+
         if (n > 0) {
             t = stpld("report.colony.exploring")
                     .addName("%colony%", s.colony.getName())

@@ -1298,8 +1298,10 @@ public final class Tile extends UnitLocation implements Named, Ownable {
      * @return The number of adjacent available tiles.
      */
     public int getAvailableAdjacentCount() {
-        return count(getSurroundingTiles(1, 1),
-                     matchKey(isLand(), Tile::isLand));
+        int x = 0;
+        for (Tile t : getSurroundingTiles(1, 1))
+            if (isLand() == t.isLand()) x++;
+        return x;
     }
 
     /**
@@ -1609,13 +1611,15 @@ public final class Tile extends UnitLocation implements Named, Ownable {
         if (landLocked) {
             ret.add("warning.landLocked");
         }
-        int food = sum(goodsMap.entrySet(), e -> e.getKey().isFoodType(),
-                       Entry::getValue);
+        int food = 0;
+        for (Entry<GoodsType, Integer> e : goodsMap.entrySet())
+            if (e.getKey().isFoodType())
+                food += e.getValue();
         if (food < 8) {
             ret.add("warning.noFood");
         }
 
-        for (Entry<GoodsType, Integer> e : goodsMap)
+        for (Entry<GoodsType, Integer> e : goodsMap.entrySet())
             if (!e.getKey().isFoodType() && e.getValue() < LOW_PRODUCTION_WARNING_VALUE)
                 ret.addStringTemplate(StringTemplate
                     .template("warning.noBuildingMaterials")
@@ -1768,8 +1772,10 @@ public final class Tile extends UnitLocation implements Named, Ownable {
         tileTypes.add(0, getType()); //...including the noop case.
 
         // Find the maximum production under each tile type change.
-        return max(tileTypes, tt ->
-                   getMaximumPotential(goodsType, unitType, tt));
+        int best = 0;
+        for (TileType tt : tileTypes)
+            best = Math.max(best, getMaximumPotential(goodsType, unitType, tt));
+        return best;
     }
 
     /**

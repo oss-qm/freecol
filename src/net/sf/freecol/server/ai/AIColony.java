@@ -27,7 +27,6 @@ import java.util.Comparator;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-import java.util.function.Predicate;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -552,10 +551,12 @@ public class AIColony extends AIObject implements PropertyChangeListener {
                 // Pick the best tile to steal, considering mainly the
                 // building goods needed, but including food at a lower
                 // weight.
-                double s = sumDouble(needed,
-                        gt -> t.getPotentialProduction(gt, unitType))
-                    + sumDouble(spec.getFoodGoodsTypeList(),
-                        ft -> 0.1 * t.getPotentialProduction(ft, unitType));
+                double s = 0;
+                for (GoodsType gt : needed)
+                    s += t.getPotentialProduction(gt, unitType);
+                for (GoodsType ft : spec.getFoodGoodsTypeList())
+                    s += 0.1 * t.getPotentialProduction(ft, unitType);
+
                 if (s > score) {
                     score = s;
                     steal = t;
@@ -1295,15 +1296,17 @@ public class AIColony extends AIObject implements PropertyChangeListener {
 
             // Defend against clearing the last forested tile.
             TileType change = plan.getType().getChange(workTile.getType());
-            final Predicate<WorkLocation> forestPred = cwl ->
-                cwl instanceof ColonyTile
+
+            int cnt = 0;
+            for (WorkLocation cwl : colony.getAvailableWorkLocations())
+                if (cwl instanceof ColonyTile
                     && !((ColonyTile)cwl).isColonyCenterTile()
-                    && cwl.getWorkTile().isForested();
+                    && cwl.getWorkTile().isForested()) cnt++;
+
             if (change != null
                 && !change.isForested()
                 && !colonyTile.isColonyCenterTile()
-                && count(colony.getAvailableWorkLocations(), forestPred)
-                    <= FOREST_MINIMUM) continue;
+                && cnt <= FOREST_MINIMUM) continue;
 
             newPlans.add(plan); // Otherwise add the plan.
         }

@@ -111,11 +111,15 @@ public class Force extends FreeColSpecObject {
      */
     public final void updateSpaceAndCapacity() {
         final Specification spec = getSpecification();
-        this.capacity = sum(this.navalUnits,
-                            nu -> nu.getType(spec).canCarryUnits(),
-                            nu -> nu.getType(spec).getSpace() * nu.getNumber());
-        this.spaceRequired = sum(this.landUnits,
-                                 lu -> lu.getType(spec).getSpaceTaken() * lu.getNumber());
+
+        this.capacity = 0;
+        for (AbstractUnit au : this.navalUnits)
+            if (au.getType(spec).canCarryUnits())
+                this.capacity += au.getType(spec).getSpace() * au.getNumber();
+
+        this.spaceRequired = 0;
+        for (AbstractUnit au : this.landUnits)
+            this.spaceRequired += au.getType(spec).getSpaceTaken() * au.getNumber();
     }
 
     /**

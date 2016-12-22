@@ -48,6 +48,7 @@ import net.sf.freecol.common.model.FreeColObject;
 import net.sf.freecol.common.model.GoodsType;
 import net.sf.freecol.common.model.Specification;
 import net.sf.freecol.common.model.Unit;
+import net.sf.freecol.common.model.WorkLocation;
 import static net.sf.freecol.common.util.CollectionUtils.*;
 
 
@@ -133,9 +134,10 @@ public final class ReportClassicColonyPanel extends ReportPanel
                 int newValue = colony.getNetProductionOf(gt);
                 int stockValue = colony.getGoodsCount(gt);
                 if (newValue != 0 || stockValue > 0) {
-                    int maxProduction
-                        = sum(colony.getWorkLocationsForProducing(gt),
-                              wl -> wl.getMaximumProductionOf(gt));
+                    int maxProduction = 0;
+                    for (WorkLocation wl : colony.getWorkLocationsForProducing(gt))
+                        maxProduction += wl.getMaximumProductionOf(gt);
+
                     ProductionLabel productionLabel
                         = new ProductionLabel(this.freeColClient,
                             new AbstractGoods(gt, newValue),
