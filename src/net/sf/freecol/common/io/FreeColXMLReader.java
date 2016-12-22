@@ -364,7 +364,15 @@ public class FreeColXMLReader extends StreamReaderDelegate
     public void closeTag(String tag, String... others) throws XMLStreamException {
         for (int next = nextTag(); next != XMLStreamConstants.END_ELEMENT;
              next = nextTag()) {
-            String at = find(others, s -> atTag(s));
+
+            String at = null;
+            for (String str : others) {
+                if (atTag(str)) {
+                    at = str;
+                    break;
+                }
+            }
+
             if (at == null) {
                 throw new XMLStreamException("Parse error, END_ELEMENT(" + tag
                     + " or alternatives) expected, not: " + getLocalName());
