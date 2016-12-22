@@ -85,6 +85,7 @@ import net.sf.freecol.common.model.UnitType;
 import net.sf.freecol.common.option.GameOptions;
 import static net.sf.freecol.common.util.CollectionUtils.*;
 import static net.sf.freecol.common.util.StringUtils.*;
+import net.sf.freecol.common.util.Utils;
 
 
 /**
@@ -205,7 +206,9 @@ public class BuildQueuePanel extends FreeColPanel implements ItemListener {
              */
             @Override
             public boolean isDataFlavorSupported(DataFlavor flavor) {
-                return any(supportedFlavors, matchKeyEquals(flavor));
+                for (DataFlavor df : supportedFlavors)
+                    if (Utils.equals(df, flavor)) return true;
+                return false;
             }
         }
 
@@ -362,8 +365,11 @@ public class BuildQueuePanel extends FreeColPanel implements ItemListener {
          */
         @Override
         public boolean canImport(JComponent comp, DataFlavor[] flavors) {
-            return flavors != null
-                && any(flavors, matchKeyEquals(BUILD_LIST_FLAVOR));
+            if (flavors != null)
+                for (DataFlavor df : flavors)
+                    if (Utils.equals(BUILD_LIST_FLAVOR, df))
+                        return true;
+            return false;
         }
 
         /**

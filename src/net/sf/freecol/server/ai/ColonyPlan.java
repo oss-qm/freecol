@@ -1187,11 +1187,15 @@ public class ColonyPlan {
      */
     private static boolean fullEquipUnit(Specification spec, Unit unit,
                                          Role role, Colony colony) {
-        return (role.isOffensive())
-            ? any(transform(spec.getMilitaryRoles(),
-                            r -> unit.roleIsAvailable(r)
-                                && colony.equipForRole(unit, r, r.getMaximumCount())))
-            : colony.equipForRole(unit, role, role.getMaximumCount());
+        if (role.isOffensive()) {
+            for (Role r : spec.getMilitaryRoles())
+                if (unit.roleIsAvailable(r)
+                        && colony.equipForRole(unit, r, r.getMaximumCount()))
+                    return true;
+            return false;
+        }
+
+        return colony.equipForRole(unit, role, role.getMaximumCount());
     }
 
     /**

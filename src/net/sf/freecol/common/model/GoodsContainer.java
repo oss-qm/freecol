@@ -312,10 +312,11 @@ public class GoodsContainer extends FreeColGameObject implements Ownable {
      */
     public boolean hasReachedCapacity(int amount) {
         synchronized (this.storedGoods) {
-            return any(this.storedGoods.entrySet(), e ->
-                       e.getKey().isStorable()
+            for (Map.Entry<GoodsType, Integer> e : this.storedGoods.entrySet())
+                if (e.getKey().isStorable()
                            && !e.getKey().limitIgnored()
-                           && e.getValue() > amount);
+                           && e.getValue() > amount) return true;
+            return false;
         }
     }
 
@@ -409,8 +410,10 @@ public class GoodsContainer extends FreeColGameObject implements Ownable {
      * @return True if the contents have changed.
      */
     public boolean hasChanged() {
-        return any(getSpecification().getGoodsTypeList(),
-                   gt -> getOldGoodsCount(gt) != getGoodsCount(gt));
+        for (GoodsType gt : getSpecification().getGoodsTypeList())
+            if (getOldGoodsCount(gt) != getGoodsCount(gt))
+                return true;
+        return false;
     }
 
     /**

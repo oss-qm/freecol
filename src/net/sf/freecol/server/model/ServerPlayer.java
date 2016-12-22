@@ -618,7 +618,11 @@ public class ServerPlayer extends Player implements ServerModelObject {
 
         // Surrender if a rebel has a stronger land army.
         final double power = calculateStrength(false);
-        return none(getRebels(), r -> power < r.calculateStrength(false));
+
+        for (Player r : getRebels())
+            if (power < r.calculateStrength(false))
+                return false;
+        return true;
     }
 
     /**

@@ -259,7 +259,9 @@ public final class TileImprovementType extends FreeColSpecObjectType {
      * @return True if improvement is possible.
      */
     public boolean isTileTypeAllowed(TileType tileType) {
-        return all(getScopes(), s -> s.appliesTo(tileType));
+        for (Scope s : getScopes())
+            if (!s.appliesTo(tileType)) return false;
+        return true;
     }
 
     public int getBonus(GoodsType goodsType) {
@@ -317,9 +319,11 @@ public final class TileImprovementType extends FreeColSpecObjectType {
      * @return True if the required {@code TileType} can be changed to.
      */
     public boolean changeContainsTarget(TileType tileType) {
-        return (tileTypeChanges == null) ? false
-            : any(tileTypeChanges.values(),
-                  matchKey(tileType, TileTypeChange::getTo));
+        if (tileTypeChanges == null) return false;
+        for (TileTypeChange ttc : tileTypeChanges.values())
+            if (tileType == ttc.getTo())
+                return true;
+        return false;
     }
 
     /**

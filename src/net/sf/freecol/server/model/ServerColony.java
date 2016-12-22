@@ -836,17 +836,23 @@ public class ServerColony extends Colony implements ServerModelObject {
         // warning about, but not if producing tools.
         for (BuildQueue<?> queue : queues) {
             if (queue.isEmpty()) continue;
-            if (none(spec.getGoodsTypeList(), g ->
-                    (g.isBuildingMaterial()
+            boolean pred = true;
+            for (GoodsType g : spec.getGoodsTypeList()) {
+                if (g.isBuildingMaterial()
                         && !g.isRawMaterial()
                         && !g.isBreedable()
                         && getAdjustedNetProductionOf(g) > 0
-                        && neededForBuildableType(g)))) {
+                        && neededForBuildableType(g)) {
+                    pred = false;
+                    break;
+                }
+            }
+
+            if (pred)
                 cs.addMessage(owner,
                     new ModelMessage(MessageType.BUILDING_COMPLETED,
                         "model.colony.notBuildingAnything", this)
                         .<ModelMessage>addName("%colony%", getName()));
-            }
         }
 
         // Update SoL.
