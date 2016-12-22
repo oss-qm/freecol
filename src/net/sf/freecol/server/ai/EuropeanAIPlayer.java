@@ -424,8 +424,9 @@ public class EuropeanAIPlayer extends MissionAIPlayer {
         final Random air = getAIRandom();
         final List<GoodsType> arrears = new ArrayList<>();
         if (market != null) {
-            arrears.addAll(transform(spec.getGoodsTypeList(),
-                                     gt -> market.getArrears(gt) > 0));
+            for (GoodsType gt : spec.getGoodsTypeList())
+                if (market.getArrears(gt) > 0)
+                    arrears.add(gt);
         }
         final int nCheats = arrears.size() + 6; // 6 cheats + arrears
         int[] randoms = randomInts(logger, "cheats", air, 100, nCheats);

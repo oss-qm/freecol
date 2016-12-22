@@ -803,10 +803,9 @@ public class BuildQueuePanel extends FreeColPanel implements ItemListener {
             }
 
             // Spec limits
-            for (Limit limit : transform(bt.getLimits(),
-                                         l -> !l.evaluate(this.colony))) {
-                reasons.add(Messages.getDescription(limit));
-            }
+            for (Limit limit : bt.getLimits())
+                if (!limit.evaluate(this.colony))
+                    reasons.add(Messages.getDescription(limit));
 
             // Missing ability
             if (!checkAbilities(bt, reasons)) unbuildableTypes.add(bt);
@@ -860,10 +859,9 @@ public class BuildQueuePanel extends FreeColPanel implements ItemListener {
             }
 
             // Spec limits
-            for (Limit limit : transform(ut.getLimits(),
-                                         l -> !l.evaluate(this.colony))) {
-                reasons.add(Messages.getDescription(limit));
-            }
+            for (Limit limit : ut.getLimits())
+                if (!limit.evaluate(this.colony))
+                    reasons.add(Messages.getDescription(limit));
 
             // Missing ability
             if (!checkAbilities(ut, reasons)) unbuildableTypes.add(ut);

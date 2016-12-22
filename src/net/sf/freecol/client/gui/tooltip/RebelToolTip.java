@@ -92,9 +92,10 @@ public class RebelToolTip extends JToolTip {
         libertyProduction = (int) FeatureContainer
                 .applyModifiers((float) libertyProduction, turn,
                         colony.getOwner().getModifiers(Modifier.LIBERTY));
-        forEach(colony.getOwner().getModifiers(Modifier.LIBERTY), m -> {
-            for (JLabel j : ModifierFormat.getModifierLabels(m, null, turn)) add(j);
-        });
+
+        for (Modifier m : colony.getOwner().getModifiers(Modifier.LIBERTY))
+            for (JLabel j : ModifierFormat.getModifierLabels(m, null, turn))
+                add(j);
 
         boolean capped = spec.getBoolean(GameOptions.BELL_ACCUMULATION_CAPPED)
                 && colony.getSoL() >= 100;
