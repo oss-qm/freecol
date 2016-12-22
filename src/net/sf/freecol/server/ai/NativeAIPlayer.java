@@ -27,7 +27,6 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Random;
 import java.util.Set;
-import java.util.function.Function;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -700,13 +699,14 @@ public class NativeAIPlayer extends MissionAIPlayer {
         final Specification spec = getSpecification();
         final int penalty = ((sense) ? 1 : -1)
             * spec.getInteger(GameOptions.SHIP_TRADE_PENALTY);
-        final Function<Modifier, Modifier> mapper = m -> {
+
+        List<Modifier> result = new ArrayList<>();
+        for (Modifier m : spec.getModifiers(Modifier.SHIP_TRADE_PENALTY)) {
             Modifier n = new Modifier(m);
             n.setValue(penalty);
-            return n;
-        };
-        return transform(spec.getModifiers(Modifier.SHIP_TRADE_PENALTY),
-                         alwaysTrue(), mapper);
+            result.add(n);
+        }
+        return result;
     }
 
     /**

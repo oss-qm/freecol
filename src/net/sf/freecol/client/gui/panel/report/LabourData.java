@@ -19,6 +19,7 @@
 
 package net.sf.freecol.client.gui.panel.report;
 
+import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -444,8 +445,11 @@ public class LabourData {
     }
 
     public static List<UnitType> getLabourTypes(Player player) {
-        return transform(player.getSpecification().getUnitTypeList(),
-                         ut -> ut.hasSkill() && ut.isAvailableTo(player));
+        List<UnitType> result = new ArrayList<>();
+        for (UnitType ut : player.getSpecification().getUnitTypeList())
+            if (ut.hasSkill() && ut.isAvailableTo(player))
+                result.add(ut);
+        return result;
     }
 
     private void summarize() {

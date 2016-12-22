@@ -20,14 +20,13 @@
 package net.sf.freecol.server.ai;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
-import java.util.function.Function;
 import java.util.function.Predicate;
-import java.util.function.ToIntFunction;
 import java.util.logging.Logger;
 
 import net.sf.freecol.common.model.Ability;
@@ -234,7 +233,10 @@ public class ColonyPlan {
      * @return A copy of the of {@code BuildableType}s list.
      */
     public List<BuildableType> getBuildableTypes() {
-        return transform(buildPlans, alwaysTrue(), bp -> bp.type);
+        List<BuildableType> result = new ArrayList<>();
+        for (BuildPlan bt : buildPlans)
+            result.add(bt.type);
+        return result;
     }
 
     /**
@@ -269,8 +271,11 @@ public class ColonyPlan {
      * @return A list of food producing plans.
      */
     public List<WorkLocationPlan> getFoodPlans() {
-        return transform(workPlans, wp -> wp.isFoodPlan()
-            && !wp.getWorkLocation().canAutoProduce());
+        List<WorkLocationPlan> result = new ArrayList<>();
+        for (WorkLocationPlan wp : this.workPlans)
+            if (wp.isFoodPlan() && !wp.getWorkLocation().canAutoProduce())
+                result.add(wp);
+        return result;
     }
 
     /**
@@ -280,8 +285,11 @@ public class ColonyPlan {
      * @return A list of non-food producing plans.
      */
     public List<WorkLocationPlan> getWorkPlans() {
-        return transform(workPlans, wp -> !wp.isFoodPlan()
-            && !wp.getWorkLocation().canAutoProduce());
+        List<WorkLocationPlan> result = new ArrayList<>();
+        for (WorkLocationPlan wp : workPlans)
+            if (!wp.isFoodPlan() && !wp.getWorkLocation().canAutoProduce())
+                result.add(wp);
+        return result;
     }
 
     /**
@@ -291,9 +299,9 @@ public class ColonyPlan {
      * @param lb A {@code LogBuilder} to log to.
      */
     public void refine(BuildableType build, LogBuilder lb) {
-        List<GoodsType> required
-            = transform(colony.getFullRequiredGoods(build), alwaysTrue(),
-                        AbstractGoods::getType);
+        List<GoodsType> required = new ArrayList<>();
+        for (AbstractGoods ag : colony.getFullRequiredGoods(build))
+            required.add(ag.getType());
         Map<GoodsType, List<WorkLocationPlan>> suppressed = new HashMap<>();
 
         // Examine a copy of the work plans, but operate on the
@@ -925,9 +933,12 @@ public class ColonyPlan {
 
         // If we need liberty put it before the new world production.
         if (colony.getSoL() < 100) {
-            produce.addAll(0, transform(libertyGoodsTypes,
-                    gt -> production.containsKey(gt),
-                    Function.identity(), productionComparator));
+            List<GoodsType> result = new ArrayList<>();
+            for (GoodsType gt : libertyGoodsTypes)
+                if (production.containsKey(gt))
+                    result.add(gt);
+            Collections.sort(result, productionComparator);
+            produce.addAll(0, result);
         }
 
         // Always add raw/building materials first.
@@ -938,13 +949,14 @@ public class ColonyPlan {
                      - rawBuildingGoodsTypes.indexOf(a.getInputType()); // reversed
                 }};
         List<GoodsType> toAdd = new ArrayList<>();
-        toAdd.addAll(transform(buildingGoodsTypes,
-                gt -> production.containsKey(gt)
+        for (GoodsType gt : buildingGoodsTypes) {
+            if (production.containsKey(gt)
                     && (colony.getGoodsCount(gt.getInputType())
                         >= GoodsContainer.CARGO_SIZE/2
-                        || production.containsKey(gt.getInputType())),
-                Function.identity(),
-                indexComparator));
+                        || production.containsKey(gt.getInputType())))
+                toAdd.add(gt);
+        }
+        Collections.sort(toAdd, indexComparator);
 
         for (int i = toAdd.size()-1; i >= 0; i--) {
             GoodsType make = toAdd.get(i);
@@ -963,15 +975,21 @@ public class ColonyPlan {
         }
 
         // Military goods after lucrative production.
-        produce.addAll(transform(militaryGoodsTypes,
-                                 gt -> production.containsKey(gt),
-                                 Function.identity(), productionComparator));
+        List<GoodsType> mil = new ArrayList<>();
+        for (GoodsType gt : militaryGoodsTypes)
+            if (production.containsKey(gt))
+                mil.add(gt);
+        Collections.sort(mil, productionComparator);
+        produce.addAll(mil);
 
         // Immigration last.
         if (colony.getOwner().getEurope() != null) {
-            produce.addAll(transform(immigrationGoodsTypes,
-                                     gt -> production.containsKey(gt),
-                                     Function.identity(), productionComparator));
+            List<GoodsType> im = new ArrayList<>();
+            for (GoodsType gt : immigrationGoodsTypes)
+                if (production.containsKey(gt))
+                    im.add(gt);
+            Collections.sort(im, productionComparator);
+            produce.addAll(im);
         }
     }
 

@@ -158,8 +158,11 @@ public class IndianDemandMission extends Mission {
      */
     public Goods selectGoods(Colony target) {
         final Specification spec = getSpecification();
-        final List<GoodsType> goodsTypes = transform(spec.getGoodsTypeList(),
-            gt -> target.getGoodsCount(gt) > 0);
+
+        final List<GoodsType> goodsTypes = new ArrayList<>();
+        for (GoodsType gt : spec.getGoodsTypeList())
+            if (target.getGoodsCount(gt) > 0) goodsTypes.add(gt);
+
         final int dx = spec.getInteger(GameOptions.NATIVE_DEMANDS) + 1;
         final Game game = target.getGame();
         final Market market = target.getOwner().getMarket();

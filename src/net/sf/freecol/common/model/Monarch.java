@@ -340,10 +340,15 @@ public final class Monarch extends FreeColGameObject implements Named {
      */
     public List<Player> collectPotentialEnemies() {
         // Benjamin Franklin puts an end to the monarch's interference
-        return (player.hasAbility(Ability.IGNORE_EUROPEAN_WARS))
-            ? Collections.<Player>emptyList()
-            : transform(getGame().getLiveEuropeanPlayers(player),
-                        p -> p.isPotentialEnemy(player));
+        if (player.hasAbility(Ability.IGNORE_EUROPEAN_WARS))
+            return Collections.<Player>emptyList();
+
+        List<Player> result = new ArrayList<>();
+        for (Player p : getGame().getLiveEuropeanPlayers(player))
+            if (p.isPotentialEnemy(player))
+                result.add(p);
+
+        return result;
     }
 
     /**
@@ -354,8 +359,12 @@ public final class Monarch extends FreeColGameObject implements Named {
      * @return A list of potential friendly {@code Player}s.
      */
     public List<Player> collectPotentialFriends() {
-        return transform(getGame().getLiveEuropeanPlayers(player),
-                         p -> p.isPotentialFriend(player));
+        List<Player> result = new ArrayList<>();
+        for (Player p : getGame().getLiveEuropeanPlayers(player))
+            if (p.isPotentialFriend(player))
+                result.add(p);
+
+        return result;
     }
 
     /**

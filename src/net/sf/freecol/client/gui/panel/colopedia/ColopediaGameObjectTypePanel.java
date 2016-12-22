@@ -22,6 +22,7 @@ package net.sf.freecol.client.gui.panel.colopedia;
 import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.image.BufferedImage;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -254,13 +255,14 @@ public abstract class ColopediaGameObjectTypePanel<T extends FreeColSpecObjectTy
         try {
             doc.insertString(doc.getLength(), Messages.getName(key),
                              doc.getStyle("regular"));
-            List<JButton> requiredTypes
-                 = transform(spec.getTypesProviding(key, value), alwaysTrue(),
-                     t -> {
-                         JButton typeButton = getButton(t);
-                         typeButton.addActionListener(this);
-                         return typeButton;
-                     });
+
+            List<JButton> requiredTypes = new ArrayList<>();
+            for (FreeColSpecObjectType t : spec.getTypesProviding(key, value)) {
+                 JButton typeButton = getButton(t);
+                 typeButton.addActionListener(this);
+                 requiredTypes.add(typeButton);
+            }
+
             JButton rt = first(requiredTypes);
             if (rt != null) {
                 doc.insertString(doc.getLength(), " (",
