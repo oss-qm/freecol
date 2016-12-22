@@ -406,8 +406,10 @@ public final class TilePopup extends JPopupMenu {
         menuItem.setEnabled(enabled);
         menu.add(menuItem);
 
-        int lineCount = 1 + sum(unit.getUnits(),
-                                u -> addUnit(menu, u, true, true));
+        int lineCount = 1;
+        for (Unit u : unit.getUnits())
+            lineCount += addUnit(menu, u, true, true);
+
         boolean hasGoods = false;
         for (Goods goods: unit.getGoodsList()) {
             text = (indent ? "         " : "     ")

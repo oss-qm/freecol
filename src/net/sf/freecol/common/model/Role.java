@@ -238,9 +238,10 @@ public class Role extends BuildableType {
      * @return The price of the goods for this role.
      */
     public int getRequiredGoodsPrice(Market market) {
-        return sum(getRequiredGoods(),
-                   ag -> market.getBidPrice(ag.getType(),
-                                            ag.getAmount() * getMaximumCount()));
+        int result = 0;
+        for (AbstractGoods ag : getRequiredGoods())
+            result += market.getBidPrice(ag.getType(), ag.getAmount() * getMaximumCount());
+        return result;
     }
 
     /**

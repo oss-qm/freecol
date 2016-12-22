@@ -28,8 +28,6 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map.Entry;
 import java.util.Set;
-import java.util.function.Function;
-import java.util.function.ToIntFunction;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -1744,8 +1742,11 @@ public class Colony extends Settlement implements Nameable, TradeLocation {
      */
     public double getTotalDefencePower() {
         final CombatModel cm = getGame().getCombatModel();
-        return sumDouble(getTile().getUnits(), Unit::isDefensiveUnit,
-                u -> cm.getDefencePower(null, u));
+        double x = 0;
+        for (Unit u : getTile().getUnits())
+            if (u.isDefensiveUnit())
+                x += cm.getDefencePower(null, u);
+        return x;
     }
 
     /**
@@ -1865,10 +1866,13 @@ public class Colony extends Settlement implements Nameable, TradeLocation {
                 result += v;
             }
         } else { // Much guesswork
+            int cnt = 0;
+            for (Tile t : getTile().getSurroundingTiles(0, 1))
+                if (this == t.getOwningSettlement())
+                    cnt++;
             result = getDisplayUnitCount() * 1000
                     + 500 // Some useful goods?
-                    + 200 * count(getTile().getSurroundingTiles(0, 1),
-                    matchKey(this, Tile::getOwningSettlement));
+                    + 200 * cnt;
             Building stockade = getStockade();
             if (stockade != null) result *= stockade.getLevel();
         }

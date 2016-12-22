@@ -460,7 +460,8 @@ public abstract class Feature extends FreeColSpecObject
         hash += 31 * ((temporary) ? 1 : 0);
         // FIXME: is this safe?  It is an easy way to ignore
         // the order of scope elements.
-        hash += sum(getScopes(), s -> Utils.hashCode(s));
+        for (Scope s : getScopes())
+            hash += Utils.hashCode(s);
         return hash;
     }
 }
