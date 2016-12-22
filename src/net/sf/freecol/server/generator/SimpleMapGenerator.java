@@ -660,14 +660,21 @@ public class SimpleMapGenerator implements MapGenerator {
                                           int radius, List<Tile> tiles,
                                           LogBuilder lb) {
         final Tile center = territory.getCenterTile(map);
-        final Predicate<Tile> terrPred = t ->
-            territory.player.getClaimableTiles(t, radius).size()
-                >= (2 * radius + 1) * (2 * radius + 1) / 2;
-        final Comparator<Tile> comp
-            = Comparator.comparingInt(t -> t.getDistanceTo(center));
         // Choose a tile that is free and half the expected tile claims
         // can succeed, preventing capitals on small islands.
-        Tile t = first(transform(tiles, terrPred, Function.identity(), comp));
+        Tile t = null;
+        int best_dist = Integer.MAX_VALUE;
+        for (Tile walk : tiles) {
+            if (territory.player.getClaimableTiles(walk, radius).size()
+                    >= (2 * radius + 1) * (2 * radius + 1) / 2) {
+                int dist = walk.getDistanceTo(center);
+                if (dist < best_dist) {
+                    t = walk;
+                    best_dist = dist;
+                }
+            }
+        }
+
         if (t == null) return null;
 
         String name = (territory.region == null) ? "default region"
