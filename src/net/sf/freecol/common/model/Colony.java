@@ -28,8 +28,6 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map.Entry;
 import java.util.Set;
-import java.util.function.Function;
-import java.util.function.ToIntFunction;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -1156,10 +1154,12 @@ public class Colony extends Settlement implements Nameable, TradeLocation {
     public int priceGoodsForBuilding(List<AbstractGoods> required) {
         final Market market = getOwner().getMarket();
         // FIXME: magic number!
-        return sum(required,
-                ag -> (ag.getType().isStorable())
+        int x = 0;
+        for (AbstractGoods ag : required)
+            x += ((ag.getType().isStorable())
                         ? (market.getBidPrice(ag.getType(), ag.getAmount()) * 110)/100
                         : ag.getType().getPrice() * ag.getAmount());
+        return x;
     }
 
     /**
@@ -1737,8 +1737,11 @@ public class Colony extends Settlement implements Nameable, TradeLocation {
      */
     public double getTotalDefencePower() {
         final CombatModel cm = getGame().getCombatModel();
-        return sumDouble(getTile().getUnits(), Unit::isDefensiveUnit,
-                u -> cm.getDefencePower(null, u));
+        double x = 0;
+        for (Unit u : getTile().getUnits())
+            if (u.isDefensiveUnit())
+                x += cm.getDefencePower(null, u);
+        return x;
     }
 
     /**
@@ -1859,10 +1862,13 @@ public class Colony extends Settlement implements Nameable, TradeLocation {
                 result += v;
             }
         } else { // Much guesswork
+            int cnt = 0;
+            for (Tile t : getTile().getSurroundingTiles(0, 1))
+                if (this == t.getOwningSettlement())
+                    cnt++;
             result = getDisplayUnitCount() * 1000
                     + 500 // Some useful goods?
-                    + 200 * count(getTile().getSurroundingTiles(0, 1),
-                    matchKey(this, Tile::getOwningSettlement));
+                    + 200 * cnt;
             Building stockade = getStockade();
             if (stockade != null) result *= stockade.getLevel();
         }
@@ -2040,8 +2046,10 @@ public class Colony extends Settlement implements Nameable, TradeLocation {
      * @return an {@code int} value
      */
     public int getFoodProduction() {
-        return sum(getSpecification().getFoodGoodsTypeList(),
-                ft -> getTotalProductionOf(ft));
+        int x = 0;
+        for (GoodsType gt : getSpecification().getFoodGoodsTypeList())
+            x += getTotalProductionOf(gt);
+        return x;
     }
 
     /**
@@ -2129,13 +2137,18 @@ public class Colony extends Settlement implements Nameable, TradeLocation {
      * @return an {@code int} value
      */
     public int getAdjustedNetProductionOf(final GoodsType goodsType) {
-        final ToIntFunction<BuildQueue> consumes = q -> {
-            ProductionInfo pi = productionCache.getProductionInfo(q);
-            return (pi == null) ? 0
-                    : AbstractGoods.getCount(goodsType, pi.getConsumption());
-        };
-        return productionCache.getNetProductionOf(goodsType)
-                + sum(Stream.of(buildQueue, populationQueue), consumes);
+        ProductionInfo pi;
+        int x = productionCache.getNetProductionOf(goodsType);
+
+        pi = productionCache.getProductionInfo(buildQueue);
+        if (pi != null)
+            x += AbstractGoods.getCount(goodsType, pi.getConsumption());
+
+        pi = productionCache.getProductionInfo(populationQueue);
+        if (pi != null)
+            x += AbstractGoods.getCount(goodsType, pi.getConsumption());
+
+        return x;
     }
 
     /**
@@ -2663,7 +2676,10 @@ loop:   for (WorkLocation wl : getWorkLocationsForProducing(goodsType)) {
      */
     @Override
     public int getUnitCount() {
-        return sum(getCurrentWorkLocations(), UnitLocation::getUnitCount);
+        int x = 0;
+        for (WorkLocation wl : getCurrentWorkLocations())
+            x += wl.getUnitCount();
+        return x;
     }
 
     /**
@@ -2830,7 +2846,10 @@ loop:   for (WorkLocation wl : getWorkLocationsForProducing(goodsType)) {
      */
     @Override
     public int getUpkeep() {
-        return sum(getBuildings(), b -> b.getType().getUpkeep());
+        int x = 0;
+        for (Building b : getBuildings())
+            x += b.getType().getUpkeep();
+        return x;
     }
 
     /**
@@ -2838,8 +2857,10 @@ loop:   for (WorkLocation wl : getWorkLocationsForProducing(goodsType)) {
      */
     @Override
     public int getTotalProductionOf(GoodsType goodsType) {
-        return sum(getCurrentWorkLocations(),
-                wl -> wl.getTotalProductionOf(goodsType));
+        int x = 0;
+        for (WorkLocation wl : getCurrentWorkLocations())
+            x += wl.getTotalProductionOf(goodsType);
+        return x;
     }
 
     /**

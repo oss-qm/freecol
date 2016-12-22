@@ -1541,8 +1541,11 @@ public class Player extends FreeColGameObject implements Nameable {
      */
     public int calculateStrength(boolean naval) {
         final CombatModel cm = getGame().getCombatModel();
-        return (int)sumDouble(getUnits(), u -> u.isNaval() == naval,
-                              u -> cm.getOffencePower(u, null));
+        int result = 0;
+        for (Unit u : getUnits())
+            if (u.isNaval() == naval)
+                result += cm.getOffencePower(u, null);
+        return result;
     }
 
     /**
@@ -1961,7 +1964,7 @@ public class Player extends FreeColGameObject implements Nameable {
      */
     public int getUnitCount() {
         synchronized (this.units) {
-            return count(this.units);
+            return this.units.size();
         }
     }
 
@@ -2040,7 +2043,11 @@ public class Player extends FreeColGameObject implements Nameable {
      * @return The number of units.
      */
     public int getUnitCount(boolean naval) {
-        return count(getUnits(), u -> u.isNaval() == naval);
+        int x = 0;
+        for (Unit u : getUnits())
+            if (u.isNaval() == naval)
+                x++;
+        return x;
     }
 
     /**
@@ -2049,8 +2056,11 @@ public class Player extends FreeColGameObject implements Nameable {
      * @return The number of units
      */
     public int getNumberOfKingLandUnits() {
-        return count(getUnits(),
-                     u -> u.hasAbility(Ability.REF_UNIT) && !u.isNaval());
+        int x = 0;
+        for (Unit u : getUnits())
+            if (u.hasAbility(Ability.REF_UNIT) && !u.isNaval())
+                x++;
+        return x;
     }
 
     /**
@@ -3169,11 +3179,14 @@ public class Player extends FreeColGameObject implements Nameable {
                 return 0; // Claim abandoned or only by tile improvement
             }
         } // Else, native ownership
+
+        int p = 0;
+        for (GoodsType gt : spec.getGoodsTypeList())
+            if (gt != spec.getPrimaryFoodType())
+                p += tile.getPotentialProduction(gt, null);
         int price = spec.getInteger(GameOptions.LAND_PRICE_FACTOR)
             // Only consider specific food types, not the aggregation.
-            * sum(spec.getGoodsTypeList(),
-                  gt -> gt != spec.getPrimaryFoodType(),
-                  gt -> tile.getPotentialProduction(gt, null))
+            * p
             + 100;
         return (int)applyModifiers(price, getGame().getTurn(),
                                    Modifier.LAND_PAYMENT_MODIFIER);
@@ -3803,10 +3816,20 @@ public class Player extends FreeColGameObject implements Nameable {
     public int getMaximumFoodConsumption() {
         if (maximumFoodConsumption < 0) {
             final Specification spec = getSpecification();
-            maximumFoodConsumption = max(spec.getUnitTypeList(),
-                ut -> ut.isAvailableTo(this),
-                ut -> sum(spec.getFoodGoodsTypeList(),
-                          ft -> ut.getConsumptionOf(ft)));
+            final List<GoodsType> foodTypes = spec.getFoodGoodsTypeList();
+
+            maximumFoodConsumption = 0;
+
+            for (UnitType ut : spec.getUnitTypeList()) {
+                if (!ut.isAvailableTo(this)) continue;
+
+                int x = 0;
+                for (GoodsType ft : foodTypes)
+                    x += ut.getConsumptionOf(ft);
+
+                if (x > maximumFoodConsumption)
+                    maximumFoodConsumption = x;
+            }
         }
         return maximumFoodConsumption;
     }

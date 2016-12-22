@@ -217,7 +217,12 @@ public abstract class UnitLocation extends FreeColGameObject implements Location
      *     {@code Location}.
      */
     public int getTotalUnitCount() {
-        return sum(getUnits(), u -> 1 + u.getUnitCount());
+        int s = 0;
+        synchronized (this.units) {
+            for (Unit u : this.units)
+                s += 1 + u.getUnitCount();
+        }
+        return s;
     }
 
     /**
@@ -455,7 +460,12 @@ public abstract class UnitLocation extends FreeColGameObject implements Location
      * @return The sum of the space taken by the units in this location.
      */
     public int getSpaceTaken() {
-        return sum(getUnits(), Unit::getSpaceTaken);
+        int s = 0;
+        synchronized (this.units) {
+            for (Unit u : this.units)
+                s += u.getSpaceTaken();
+        }
+        return s;
     }
 
     /**

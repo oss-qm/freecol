@@ -296,8 +296,9 @@ public class Building extends WorkLocation
         } else {
             for (AbstractGoods output : getOutputs()) {
                 final GoodsType goodsType = output.getType();
-                float production = sum(getUnits(),
-                                       u -> getUnitProduction(u, goodsType));
+                float production = 0;
+                for (Unit u : getUnits())
+                    production += getUnitProduction(u, goodsType);
                 // Unattended production always applies for buildings!
                 production += getBaseProduction(null, goodsType, null);
                 production = applyModifiers(production, turn,
@@ -321,13 +322,19 @@ public class Building extends WorkLocation
             // certain amount of goods even when no input is available.
             // Factories have the EXPERTS_USE_CONNECTIONS ability.
             long minimumGoodsInput;
+
+            int matchUnits = 0;
+            UnitType expertType = getExpertUnitType();
+            for (Unit u : getUnits())
+                if (expertType == u.getType())
+                    matchUnits++;
+
             if (available < required
                 && hasAbility(Ability.EXPERTS_USE_CONNECTIONS)
                 && spec.getBoolean(GameOptions.EXPERTS_HAVE_CONNECTIONS)
                 && ((minimumGoodsInput = getType()
                         .getExpertWithConnectionsProduction()
-                        * count(getUnits(),
-                            matchKey(getExpertUnitType(), Unit::getType)))
+                        * matchUnits)
                     > available)) {
                 available = minimumGoodsInput;
             }
@@ -395,8 +402,10 @@ public class Building extends WorkLocation
      */
     @Override
     public int evaluateFor(Player player) {
-        return super.evaluateFor(player)
-            + sum(getType().getRequiredGoods(), ag -> ag.evaluateFor(player));
+        int total = super.evaluateFor(player);
+        for (AbstractGoods ag : getType().getRequiredGoods())
+            total += ag.evaluateFor(player);
+        return total;
     }
 
 
