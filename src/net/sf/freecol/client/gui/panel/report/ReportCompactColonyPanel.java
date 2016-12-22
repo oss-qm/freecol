@@ -24,6 +24,7 @@ import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Comparator;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -239,11 +240,11 @@ public final class ReportCompactColonyPanel extends ReportPanel
                         this.notWorking.add(u);
 
                 // Add work location suggestions.
-                forEachMapEntry(wl.getSuggestions(),
-                    e -> addSuggestion(((e.getKey() == null) ? this.want
-                            : this.improve),
+                for (Map.Entry<Unit, Suggestion> e : wl.getSuggestions().entrySet())
+                    addSuggestion(
+                        ((e.getKey() == null) ? this.want : this.improve),
                         spec.getExpertForProducing(e.getValue().goodsType),
-                        e.getValue()));
+                        e.getValue());
             }
 
             // Make a list of unit types that are not working at their
@@ -858,6 +859,13 @@ public final class ReportCompactColonyPanel extends ReportPanel
         return result;
     }
 
+    private static Comparator<Entry<GoodsType, Double>> goodsComparator =
+        new Comparator<Entry<GoodsType, Double>>() {
+            public int compare(Entry<GoodsType, Double> gt1, Entry<GoodsType, Double> gt2) {
+                double diff = gt2.getValue() - gt1.getValue(); // descending
+                return (diff == 0 ? 0 : (diff < 0 ? -1 : 1));
+            }};
+
     /**
      * Update several colonies.
      *
@@ -982,13 +990,16 @@ public final class ReportCompactColonyPanel extends ReportPanel
 
         // Field: The required goods rates.
         // Colour: cPlain
-        List<JLabel> labels = transform(mapEntriesByValue(rNeeded, descendingDoubleComparator),
-            alwaysTrue(),
-            e -> newLabel(String.format("%4.1f %s", e.getValue(),
-                                        Messages.getName(e.getKey())),
+        List<Entry<GoodsType, Double>> entries = new ArrayList<>(rNeeded.entrySet());
+        Collections.sort(entries, goodsComparator);
+
+        List<JLabel> labels = new ArrayList<>();
+        for (Entry<GoodsType, Double> e : entries)
+            labels.add(newLabel(
+                String.format("%4.1f %s", e.getValue(), Messages.getName(e.getKey())),
                 null, cPlain,
-                stpld("report.colony.making.summary")
-                    .addNamed("%goods%", e.getKey())));
+                stpld("report.colony.making.summary").addNamed("%goods%", e.getKey())
+            ));
 
         // Field: What is being trained (attached to previous)
         // Colour: cPlain.

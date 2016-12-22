@@ -1150,19 +1150,19 @@ public class AIColony extends AIObject implements PropertyChangeListener {
         }
 
         // Add raw materials for buildings.
-        forEach(map(flatten(colony.getCurrentWorkLocations(),
-                            wl -> !wl.getProductionInfo().hasMaximumProduction(),
-                            WorkLocation::getInputs),
-                    AbstractGoods::getType),
-            // FIXME: find better heuristic
-            gt -> required.incrementCount(gt, 100));
+        for (WorkLocation wl : colony.getCurrentWorkLocations()) {
+            if (wl.getProductionInfo().hasMaximumProduction())
+                continue;
+
+            for (AbstractGoods ag : wl.getInputs())
+                // FIXME: find better heuristic
+                required.incrementCount(ag.getType(), 100);
+        }
 
         // Add breedable goods
-        for (GoodsType gt : transform(spec.getGoodsTypeList(),
-                g -> (g.isBreedable()
-                    && colony.getGoodsCount(g) < g.getBreedingNumber()))) {
-            required.incrementCount(gt, gt.getBreedingNumber());
-        }
+        for (GoodsType gt : spec.getGoodsTypeList())
+            if (gt.isBreedable() && colony.getGoodsCount(gt) < gt.getBreedingNumber())
+                required.incrementCount(gt, gt.getBreedingNumber());
 
         // Add materials required to build military equipment,
         // but make sure there is a unit present that can use it.

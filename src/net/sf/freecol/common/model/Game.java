@@ -1190,8 +1190,9 @@ public class Game extends FreeColGameObject {
             if (fcgo.isDisposed()) disposed++;
         }
         stats.put("disposed", Long.toString(disposed));
-        forEachMapEntry(objStats,
-                e -> stats.put(e.getKey(), Long.toString(e.getValue())));
+
+        for (Entry<String, Long> e : objStats.entrySet())
+            stats.put(e.getKey(), Long.toString(e.getValue()));
 
         return stats;
     }

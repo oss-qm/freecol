@@ -26,7 +26,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
-import java.util.function.Predicate;
 import java.util.logging.Logger;
 
 import net.sf.freecol.common.model.Ability;
@@ -855,17 +854,16 @@ public class ColonyPlan {
     private void updatePlans(Map<GoodsType, Map<WorkLocation, Integer>> production) {
         workPlans.clear();
         // Do not make plans to produce into a full warehouse.
-        final Predicate<Entry<GoodsType, Map<WorkLocation, Integer>>> fullPred = (e) -> {
+        for (Entry<GoodsType, Map<WorkLocation, Integer>> e : production.entrySet()) {
             GoodsType g = e.getKey();
-            return !g.isStorable() || g.limitIgnored()
-                || colony.getGoodsCount(g) < colony.getWarehouseCapacity();
-        };
-        forEachMapEntry(production, fullPred, e -> {
+            if (!g.isStorable() || g.limitIgnored()
+                    || colony.getGoodsCount(g) < colony.getWarehouseCapacity()) {
                 for (WorkLocation wl : e.getValue().keySet()) {
                     if (!wl.canBeWorked() && !wl.canAutoProduce()) continue;
                     workPlans.add(new WorkLocationPlan(getAIMain(), wl, e.getKey()));
                 }
-            });
+            }
+        }
 
         // Now we have lots of plans, determine what goods to produce.
         updateProductionList(production);
