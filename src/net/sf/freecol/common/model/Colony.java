@@ -1615,12 +1615,20 @@ public class Colony extends Settlement implements Nameable, TradeLocation {
      * @return The best available defender type.
      */
     public UnitType getBestDefenderType() {
-        final Predicate<UnitType> defenderPred = ut ->
-                ut.getDefence() > 0
-                        && !ut.isNaval()
-                        && ut.isAvailableTo(getOwner());
-        return maximize(getSpecification().getUnitTypeList(), defenderPred,
-                UnitType.defenceComparator);
+        UnitType max_ut;
+        int max_def;
+
+        for (UnitType ut : getSpecification().getUnitTypeList()) {
+            int defence = ut.getDefence();
+            if (defence > 0 && !ut.isNaval() && ut.isAvailableTo(getOwner())) {
+                if (defence > max_def) {
+                    max_ut = ut;
+                    max_def = defence;
+                }
+            }
+        }
+
+        return max_ut;
     }
 
     /**
