@@ -865,8 +865,9 @@ public class ColonyPlan {
         // Filter out plans that can not use a unit.
         List<WorkLocationPlan> oldPlans = new ArrayList<>(workPlans);
         workPlans.clear();
-        workPlans.addAll(transform(oldPlans,
-                                   w -> w.getWorkLocation().canBeWorked()));
+        for (WorkLocationPlan wlp : oldPlans)
+            if (wlp.getWorkLocation().canBeWorked())
+                workPlans.add(wlp);
 
         // Sort the work plans by earliest presence in the produce
         // list, and then by amount.  If the type of goods produced is

@@ -30,8 +30,6 @@ import java.util.Map.Entry;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Set;
-import java.util.function.Function;
-import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 import javax.swing.ImageIcon;
@@ -236,9 +234,9 @@ public final class ReportCompactColonyPanel extends ReportPanel
                 }
 
                 // Check if the units are working.
-                this.notWorking.addAll(transform(wl.getUnits(),
-                                       u -> (u.getTeacher() == null
-                                           && u.getWorkType() == null)));
+                for (Unit u : wl.getUnits())
+                    if (u.getTeacher() == null && u.getWorkType() == null)
+                        this.notWorking.add(u);
 
                 // Add work location suggestions.
                 forEachMapEntry(wl.getSuggestions(),
@@ -250,13 +248,12 @@ public final class ReportCompactColonyPanel extends ReportPanel
 
             // Make a list of unit types that are not working at their
             // speciality, including the units just standing around.
-            final Predicate<Unit> couldWorkPred = u -> {
+            for (Unit u : this.notWorking) {
                 WorkLocation wl = u.getWorkLocation();
-                return wl != null && (wl.getWorkFor(u) == null
-                        || wl.getWorkFor(u) != u.getWorkType());
-            };
-            this.couldWork.addAll(transform(this.notWorking, couldWorkPred,
-                                            Unit::getType));
+                if (wl != null && (wl.getWorkFor(u) == null
+                        || wl.getWorkFor(u) != u.getWorkType()))
+                    this.couldWork.add(u.getType());
+            }
 
             this.build = colony.getCurrentlyBuilding();
             if (this.build == null) {
@@ -346,9 +343,6 @@ public final class ReportCompactColonyPanel extends ReportPanel
         }
     };
 
-    /** Predicate to select the goods to report on. */
-    private static final Predicate<GoodsType> reportGoodsPred = gt ->
-        gt.isStorable() && !gt.isTradeGoods();
     private static final String BUILDQUEUE = "buildQueue.";
     private static final String cAlarmKey = "color.report.colony.alarm";
     private static final String cWarnKey = "color.report.colony.warning";
@@ -399,9 +393,11 @@ public final class ReportCompactColonyPanel extends ReportPanel
 
         this.colonies.addAll(sort(continents.values(), firstColonyComparator));
 
-        this.goodsTypes.addAll(transform(spec.getGoodsTypeList(),
-                                         reportGoodsPred, Function.identity(),
-                                         GoodsType.goodsTypeComparator));
+        List<GoodsType> gtl = spec.getGoodsTypeList();
+        Collections.sort(gtl, GoodsType.goodsTypeComparator);
+        for (GoodsType gt : gtl)
+            if (gt.isStorable() && !gt.isTradeGoods())
+                this.goodsTypes.add(gt);
 
         loadResources();
         update();
@@ -938,9 +934,10 @@ public final class ReportCompactColonyPanel extends ReportPanel
         for (TileImprovementType ti : spec.getTileImprovementTypeList()) {
             if (ti.isNatural()) continue;
             tiles.clear();
-            tiles.addAll(transform(rTileSuggestions,
-                                   matchKey(ti, ts -> ts.tileImprovementType),
-                                   ts -> ts.tile, Collectors.toSet()));
+            for (TileImprovementSuggestion ts : rTileSuggestions)
+                if (ti == ts.tileImprovementType)
+                    tiles.add(ts.tile);
+
             reportPanel.add((tiles.isEmpty()) ? new JLabel()
                 : newLabel(Integer.toString(tiles.size()), null, cAlarm,
                            stpld("report.colony.tile." + ti.getSuffix()

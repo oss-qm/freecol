@@ -463,7 +463,7 @@ public final class SelectDestinationDialog extends FreeColDialog<Location>
 
         // Find all the player accessible settlements except the current one.
         for (Settlement s : player.getSettlements())
-            if (s != inSettlement && unitCanReach(unit, s))
+            if ((s != inSettlement) && unitCanReach(unit, s))
                 addDestination(s, unit.getTurnsToReach(s), unit, goodsTypes);
 
         // Find all other player accessible settlements.  Build a list
