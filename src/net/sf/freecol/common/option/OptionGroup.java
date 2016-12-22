@@ -178,7 +178,11 @@ public class OptionGroup extends AbstractOption<OptionGroup> {
      * @return True if there are any child {@code OptionGroup}s present.
      */
     public boolean hasOptionGroup() {
-        return any(options, o -> o instanceof OptionGroup);
+        for (Option o : this.options)
+            if (o instanceof OptionGroup)
+                return true;
+
+        return false;
     }
 
     /**

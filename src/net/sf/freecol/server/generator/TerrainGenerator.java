@@ -475,18 +475,21 @@ public class TerrainGenerator {
         final TileType hills = spec.getTileType("model.tile.hills");
         final TileType mountains = spec.getTileType("model.tile.mountains");
         Tile tile = null;
+outer:
         while ((tile = map.getRandomLandTile(random)) != null) {
             // Can not be high ground already
-            if (tile.getType() != hills && tile.getType() != mountains
-
+            if (tile.getType() != hills && tile.getType() != mountains) {
                 // Not too close to a mountain range as this would
                 // defeat the purpose of adding random hills
-                && none(tile.getSurroundingTiles(1, 3), t -> t.getType() == mountains)
+                for (Tile t : tile.getSurroundingTiles(1, 3))
+                    if (t.getType() == mountains) continue outer;
 
                 // Do not add hills too close to the ocean/lake, as
                 // this helps with good locations for building
                 // colonies on shore.
-                && none(tile.getSurroundingTiles(1, 1), t -> !t.isLand())) {
+                for (Tile t : tile.getSurroundingTiles(1, 1))
+                    if (!t.isLand()) continue outer;
+
                 return tile;
             }
         }
@@ -585,6 +588,13 @@ public class TerrainGenerator {
         return result;
     }
 
+    private static boolean isAllLand(List<Tile> tiles) {
+        for (Tile t : tiles)
+            if (!t.isLand())
+                return false;
+        return true;
+    }
+
     /**
      * Creates rivers on the given map. The number of rivers depends
      * on the map size.
@@ -611,7 +621,7 @@ public class TerrainGenerator {
                 if (!riverType.isTileTypeAllowed(tile.getType())) continue;
 
                 // check the river source/spring is not too close to the ocean
-                if (!all(tile.getSurroundingTiles(1, 2), Tile::isLand))
+                if (!isAllLand(tile.getSurroundingTiles(1, 2)))
                     continue;
 
                 if (riverMap.get(tile) == null) {

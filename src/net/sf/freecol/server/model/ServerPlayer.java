@@ -617,7 +617,11 @@ public class ServerPlayer extends Player implements TurnTaker {
 
         // Surrender if all rebels have a stronger land army
         final double power = calculateStrength(false);
-        return all(getRebels(), r -> r.calculateStrength(false) > power);
+
+        for (Player r : getRebels())
+            if (!(r.calculateStrength(false) > power))
+                return false;
+        return true;
     }
 
     /**

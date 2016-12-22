@@ -386,9 +386,14 @@ public class UnitTest extends FreeColTestCase {
             if (u == soldier) fail("Unit building colony still in tile");
         }
 
-        assertTrue("Soldier should be in a work location in the colony",
-                   any(colony.getCurrentWorkLocations(),
-                       wl -> wl.contains(soldier)));
+        boolean found = false;
+        for (WorkLocation wl : colony.getCurrentWorkLocations()) {
+            if (wl.contains(soldier)) {
+                found = true;
+                break;
+            }
+        }
+        assertTrue("Soldier should be in a work location in the colony", found);
         WorkLocation wl = soldier.getWorkLocation();
         assertNotNull("Soldier should be in a work location in the colony", wl);
         assertFalse("Soldier should not be working in central tile",

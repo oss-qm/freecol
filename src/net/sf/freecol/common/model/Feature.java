@@ -200,8 +200,13 @@ public abstract class Feature extends FreeColSpecObject
      *     applicable to the object.
      */
     public boolean appliesTo(final FreeColSpecObjectType objectType) {
-        return (!hasScope()) ? true
-            : any(this.scopes, s -> s.appliesTo(objectType));
+        if (!hasScope()) return true;
+
+        for (Scope s : this.scopes)
+            if (s.appliesTo(objectType))
+                return true;
+
+        return false;
     }
 
     /**
@@ -435,13 +440,19 @@ public abstract class Feature extends FreeColSpecObject
             } else if (lastTurn != feature.lastTurn) {
                 return false;
             }
-            List<Scope> tScopes = getScopes();
-            List<Scope> fScopes = feature.getScopes();
-            if (tScopes.size() != fScopes.size()
-                // Not very efficient, but we do not expect many scopes
-                || any(this.scopes, s -> !feature.scopes.contains(s))
-                || any(feature.scopes, s -> !this.scopes.contains(s)))
-                return false;
+
+            if (this.scopes == null || feature.scopes == null)
+                return this.scopes == feature.scopes;
+
+            if (this.scopes.size() != feature.scopes.size()) return false;
+
+            // Not very efficient, but we do not expect many scopes
+            for (Scope s : this.scopes)
+                if (!feature.scopes.contains(s)) return false;
+
+            for (Scope s : feature.scopes)
+                if (!this.scopes.contains(s)) return false;
+
             return true;
         }
         return false;

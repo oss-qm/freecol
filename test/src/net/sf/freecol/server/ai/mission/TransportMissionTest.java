@@ -256,7 +256,7 @@ public class TransportMissionTest extends FreeColTestCase {
         TransportMission mission = new TransportMission(aiMain, aiUnit);
 
         assertTrue("Setup error, player should not have colonies",
-                   none(dutch.getColonies()));
+                   dutch.getColonies().size() == 0);
 
         // Exercise
         Location dest = mission.getTarget();
@@ -270,7 +270,7 @@ public class TransportMissionTest extends FreeColTestCase {
         FreeColTestUtils.ColonyBuilder builder = FreeColTestUtils.getColonyBuilder();
         builder.colonyTile(colonyTile).initialColonists(1).player(dutch).build();
         assertTrue("Player should now have a colony",
-                   any(dutch.getColonies()));
+                   dutch.getColonies().size() > 0);
         mission = new TransportMission(aiMain, aiUnit);
 
         // Exercise

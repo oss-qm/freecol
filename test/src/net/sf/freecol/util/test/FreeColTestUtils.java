@@ -89,12 +89,16 @@ public class FreeColTestUtils {
         }
 
         public ColonyBuilder player(Player player) {
-            if (player == null
-                || none(game.getPlayers(), matchKey(player))) {
-                throw new IllegalArgumentException("Player not in game");
+            if (player != null) {
+                for (Player p : game.getPlayers()) {
+                    if (p == player) {
+                        this.player = player;
+                        return this;
+                    }
+                }
             }
-            this.player = player;
-            return this;
+
+            throw new IllegalArgumentException("Player not in game");
         }
 
         public ColonyBuilder initialColonists(int colonists) {

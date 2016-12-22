@@ -321,6 +321,13 @@ public class SimpleMapGenerator implements MapGenerator {
         return !newSettlements.isEmpty();
     }
 
+    private static boolean anyNear(List<Tile> tiles, Tile tile, int radius) {
+        for (Tile walk : tiles)
+            if (walk.getDistanceTo(tile) < radius)
+                return true;
+        return false;
+    }
+
     /**
      * Make the native settlements, at least a capital for every
      * nation and random numbers of other settlements.
@@ -416,7 +423,7 @@ public class SimpleMapGenerator implements MapGenerator {
         for (Tile tile : allTiles) {
             if (!tile.isPolar()
                 && suitableForNativeSettlement(tile)
-                && none(settlementTiles, t -> t.getDistanceTo(tile) < minDistance))
+                && (!anyNear(settlementTiles, tile, minDistance)))
                 settlementTiles.add(tile);
         }
         randomShuffle(logger, "Settlement tiles", settlementTiles, random);

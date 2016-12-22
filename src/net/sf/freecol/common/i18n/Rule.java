@@ -61,8 +61,14 @@ public class Rule {
      * @return True if the number matches this rule.
      */
     public boolean matches(double number) {
-        return any(conditions,
-                   andConditions -> all(andConditions, r -> r.matches(number)));
+        for (List<Relation> cond : conditions) {
+loop:
+            for (Relation r : cond) {
+                if (!r.matches(number)) continue loop;
+            }
+            return true;
+        }
+        return false;
     }
 
     /**
