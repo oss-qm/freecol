@@ -298,9 +298,10 @@ public class NativeAIPlayer extends MissionAIPlayer {
                     bonus = (float)tension.getLevel().ordinal()
                         - Tension.Level.CONTENT.ordinal();
                 }
-                value += sumDouble(t.getUnitList(),
-                                   u -> cm.getOffencePower(u, is) > threshold,
-                                   u -> cm.getOffencePower(u, is) + bonus);
+                for (Unit u : t.getUnitList()) {
+                    double pwr = cm.getOffencePower(u, is);
+                    if (pwr > threshold) value += pwr + bonus;
+                }
                 if (value > 0.0) threats.put(t, value);
             }
         }

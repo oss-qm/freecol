@@ -409,7 +409,10 @@ public class IndianSettlement extends Settlement implements TradeLocation {
      * @return The number of wanted goods.
      */
     public int getWantedGoodsCount() {
-        return count(this.wantedGoods, isNotNull());
+        int x = 0;
+        for (GoodsType gt : this.wantedGoods)
+            if (gt != null) x++;
+        return x;
     }
 
     /**
@@ -816,10 +819,12 @@ public class IndianSettlement extends Settlement implements TradeLocation {
             unitType, spec.getMilitaryRoles());
 
         if (type.getMilitary()) { // Retain enough goods to fully arm
-            return sum(getOwnedUnitList(),
-                       u -> !militaryRoles.contains(u.getRole()),
-                       u -> AbstractGoods.getCount(type,
-                           u.getGoodsDifference(first(militaryRoles), 1)));
+            int result = 0;
+            for (Unit u : getOwnedUnitList())
+                if (!militaryRoles.contains(u.getRole()))
+                    result += AbstractGoods.getCount(type,
+                           u.getGoodsDifference(first(militaryRoles), 1));
+            return result;
         }
 
         int consumption = getConsumptionOf(type);
@@ -999,11 +1004,14 @@ public class IndianSettlement extends Settlement implements TradeLocation {
      *         be produced in one turn.
      */
     public int getMaximumProduction(GoodsType goodsType) {
-        return sum(getTile().getSurroundingTiles(0, getRadius()),
-            t -> t.getOwningSettlement() == null
-                || t.getOwningSettlement() == this,
-            // FIXME: make unitType brave
-            t -> t.getPotentialProduction(goodsType, null));
+        int result = 0;
+        for (Tile t : getTile().getSurroundingTiles(0, getRadius())) {
+            if (t.getOwningSettlement() == null || t.getOwningSettlement() == this)
+                // FIXME: make unitType brave
+                result += t.getPotentialProduction(goodsType, null);
+
+        }
+        return result;
     }
 
 

@@ -472,7 +472,8 @@ public class Cargo {
         ret += (getMode().isCollection()) ? getTransportable().getSpaceTaken()
             : -getTransportable().getSpaceTaken();
         if (hasWrapped()) {
-            ret += sum(wrapped, Cargo::getNewSpace);
+            for (Cargo c : wrapped)
+                ret += c.getNewSpace();
         }
         return ret;
     }

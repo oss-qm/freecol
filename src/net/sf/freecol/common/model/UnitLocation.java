@@ -168,7 +168,7 @@ public abstract class UnitLocation extends FreeColGameObject implements Location
     }
 
     // Some useful utilities, marked final as they will work as long
-    // as working implementations of getUnits/List(), getUnitCount(),
+    // as working implementations of getUnitList(), getUnitCount(),
     // getUnitCapacity() and getSettlement() are provided.
 
     /**
@@ -217,7 +217,12 @@ public abstract class UnitLocation extends FreeColGameObject implements Location
      *     {@code Location}.
      */
     public int getTotalUnitCount() {
-        return sum(getUnitList(), u -> 1 + u.getUnitCount());
+        int s = 0;
+        synchronized (this.units) {
+            for (Unit u : this.units)
+                s += 1 + u.getUnitCount();
+        }
+        return s;
     }
 
     /**
@@ -455,7 +460,12 @@ public abstract class UnitLocation extends FreeColGameObject implements Location
      * @return The sum of the space taken by the units in this location.
      */
     public int getSpaceTaken() {
-        return sum(getUnitList(), Unit::getSpaceTaken);
+        int s = 0;
+        synchronized (this.units) {
+            for (Unit u : this.units)
+                s += u.getSpaceTaken();
+        }
+        return s;
     }
 
     /**
@@ -550,7 +560,7 @@ public abstract class UnitLocation extends FreeColGameObject implements Location
         super.writeChildren(xw);
 
         synchronized (this.units) {
-            // FIXME: Do *not* use getUnits/List here, because Colony lies!
+            // FIXME: Do *not* use getUnitList here, because Colony lies!
             for (Unit unit : this.units) {
                 if (unit.getLocation() != this) {
                     logger.warning("UnitLocation contains unit " + unit

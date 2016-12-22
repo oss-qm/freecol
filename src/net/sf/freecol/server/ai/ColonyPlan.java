@@ -501,7 +501,9 @@ public class ColonyPlan {
         List<GoodsType> rawMaterials = new ArrayList<>(rawLuxuryGoodsTypes);
         rawMaterials.addAll(otherRawGoodsTypes);
         for (GoodsType g : rawMaterials) {
-            int value = sum(production.get(g).entrySet(), Entry::getValue);
+            int value = 0;
+            for (Entry<WorkLocation,Integer> e : production.get(g).entrySet())
+                value += e.getValue();
             if (value <= LOW_PRODUCTION_THRESHOLD) {
                 production.remove(g);
                 continue;
@@ -819,15 +821,16 @@ public class ColonyPlan {
 
         // Weight by lower required goods.
         for (BuildPlan bp : buildPlans) {
-            int difficulty = sum(bp.type.getRequiredGoods(),
-                ag -> ag.getAmount() > colony.getGoodsCount(ag.getType()),
-                ag -> {
+            int difficulty = 0;
+            for (AbstractGoods ag : bp.type.getRequiredGoods()) {
+                if (ag.getAmount() > colony.getGoodsCount(ag.getType())) {
                     final GoodsType type = ag.getType();
-                    return (ag.getAmount() - colony.getGoodsCount(type))
+                    difficulty += (ag.getAmount() - colony.getGoodsCount(type))
                     // Penalize building with type that can not be
                     // made locally.
                         * ((produce.contains(type.getInputType())) ? 1 : 5);
-                });
+                }
+            }
             bp.difficulty = Math.max(1.0f, Math.sqrt((double)difficulty));
         }
 
@@ -1388,8 +1391,11 @@ public class ColonyPlan {
                 // what is needed for a building--- e.g. prevent
                 // musket production from hogging the tools.
                 GoodsType raw = goodsType.getInputType();
-                int rawNeeded = sum(buildGoods, ag -> ag.getType() == raw,
-                                    AbstractGoods::getAmount);
+                int rawNeeded = 0;
+                for (AbstractGoods ag : buildGoods)
+                    if (ag.getType() == raw)
+                        rawNeeded += ag.getAmount();
+
                 if (raw == null
                     || col.getAdjustedNetProductionOf(raw) >= 0
                     || (((col.getGoodsCount(raw) - rawNeeded)

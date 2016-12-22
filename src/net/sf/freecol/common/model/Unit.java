@@ -3427,8 +3427,11 @@ public class Unit extends GoodsLocation
      * @return The number of cargo slots occupied by units.
      */
     public int getUnitSpaceTaken() {
-        return (canCarryUnits()) ? sum(getUnitList(), Unit::getSpaceTaken)
-            : 0;
+        if (!canCarryUnits()) return 0;
+        int total = 0;
+        for (Unit u : getUnitList())
+            total += u.getSpaceTaken();
+        return total;
     }
 
     /**
