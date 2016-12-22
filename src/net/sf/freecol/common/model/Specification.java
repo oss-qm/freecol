@@ -32,7 +32,6 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.function.Function;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -1518,8 +1517,11 @@ public final class Specification {
      * @return A list of {@code UnitType}s allowed for the REF.
      */
     public List<UnitType> getREFUnitTypes(boolean naval) {
-        return transform(getUnitTypesWithAbility(Ability.REF_UNIT),
-                         matchKey(naval, UnitType::isNaval));
+        List<UnitType> result = new ArrayList<>();
+        for (UnitType ut : getUnitTypesWithAbility(Ability.REF_UNIT))
+            if (ut.isNaval() == naval)
+                result.add(ut);
+        return result;
     }
 
     /**
@@ -1656,9 +1658,12 @@ public final class Specification {
      */
     public List<Role> getMilitaryRoles() {
         if (this.militaryRoles == null) {
-            this.militaryRoles = Collections.<Role>unmodifiableList(
-                transform(this.roles, Role::isOffensive, Function.identity(),
-                          Role.militaryComparator));
+            List<Role> result = new ArrayList<>();
+            for (Role r : this.roles)
+                if (r.isOffensive())
+                    result.add(r);
+            Collections.sort(result, Role.militaryComparator);
+            this.militaryRoles = Collections.<Role>unmodifiableList(result);
         }
         return this.militaryRoles;
     }
@@ -1716,10 +1721,15 @@ public final class Specification {
      */
     public List<OptionGroup> getDifficultyLevels() {
         OptionGroup group = allOptionGroups.get(DIFFICULTY_LEVELS);
-        Stream<Option> stream = (group == null) ? Stream.<Option>empty()
-            : group.getOptions().stream();
-        return transform(stream, (Option o) -> o instanceof OptionGroup,
-                         o -> (OptionGroup)o);
+        if (group == null)
+            return Collections.<OptionGroup>emptyList();
+
+        List<OptionGroup> result = new ArrayList<>();
+        for (Option o : group.getOptions())
+            if (o instanceof OptionGroup)
+                result.add((OptionGroup)o);
+
+        return result;
     }
 
     /**
@@ -1918,10 +1928,12 @@ public final class Specification {
      */
     public List<FreeColSpecObjectType> getTypesProviding(String id,
                                                          boolean value) {
-        return transform(getAbilities(id),
-                         a -> a.getValue() == value
-                             && a.getSource() instanceof FreeColSpecObjectType,
-                         a -> (FreeColSpecObjectType)a.getSource());
+        List<FreeColSpecObjectType> result = new ArrayList<>();
+        for (Ability a : getAbilities(id))
+            if (a.getValue() == value
+                     && a.getSource() instanceof FreeColSpecObjectType)
+                result.add((FreeColSpecObjectType)a.getSource());
+        return result;
     }
 
     /**
@@ -1936,10 +1948,13 @@ public final class Specification {
     public <T extends FreeColSpecObjectType> List<T>
                       getTypesWithAbility(Class<T> resultType,
                                           String... abilities) {
-        return transform(allTypes.values(),
-                         type -> resultType.isInstance(type)
-                             && type.hasAnyAbilities(abilities),
-                         type -> resultType.cast(type));
+        List<T> result = new ArrayList<>();
+
+        for (FreeColSpecObjectType type : allTypes.values())
+            if (resultType.isInstance(type) && type.hasAnyAbility(abilities))
+                result.add(resultType.cast(type));
+
+        return result;
     }
 
     /**
@@ -1954,10 +1969,13 @@ public final class Specification {
     public <T extends FreeColSpecObjectType> List<T>
                       getTypesWithoutAbility(Class<T> resultType,
                                              String... abilities) {
-        return transform(allTypes.values(),
-                         type -> resultType.isInstance(type)
-                             && !type.hasAnyAbility(abilities),
-                         type -> resultType.cast(type));
+        List<T> result = new ArrayList<>();
+
+        for (FreeColSpecObjectType type : allTypes.values())
+            if (resultType.isInstance(type) && !type.hasAnyAbility(abilities))
+                result.add(resultType.cast(type));
+
+        return result;
     }
 
 

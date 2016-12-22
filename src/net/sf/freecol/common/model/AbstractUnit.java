@@ -19,6 +19,7 @@
 
 package net.sf.freecol.common.model;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.xml.stream.XMLStreamException;
@@ -194,8 +195,11 @@ public class AbstractUnit extends FreeColObject {
      * @return A list of {@code AbstractUnit}s.
      */
     public static List<AbstractUnit> deepCopy(List<AbstractUnit> units) {
-        return transform(units, alwaysTrue(), au ->
-                new AbstractUnit(au.getId(), au.getRoleId(), au.getNumber()));
+        // FIXME: using clone() and generic method would be more elegant
+        List<AbstractUnit> result = new ArrayList<>();
+        for (AbstractUnit au : units)
+            result.add(new AbstractUnit(au.getId(), au.getRoleId(), au.getNumber()));
+        return result;
     }
 
     /**

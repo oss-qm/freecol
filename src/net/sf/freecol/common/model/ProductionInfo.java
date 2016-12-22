@@ -21,7 +21,6 @@ package net.sf.freecol.common.model;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.function.Function;
 
 import static net.sf.freecol.common.util.CollectionUtils.*;
 
@@ -91,16 +90,21 @@ public class ProductionInfo {
      * @return A list of {@code AbstractGoods}.
      */
     public List<AbstractGoods> getProductionDeficit() {
-        final Function<AbstractGoods, AbstractGoods> mapper = ag -> {
+        if (this.maximumProduction.isEmpty())
+            return WorkLocation.EMPTY_LIST;
+
+        List<AbstractGoods> result = new ArrayList<AbstractGoods>();
+        for (AbstractGoods ag : this.production) {
             AbstractGoods agMax = AbstractGoods.findByType(this.maximumProduction, ag);
+
             int amount = (agMax == null) ? 0
                 : agMax.getAmount() - ag.getAmount();
-            return (amount <= 0) ? null
-                : new AbstractGoods(ag.getType(), amount);
-        };
-        return (this.maximumProduction.isEmpty()) ? WorkLocation.EMPTY_LIST
-            : transform(this.production, alwaysTrue(), mapper,
-                        toListNoNulls());
+
+            if (amount > 0)
+                result.add(new AbstractGoods(ag.getType(), amount));
+        }
+
+        return result;
     }
 
     /**
