@@ -28,9 +28,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Random;
 import java.util.Set;
-import java.util.function.Function;
 import java.util.logging.Logger;
-import java.util.stream.Collectors;
 
 import net.sf.freecol.common.debug.FreeColDebugger;
 import net.sf.freecol.common.i18n.Messages;
@@ -304,9 +302,15 @@ public class SimpleMapGenerator implements MapGenerator {
                 }
             }
 
-            sis.setWantedGoods(transform(is.getWantedGoods(), alwaysTrue(),
-                    ig -> (ig == null) ? null : spec.getGoodsType(ig.getId()),
-                    toListNoNulls()));
+            List<GoodsType> wanted = new ArrayList<>();
+            for (GoodsType ig : is.getWantedGoods())
+                if (ig != null) {
+                    GoodsType gt = spec.getGoodsType(ig.getId());
+                    if (gt != null)
+                        wanted.add(gt);
+                }
+
+            sis.setWantedGoods(wanted);
 
             owner.addSettlement(sis);
             newSettlements.add(sis);
@@ -490,9 +494,15 @@ public class SimpleMapGenerator implements MapGenerator {
         HashMap<UnitType, List<IndianSettlement>> skills = new HashMap<>();
         randomShuffle(logger, "Settlements", settlements, random);
         for (IndianSettlement is : settlements) {
-            List<Tile> tiles = transform(is.getOwnedTiles(),
-                t -> any(t.getSurroundingTiles(1, 1),
-                         isNull(Tile::getOwningSettlement)));
+            List<Tile> tiles = new ArrayList<>();
+            for (Tile owned : is.getOwnedTiles()) {
+                for (Tile neigh : owned.getSurroundingTiles(1, 1)) {
+                    if (neigh.getOwningSettlement() == null) {
+                        tiles.add(owned);
+                        break;
+                    }
+                }
+            }
             randomShuffle(logger, "Settlement tiles", tiles, random);
             int minGrow = is.getType().getMinimumGrowth();
             int maxGrow = is.getType().getMaximumGrowth();
@@ -738,10 +748,10 @@ public class SimpleMapGenerator implements MapGenerator {
                                               NationType nationType) {
         List<RandomChoice<UnitType>> skills
             = ((IndianNationType)nationType).getSkills();
-        java.util.Map<GoodsType, Integer> scale
-            = transform(skills, alwaysTrue(), Function.identity(),
-                Collectors.toMap(rc -> rc.getObject().getExpertProduction(),
-                                 rc -> 1));
+
+        java.util.Map<GoodsType, Integer> scale = new HashMap<GoodsType, Integer>();
+        for (RandomChoice<UnitType> rc : skills)
+            scale.put(rc.getObject().getExpertProduction(), 1);
 
         for (Tile t: tile.getSurroundingTiles(1)) {
             forEachMapEntry(scale, e -> {
@@ -751,14 +761,15 @@ public class SimpleMapGenerator implements MapGenerator {
                 });
         }
 
-        final Function<RandomChoice<UnitType>, RandomChoice<UnitType>> mapper
-            = rc -> {
-                UnitType unitType = rc.getObject();
-                return new RandomChoice<>(unitType, rc.getProbability()
-                    * scale.get(unitType.getExpertProduction()));
-            };
+        List<RandomChoice<UnitType>> choices = new ArrayList<>();
+        for (RandomChoice<UnitType> rc : skills) {
+            UnitType unitType = rc.getObject();
+            choices.add(new RandomChoice<>(unitType, rc.getProbability()
+                    * scale.get(unitType.getExpertProduction())));
+        };
+
         UnitType skill = RandomChoice.getWeightedRandom(null, null,
-            transform(skills, alwaysTrue(), mapper), random);
+            choices, random);
         final Specification spec = map.getSpecification();
         return (skill != null) ? skill
             : getRandomMember(logger, "Scout",

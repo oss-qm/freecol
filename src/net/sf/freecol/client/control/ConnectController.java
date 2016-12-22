@@ -22,6 +22,7 @@ package net.sf.freecol.client.control;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -491,12 +492,14 @@ public final class ConnectController extends FreeColClientHolder {
             List<String> names = fcc.getVacantPlayerNames();
             if (names.isEmpty()) return false;
             if (names.contains(name)) break; // Already there, use it
-            String choice = getGUI().getChoice(null,
-                Messages.message("client.choicePlayer"), "cancel",
-                transform(names, alwaysTrue(), n ->
-                    new ChoiceItem<>(Messages.message(StringTemplate
+            List<ChoiceItem<String>> ch = new ArrayList<>();
+            for (String n : names)
+                ch.add(new ChoiceItem<>(Messages.message(StringTemplate
                             .template("countryName")
-                            .add("%nation%", Messages.nameKey(n))), n)));
+                            .add("%nation%", Messages.nameKey(n))), n));
+            String choice = getGUI().getChoice(null,
+                Messages.message("client.choicePlayer"), "cancel", ch);
+
             if (choice == null) return false; // User cancelled
             name = Messages.getRulerName(choice);
             break;

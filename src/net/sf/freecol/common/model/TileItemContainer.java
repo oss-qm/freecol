@@ -272,12 +272,14 @@ public class TileItemContainer extends FreeColGameObject {
      * @return A list of {@code TileImprovement}s.
      */
     private List<TileImprovement> getImprovements(boolean completedOnly) {
+        List<TileImprovement> result = new ArrayList<>();
         synchronized (tileItems) {
-            return transform(tileItems,
-                             ti -> ti instanceof TileImprovement
-                                && (!completedOnly || ((TileImprovement)ti).isComplete()),
-                             ti -> (TileImprovement)ti);
+            for (TileItem ti : this.tileItems)
+                if (ti instanceof TileImprovement
+                        && (!completedOnly || ((TileImprovement)ti).isComplete()))
+                    result.add((TileImprovement)ti);
         }
+        return result;
     }
 
     /**

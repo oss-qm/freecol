@@ -21,9 +21,9 @@ package net.sf.freecol.common.networking;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
-import java.util.function.Function;
-import java.util.stream.Collectors;
+import java.util.Map;
 
 import net.sf.freecol.common.model.FoundingFather;
 import net.sf.freecol.common.model.FoundingFather.FoundingFatherType;
@@ -70,9 +70,13 @@ public class ChooseFoundingFatherMessage extends AttributeMessage {
         super(TAG, FOUNDING_FATHER_TAG, getStringAttribute(element, FOUNDING_FATHER_TAG));
 
         final Specification spec = game.getSpecification();
-        setFatherAttributes(transform(FoundingFatherType.allKeys,
-                k -> element.hasAttribute(k),
-                k -> spec.getFoundingFather(getStringAttribute(element, k))));
+
+        List<FoundingFather> ffl = new ArrayList<>();
+        for (String k : FoundingFatherType.allKeys)
+            if (element.hasAttribute(k))
+                ffl.add(spec.getFoundingFather(getStringAttribute(element, k)));
+
+        setFatherAttributes(ffl);
     }
 
 
@@ -82,10 +86,11 @@ public class ChooseFoundingFatherMessage extends AttributeMessage {
      * @param fathers A list of {@code FoundingFather}.
      */
     private void setFatherAttributes(List<FoundingFather> fathers) {
-        setStringAttributes(transform(fathers, alwaysTrue(),
-                Function.identity(),
-                Collectors.toMap(ff -> ff.getType().getKey(),
-                                 FoundingFather::getId)));
+        Map<String, String> ffm = new HashMap<String, String>();
+        for (FoundingFather ff : fathers)
+            ffm.put(ff.getType().getKey(), ff.getId());
+
+        setStringAttributes(ffm);
     }
 
 
@@ -122,8 +127,13 @@ public class ChooseFoundingFatherMessage extends AttributeMessage {
      */
     public final List<FoundingFather> getFathers(Game game) {
         final Specification spec = game.getSpecification();
-        return transform(FoundingFatherType.allKeys, tid -> hasAttribute(tid),
-                         tid -> spec.getFoundingFather(getStringAttribute(tid)));
+
+        List<FoundingFather> ffl = new ArrayList<>();
+        for (String id : FoundingFatherType.allKeys)
+            if (hasAttribute(id))
+                ffl.add(spec.getFoundingFather(getStringAttribute(id)));
+
+        return ffl;
     }
 
 

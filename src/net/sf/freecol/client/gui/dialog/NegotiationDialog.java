@@ -62,6 +62,7 @@ import net.sf.freecol.common.model.Goods;
 import net.sf.freecol.common.model.GoodsContainer;
 import net.sf.freecol.common.model.GoodsLocation;
 import net.sf.freecol.common.model.GoodsTradeItem;
+import net.sf.freecol.common.model.GoodsType;
 import net.sf.freecol.common.model.InciteTradeItem;
 import net.sf.freecol.common.model.Market;
 import net.sf.freecol.common.model.NationSummary;
@@ -1051,8 +1052,10 @@ public final class NegotiationDialog extends FreeColDialog<DiplomaticTrade> {
     private List<Goods> getAnyGoods() {
         final Game game = getGame();
         final Specification spec = getSpecification();
-        return transform(spec.getStorableGoodsTypeList(), alwaysTrue(),
-                gt -> new Goods(game, null, gt, GoodsContainer.CARGO_SIZE));
+        List<Goods> result = new ArrayList<>();
+        for (GoodsType gt : spec.getStorableGoodsTypeList())
+            result.add(new Goods(game, null, gt, GoodsContainer.CARGO_SIZE));
+        return result;
     }
 
     /**

@@ -20,12 +20,11 @@
 package net.sf.freecol.server.model;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Random;
 import java.util.Set;
-import java.util.function.Function;
 import java.util.logging.Logger;
-import java.util.stream.Collectors;
 
 import net.sf.freecol.common.i18n.Messages;
 import net.sf.freecol.common.model.Ability;
@@ -351,10 +350,11 @@ public class ServerColony extends Colony implements ServerModelObject {
         final ServerPlayer oldOwner = (ServerPlayer)getOwner();
         final Tile tile = getTile();
         final Set<Tile> owned = getOwnedTiles();
-        final Set<Tile> unseen
-            = transform(tile.getSurroundingTiles(1, getLineOfSight()),
-                        t -> !newOwner.hasExplored(t) || !newOwner.canSee(t),
-                        Function.identity(), Collectors.toSet());
+
+        Set<Tile> unseen = new HashSet<>();
+        for (Tile t : tile.getSurroundingTiles(1, getLineOfSight()))
+            if (!newOwner.hasExplored(t) || !newOwner.canSee(t))
+                unseen.add(t);
 
         for (Tile t : owned) t.cacheUnseen(newOwner);//+til
 

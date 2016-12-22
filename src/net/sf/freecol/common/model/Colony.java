@@ -965,8 +965,11 @@ public class Colony extends Settlement implements Nameable, TradeLocation {
      * @return A list of buildable {@code UnitType}s.
      */
     public List<UnitType> getBuildableUnits() {
-        return transform(getSpecification().getUnitTypeList(),
-                ut -> ut.needsGoodsToBuild() && canBuild(ut));
+        List<UnitType> result = new ArrayList<>();
+        for (UnitType ut : getSpecification().getUnitTypeList())
+            if (ut.needsGoodsToBuild() && canBuild(ut))
+                result.add(ut);
+        return result;
     }
 
     /**
@@ -1187,10 +1190,12 @@ public class Colony extends Settlement implements Nameable, TradeLocation {
      * @return The map to completion.
      */
     public List<AbstractGoods> getRequiredGoods(BuildableType type) {
-        return transform(type.getRequiredGoods(),
-                ag -> ag.getAmount() > getGoodsCount(ag.getType()),
-                ag -> new AbstractGoods(ag.getType(),
+        List<AbstractGoods> result = new ArrayList<>();
+        for (AbstractGoods ag : type.getRequiredGoods())
+            if (ag.getAmount() > getGoodsCount(ag.getType()))
+                result.add(new AbstractGoods(ag.getType(),
                         ag.getAmount() - getGoodsCount(ag.getType())));
+        return result;
     }
 
     /**
@@ -1792,7 +1797,13 @@ public class Colony extends Settlement implements Nameable, TradeLocation {
      * @return A list of burnable buildings.
      */
     public List<Building> getBurnableBuildings() {
-        return transform(getBuildings(), Building::canBeDamaged);
+        List<Building> result = new ArrayList<Building>();
+        synchronized (buildingMap) {
+            for (Building b : buildingMap.values())
+                if (b.canBeDamaged())
+                    result.add(b);
+        }
+        return result;
     }
 
     /**
@@ -1802,8 +1813,12 @@ public class Colony extends Settlement implements Nameable, TradeLocation {
      * @return A list of lootable goods in this colony.
      */
     public List<Goods> getLootableGoodsList() {
-        return transform(getGoodsContainer().getGoods(),
-                AbstractGoods::isStorable);
+        List<Goods> result = new ArrayList<>();
+        for (Goods g : getGoodsContainer().getGoods())
+            if (g.isStorable())
+                result.add(g);
+
+        return result;
     }
 
     /**
@@ -2261,10 +2276,10 @@ loop:   for (WorkLocation wl : getWorkLocationsForProducing(goodsType)) {
         final Specification spec = getSpecification();
 
         // Encourage exploration of neighbouring rumours.
-        List<TileImprovementSuggestion> result
-                = transform(getTile().getSurroundingTiles(1, 1),
-                Tile::hasLostCityRumour,
-                t -> new TileImprovementSuggestion(t, null, INFINITY));
+        List<TileImprovementSuggestion> result = new ArrayList<TileImprovementSuggestion>();
+        for (Tile t : getTile().getSurroundingTiles(1, 1))
+            if (t.hasLostCityRumour())
+                result.add(new TileImprovementSuggestion(t, null, INFINITY));
 
         // Consider improvements for all available colony tiles.
         for (final ColonyTile ct : getColonyTiles())

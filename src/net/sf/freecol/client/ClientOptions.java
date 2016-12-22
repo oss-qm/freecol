@@ -21,11 +21,10 @@ package net.sf.freecol.client;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
-import java.util.function.Function;
-import java.util.function.Predicate;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -598,12 +597,12 @@ public class ClientOptions extends OptionGroup {
         ModListOption mlo = (ModListOption)getOption(ClientOptions.USER_MODS);
         if (mlo == null) return Collections.<FreeColModFile>emptyList();
 
-        final Predicate<FreeColModFile> validModPred = m ->
-            m != null && m.getId() != null;
-        final Function<FreeColModFile, FreeColModFile> modFileMapper = m ->
-            FreeColModFile.getFreeColModFile(m.getId());
-        return transform(mlo.getOptionValues(), validModPred, modFileMapper,
-                         toListNoNulls());
+        List<FreeColModFile> result = new ArrayList<FreeColModFile>();
+        for (FreeColModFile f : mlo.getOptionValues())
+            if ((f != null) && (f.getId() != null))
+                result.add(FreeColModFile.getFreeColModFile(f.getId()));
+
+        return result;
     }
 
     /**

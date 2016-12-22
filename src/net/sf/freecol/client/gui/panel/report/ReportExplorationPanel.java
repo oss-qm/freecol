@@ -20,8 +20,10 @@
 package net.sf.freecol.client.gui.panel.report;
 
 import java.awt.Font;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Comparator;
-import java.util.function.Function;
+import java.util.List;
 
 import javax.swing.JLabel;
 
@@ -87,9 +89,14 @@ public final class ReportExplorationPanel extends ReportPanel {
 
         // Content Rows
         // TODO: Display "None" if no contents, though this would be rare.
-        for (Region region : CollectionUtils.transform(getGame().getMap().getRegions(),
-                                       isNotNull(Region::getDiscoveredIn),
-                                       Function.identity(), regionComparator)) {
+        List<Region> rlist = new ArrayList<>();
+        for (Region r : getGame().getMap().getRegions())
+            if (r != null)
+                rlist.add(r);
+
+        Collections.sort(rlist, regionComparator);
+
+        for (Region region : rlist) {
             reportPanel.add(new JLabel(region.getName()));
             reportPanel.add(Utility.localizedLabel(region.getType().getNameKey()));
             reportPanel.add(Utility.localizedLabel(Turn.getLabel(region.getDiscoveredIn())));

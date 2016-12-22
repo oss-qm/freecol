@@ -19,10 +19,9 @@
 
 package net.sf.freecol.common.model;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
-import java.util.function.Function;
-import java.util.function.Predicate;
 import java.util.logging.Logger;
 
 import net.sf.freecol.common.model.Direction;
@@ -331,14 +330,18 @@ public class LandMap {
      */
     private List<Position> newPositions(Position position,
                                         int distanceToEdge) {
-        final Predicate<Position> landPred = p ->
-            (p.isValid(getWidth(), getHeight())
-                && !hasAdjacentLand(p.getX(), p.getY())
-                && p.getX() > distanceToEdge
-                && p.getX() < getWidth() - distanceToEdge);
-        final Function<Direction, Position> positionMapper = d ->
-            new Position(position, d);
-        return transform(map(Direction.longSides, positionMapper), landPred);
+        List<Position> result = new ArrayList<>();
+
+        for (Direction d : Direction.longSides) {
+            Position p = new Position(position, d);
+            if (p.isValid(getWidth(), getHeight())
+                    && !hasAdjacentLand(p.getX(), p.getY())
+                    && p.getX() > distanceToEdge
+                    && p.getX() < getWidth() - distanceToEdge)
+                result.add(p);
+        }
+
+        return result;
     }
 
     /**

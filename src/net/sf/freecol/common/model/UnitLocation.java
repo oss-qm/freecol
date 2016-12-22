@@ -239,7 +239,14 @@ public abstract class UnitLocation extends FreeColGameObject implements Location
      * @return A list of naval {@code Unit}s present.
      */
     public List<Unit> getNavalUnits() {
-        return transform(getUnits(), Unit::isNaval);
+        List<Unit> result = new ArrayList<>();
+
+        if (this.units != null)
+            for (Unit u : this.units)
+                if (u != null && u.isNaval())
+                    result.add(u);
+
+        return result;
     }
 
     /**
