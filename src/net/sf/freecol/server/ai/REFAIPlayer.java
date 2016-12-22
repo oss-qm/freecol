@@ -52,7 +52,6 @@ import net.sf.freecol.common.model.Unit;
 import net.sf.freecol.common.model.pathfinding.CostDeciders;
 import net.sf.freecol.common.model.pathfinding.GoalDecider;
 import net.sf.freecol.common.model.pathfinding.GoalDeciders;
-import net.sf.freecol.common.util.CachingFunction;
 import static net.sf.freecol.common.util.CollectionUtils.*;
 import net.sf.freecol.common.util.LogBuilder;
 import static net.sf.freecol.common.util.RandomUtils.*;
@@ -186,19 +185,15 @@ public class REFAIPlayer extends EuropeanAIPlayer {
         final Player player = getPlayer();
         final Unit unit = aiu.getUnit();
         final Unit carrier = aiCarrier.getUnit();
-        final CachingFunction<Colony, PathNode> pathMapper
-            = new CachingFunction<Colony, PathNode>(c ->
-                unit.findPath(carrier, c, carrier, null));
-        final Predicate<Colony> portPred = c ->
-            pathMapper.apply(c) != null;
-        final Function<Colony, TargetTuple> newTupleMapper = c -> {
-            PathNode path = pathMapper.apply(c);
-            return new TargetTuple(c, path,
-                UnitSeekAndDestroyMission.scorePath(aiu, path));
-        };
-        final List<TargetTuple> targets
-            = transform(flatten(player.getRebels(), (port ? Player::getPorts : Player::getColonies)),
-                        portPred, newTupleMapper);
+
+        final List<TargetTuple> targets = new ArrayList<>();
+        for (Player r : player.getRebels())
+            for (Colony c : (port ? r.getPorts() : r.getColonies())) {
+                PathNode path = unit.findPath(carrier, c, carrier, null);
+                if (path != null)
+                    targets.add(new TargetTuple(c, path,
+                        UnitSeekAndDestroyMission.scorePath(aiu, path)));
+            }
 
         // Increase score for drydock/s, musket and tools suppliers,
         // but decrease for fortifications.
@@ -434,10 +429,11 @@ public class REFAIPlayer extends EuropeanAIPlayer {
                     Tile tile = pathNode.getTile();
                     if (tile != null && !tile.isEmpty()
                         && !tile.isLand()
-                        && rebel.owns(tile.getFirstUnit())) {
-                        rebelNavy.addAll(transform(tile.getUnits(), u ->
-                                (u.isOffensiveUnit() && u.isNaval()
-                                    && !rebelNavy.contains(u))));
+                        && rebel.owns(tile.getFirstUnit()))
+                    {
+                        for (Unit u : tile.getUnits())
+                            if (u.isOffensiveUnit() && u.isNaval() && !rebelNavy.contains(u))
+                                rebelNavy.add(u);
                     }
                     return false;
                 }
