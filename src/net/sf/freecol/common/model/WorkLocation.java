@@ -468,7 +468,7 @@ public abstract class WorkLocation extends UnitLocation
      * @return True if there are any outputs.
      */
     public boolean hasOutputs() {
-        return productionType != null && any(productionType.getOutputs());
+        return productionType != null && (productionType.getOutputs().size() > 0);
     }
 
     /**

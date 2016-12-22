@@ -333,8 +333,12 @@ public class ProductionType extends FreeColSpecObject {
      */
     public static boolean canProduce(final GoodsType goodsType,
                                      Collection<ProductionType> types) {
-        return any(flatten(types, ProductionType::getOutputs),
-            ag -> goodsType == ag.getType() && ag.getAmount() > 0);
+        for (ProductionType pt : types) {
+            AbstractGoods ag = pt.getOutput(goodsType);
+            if (ag != null && ag.getAmount() > 0)
+                return true;
+        }
+        return false;
     }
 
     /**

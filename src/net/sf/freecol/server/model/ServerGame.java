@@ -119,6 +119,12 @@ public class ServerGame extends Game implements ServerModelObject {
         readFromXML(xr);
     }
 
+    private boolean anyMatching(ServerPlayer[] pl, ServerPlayer player) {
+        for (ServerPlayer p : pl)
+            if (p == player)
+                return true;
+        return false;
+    }
 
     /**
      * Get a list of connected server players, optionally excluding
@@ -128,10 +134,11 @@ public class ServerGame extends Game implements ServerModelObject {
      * @return A list of all connected server players, with exclusions.
      */
     public List<ServerPlayer> getConnectedPlayers(ServerPlayer... serverPlayers) {
-        return transform(getLivePlayers(),
-                         p -> ((ServerPlayer)p).isConnected()
-                             && none(serverPlayers, matchKey((ServerPlayer)p)),
-                         p -> (ServerPlayer)p);
+        List<ServerPlayer> result = new ArrayList<>();
+        for (Player p : getLivePlayers())
+            if (((ServerPlayer)p).isConnected() && !anyMatching(serverPlayers, (ServerPlayer)p))
+                result.add((ServerPlayer)p);
+        return result;
     }
 
     /**

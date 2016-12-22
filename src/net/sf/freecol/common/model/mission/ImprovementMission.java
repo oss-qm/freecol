@@ -27,6 +27,7 @@ import net.sf.freecol.common.model.Ability;
 import net.sf.freecol.common.model.Game;
 import net.sf.freecol.common.model.Specification;
 import net.sf.freecol.common.model.TileImprovement;
+import net.sf.freecol.common.model.TileImprovementType;
 import net.sf.freecol.common.model.Unit;
 
 import static net.sf.freecol.common.util.CollectionUtils.*;
@@ -133,8 +134,12 @@ public class ImprovementMission extends AbstractMission {
      */
     public static boolean isValidFor(Unit unit) {
         final Specification spec = unit.getGame().getSpecification();
-        return any(spec.getTileImprovementTypeList(),
-                   ti -> ti.isWorkerAllowed(unit));
+
+        for (TileImprovementType tit : spec.getTileImprovementTypeList())
+            if (tit.isWorkerAllowed(unit))
+                return true;
+
+        return false;
     }
 
 

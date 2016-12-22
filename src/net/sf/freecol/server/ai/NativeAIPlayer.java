@@ -961,9 +961,12 @@ public class NativeAIPlayer extends MissionAIPlayer {
                 anger = 2;
                 break;
             case ANGRY:
-                anger = (any(nt.getUnitToSettlement(),
-                             nti -> nti.getGoods().getType().getMilitary()))
-                    ? 3 : -1;
+                anger = -1;
+                for (NativeTradeItem nti : nt.getUnitToSettlement())
+                    if (nti.getGoods().getType().getMilitary()) {
+                        anger = 3;
+                        break;
+                    }
                 break;
             default:
                 anger = -1;
