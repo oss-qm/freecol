@@ -846,9 +846,10 @@ public class ServerPlayer extends Player implements TurnTaker {
      */
     public boolean updateScore() {
         int oldScore = this.score;
-        this.score = sum(getUnitList(), Unit::getScoreValue)
-            + getColoniesLiberty()
-            + SCORE_FOUNDING_FATHER * count(getFathers());
+        this.score = getColoniesLiberty()
+            + SCORE_FOUNDING_FATHER * getFathers().size();
+        for (Unit u : getUnitList())
+            this.score += u.getScoreValue();
         int gold = getGold();
         if (gold != GOLD_NOT_ACCOUNTED) {
             this.score += (int)Math.floor(SCORE_GOLD * gold);
@@ -1199,7 +1200,9 @@ public class ServerPlayer extends Player implements TurnTaker {
      * @return The price.
      */
     public int priceMercenaries(List<AbstractUnit> mercenaries) {
-        int mercPrice = sum(mercenaries, au -> getPrice(au));
+        int mercPrice = 0;
+        for (AbstractUnit au : mercenaries)
+            mercPrice += getPrice(au);
         if (!checkGold(mercPrice)) mercPrice = getGold();
         return mercPrice;
     }
@@ -1420,7 +1423,9 @@ public class ServerPlayer extends Player implements TurnTaker {
         final Disaster bankruptcy = spec.getDisaster(Disaster.BANKRUPTCY);
 
         boolean changed = false;
-        int upkeep = sum(getSettlements(), Settlement::getUpkeep);
+        int upkeep = 0;
+        for (Settlement s : getSettlementList())
+            upkeep += s.getUpkeep();
         if (checkGold(upkeep)) {
             modifyGold(-upkeep);
             if (getBankrupt()) {
@@ -1824,9 +1829,11 @@ outer:  for (Effect effect : effects) {
                         if (enemy.isEuropean()) {
                             Integer alarm = extra.get(enemy);
                             if (alarm == null) continue;
-                            alarm += (int)sumDouble(tile.getUnitList(),
-                                u -> u.isOffensiveUnit() && !u.isNaval(),
-                                u -> u.getType().getOffence());
+                            double al = 0; // sum up as double, before conversion to int
+                            for (Unit u : tile.getUnitList())
+                                if (u.isOffensiveUnit() && !u.isNaval())
+                                    al += u.getType().getOffence();
+                            alarm += (int)al;
                             extra.put(enemy, alarm);
                         }
                     } else if (colony != null) { // Colonies

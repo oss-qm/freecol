@@ -177,7 +177,11 @@ public class Operand extends Scope {
      * @return The number of applicable objects.
      */
     private Integer ourCount(Collection<? extends FreeColObject> objects) {
-        return count(objects, o -> this.appliesTo(o));
+        int i = 0;
+        for (FreeColObject o : objects)
+            if (this.appliesTo(o))
+                i++;
+        return i;
     }
 
     /**
@@ -206,8 +210,8 @@ public class Operand extends Scope {
                     result += ourCount(player.getUnitList());
                     break;
                 case BUILDINGS:
-                    result += sum(player.getColonies(),
-                                  c -> ourCount(c.getBuildings()));
+                    for (Colony c : player.getColonies())
+                        result += ourCount(c.getBuildings());
                     break;
                 case SETTLEMENTS:
                     result += ourCount(player.getSettlementList());
@@ -246,16 +250,22 @@ public class Operand extends Scope {
         case UNITS:
             return ourCount(player.getUnitList());
         case BUILDINGS:
-            return sum(player.getColonies(), c -> ourCount(c.getBuildings()));
+            int result = 0;
+            for (Colony c : player.getColonies())
+                result += ourCount(c.getBuildings());
+            return result;
         case SETTLEMENTS:
             if (methodName == null) {
                 return ourCount(player.getSettlementList())
                     + spec.getInteger(GameOptions.SETTLEMENT_LIMIT_MODIFIER);
             }
             final String methodValue = getMethodValue();
-            return count(player.getSettlementList(),
-                s -> String.valueOf(s.invokeMethod(methodName,
-                        Boolean.class, Boolean.FALSE)).equals(methodValue));
+            int i = 0;
+            for (Settlement s : player.getSettlementList())
+                if (String.valueOf(s.invokeMethod(methodName,
+                        Boolean.class, Boolean.FALSE)).equals(methodValue))
+                    i++;
+            return i;
         case FOUNDING_FATHERS:
             return ourCount(player.getFathers());
         default:
