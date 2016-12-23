@@ -22,7 +22,6 @@ package net.sf.freecol.server.model;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Random;
-import java.util.function.Predicate;
 import java.util.logging.Logger;
 
 import net.sf.freecol.common.i18n.Messages;
@@ -275,14 +274,24 @@ public class ServerIndianSettlement extends IndianSettlement
      */
     public boolean updateMostHated() {
         final Player old = this.mostHated;
-        final Predicate<Player> hatedPred = p -> {
+        Player found_player = null;
+        int found_alarm = 0;
+
+        for (Player p : getGame().getLiveEuropeanPlayers()) {
             Tension alarm = getAlarm(p);
-            return alarm != null && alarm.getLevel() != Tension.Level.HAPPY;
-        };
-        final Comparator<Player> mostHatedComp
-            = Comparator.comparingInt(p -> getAlarm(p).getValue());
-        this.mostHated = maximize(getGame().getLiveEuropeanPlayers(),
-                                  hatedPred, mostHatedComp);
+            // only consider those who aren't happy
+            if ((alarm == null) || (alarm.getLevel() == Tension.Level.HAPPY))
+                continue;
+
+            int alarm_value = alarm.getValue();
+            if ((found_player == null) || (alarm_value > found_alarm)) {
+                found_player = p;
+                found_alarm = alarm_value;
+            }
+        }
+
+        this.mostHated = found_player;
+
         return this.mostHated != old;
     }
 
