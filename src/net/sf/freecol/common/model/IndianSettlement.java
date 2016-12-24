@@ -38,6 +38,7 @@ import net.sf.freecol.common.i18n.Messages;
 import net.sf.freecol.common.io.FreeColXMLReader;
 import net.sf.freecol.common.io.FreeColXMLWriter;
 import net.sf.freecol.common.option.GameOptions;
+import net.sf.freecol.common.util.IntAccMap;
 import static net.sf.freecol.common.util.CollectionUtils.*;
 import static net.sf.freecol.common.util.RandomUtils.*;
 
@@ -1095,12 +1096,12 @@ public class IndianSettlement extends Settlement implements TradeLocation {
      * @param random A pseudo-random number source.
      */
     public void addRandomGoods(Random random) {
-        HashMap<GoodsType, Integer> goodsMap = new HashMap<>();
-        for (AbstractGoods ag : iterable(flatten(getOwnedTiles(),
-                    t -> t.getSortedPotential().stream()))) {
-            accumulateToMap(goodsMap, ag.getType().getStoredAs(),
-                            ag.getAmount(), (a, b) -> a + b);
-        }
+        IntAccMap<GoodsType> goodsMap = new IntAccMap<>();
+
+        for (Tile t : getOwnedTiles())
+            for (AbstractGoods ag : t.getSortedPotential())
+                goodsMap.addInt(ag.getType().getStoredAs(), ag.getAmount());
+
         double d = randomInt(logger, "Goods at " + getName(), random, 10)
             * 0.1 + 1.0;
         forEachMapEntry(goodsMap, e -> {
