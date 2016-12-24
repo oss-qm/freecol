@@ -717,8 +717,12 @@ public class Map extends FreeColGameObject implements Location {
      * @param endTile The {@code Tile} to aim for.
      * @return A new {@code SearchHeuristic} aiming for the end tile.
      */
-    private SearchHeuristic getManhattenHeuristic(Tile endTile) {
-        return (Tile tile) -> tile.getDistanceTo(endTile);
+    private SearchHeuristic getManhattenHeuristic(final Tile endTile) {
+        return new SearchHeuristic() {
+            public int getValue(Tile tile) {
+                return tile.getDistanceTo(endTile);
+            }
+        };
     }
 
     /**
