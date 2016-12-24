@@ -22,7 +22,6 @@ package net.sf.freecol.common.model;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.stream.Stream;
 
 import javax.xml.stream.XMLStreamException;
 
@@ -262,10 +261,9 @@ public final class TileType extends FreeColSpecObjectType
      *
      * @return A stream of {@code Disaster} choices.
      */
-    public Stream<RandomChoice<Disaster>> getDisasterChoices() {
-        return (this.disasters == null)
-            ? Stream.<RandomChoice<Disaster>>empty()
-            : disasters.stream();
+    public void getDisasterChoices(List<RandomChoice<Disaster>> result) {
+        if (disasters != null)
+            result.addAll(disasters);
     }
 
     /**
@@ -474,7 +472,9 @@ public final class TileType extends FreeColSpecObjectType
             xw.writeEndElement();
         }
 
-        for (RandomChoice<Disaster> choice : iterable(getDisasterChoices())) {
+        List<RandomChoice<Disaster>> desasters = new ArrayList<>();
+        getDisasterChoices(desasters);
+        for (RandomChoice<Disaster> choice : desasters) {
             xw.writeStartElement(DISASTER_TAG);
 
             xw.writeAttribute(ID_ATTRIBUTE_TAG, choice.getObject());

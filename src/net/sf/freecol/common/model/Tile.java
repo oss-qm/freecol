@@ -1006,10 +1006,10 @@ public final class Tile extends UnitLocation implements Named, Ownable {
      *
      * @return A stream of {@code Disaster} choices.
      */
-    public Stream<RandomChoice<Disaster>> getDisasterChoices() {
-        return concat(type.getDisasterChoices(),
-                      flatten(getCompleteTileImprovements(),
-                              ti -> ti.getDisasterChoices()));
+    public void getDisasterChoices(List<RandomChoice<Disaster>> result) {
+        type.getDisasterChoices(result);
+        for (TileImprovement ti : getCompleteTileImprovements())
+            ti.getDisasterChoices(result);
     }
 
 
