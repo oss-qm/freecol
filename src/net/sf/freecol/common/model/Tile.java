@@ -65,10 +65,6 @@ public final class Tile extends UnitLocation implements Named, Ownable {
     public static final Comparator<Tile> highSeasComparator
         = Comparator.comparingInt(Tile::getHighSeasCount);
 
-    /** Predicate to identify ordinary sea tiles. */
-    public static final Predicate<Tile> isSeaTile = t ->
-        !t.isLand() && t.getHighSeasCount() >= 0;
-
     /**
      * Information that is internal to the native settlements, and only
      * updated on close contact.
