@@ -27,7 +27,6 @@ import java.util.Map.Entry;
 import java.util.Random;
 import java.util.function.Function;
 import java.util.function.Predicate;
-import java.util.function.ToIntFunction;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
@@ -1054,17 +1053,21 @@ public class IndianSettlement extends Settlement implements TradeLocation {
      *      none suitable.
      */
     private GoodsType goodsToMake() {
-        final ToIntFunction<GoodsType> deficit = cacheInt(gt ->
-            getWantedGoodsAmount(gt) - getGoodsCount(gt));
-        final Predicate<GoodsType> goodsPred = gt ->
-            gt.isRawMaterial()
-                && gt.getOutputType() != null
-                && !gt.getOutputType().isBreedable()
-                && gt.getOutputType().isStorable()
-                && deficit.applyAsInt(gt) < 0
-                && deficit.applyAsInt(gt.getOutputType()) > 0;
-        final Comparator<GoodsType> comp = Comparator.comparingInt(deficit);
-        return maximize(getSpecification().getGoodsTypeList(), goodsPred, comp);
+        int best_deficit = Integer.MIN_VALUE;
+        GoodsType best_gt = null;
+        for (GoodsType gt : getSpecification().getGoodsTypeList()) {
+            if (!gt.isRawMaterial()) continue;
+            GoodsType ot = gt.getOutputType();
+            if (ot == null || ot.isBreedable() || !ot.isStorable()) continue;
+            int deficit = getWantedGoodsAmount(gt) - getGoodsCount(gt);
+            if (!(deficit < 0 && (getWantedGoodsAmount(ot) - getGoodsCount(ot) > 0)))
+                continue;
+            if ((best_gt == null) || (deficit > best_deficit)) {
+                best_gt = gt;
+                best_deficit = deficit;
+            }
+        }
+        return best_gt;
     }
 
     /**
