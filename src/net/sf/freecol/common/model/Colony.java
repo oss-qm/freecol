@@ -929,13 +929,18 @@ public class Colony extends Settlement implements Nameable, TradeLocation {
      * colony.  This list comprises all natural disasters that can
      * strike the colony's tiles.
      *
-     * @return A stream of {@code Disaster}s.
+     * @param result List to fill results into {@code Disaster}s.
      */
-    public Stream<RandomChoice<Disaster>> getDisasterChoices() {
-        return flatten(getColonyTiles(),
-                ct -> ct.getWorkTile().getDisasterChoices());
+    public void getDisasterChoices(List<RandomChoice<Disaster>> result) {
+        for (ColonyTile ct : getColonyTiles())
+            ct.getWorkTile().getDisasterChoices(result);
     }
 
+    public List<RandomChoice<Disaster>> getDisasterChoices() {
+        List<RandomChoice<Disaster>> result = new ArrayList<>();
+        getDisasterChoices(result);
+        return result;
+    }
 
     // What are we building?  What can we build?
 
