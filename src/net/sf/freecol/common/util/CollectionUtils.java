@@ -19,6 +19,7 @@
 
 package net.sf.freecol.common.util;
 
+import java.lang.Iterable;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -668,49 +669,18 @@ public class CollectionUtils {
     }
 
     /**
-     * Dump an array to {@code System.err}.
-     *
-     * @param <T> The collection to dump
-     * @param header Optional informational string to print first.
-     * @param array The array to dump.
-     */
-    public static <T> void dump(String header, T[] array) {
-        dump_internal(header, Arrays.stream(array));
-    }
-
-    /**
-     * Dump a collection to {@code System.err}.
-     *
-     * @param header Optional informational string to print first.
-     * @param c The {@code Collection} to print.
-     */
-    public static void dump(String header, Collection<?> c) {
-        dump_internal(header, c.stream());
-    }
-
-    /**
-     * Dump a stream to {@code System.err}.
-     *
-     * @param header Optional informational string to print first.
-     * @param stream The {@code Stream} to print.
-     */
-    public static void dump(String header, Stream<?> stream) {
-        dump_internal(header, stream);
-    }
-
-    /**
      * Implement dump().
      *
      * @param header Optional informational string to print first.
      * @param stream The {@code Stream} to print.
      */
-    private static void dump_internal(String header, Stream<?> stream) {
+    private static <T> void dump(String header, Iterable<T> it) {
         if (header != null) System.err.print(header);
         System.err.print("[ ");
-        forEach(stream, (v) -> {
+        for (T v : it) {
                 System.err.print(v);
                 System.err.print(' ');
-            });
+        }
         System.err.println(']');
     }
 
@@ -723,12 +693,12 @@ public class CollectionUtils {
     public static void dump(String header, Map<?,?> map) {
         if (header != null) System.err.print(header);
         System.err.print("[ ");
-        forEachMapEntry(map, (e) -> {
+        for (Entry<?,?> e : map.entrySet()) {
                 System.err.print(e.getKey());
                 System.err.print(',');
                 System.err.print(e.getValue());
                 System.err.print(' ');
-            });
+        }
         System.err.println(']');
     }
 
