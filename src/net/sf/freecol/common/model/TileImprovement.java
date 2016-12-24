@@ -423,10 +423,9 @@ public class TileImprovement extends TileItem implements Named {
      *
      * @return A stream of {@code Disaster} choices.
      */
-    public Stream<RandomChoice<Disaster>> getDisasterChoices() {
-        return (this.type == null)
-            ? Stream.<RandomChoice<Disaster>>empty()
-            : this.type.getDisasterChoices();
+    public void getDisasterChoices(List<RandomChoice<Disaster>> result) {
+        if (this.type != null)
+            this.type.getDisasterChoices(result);
     }
 
 
