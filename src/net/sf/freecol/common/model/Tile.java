@@ -1778,12 +1778,19 @@ public final class Tile extends UnitLocation implements Named, Ownable {
      * @return The {@code AbstractGoods} to produce.
      */
     public AbstractGoods getBestFoodProduction() {
-        final Comparator<AbstractGoods> goodsComp
-            = Comparator.comparingInt(ag ->
-                getPotentialProduction(ag.getType(), null));
-        return maximize(flatten(getType().getAvailableProductionTypes(true),
-                                pt -> pt.getOutputList()),
-                        AbstractGoods::isFoodType, goodsComp);
+        AbstractGoods best_ag = null;
+        int best_pot = 0;
+        for (ProductionType pt : getType().getAvailableProductionTypes(true))
+            for (AbstractGoods ag : pt.getOutputList())
+                if (ag.isFoodType()) {
+                    int pot = getPotentialProduction(ag.getType(), null);
+                    if (best_ag == null || best_pot < pot) {
+                        best_ag = ag;
+                        best_pot = pot;
+                    }
+                }
+
+        return best_ag;
     }
 
 
