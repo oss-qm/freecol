@@ -2024,8 +2024,16 @@ public final class InGameController extends Controller {
             // AI-only simulations.
             boolean onlyAI = all(game.getConnectedPlayers(), Player::isAI);
             if (onlyAI) {
-                winner = first(sort(game.getConnectedPlayers(),
-                        Comparator.comparingInt(Player::getScore).reversed()));
+                winner = null;
+                int winner_score = 0;
+                for (Player p : game.getConnectedPlayers()) {
+                    int score = p.getScore();
+                    if (winner == null || score > winner_score) {
+                        winner = p;
+                        winner_score = score;
+                    }
+                }
+
                 logger.info("No human player left, winner is: " + winner);
                 if (debugOnlyAITurns > 0) { // Complete debug runs
                     FreeColDebugger.signalEndDebugRun();
