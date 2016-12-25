@@ -2674,8 +2674,20 @@ public class Unit extends GoodsLocation
         // Owner has no settlements.  If it is the REF, start from a
         // rebel colony.  Prefer the closest port.
         if (owner.isREF()) {
-            return minimize(flatten(owner.getRebels(), Player::getSettlements),
-                            settlementStartComparator);
+            Settlement best;
+            int best_dist = INFINITY;
+            for (Player p : owner.getRebels()) {
+                for (Settlement s : p.getSettlements()) {
+                    int hsc = s.getTile().getHighSeasCount();
+                    if (hsc < 0) hsc = INFINITY;
+                    if (best == null || hsc < best_dist) {
+                        best = s;
+                        best_dist = hsc;
+                    }
+                }
+            }
+
+            return best;
         }
 
         // Desperately find the nearest land to the entry location.
