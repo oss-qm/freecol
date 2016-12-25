@@ -22,7 +22,6 @@ package net.sf.freecol.server.ai.mission;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
-import java.util.function.Predicate;
 import java.util.logging.Logger;
 
 import javax.xml.stream.XMLStreamException;
@@ -164,8 +163,6 @@ public class IndianDemandMission extends Mission {
         final int dx = spec.getInteger(GameOptions.NATIVE_DEMANDS) + 1;
         final Game game = target.getGame();
         final Market market = target.getOwner().getMarket();
-        final Comparator<Goods> marketPrice
-            = Comparator.comparingInt(g -> market.getSalePrice(g));
         final Tension.Level tension = getUnit().getOwner()
             .getTension(target.getOwner()).getLevel();
         final GoodsType food = spec.getPrimaryFoodType();
@@ -181,9 +178,16 @@ public class IndianDemandMission extends Mission {
         // When displeased, ask for expensive non-food or military
         if (goods == null
             && tension.compareTo(Tension.Level.DISPLEASED) <= 0) {
-            final Predicate<Goods> angryPred = g ->
-                !g.isFoodType() && !g.getType().getMilitary();
-            goods = maximize(target.getCompactGoods(), angryPred, marketPrice);
+            int best_price = 0;
+            for (Goods g : target.getCompactGoods())
+                if (!g.isFoodType() && !g.getType().getMilitary()) {
+                    int price = market.getSalePrice(g);
+                    if (goods == null || best_price < price) {
+                        goods = g;
+                        best_price = price;
+                    }
+                }
+
             if (goods != null)
                 goods = new Goods(game, target, goods.getType(), capAmount(goods.getAmount(), dx));
         }
@@ -199,7 +203,15 @@ public class IndianDemandMission extends Mission {
 
         // Finally just go for expense
         if (goods == null) {
-            goods = maximize(target.getCompactGoods(), marketPrice);
+            int best_price = 0;
+            for (Goods g : target.getCompactGoods()) {
+                int price = market.getSalePrice(g);
+                if (goods == null || best_price < price) {
+                    goods = g;
+                    best_price = price;
+                }
+            }
+
             if (goods != null)
                 goods = new Goods(game, target, goods.getType(), capAmount(goods.getAmount(), dx));
         }
