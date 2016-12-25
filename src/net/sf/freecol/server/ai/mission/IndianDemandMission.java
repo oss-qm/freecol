@@ -68,16 +68,6 @@ public class IndianDemandMission extends Mission {
     /** The tag for this mission. */
     private static final String tag = "AI native demander";
 
-    /** Predicates for demand goods selection. */
-    private static final List<Predicate<GoodsType>> selectPredicates
-        = new ArrayList<>();
-    static {
-        selectPredicates.add(gt -> gt.getMilitary());
-        selectPredicates.add(gt -> gt.isBuildingMaterial());
-        selectPredicates.add(gt -> gt.isTradeGoods());
-        selectPredicates.add(gt -> gt.isRefined());
-    };
-
     /** The colony to demand from. */
     private Colony colony;
 
@@ -146,6 +136,22 @@ public class IndianDemandMission extends Mission {
         this.succeeded = result;
     }
 
+    private GoodsType pickGoodsType(List<GoodsType> goodsTypes) {
+        for (GoodsType gt : goodsTypes)
+            if (gt.getMilitary()) return gt;
+
+        for (GoodsType gt : goodsTypes)
+            if (gt.isBuildingMaterial()) return gt;
+
+        for (GoodsType gt : goodsTypes)
+            if (gt.isTradeGoods()) return gt;
+
+        for (GoodsType gt : goodsTypes)
+            if (gt.isRefined()) return gt;
+
+        return null;
+    }
+
     /**
      * Selects the most desirable goods from the colony.
      *
@@ -186,8 +192,7 @@ public class IndianDemandMission extends Mission {
 
         // Otherwise try military, building, trade, refined goods in order,
         if (goods == null) {
-            GoodsType goodsType = first(flatten(selectPredicates,
-                    pred -> transform(goodsTypes, gt -> pred.test(gt)).stream()));
+            GoodsType goodsType = pickGoodsType(goodsTypes);
             if (goodsType != null) {
                 goods = new Goods(getGame(), target, goodsType,
                     capAmount(target.getGoodsCount(goodsType), dx));
