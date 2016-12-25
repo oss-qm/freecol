@@ -22,7 +22,6 @@ package net.sf.freecol.server.ai.mission;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
-import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.logging.Logger;
 
@@ -167,8 +166,6 @@ public class IndianDemandMission extends Mission {
         final Market market = target.getOwner().getMarket();
         final Comparator<Goods> marketPrice
             = Comparator.comparingInt(g -> market.getSalePrice(g));
-        final Function<Goods, Goods> makeGoods = g ->
-            new Goods(game, target, g.getType(), capAmount(g.getAmount(), dx));
         final Tension.Level tension = getUnit().getOwner()
             .getTension(target.getOwner()).getLevel();
         final GoodsType food = spec.getPrimaryFoodType();
@@ -187,7 +184,8 @@ public class IndianDemandMission extends Mission {
             final Predicate<Goods> angryPred = g ->
                 !g.isFoodType() && !g.getType().getMilitary();
             goods = maximize(target.getCompactGoods(), angryPred, marketPrice);
-            if (goods != null) goods = makeGoods.apply(goods);
+            if (goods != null)
+                goods = new Goods(game, target, goods.getType(), capAmount(goods.getAmount(), dx));
         }
 
         // Otherwise try military, building, trade, refined goods in order,
@@ -202,7 +200,8 @@ public class IndianDemandMission extends Mission {
         // Finally just go for expense
         if (goods == null) {
             goods = maximize(target.getCompactGoods(), marketPrice);
-            if (goods != null) goods = makeGoods.apply(goods);
+            if (goods != null)
+                goods = new Goods(game, target, goods.getType(), capAmount(goods.getAmount(), dx));
         }
 
         return goods;
