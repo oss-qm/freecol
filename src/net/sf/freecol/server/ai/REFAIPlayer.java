@@ -29,7 +29,6 @@ import java.util.Map.Entry;
 import java.util.Random;
 import java.util.function.Function;
 import java.util.function.Predicate;
-import java.util.function.ToDoubleFunction;
 import java.util.function.ToIntFunction;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -38,8 +37,10 @@ import javax.xml.stream.XMLStreamException;
 
 import net.sf.freecol.common.io.FreeColXMLReader;
 import net.sf.freecol.common.model.Ability;
+import net.sf.freecol.common.model.AbstractGoods;
 import net.sf.freecol.common.model.Building;
 import net.sf.freecol.common.model.Colony;
+import net.sf.freecol.common.model.GoodsType;
 import net.sf.freecol.common.model.Location;
 import net.sf.freecol.common.model.PathNode;
 import net.sf.freecol.common.model.Player;
@@ -207,15 +208,25 @@ public class REFAIPlayer extends EuropeanAIPlayer {
                                    targets.size());
         int twidx = 0;
         for (TargetTuple t : targets) {
-            final ToDoubleFunction<Building> bdf = b ->
-                ((b.hasAbility(Ability.REPAIR_UNITS)) ? 1.5 : 1.0)
-                * product(b.getOutputs(), ag ->
-                    (ag.getType().getMilitary()) ? 2.0
-                    : (ag.getType().isBuildingMaterial()
-                        && ag.getType().isRefined()) ? 1.5
-                    : 1.0);
+            double building_prod = 1;
+            for (Building b : t.colony.getBuildings()) {
+                if (!(b.getLevel() > 1)) continue;
+
+                double d = ((b.hasAbility(Ability.REPAIR_UNITS)) ? 1.5 : 1.0);
+                for (AbstractGoods ag : b.getOutputs()) {
+                    GoodsType gt = ag.getType();
+
+                    // FIXME: move this into GoodsType
+                    if (gt.getMilitary())
+                        d *= 2.0;
+                    else if (gt.isBuildingMaterial() && gt.isRefined())
+                        d *= 1.5;
+                }
+                building_prod *= d;
+            }
+
             t.score *= 0.01 * (101 - Math.min(100, t.colony.getSoL()))
-                * product(t.colony.getBuildings(), b -> b.getLevel() > 1, bdf)
+                * building_prod
                 * ((6 - ((!t.colony.hasStockade()) ? 0
                             : t.colony.getStockade().getLevel())) / 6.0)
                 * (1.0 + 0.01 * (twiddle[twidx++] - percentTwiddle));
