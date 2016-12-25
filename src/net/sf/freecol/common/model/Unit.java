@@ -2882,20 +2882,19 @@ public class Unit extends GoodsLocation
      * @return The nearest {@code Colony}, or null if none found.
      */
     public Colony getClosestColony(List<Colony> colonies) {
-        return getClosestColony(colonies.stream());
-    }
+        Colony best_colony = null;
+        int best_turns = 0;
 
-    /**
-     * Get the colony that can be reached by this unit in the least number
-     * of turns.
-     *
-     * @param colonies A stream of {@code Colony}s.
-     * @return The nearest {@code Colony}, or null if none found.
-     */
-    public Colony getClosestColony(Stream<Colony> colonies) {
-        final Comparator<Colony> comp = cachingIntComparator(col ->
-            (col == null) ? MANY_TURNS-1 : this.getTurnsToReach(col));
-        return minimize(concat(Stream.of((Colony)null), colonies), comp);
+        for (Colony c : colonies) {
+            if (c == null) continue;
+            int turns = this.getTurnsToReach(c);
+            if (best_colony == null || turns < best_turns) {
+                best_colony = c;
+                best_turns = turns;
+            }
+        }
+
+        return best_colony;
     }
 
     /**
