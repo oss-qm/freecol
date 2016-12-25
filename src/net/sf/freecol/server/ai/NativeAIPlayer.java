@@ -27,8 +27,6 @@ import java.util.List;
 import java.util.Random;
 import java.util.Set;
 import java.util.function.Function;
-import java.util.function.Predicate;
-import java.util.function.ToIntFunction;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -354,14 +352,20 @@ public class NativeAIPlayer extends MissionAIPlayer {
         // Assign units to attack the threats, greedily chosing closest unit.
         while (!threatTiles.isEmpty() && !units.isEmpty()) {
             Tile tile = threatTiles.remove(0);
-            final ToIntFunction<Unit> score = cacheInt(u ->
-                u.getTile().getDistanceTo(tile));
-            final Predicate<Unit> validPred = u ->
-                UnitSeekAndDestroyMission.invalidReason(aiMain.getAIUnit(u),
-                    tile.getDefendingUnit(u)) == null
-                && score.applyAsInt(u) >= 0;
-            final Comparator<Unit> scoreComp = Comparator.comparingInt(score);
-            Unit unit = minimize(units, validPred, scoreComp);
+
+            Unit unit = null;
+            int min_dist = 0;
+            for (Unit u : units) {
+                int dist = u.getTile().getDistanceTo(tile);
+                if (UnitSeekAndDestroyMission.invalidReason(aiMain.getAIUnit(u),
+                        tile.getDefendingUnit(u)) == null && dist >= 0) {
+                    if (unit == null || dist < min_dist) {
+                        unit = u;
+                        min_dist = dist;
+                    }
+                }
+            }
+
             if (unit == null) continue; // Declined to attack.
             units.remove(unit);
             AIUnit aiUnit = aiMain.getAIUnit(unit);
