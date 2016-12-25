@@ -650,8 +650,11 @@ public class REFAIPlayer extends EuropeanAIPlayer {
             }
 
             // Go defend the nearest colony needing defence
-            Colony best = u.getClosestColony(map(getBadlyDefended(),
-                                                 AIColony::getColony));
+            List<Colony> baddef = new ArrayList<>();
+            for (AIColony aic : getBadlyDefended())
+                baddef.add(aic.getColony());
+
+            Colony best = u.getClosestColony(baddef);
             if (best != null
                 && (m = getDefendSettlementMission(aiu, best)) != null) {
                 lb.add(" GO-DEFEND-", best.getName(), " " , m);
