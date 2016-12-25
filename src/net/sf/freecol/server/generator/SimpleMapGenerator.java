@@ -630,9 +630,19 @@ public class SimpleMapGenerator implements MapGenerator {
     private Territory getClosestTerritory(final Tile tile,
                                           List<Territory> territories) {
         final Map map = tile.getMap();
-        final Comparator<Territory> comp = Comparator.comparingInt(t ->
-            map.getDistance(tile, t.getCenterTile(map)));
-        return minimize(territories, comp);
+
+        Territory best = null;
+        int best_dist = 0;
+
+        for (Territory t : territories) {
+            int dist = map.getDistance(tile, t.getCenterTile(map));
+            if (best == null || dist < best_dist) {
+                best = t;
+                best_dist = dist;
+            }
+        }
+
+        return best;
     }
 
     /**
