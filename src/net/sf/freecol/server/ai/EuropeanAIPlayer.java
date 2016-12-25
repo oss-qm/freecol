@@ -30,7 +30,6 @@ import java.util.Random;
 import java.util.Set;
 import java.util.function.Function;
 import java.util.function.Predicate;
-import java.util.function.ToDoubleFunction;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
@@ -1194,19 +1193,24 @@ public class EuropeanAIPlayer extends MissionAIPlayer {
      */
     public GoodsWish getBestGoodsWish(AIUnit aiUnit, GoodsType goodsType) {
         final Unit carrier = aiUnit.getUnit();
-        final ToDoubleFunction<GoodsWish> wishValue
-            = cacheDouble(gw -> {
-                    int turns = carrier.getTurnsToReach(carrier.getLocation(),
-                                                        gw.getDestination());
-                    return (turns >= Unit.MANY_TURNS) ? -1.0
-                        : (double)gw.getValue() / turns;
-                });
-        final Comparator<GoodsWish> comp
-            = Comparator.comparingDouble(wishValue);
 
         List<GoodsWish> wishes = goodsWishes.get(goodsType);
-        return (wishes == null) ? null
-            : maximize(wishes, gw -> wishValue.applyAsDouble(gw) > 0.0, comp);
+        if (wishes == null) return null;
+
+        GoodsWish best = null;
+        double best_gwv = 0;
+        for (GoodsWish gw : wishes) {
+            int turns = carrier.getTurnsToReach(carrier.getLocation(),
+                                                        gw.getDestination());
+            double gwv = (turns >= Unit.MANY_TURNS) ? -1.0
+                        : (double)gw.getValue() / turns;
+            if (best == null || gwv > best_gwv) {
+                best = gw;
+                best_gwv = gwv;
+            }
+        }
+
+        return best;
     }
 
     /**
