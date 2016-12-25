@@ -2795,14 +2795,23 @@ public class Unit extends GoodsLocation
     public PathNode findPathToNeighbour(Location start, Tile end, Unit carrier,
                                         CostDecider costDecider) {
         final Player owner = getOwner();
-        final Predicate<Tile> endPred = t ->
-            (isTileAccessible(t)
-                && (t.getFirstUnit() == null || owner.owns(t.getFirstUnit())));
 
-        Tile best = minimize(end.getSurroundingTiles(1, 1), endPred,
-            getPathComparator(start, carrier, costDecider));
-        return (best == null) ? null
-            : this.findPath(start, best, carrier, costDecider);
+        PathNode best_path = null;
+        int best_turns = 0;
+        for (Tile t : end.getSurroundingTiles(1, 1)) {
+            if (isTileAccessible(t)
+                    && (t.getFirstUnit() == null || owner.owns(t.getFirstUnit()))) {
+                PathNode p = this.findPath(start, t, carrier, costDecider);
+                if (p == null) continue;
+                int turns = p.getTotalTurns();
+                if (best_path == null || turns < best_turns) {
+                    best_path = p;
+                    best_turns = turns;
+                }
+            }
+        }
+
+        return best_path;
     }
 
     /**
