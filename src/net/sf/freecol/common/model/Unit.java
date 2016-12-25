@@ -3000,12 +3000,6 @@ public class Unit extends GoodsLocation
         final Tile srcTile = getTile();
         final Tile dstTile = dst.getTile();
         final int dstCont = (dstTile == null) ? -1 : dstTile.getContiguity();
-        final Comparator<Settlement> settlementComparator
-            = cachingIntComparator(s -> {
-                    PathNode p = findPath(s);
-                    return (p == null) ? INFINITY
-                    : p.getTotalTurns() + dstTile.getDistanceTo(s.getTile());
-                });
 
         int type;
         if (isNaval()) {
@@ -3050,20 +3044,43 @@ public class Unit extends GoodsLocation
         case 2:
             // Ocean travel required, destination blocked.
             // Find the closest available connected port.
-            final Predicate<Settlement> portPredicate = s ->
-                s != ignoreSrc && s != ignoreDst;
-            sett = minimize(getOwner().getPorts(), portPredicate,
-                            settlementComparator);
-            path = (sett == null) ? null : this.findPath(sett);
+            sett = null;
+            path = null;
+            int sett_turns = INFINITY;
+            for (Settlement s : getOwner().getPorts()) {
+                if (!(s != ignoreSrc && s != ignoreDst)) continue;
+
+                PathNode p = findPath(s);
+                int turns = (p == null ? INFINITY
+                    : p.getTotalTurns() + dstTile.getDistanceTo(s.getTile()));
+
+                if (sett == null || turns < sett_turns) {
+                    sett = s;
+                    sett_turns = turns;
+                    path = p;
+                }
+            }
+
             break;
         case 3:
             // Land travel.  Find nearby settlement with correct contiguity.
-            final Predicate<Settlement> contiguityPred = s ->
-                s != ignoreSrc && s != ignoreDst
-                    && s.getTile().getContiguity() == dstCont;
-            sett = minimize(getOwner().getSettlements(), contiguityPred,
-                            settlementComparator);
-            path = (sett == null) ? null : this.findPath(sett);
+            sett = null;
+            path = null;
+            sett_turns = INFINITY;
+            for (Settlement s : getOwner().getSettlements()) {
+                if (!(s != ignoreSrc && s != ignoreDst && s.getTile().getContiguity() == dstCont))
+                    continue;
+
+                PathNode p = findPath(s);
+                int turns = (p == null ? INFINITY
+                    : p.getTotalTurns() + dstTile.getDistanceTo(s.getTile()));
+
+                if (sett == null || turns < sett_turns) {
+                    sett = s;
+                    sett_turns = turns;
+                    path = p;
+                }
+            }
             break;
         }
         return (path != null) ? path
