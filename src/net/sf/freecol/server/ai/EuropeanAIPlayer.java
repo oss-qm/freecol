@@ -541,16 +541,20 @@ public class EuropeanAIPlayer extends MissionAIPlayer {
             Location target = null;
             // Few colonies?  Attack the weakest European port
             if (colonies.size() < 3) {
-                final Comparator<Colony> targetScore
-                    = cachingDoubleComparator(c -> {
-                            double score = 100000.0 / c.getUnitCount();
-                            Building stockade = c.getStockade();
-                            return (stockade == null) ? 1.0
-                                : score / (stockade.getLevel() + 1.5);
-                        });
-                target = maximize(flatten(enemies, Player::isEuropean,
-                                          Player::getPorts),
-                                  targetScore);
+                double target_quot = 0;
+                for (Player p : enemies) {
+                    if (!p.isEuropean()) continue;
+                    for (Colony c : p.getPorts()) {
+                        double score = 100000.0 / c.getUnitCount();
+                        Building stockade = c.getStockade();
+                        double quot = (stockade == null) ? 1.0
+                            : score / (stockade.getLevel() + 1.5);
+                        if (target == null || quot > target_quot) {
+                            target = c;
+                            target_quot = quot;
+                        }
+                    }
+                }
             }
             // Otherwise attack something near a weak colony
             if (target == null && !colonies.isEmpty()) {
