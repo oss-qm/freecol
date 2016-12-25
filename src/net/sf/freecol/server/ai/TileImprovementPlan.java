@@ -20,7 +20,6 @@
 package net.sf.freecol.server.ai;
 
 import java.util.Comparator;
-import java.util.function.Predicate;
 import java.util.logging.Logger;
 
 import javax.xml.stream.XMLStreamException;
@@ -184,23 +183,27 @@ public class TileImprovementPlan extends ValuedAIObject {
     public static TileImprovementType getBestTileImprovementType(Tile tile,
         GoodsType goodsType) {
         final Specification spec = tile.getSpecification();
-        final Predicate<TileImprovementType> goodTIPred = it ->
-            !it.isNatural()
+
+        TileImprovementType best = null;
+        int best_iv = 0;
+        for (TileImprovementType it : spec.getTileImprovementTypeList()) {
+            if (!(!it.isNatural()
                 && it.isTileTypeAllowed(tile.getType())
                 // FIXME: For now, disable any exotic non-Col1
                 // improvement types that expend more than one parcel
                 // of tools (e.g. plantForest), because
                 // PioneeringMission assumes this does not happen.
                 && it.getExpendedAmount() <= 1
-                && tile.getTileImprovement(it) == null;
-        final Comparator<TileImprovementType> bestTIComp
-            = cachingIntComparator(it ->
-                it.getImprovementValue(tile, goodsType));
-        TileImprovementType best = maximize(spec.getTileImprovementTypeList(),
-                                            goodTIPred, bestTIComp);
-        return (best == null || best.getImprovementValue(tile, goodsType) <= 0)
-            ? null
-            : best;
+                && tile.getTileImprovement(it) == null)) continue;
+
+            int iv = it.getImprovementValue(tile, goodsType);
+            if (best == null || iv > best_iv) {
+                best = it;
+                best_iv = iv;
+            }
+        }
+
+        return (best != null || best_iv > 0) ? best : null;
     }
 
     /**
