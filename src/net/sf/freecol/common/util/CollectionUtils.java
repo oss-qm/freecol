@@ -454,8 +454,9 @@ public class CollectionUtils {
      * @param <T> The stream member type.
      * @return The always valid predicate for the stream type.
      */
+    @SuppressWarnings("unchecked")
     public static <T> Predicate<T> alwaysTrue() {
-        return alwaysTruePred;
+        return (Predicate<T>)alwaysTruePred;
     }
 
     /**

@@ -23,10 +23,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.StandardCopyOption;
 
-import java.util.Collections;
 import java.util.Comparator;
-import java.util.function.Predicate;
-import java.util.List;
 import java.util.stream.Stream;
 import javax.swing.filechooser.FileSystemView;
 
@@ -633,22 +630,7 @@ public class FreeColDirectories {
         return autosaveDirectory;
     }
 
-    /**
-     * Get the autosave files.
-     *
-     * @param prefix The autosave file prefix.
-     * @param pred A {@code Predicate} to select files with.
-     * @return A list of of autosaved {@code File}s.
-     */
-    public static List<File> getAutosaveFiles(String prefix,
-                                              Predicate<File> pred) {
-        final String suffix = "." + FreeCol.FREECOL_SAVE_EXTENSION;
-        final File asd = getAutosaveDirectory();
-        final Predicate<File> fullPred = pred.and(f ->
-            f.getName().startsWith(prefix) && f.getName().endsWith(suffix));
-        return (asd == null) ? Collections.<File>emptyList()
-            : transform(asd.listFiles(), fullPred);
-    }
+    private static final String FREECOL_SAVE_SUFFIX = "." + FreeCol.FREECOL_SAVE_EXTENSION;
 
     /**
      * Remove out of date autosaves.
@@ -660,9 +642,11 @@ public class FreeColDirectories {
         if (validDays <= 0L) return;
         final long validMS = 1000L * 24L * 60L * 60L * validDays; // days to ms
         final long timeNow = System.currentTimeMillis();
-        final Predicate<File> outdatedPred = f -> 
-            f.lastModified() + validMS < timeNow;
-        Utils.deleteFiles(getAutosaveFiles(prefix, outdatedPred));
+
+        for (File f : asd.listFiles())
+            if (n.startsWith(prefix) && n.endsWith(suffix)
+                    && (f.lastModified() + validMS < timeNow))
+                Utils.deleteFile(f);
     }
 
     /**
@@ -671,7 +655,9 @@ public class FreeColDirectories {
      * @param prefix The autosave file prefix.
      */
     public static void removeAutosaves(String prefix) {
-        Utils.deleteFiles(getAutosaveFiles(prefix, alwaysTrue()));
+        for (File f : asd.listFiles())
+            if (n.startsWith(prefix) && n.endsWith(suffix))
+                Utils.deleteFile(f);
     }
 
     /**
