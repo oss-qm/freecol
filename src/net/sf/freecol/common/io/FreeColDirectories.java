@@ -694,14 +694,14 @@ public class FreeColDirectories {
      * @param The input file name.
      * @return A sanitized file name.
      */
-    private static String sanitize(String fileName) {
-        List<String> strings = new ArrayList<String>();
+    public static String sanitize(String fileName) {
+        StringBuilder strings = new StringBuilder();
         for (int i = 0; i < fileName.length(); i++) {
             String s = fileName.substring(i, i+1);
             if (SEPARATOR.equals(s)) continue;
-            strings.add(s);
+            strings.append(s);
         }
-        return join("", strings);
+        return strings.toString();
     }
 
 
@@ -728,51 +728,7 @@ public class FreeColDirectories {
         return new File(getAutosaveDirectory(), sanitize(fileName));
     }
 
-    /**
-     * Get the autosave files.
-     *
-     * @param prefix The autosave file prefix.
-     * @param pred A {@code Predicate} to select files with.
-     * @return A list of of autosaved {@code File}s.
-     */
-    private static List<File> getAutosaveFiles(String prefix,
-                                               Predicate<File> pred) {
-        final String suffix = "." + FreeCol.FREECOL_SAVE_EXTENSION;
-        final File asd = getAutosaveDirectory();
-        final Predicate<File> fullPred = pred.and(f ->
-            f.getName().startsWith(prefix) && f.getName().endsWith(suffix));
-        return (asd == null) ? Collections.emptyList()
-            : collectFiles(asd, fullPred);
-    }
-
-    /**
-     * Remove out of date autosaves. This only removed generic autosaves, not
-     * the last-turn autosave, which can be useful for continuing the game on
-     * the next play-session.
-     *
-     * @param prefix The autosave file prefix.
-     * @param excludeSuffixes Only files not ending with any of these prefixes
-     *     will be removed.
-     * @param validDays Only files older than this amount of days will
-     *     be removed.
-     */
-    public static void removeOutdatedAutosaves(String prefix,
-                                               List<String> excludeSuffixes,
-                                               long validDays) {
-        if (validDays <= 0L) return;
-        final long validMS = 1000L * 24L * 60L * 60L * validDays; // days to ms
-        final long timeNow = System.currentTimeMillis();
-        final Predicate<File> outdatedPred = f ->
-            f.lastModified() + validMS < timeNow;
-        final String extension = "." + FreeCol.FREECOL_SAVE_EXTENSION;
-        final List<String> ex = transform(excludeSuffixes, alwaysTrue(),
-                                          s -> sanitize(s));
-        final Predicate<File> suffixPred = f ->
-            ex.stream().noneMatch(suf -> f.getName().endsWith(suf + extension));
-
-        Utils.deleteFiles(getAutosaveFiles(sanitize(prefix),
-                                           outdatedPred.and(suffixPred)));
-    }
+    public static final String FREECOL_SAVE_SUFFIX = "." + FreeCol.FREECOL_SAVE_EXTENSION;
 
     /**
      * Remove all autosave files.
@@ -780,7 +736,10 @@ public class FreeColDirectories {
      * @param prefix The autosave file prefix.
      */
     public static void removeAutosaves(String prefix) {
-        Utils.deleteFiles(getAutosaveFiles(sanitize(prefix), alwaysTrue()));
+        File asd = getAutosaveDirectory();
+        for (String n : asd.list())
+            if (n.startsWith(prefix))
+                Utils.deleteFile(new File(asd, n));
     }
 
     /**
