@@ -694,14 +694,14 @@ public class FreeColDirectories {
      * @param The input file name.
      * @return A sanitized file name.
      */
-    private static String sanitize(String fileName) {
-        List<String> strings = new ArrayList<String>();
+    public static String sanitize(String fileName) {
+        StringBuilder strings = new StringBuilder();
         for (int i = 0; i < fileName.length(); i++) {
             String s = fileName.substring(i, i+1);
             if (SEPARATOR.equals(s)) continue;
-            strings.add(s);
+            strings.append(s);
         }
-        return join("", strings);
+        return strings.toString();
     }
 
 
@@ -728,72 +728,24 @@ public class FreeColDirectories {
         return new File(getAutosaveDirectory(), sanitize(fileName));
     }
 
-    /**
-     * Get the autosave files.
-     *
-     * @param prefix The autosave file prefix.
-     * @param pred A {@code Predicate} to select files with.
-     * @return A list of of autosaved {@code File}s.
-     */
-    private static List<File> getAutosaveFiles(String prefix,
-                                               Predicate<File> pred) {
-        final String suffix = "." + FreeCol.FREECOL_SAVE_EXTENSION;
-        final File asd = getAutosaveDirectory();
-        final Predicate<File> fullPred = pred.and(f ->
-            f.getName().startsWith(prefix) && f.getName().endsWith(suffix));
-        return (asd == null) ? Collections.emptyList()
-            : collectFiles(asd, fullPred);
-    }
-
-    /**
-     * Remove out of date autosaves. This only removed generic autosaves, not
-     * the last-turn autosave, which can be useful for continuing the game on
-     * the next play-session.
-     *
-     * @param prefix The autosave file prefix.
-     * @param excludeSuffixes Only files not ending with any of these prefixes
-     *     will be removed.
-     * @param validDays Only files older than this amount of days will
-     *     be removed.
-     * @return A suitable log message, or null if nothing was deleted.
-     */
-    public static String removeOutdatedAutosaves(String prefix,
-        List<String> excludeSuffixes, long validDays) {
-        if (validDays <= 0L) return null;
-        final long validMS = 1000L * 24L * 60L * 60L * validDays; // days to ms
-        final long timeNow = System.currentTimeMillis();
-        final Predicate<File> outdatedPred = f ->
-            f.lastModified() + validMS < timeNow;
-        final String extension = "." + FreeCol.FREECOL_SAVE_EXTENSION;
-        final List<String> ex = transform(excludeSuffixes, alwaysTrue(),
-                                          s -> sanitize(s));
-        final Predicate<File> suffixPred = f ->
-            ex.stream().noneMatch(suf -> f.getName().endsWith(suf + extension));
-
-        List<File> files = getAutosaveFiles(sanitize(prefix),
-                                            outdatedPred.and(suffixPred));
-        if (files.isEmpty()) return null;
-        Utils.deleteFiles(files);
-        StringBuilder sb = new StringBuilder();
-        sb.append("Deleted outdated (> ").append(validDays)
-            .append(" old) autosave/s: ");
-        for (File f : files) sb.append(" ").append(f.getPath());
-        return sb.toString();
-    }
+    public static final String FREECOL_SAVE_SUFFIX = "." + FreeCol.FREECOL_SAVE_EXTENSION;
 
     /**
      * Remove all autosave files.
      *
      * @param prefix The autosave file prefix.
-     * @return A suitable log message, or null if nothing was deleted.
      */
     public static String removeAutosaves(String prefix) {
-        List<File> files = getAutosaveFiles(sanitize(prefix), alwaysTrue());
-        if (files.isEmpty()) return null;
-        Utils.deleteFiles(files);
-        StringBuilder sb = new StringBuilder();
-        sb.append("Deleted autosave/s: ");
-        for (File f : files) sb.append(" ").append(f.getPath());
+        File asd = getAutosaveDirectory();
+        StringBuilder sb = new StringBuilder("Deleted autosave/s:");
+        for (String n : asd.list()) {
+            if (n.startsWith(prefix)) {
+                File f = new File(asd, n);
+                Utils.deleteFile(new File(asd, n));
+                sb.append(" ");
+                sb.append(f.getPath());
+            }
+        }
         return sb.toString();
     }
 

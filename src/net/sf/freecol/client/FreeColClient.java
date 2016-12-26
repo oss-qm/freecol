@@ -64,6 +64,7 @@ import net.sf.freecol.common.networking.DOMMessageHandler;
 import net.sf.freecol.common.networking.ServerAPI;
 import net.sf.freecol.common.resources.ResourceManager;
 import net.sf.freecol.common.resources.ResourceMapping;
+import net.sf.freecol.common.util.Utils;
 import static net.sf.freecol.common.util.CollectionUtils.*;
 import net.sf.freecol.server.FreeColServer;
 import net.sf.freecol.server.FreeColServer.ServerState;
@@ -996,19 +997,46 @@ public final class FreeColClient {
     }
 
     /**
+     * Remove out of date autosaves. This only removed generic autosaves, not
+     * the last-turn autosave, which can be useful for continuing the game on
+     * the next play-session.
+     */
+    public String removeOutdatedAutosaves() {
+        final ClientOptions co = getClientOptions();
+        final int validDays = co.getInteger(ClientOptions.AUTOSAVE_VALIDITY);
+        if (validDays <= 0L) return null;
+        final long validMS = 1000L * 24L * 60L * 60L * validDays; // days to ms
+        final long timeNow = System.currentTimeMillis();
+        final String prefix = co.getText(ClientOptions.AUTO_SAVE_PREFIX);
+        final String last_suffix = FreeColDirectories.sanitize(co.getText(ClientOptions.LAST_TURN_NAME))
+                                 + FreeColDirectories.FREECOL_SAVE_SUFFIX;
+        final String prev_suffix = FreeColDirectories.sanitize(co.getText(ClientOptions.BEFORE_LAST_TURN_NAME))
+                                 + FreeColDirectories.FREECOL_SAVE_SUFFIX;
+        final File asd = FreeColDirectories.getAutosaveDirectory();
+
+        StringBuilder sb = new StringBuilder("Deleted outdated (> ");
+        sb.append(validDays).append(" days old) autosave/s:");
+        for (String n : asd.list()) {
+            // skip last and previous savegame
+            if (n.startsWith(prefix) && !n.endsWith(last_suffix) && !n.endsWith(prev_suffix)) {
+                File f = new File(asd, n);
+                if (f.lastModified() + validMS < timeNow) {
+                    Utils.deleteFile(f);
+                    sb.append(" ");
+                    sb.append(f.getPath());
+                }
+            }
+        }
+        return sb.toString();
+    }
+
+    /**
      * Quits the application without any questions.
      */
     public void quit() {
         stopServer();
 
-        final ClientOptions co = getClientOptions();
-        List<String> excludeSuffixes = new ArrayList<>(2);
-        excludeSuffixes.add(co.getText(ClientOptions.LAST_TURN_NAME));
-        excludeSuffixes.add(co.getText(ClientOptions.BEFORE_LAST_TURN_NAME));
-        String logMe = FreeColDirectories
-            .removeOutdatedAutosaves(co.getText(ClientOptions.AUTO_SAVE_PREFIX),
-                                     excludeSuffixes,
-                                     co.getInteger(ClientOptions.AUTOSAVE_VALIDITY));
+        String logMe = removeOutdatedAutosaves();
         if (logMe != null) logger.info(logMe);
 
         // Exit
