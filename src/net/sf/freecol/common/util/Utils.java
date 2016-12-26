@@ -36,7 +36,6 @@ import java.io.UnsupportedEncodingException;
 import java.io.Writer;
 import java.nio.CharBuffer;
 
-import java.util.List;
 import java.util.Random;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -293,20 +292,17 @@ public class Utils {
     }
 
     /**
-     * Delete a list of files.
+     * Delete a file.
      *
-     * @param files The list of {@code File}s to delete.
+     * @param files The {@code File}s to delete.
      */
-    public static void deleteFiles(List<File> files) {
-        for (File f : files) {
-            try {
-                if (!f.delete()) {
-                    logger.warning("Failed to delete: " + f.getPath());
-                }
-            } catch (SecurityException ex) {
-                logger.log(Level.WARNING, "Exception deleting: "
-                    + f.getPath(), ex);
-            }
+    public static void deleteFile(File f) {
+        try {
+            if (!f.delete())
+                logger.warning("Failed to delete: " + f.getPath());
+        } catch (SecurityException ex) {
+            logger.log(Level.WARNING, "Exception deleting: "
+                + f.getPath(), ex);
         }
     }
 
