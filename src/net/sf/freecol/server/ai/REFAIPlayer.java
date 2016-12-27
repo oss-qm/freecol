@@ -188,14 +188,14 @@ public class REFAIPlayer extends EuropeanAIPlayer {
             = new CachingFunction<Colony, PathNode>(c ->
                 unit.findPath(carrier, c, carrier, null));
         final Predicate<Colony> portPred = c ->
-            (!port || c.isConnectedPort()) && pathMapper.apply(c) != null;
+            pathMapper.apply(c) != null;
         final Function<Colony, TargetTuple> newTupleMapper = c -> {
             PathNode path = pathMapper.apply(c);
             return new TargetTuple(c, path,
                 UnitSeekAndDestroyMission.scorePath(aiu, path));
         };
         final List<TargetTuple> targets
-            = transform(flatten(player.getRebels(), Player::getColonies),
+            = transform(flatten(player.getRebels(), (port ? Player::getPorts : Player::getColonies)),
                         portPred, newTupleMapper);
 
         // Increase score for drydock/s, musket and tools suppliers,

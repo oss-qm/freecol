@@ -3021,8 +3021,8 @@ public class Unit extends GoodsLocation
             // Ocean travel required, destination blocked.
             // Find the closest available connected port.
             final Predicate<Settlement> portPredicate = s ->
-                s != ignoreSrc && s != ignoreDst && s.isConnectedPort();
-            sett = minimize(getOwner().getSettlements(), portPredicate,
+                s != ignoreSrc && s != ignoreDst;
+            sett = minimize(getOwner().getPorts(), portPredicate,
                             settlementComparator);
             path = (sett == null) ? null : this.findPath(sett);
             break;
