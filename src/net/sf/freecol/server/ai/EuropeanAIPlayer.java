@@ -549,8 +549,8 @@ public class EuropeanAIPlayer extends MissionAIPlayer {
                                 : score / (stockade.getLevel() + 1.5);
                         });
                 target = maximize(flatten(enemies, Player::isEuropean,
-                                          Player::getColonies),
-                                  Colony::isConnectedPort, targetScore);
+                                          Player::getPorts),
+                                  targetScore);
             }
             // Otherwise attack something near a weak colony
             if (target == null && !colonies.isEmpty()) {
