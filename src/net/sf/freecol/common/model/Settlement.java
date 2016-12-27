@@ -68,6 +68,9 @@ public abstract class Settlement extends GoodsLocation
     /** Contains the abilities and modifiers of this Settlement. */
     private final FeatureContainer featureContainer = new FeatureContainer();
 
+    /** cached fields -- must be updated if neighboring tiles change (editor) **/
+    private boolean cacheConnectedPort = false;
+    private boolean cacheHighSeasCount = INFINITY;
 
     /**
      * Create a new {@code Settlement}.
@@ -84,6 +87,7 @@ public abstract class Settlement extends GoodsLocation
         this.name = name;
         this.tile = tile;
         changeType(owner.getNationType().getSettlementType(false));
+        updateCache();
     }
 
     /**
@@ -98,6 +102,25 @@ public abstract class Settlement extends GoodsLocation
         super(game, id);
     }
 
+    /**
+     * Update cached attribute - needs to be called when map or
+     * placement on the map changes
+     *
+     */
+    public void updateCache() {
+
+        /** find the best highSeasCount on neighboring tiles **/
+        int best_hsc = INFINITY;
+        for (Tile t : getTile().getSurroundingTiles(1, 1)) {
+            if (t.isLand()) continue;
+            int hsc = t.getHighSeasCount();
+            if ((hsc >= 0) && (hsc < best_hsc))
+                best_hsc = hsc;
+        }
+
+        cacheHighSeasCount = best_hsc;
+        cacheConnectedPort = (best_hsc != INFINITY);
+    }
 
     /**
      * Get the type of this settlement.
@@ -256,6 +279,7 @@ public abstract class Settlement extends GoodsLocation
             road.setVirtual(true);
             road.updateRoadConnections(true);
         }
+        updateCache();
     }
 
     /**
@@ -315,8 +339,7 @@ public abstract class Settlement extends GoodsLocation
      * @return True if the settlement is connected to the high seas.
      */
     public boolean isConnectedPort() {
-        return any(getTile().getSurroundingTiles(1, 1),
-                   t -> !t.isLand() && t.isHighSeasConnected());
+        return cacheConnectedPort;
     }
 
     /**
@@ -326,9 +349,7 @@ public abstract class Settlement extends GoodsLocation
      * @return A high seas count, INFINITY if not connected.
      */
     public int getHighSeasCount() {
-        Tile best = minimize(getTile().getSurroundingTiles(1, 1),
-                             Tile.isSeaTile, Tile.highSeasComparator);
-        return (best == null) ? INFINITY : best.getHighSeasCount();
+        return cacheHighSeasCount;
     }
 
     /**
