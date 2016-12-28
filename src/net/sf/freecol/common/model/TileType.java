@@ -35,8 +35,7 @@ import net.sf.freecol.common.util.RandomChoice;
 /**
  * The types of tiles.
  */
-public final class TileType extends FreeColSpecObjectType
-                            implements BaseProduction {
+public final class TileType extends FreeColSpecObjectType {
 
     public static final String TAG = "tile-type";
 
@@ -281,6 +280,28 @@ public final class TileType extends FreeColSpecObjectType
     private void addDisaster(Disaster disaster, int probability) {
         if (disasters == null) disasters = new ArrayList<>();
         disasters.add(new RandomChoice<>(disaster, probability));
+    }
+
+    /**
+     * Get the base production of a given goods type for an optional
+     * unit type.
+     *
+     * @param productionType An optional {@code ProductionType} to use,
+     *     if null the best available one is used.
+     * @param goodsType The {@code GoodsType} to produce.
+     * @param unitType An optional {@code UnitType} that is to do
+     *     the work, if null the unattended production is considered.
+     * @return The amount of goods produced.
+     */
+    public int getBaseProduction(ProductionType productionType,
+                                         GoodsType goodsType, UnitType unitType) {
+        if (goodsType == null) return 0;
+        if (productionType == null) {
+            productionType = ProductionType.getBestProductionType(goodsType,
+                    getAvailableProductionTypes(unitType == null));
+        }
+        if (productionType == null) return 0;
+        return productionType.getOutputAmount(goodsType);
     }
 
     /**
