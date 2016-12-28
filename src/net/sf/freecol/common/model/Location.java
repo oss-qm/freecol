@@ -180,26 +180,6 @@ public interface Location extends ObjectWithId {
 
 
     /**
-     * Static frontend to up().
-     *
-     * @param loc The {@code Location} to improve.
-     * @return The improved {@code Location}.
-     */
-    public static Location upLoc(Location loc) {
-        return (loc == null) ? null : loc.up();
-    }
-
-    /**
-     * Static front end to getRank.
-     *
-     * @param loc A {@code Location} to check.
-     * @return The integer rank of the given location.
-     */
-    public static int getRank(Location loc) {
-        return (loc == null) ? Location.LOCATION_RANK_NOWHERE : loc.getRank();
-    }
-
-    /**
      * Return the name of a Location, used with {@code StringTemplate}
      *
      * @param player The active player
