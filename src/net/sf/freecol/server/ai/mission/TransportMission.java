@@ -37,6 +37,7 @@ import net.sf.freecol.common.model.Goods;
 import net.sf.freecol.common.model.GoodsType;
 import net.sf.freecol.common.model.Locatable;
 import net.sf.freecol.common.model.Location;
+import net.sf.freecol.common.model.LocationUtil;
 import net.sf.freecol.common.model.Map;
 import net.sf.freecol.common.model.Direction;
 import net.sf.freecol.common.model.PathNode;
@@ -337,7 +338,7 @@ public class TransportMission extends Mission {
                 if (c1.isValid())
                     c = c1;
         }
-        setTarget(Location.upLoc((c == null) ? getAIUnit().getTrivialTarget()
+        setTarget(LocationUtil.upLoc((c == null) ? getAIUnit().getTrivialTarget()
                 : c.getCarrierTarget()));
     }
 
@@ -812,7 +813,7 @@ public class TransportMission extends Mission {
                     try {
                         Cargo cargo = Cargo.newCargo(t, carrier, end, false);
                         boolean result = queueCargo(cargo, false, lb);
-                        lb.add(" to drop at ", Location.upLoc(end),
+                        lb.add(" to drop at ", LocationUtil.upLoc(end),
                             "=", result);
                     } catch (FreeColException fce) {
                         lb.add(" ", t, " drop-fail(", fce.getMessage(), ")");

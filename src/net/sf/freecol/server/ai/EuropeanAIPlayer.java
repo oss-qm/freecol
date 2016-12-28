@@ -53,6 +53,7 @@ import net.sf.freecol.common.model.GoodsType;
 import net.sf.freecol.common.model.HistoryEvent;
 import net.sf.freecol.common.model.IndianSettlement;
 import net.sf.freecol.common.model.Location;
+import net.sf.freecol.common.model.LocationUtil;
 import net.sf.freecol.common.model.Map;
 import net.sf.freecol.common.model.Market;
 import net.sf.freecol.common.model.Modifier;
@@ -1045,7 +1046,7 @@ public class EuropeanAIPlayer extends MissionAIPlayer {
             TransportableAIObject t = w.getTransportable();
             if (t != null && t.getTransport() == null
                 && t.getTransportDestination() != null) {
-                Location loc = Location.upLoc(t.getTransportDestination());
+                Location loc = LocationUtil.upLoc(t.getTransportDestination());
                 appendToMapList(transportDemand, loc, w);
             }
         }
@@ -1161,7 +1162,7 @@ public class EuropeanAIPlayer extends MissionAIPlayer {
      * @return A list of {@code WorkerWish}es.
      */
     public List<WorkerWish> getWorkerWishesAt(Location loc, UnitType type) {
-        List<Wish> demand = transportDemand.get(Location.upLoc(loc));
+        List<Wish> demand = transportDemand.get(LocationUtil.upLoc(loc));
         if (demand == null)
             Collections.<WorkerWish>emptyList();
 
@@ -1181,7 +1182,7 @@ public class EuropeanAIPlayer extends MissionAIPlayer {
      * @return A list of {@code GoodsWish}es.
      */
     public List<GoodsWish> getGoodsWishesAt(Location loc, GoodsType type) {
-        List<Wish> demand = transportDemand.get(Location.upLoc(loc));
+        List<Wish> demand = transportDemand.get(LocationUtil.upLoc(loc));
         if (demand == null)
             Collections.<GoodsWish>emptyList();
 

@@ -32,6 +32,7 @@ import net.sf.freecol.common.io.FreeColXMLWriter;
 import net.sf.freecol.common.model.Colony;
 import net.sf.freecol.common.model.Constants;
 import net.sf.freecol.common.model.Location;
+import net.sf.freecol.common.model.LocationUtil;
 import net.sf.freecol.common.model.PathNode;
 import net.sf.freecol.common.model.Player;
 import net.sf.freecol.common.model.Tile;
@@ -222,7 +223,7 @@ public class BuildColonyMission extends Mission {
                                       boolean deferOK) {
         PathNode path = findTargetPath(aiUnit, range, deferOK);
         return (path != null) ? extractTarget(aiUnit, path)
-            : Location.upLoc(findCircleTarget(aiUnit,
+            : LocationUtil.upLoc(findCircleTarget(aiUnit,
                     getGoalDecider(aiUnit, deferOK), range*3, deferOK));
     }
 

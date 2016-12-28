@@ -30,6 +30,7 @@ import net.sf.freecol.common.model.Ability;
 import net.sf.freecol.common.model.Colony;
 import net.sf.freecol.common.model.Constants;
 import net.sf.freecol.common.model.Location;
+import net.sf.freecol.common.model.LocationUtil;
 import net.sf.freecol.common.model.Map;
 import net.sf.freecol.common.model.Direction;
 import net.sf.freecol.common.model.PathNode;
@@ -351,7 +352,7 @@ public class PioneeringMission extends Mission {
         if (deferOK) return getBestPioneeringColony(aiUnit);
         Location loc = findCircleTarget(aiUnit, getGoalDecider(aiUnit, false),
                                         range*3, false);
-        return (hasTools(aiUnit)) ? loc : Location.upLoc(loc);
+        return (hasTools(aiUnit)) ? loc : LocationUtil.upLoc(loc);
     }
 
     /**
