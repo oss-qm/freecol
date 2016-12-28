@@ -402,7 +402,7 @@ public class ServerGame extends Game implements ServerModelObject {
                     cs.add(See.perhaps().always(strongest), is);
                 }
             });
-        for (Colony c : weakest.getColonyList()) {
+        for (Colony c : weakest.getColonies()) {
             updated.addAll(c.getOwnedTiles());
             ((ServerColony)c).csChangeOwner(strongest, false, cs);//-vis(both),-til
             lb.add(" ", c.getName());
