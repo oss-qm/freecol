@@ -314,10 +314,12 @@ public class DiplomaticTrade extends FreeColGameObject {
      * @return A list of {@code Colony}s offered in this trade.
      */
     public List<Colony> getColoniesGivenBy(final Player player) {
-        return transform(this.items,
-                         ti -> ti instanceof ColonyTradeItem
-                             && ti.getSource() == player,
-                         ti -> ti.getColony(player.getGame()));
+        final Game game = player.getGame();
+        List<Colony> result = new ArrayList<>();
+        for (TradeItem ti : this.items)
+            if (ti instanceof ColonyTradeItem && ti.getSource() == player)
+                result.add(ti.getColony(game));
+        return result;
     }
 
     /**

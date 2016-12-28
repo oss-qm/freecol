@@ -536,7 +536,7 @@ public class EuropeanAIPlayer extends MissionAIPlayer {
                 enemies.clear();
                 enemies.addAll(preferred);
             }
-            List<Colony> colonies = player.getColonyList();
+            List<Colony> colonies = player.getColonies();
             // Find a target to attack.
             Location target = null;
             // Few colonies?  Attack the weakest European port

@@ -545,7 +545,7 @@ public class ServerPlayer extends Player implements ServerModelObject {
         }
 
         // Quick check for a colony.  Do not log, this is the common case.
-        if (any(getColonies())) return IS_ALIVE;
+        if (hasSettlements()) return IS_ALIVE;
 
         // Do not kill the observing player during a debug run.
         if (!isAI() && FreeColDebugger.getDebugRunTurns() >= 0) return IS_ALIVE;
@@ -897,7 +897,7 @@ public class ServerPlayer extends Player implements ServerModelObject {
     public boolean updateScore() {
         int oldScore = this.score;
         this.score = sum(getUnits(), Unit::getScoreValue)
-            + sum(getColonies(), Colony::getLiberty)
+            + getColoniesLiberty()
             + SCORE_FOUNDING_FATHER * count(getFathers());
         int gold = getGold();
         if (gold != GOLD_NOT_ACCOUNTED) {
@@ -1495,7 +1495,7 @@ public class ServerPlayer extends Player implements ServerModelObject {
     public void csNaturalDisasters(Random random, ChangeSet cs,
                                    int probability) {
         if (randomInt(logger, "Natural disaster", random, 100) < probability) {
-            List<Colony> colonies = getColonyList();
+            List<Colony> colonies = getColonies();
             int size = colonies.size();
             if (size <= 0) return;
             // Randomly select a colony to start with, then generate
@@ -1930,7 +1930,7 @@ outer:  for (Effect effect : effects) {
                 && (atWarWith(u.getOwner()) || u.hasAbility(Ability.PIRACY)));
         // For all colonies that are able to bombard, search neighbouring
         // tiles for targets, and fire!
-        for (Colony c : transform(getColonies(), Colony::canBombardEnemyShip)) {
+        for (Colony c : getColoniesCanBombard()) {
             Tile tile = c.getTile();
             for (Unit u : transform(flatten(tile.getSurroundingTiles(1, 1),
                                             Tile::getUnits),
@@ -1995,7 +1995,7 @@ outer:  for (Effect effect : effects) {
                 // Check for tiles that are now visible.  They need to be
                 // explored, and always updated so that units are visible.
                 // *Requires that canSee[] has **not** been updated yet!*
-                Stream<Colony> colonies = (hasAbility(Ability.SEE_ALL_COLONIES))
+                List<Colony> colonies = (hasAbility(Ability.SEE_ALL_COLONIES))
                     ? getGame().getAllColonies(null)
                     : getColonies();
                 Set<Tile> tiles
@@ -2009,7 +2009,7 @@ outer:  for (Effect effect : effects) {
                 cs.add(See.only(this), tiles);
                 visibilityChange = true;
             } else if (Modifier.SOL.equals(m.getId())) {
-                for (Colony c : getColonyList()) {
+                for (Colony c : getColonies()) {
                     c.addLiberty(0); // Kick the SoL and production bonus
                     c.invalidateCache();
                 }
@@ -2055,14 +2055,14 @@ outer:  for (Effect effect : effects) {
 
             case "model.event.freeBuilding":
                 BuildingType type = spec.getBuildingType(event.getValue());
-                for (Colony c : getColonyList()) {
+                for (Colony c : getColonies()) {
                     ((ServerColony)c).csFreeBuilding(type, cs);
                 }
                 break;
 
             case "model.event.seeAllColonies":
                 visibilityChange = true;//-vis(this), can now see other colonies
-                for (Colony colony : game.getAllColoniesList(null)) {
+                for (Colony colony : game.getAllColonies(null)) {
                     final Tile t = colony.getTile();
                     Set<Tile> tiles = new HashSet<>();
                     if (exploreTile(t)) {
@@ -4141,7 +4141,7 @@ outer:  for (Effect effect : effects) {
                 = transform(mercs, au -> au.getType(spec).isNaval());
             Tile dst;
             if (naval.isEmpty()) { // Deliver to first settlement
-                dst = first(getColonies()).getTile();
+                dst = getFirstColony().getTile();
                 createUnits(mercs, dst);//-vis: safe, in colony
                 cs.add(See.only(this), dst);
             } else { // Let them sail in
