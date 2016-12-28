@@ -33,7 +33,6 @@ import java.util.NoSuchElementException;
 import java.util.UUID;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import java.util.stream.Stream;
 
 import javax.xml.stream.XMLStreamException;
 
@@ -1057,20 +1056,13 @@ public class Game extends FreeColGameObject {
      * Get all the colonies in the game.
      *
      * @param player An optional {@code Player} to omit.
-     * @return A stream of all the {@code Colony}s in the game.
-     */
-    public Stream<Colony> getAllColonies(Player player) {
-        return flatten(getLiveEuropeanPlayers(player), Player::getColonies);
-    }
-
-    /**
-     * Get a list of all the colonies in the game.
-     *
-     * @param player An optional {@code Player} to omit.
      * @return A list of all the {@code Colony}s in the game.
      */
-    public List<Colony> getAllColoniesList(Player player) {
-        return toList(getAllColonies(player));
+    public List<Colony> getAllColonies(Player player) {
+        List<Colony> result = new ArrayList<>();
+        for (Player p : getLiveEuropeanPlayers(player))
+            result.addAll(p.getColonies());
+        return result;
     }
 
     /**
