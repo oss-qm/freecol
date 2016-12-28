@@ -164,7 +164,7 @@ public class HighScore extends FreeColObject {
         this.playerName = player.getName();
         this.nationId = player.getNationId();
         this.nationTypeId = player.getNationType().getId();
-        this.nColonies = count(player.getColonies());
+        this.nColonies = player.getSettlementCount();
         this.nUnits = player.getUnitCount();
         this.independenceTurn = (player.getPlayerType()
             == Player.PlayerType.INDEPENDENT) ? game.getTurn().getNumber()
