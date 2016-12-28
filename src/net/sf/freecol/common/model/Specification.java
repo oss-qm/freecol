@@ -631,8 +631,8 @@ public final class Specification {
 
         // Apply the customs on coast restriction
         boolean customsOnCoast = getBoolean(GameOptions.CUSTOMS_ON_COAST);
-        for (Ability a : iterable(getBuildingType("model.building.customHouse")
-                .getAbilities(Ability.COASTAL_ONLY))) {
+        for (Ability a : getBuildingType("model.building.customHouse")
+                .getAbilities(Ability.COASTAL_ONLY)) {
             a.setValue(customsOnCoast);
         }
 
@@ -922,9 +922,9 @@ public final class Specification {
      * @param id The object identifier to look for.
      * @return A stream of {@code Ability}s.
      */
-    public Stream<Ability> getAbilities(String id) {
+    public List<Ability> getAbilities(String id) {
         List<Ability> result = allAbilities.get(id);
-        return (result == null) ? Stream.<Ability>empty() : result.stream();
+        return (result == null ? Collections.<Ability>emptyList() : result);
     }
 
     /**
@@ -2224,7 +2224,7 @@ public final class Specification {
         }
 
         // Ambush terrain ability not present in older specs.
-        if (first(getAbilities(Ability.AMBUSH_TERRAIN)) == null){
+        if (getAbilities(Ability.AMBUSH_TERRAIN).size() == 0) {
             Ability ambush = new Ability(Ability.AMBUSH_TERRAIN, null, true);
             addAbility(ambush);
             for (TileType tt : transform(getTileTypeList(), tt ->
