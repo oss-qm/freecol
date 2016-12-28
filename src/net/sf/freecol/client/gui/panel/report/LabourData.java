@@ -430,7 +430,7 @@ public class LabourData {
             GoodsType expertProduction = unitData.getUnitType()
                 .getExpertProduction();
             if (expertProduction != null) {
-                for (Colony c : player.getColonyList()) {
+                for (Colony c : player.getColonies()) {
                     int net = c.getNetProductionOf(expertProduction);
                     if (unitData.details.containsKey(c)) {
                         unitData.getLocationData(c).netProduction = net;
