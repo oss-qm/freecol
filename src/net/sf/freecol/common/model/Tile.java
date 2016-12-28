@@ -2348,7 +2348,7 @@ public final class Tile extends UnitLocation implements Named, Ownable {
      * {@inheritDoc}
      */
     @Override
-    public Stream<Ability> getAbilities(String id,
+    public List<Ability> getAbilities(String id,
                                         FreeColSpecObjectType fcgot,
                                         int turn) {
         // Delegate to type

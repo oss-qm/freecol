@@ -4237,23 +4237,26 @@ public class Unit extends GoodsLocation
      * {@inheritDoc}
      */
     @Override
-    public Stream <Ability> getAbilities(String id, FreeColSpecObjectType fcgot,
+    public List<Ability> getAbilities(String id, FreeColSpecObjectType fcgot,
                                          int turn) {
         final Player owner = getOwner();
         final UnitType unitType = getType();
 
-        return concat(
-            // UnitType abilities always apply.
-            unitType.getAbilities(id),
+        ArrayList<Ability> result = new ArrayList<>();
 
-            // Roles apply with qualification.
-            role.getAbilities(id, fcgot, turn),
+        // UnitType abilities always apply.
+        result.addAll(unitType.getAbilities(id));
 
-            // The player's abilities require more qualification.
-            owner.getAbilities(id, fcgot, turn),
+        // Roles apply with qualification.
+        result.addAll(role.getAbilities(id, fcgot, turn));
 
-            // Location abilities may apply.
-            getLocationAbilities(id, turn));
+        // The player's abilities require more qualification.
+        result.addAll(owner.getAbilities(id, fcgot, turn));
+
+        // Location abilities may apply.
+        result.addAll(getLocationAbilities(id, turn));
+
+        return result;
     }
 
     /**
@@ -4271,7 +4274,7 @@ public class Unit extends GoodsLocation
      * @param turn The turn that applies.
      * @return A stream of {@code Ability}s found.
      */
-    private Stream<Ability> getLocationAbilities(String id, int turn) {
+    private List<Ability> getLocationAbilities(String id, int turn) {
         final UnitType unitType = getType();
         final Settlement settlement = getSettlement();
         if (settlement != null) {
@@ -4281,7 +4284,7 @@ public class Unit extends GoodsLocation
             Europe europe = owner.getEurope();
             if (europe != null) return europe.getAbilities(id, getType(), turn);
         }
-        return Stream.<Ability>empty();
+        return Collections.<Ability>emptyList();
     }
 
     /**
