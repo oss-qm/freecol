@@ -641,7 +641,7 @@ public class Building extends WorkLocation
      * {@inheritDoc}
      */
     @Override
-    public Stream<Ability> getAbilities(String id, FreeColSpecObjectType type,
+    public List<Ability> getAbilities(String id, FreeColSpecObjectType type,
                                         int turn) {
         // Buildings have no abilities independent of their type (for now).
         return getType().getAbilities(id, type, turn);
