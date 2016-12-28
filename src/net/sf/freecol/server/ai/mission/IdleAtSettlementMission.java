@@ -25,6 +25,7 @@ import javax.xml.stream.XMLStreamException;
 
 import net.sf.freecol.common.io.FreeColXMLReader;
 import net.sf.freecol.common.model.Location;
+import net.sf.freecol.common.model.LocationUtil;
 import net.sf.freecol.common.model.PathNode;
 import net.sf.freecol.common.model.Unit;
 import net.sf.freecol.common.util.LogBuilder;
@@ -120,7 +121,7 @@ public class IdleAtSettlementMission extends Mission {
         final Unit unit = getAIUnit().getUnit();
         PathNode path = unit.findOurNearestOtherSettlement();
         return (path == null) ? null
-            : Location.upLoc(path.getLastNode().getLocation());
+            : LocationUtil.upLoc(path.getLastNode().getLocation());
     }
 
     /**

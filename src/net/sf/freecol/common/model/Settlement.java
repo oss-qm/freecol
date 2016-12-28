@@ -620,7 +620,7 @@ public abstract class Settlement extends GoodsLocation
      */
     @Override
     public final int getRank() {
-        return Location.getRank(getTile());
+        return LocationUtil.getRank(getTile());
     }
 
 
