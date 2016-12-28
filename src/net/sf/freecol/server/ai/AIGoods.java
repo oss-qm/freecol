@@ -33,6 +33,7 @@ import net.sf.freecol.common.model.Goods;
 import net.sf.freecol.common.model.GoodsType;
 import net.sf.freecol.common.model.Locatable;
 import net.sf.freecol.common.model.Location;
+import net.sf.freecol.common.model.LocationUtil;
 import net.sf.freecol.common.model.Direction;
 import net.sf.freecol.common.model.PathNode;
 import net.sf.freecol.common.model.Settlement;
@@ -227,7 +228,7 @@ public class AIGoods extends TransportableAIObject {
      */
     @Override
     public PathNode getDeliveryPath(Unit carrier, Location dst) {
-        if (dst == null) dst = Location.upLoc(getTransportDestination());
+        if (dst == null) dst = LocationUtil.upLoc(getTransportDestination());
 
         PathNode path = (goods.getLocation() == carrier) ? carrier.findPath(dst)
             : (goods.getLocation() instanceof Unit) ? null
