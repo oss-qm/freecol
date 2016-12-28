@@ -437,9 +437,9 @@ public abstract class FreeColObject
     /**
      * Gets a copy of the abilities of this object.
      *
-     * @return A stream of abilities.
+     * @return A set of abilities.
      */
-    public final Stream<Ability> getAbilities() {
+    public final List<Ability> getAbilities() {
         return getAbilities(null);
     }
 
@@ -447,9 +447,9 @@ public abstract class FreeColObject
      * Gets the set of abilities with the given identifier from this object.
      *
      * @param id The object identifier.
-     * @return A stream of abilities.
+     * @return A list of abilities.
      */
-    public final Stream<Ability> getAbilities(String id) {
+    public final List<Ability> getAbilities(String id) {
         return getAbilities(id, null);
     }
 
@@ -459,9 +459,9 @@ public abstract class FreeColObject
      * @param id The object identifier.
      * @param fcgot An optional {@code FreeColSpecObjectType} the
      *     ability applies to.
-     * @return A stream of abilities.
+     * @return A list of abilities.
      */
-    public final Stream<Ability> getAbilities(String id,
+    public final List<Ability> getAbilities(String id,
                                               FreeColSpecObjectType fcgot) {
         return getAbilities(id, fcgot, Turn.UNDEFINED);
     }
@@ -475,14 +475,14 @@ public abstract class FreeColObject
      * @param fcgot An optional {@code FreeColSpecObjectType} the
      *     ability applies to.
      * @param turn An optional applicable {@code Turn}.
-     * @return A set of abilities.
+     * @return A list of abilities.
      */
-    public Stream<Ability> getAbilities(String id,
+    public List<Ability> getAbilities(String id,
                                         FreeColSpecObjectType fcgot,
                                         int turn) {
         FeatureContainer fc = getFeatureContainer();
-        return (fc == null) ? Stream.<Ability>empty()
-            : fc.getAbilities(id, fcgot, turn).stream();
+        return (fc == null) ? Ability.EMPTY_LIST
+            : fc.getAbilities(id, fcgot, turn);
     }
 
     /**

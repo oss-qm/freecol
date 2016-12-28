@@ -19,6 +19,8 @@
 
 package net.sf.freecol.common.model;
 
+import java.util.List;
+import java.util.ArrayList;
 import javax.xml.stream.XMLStreamException;
 
 import net.sf.freecol.common.io.FreeColXMLReader;
@@ -408,6 +410,7 @@ public final class Ability extends Feature {
     public static final String UPGRADE_CONVERT
         = "model.ability.upgradeConvert";
 
+    public static final List<Ability> EMPTY_LIST = new ArrayList<>();
 
     /** The ability value. */
     private boolean value = true;

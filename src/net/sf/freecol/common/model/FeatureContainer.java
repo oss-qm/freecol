@@ -18,6 +18,7 @@
  */
 package net.sf.freecol.common.model;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -104,9 +105,9 @@ public final class FeatureContainer {
      * @param abilities A stream of {@code Ability}s to check.
      * @return True if the abilities are `satisfied'.
      */
-    public static boolean hasAbility(Stream<Ability> abilities) {
+    public static boolean hasAbility(List<Ability> abilities) {
         boolean ret = false;
-        for (Ability ability : iterable(abilities)) {
+        for (Ability ability : abilities) {
             if (!ability.getValue()) return false;
             ret = true;
         }
@@ -164,7 +165,7 @@ public final class FeatureContainer {
      * @param fcgot An optional {@code FreeColSpecObjectType} the
      *     ability applies to.
      * @param turn An optional applicable {@code Turn}.
-     * @return A stream of abilities.
+     * @return A list of abilities.
      */
     public final List<Ability> getAbilities(String id, FreeColSpecObjectType fcgot,
                                         int turn) {
@@ -548,7 +549,7 @@ public final class FeatureContainer {
         StringBuilder sb = new StringBuilder(256);
         sb.append("[FeatureContainer");
         int siz = sb.length();
-        for (Ability ability : iterable(getAbilities(null, null, Turn.UNDEFINED))) {
+        for (Ability ability : getAbilities(null, null, Turn.UNDEFINED)) {
             sb.append(' ').append(ability);
         }
         if (sb.length() > siz) {
