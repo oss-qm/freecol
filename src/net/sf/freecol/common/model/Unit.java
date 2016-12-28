@@ -35,6 +35,7 @@ import net.sf.freecol.common.io.FreeColXMLReader;
 import net.sf.freecol.common.io.FreeColXMLWriter;
 import net.sf.freecol.common.model.CombatModel;
 import net.sf.freecol.common.model.Direction;
+import net.sf.freecol.common.model.LocationUtil;
 import net.sf.freecol.common.model.pathfinding.CostDecider;
 import net.sf.freecol.common.model.pathfinding.CostDeciders;
 import net.sf.freecol.common.model.pathfinding.GoalDecider;
@@ -80,7 +81,7 @@ public class Unit extends GoodsLocation
     public static final Comparator<Unit> locComparator
         = new Comparator<Unit>() {
             public int compare(Unit a, Unit b) {
-                return a.Location.getRank(u) - b.Location.getRank(u);
+                return LocationUtil.getRank(a) - LocationUtil.getRank(b);
             }};
 
     /**
@@ -4129,7 +4130,7 @@ public class Unit extends GoodsLocation
      */
     @Override
     public int getRank() {
-        return Location.getRank(getLocation());
+        return LocationUtil.getRank(getLocation());
     }
 
     /**

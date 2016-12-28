@@ -35,6 +35,7 @@ import net.sf.freecol.common.model.Colony;
 import net.sf.freecol.common.model.Direction;
 import net.sf.freecol.common.model.Locatable;
 import net.sf.freecol.common.model.Location;
+import net.sf.freecol.common.model.LocationUtil;
 import net.sf.freecol.common.model.Map;
 import net.sf.freecol.common.model.PathNode;
 import net.sf.freecol.common.model.Player;
@@ -259,7 +260,7 @@ public class AIUnit extends TransportableAIObject {
     public Location getTrivialTarget() {
         PathNode path = unit.getTrivialPath();
         return (path == null) ? null
-            : Location.upLoc(path.getLastNode().getLocation());
+            : LocationUtil.upLoc(path.getLastNode().getLocation());
     }
 
     /**
@@ -478,7 +479,7 @@ public class AIUnit extends TransportableAIObject {
      */
     public boolean equipForRole(Role role) {
         final Player player = unit.getOwner();
-        Location loc = Location.upLoc(unit.getLocation());
+        Location loc = LocationUtil.upLoc(unit.getLocation());
         if (!(loc instanceof UnitLocation)) return false;
         int count = role.getMaximumCount();
         if (count > 0) {
@@ -580,7 +581,7 @@ public class AIUnit extends TransportableAIObject {
             dst = getTransportDestination();
             if (dst == null) return null;
         }
-        dst = Location.upLoc(dst);
+        dst = LocationUtil.upLoc(dst);
 
         PathNode path;
         if (unit.getLocation() == carrier) {

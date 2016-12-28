@@ -765,7 +765,7 @@ public abstract class WorkLocation extends UnitLocation
      */
     @Override
     public final int getRank() {
-        return Location.getRank(getTile());
+        return LocationUtil.getRank(getTile());
     }
 
 

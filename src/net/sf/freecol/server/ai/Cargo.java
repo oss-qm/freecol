@@ -36,6 +36,7 @@ import net.sf.freecol.common.model.Game;
 import net.sf.freecol.common.model.GoodsType;
 import net.sf.freecol.common.model.Locatable;
 import net.sf.freecol.common.model.Location;
+import net.sf.freecol.common.model.LocationUtil;
 import net.sf.freecol.common.model.Map;
 import net.sf.freecol.common.model.Direction;
 import net.sf.freecol.common.model.PathNode;
@@ -112,7 +113,7 @@ public class Cargo {
                 && (destination = t.getTransportDestination()) == null) {
                 return "invalid-null-destination";
             }
-            this.tdst = Location.upLoc(destination);
+            this.tdst = LocationUtil.upLoc(destination);
             final Location src = t.getLocation();
             final boolean carrying = src == carrier;
             if (!carrying && src instanceof Unit) {
@@ -142,14 +143,14 @@ public class Cargo {
             if (carrying) {
                 this.twait = this.cwait = null;
             } else {
-                this.cwait = Location.upLoc(pick.getLocation());
+                this.cwait = LocationUtil.upLoc(pick.getLocation());
                 // If there is a previous non-carrier move on the delivery
                 // path, that is where the transportable should wait.
                 // This will be true for units moving directly from land
                 // to a naval carrier, but usually false when collection
                 // occurs in a colony (as for goods).
                 PathNode prev = (pick.previous == null) ? pick : pick.previous;
-                this.twait = Location.upLoc(prev.getLocation());
+                this.twait = LocationUtil.upLoc(prev.getLocation());
             }
 
             // Can the carrier reach the pickup point?  If already
@@ -171,10 +172,10 @@ public class Cargo {
                     + " " + pick.fullPathToString()
                     + " " + drop);
             }
-            this.cdst = Location.upLoc(drop.previous.getLocation());
+            this.cdst = LocationUtil.upLoc(drop.previous.getLocation());
 
             // The transportable ends up at the end of the delivery path.
-            this.tdst = Location.upLoc(deliver.getLastNode().getLocation());
+            this.tdst = LocationUtil.upLoc(deliver.getLastNode().getLocation());
 
             // Total turns is just that of the delivery path if the
             // transportable has been collected.  Otherwise, it is the
