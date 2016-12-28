@@ -39,6 +39,7 @@ import net.sf.freecol.common.model.FreeColObject;
 import net.sf.freecol.common.model.FreeColGameObject;
 import net.sf.freecol.common.model.Game;
 import net.sf.freecol.common.model.Location;
+import net.sf.freecol.common.model.LocationUtil;
 import net.sf.freecol.common.model.ModelMessage;
 import net.sf.freecol.common.model.Player;
 import net.sf.freecol.common.option.BooleanOption;
@@ -477,7 +478,7 @@ public class ClientOptions extends OptionGroup {
     private static final Comparator<Colony> colonyPositionComparator
         = new Comparator<Colony> () {
             @Override public int compare(Colony a, Colony b) {
-                return Location.getRank(a) - Location.getRank(b);
+                return LocationUtil.getRank(a) - LocationUtil.getRank(b);
             }
         };
 
