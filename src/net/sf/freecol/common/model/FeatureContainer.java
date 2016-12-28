@@ -18,6 +18,7 @@
  */
 package net.sf.freecol.common.model;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -104,9 +105,9 @@ public final class FeatureContainer {
      * @param abilities A stream of {@code Ability}s to check.
      * @return True if the abilities are `satisfied'.
      */
-    public static boolean hasAbility(Stream<Ability> abilities) {
+    public static boolean hasAbility(List<Ability> abilities) {
         boolean ret = false;
-        for (Ability ability : iterable(abilities)) {
+        for (Ability ability : abilities) {
             if (!ability.getValue()) return false;
             ret = true;
         }
@@ -135,7 +136,7 @@ public final class FeatureContainer {
      * @return True if the key is present.
      */
     public boolean containsAbilityKey(String key) {
-        return first(getAbilities(key, null, null)) != null;
+        return getAbilities(key, null, null).size() > 0;
     }
 
     /**
@@ -146,9 +147,9 @@ public final class FeatureContainer {
      * @param fcgot An optional {@code FreeColSpecObjectType} the
      *     ability applies to.
      * @param turn An optional applicable {@code Turn}.
-     * @return A stream of abilities.
+     * @return A list of abilities.
      */
-    public Stream<Ability> getAbilities(String id, FreeColSpecObjectType fcgot,
+    public List<Ability> getAbilities(String id, FreeColSpecObjectType fcgot,
                                         Turn turn) {
         Set<Ability> result = new HashSet<>();
         if (abilitiesPresent()) {
@@ -164,7 +165,8 @@ public final class FeatureContainer {
             }
             removeInPlace(result, a -> !a.appliesTo(fcgot, turn));
         }
-        return result.stream();
+
+        return new ArrayList<>(result);
     }
 
     /**
@@ -504,7 +506,7 @@ public final class FeatureContainer {
         StringBuilder sb = new StringBuilder(256);
         sb.append("[FeatureContainer");
         int siz = sb.length();
-        for (Ability ability : iterable(getAbilities(null, null, null))) {
+        for (Ability ability : getAbilities(null, null, null)) {
             sb.append(' ').append(ability);
         }
         if (sb.length() > siz) {

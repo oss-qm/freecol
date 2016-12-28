@@ -24,7 +24,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.logging.Logger;
-import java.util.stream.Stream;
 
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
@@ -505,13 +504,16 @@ public class Europe extends UnitLocation
      * {@inheritDoc}
      */
     @Override
-    public Stream<Ability> getAbilities(String id, FreeColSpecObjectType fcgot,
+    public List<Ability> getAbilities(String id, FreeColSpecObjectType fcgot,
                                         Turn turn) {
-        return concat(super.getAbilities(id, fcgot, turn),
-            // Always able to dress a missionary.
-            ((id == null || Ability.DRESS_MISSIONARY.equals(id))
-                ? Stream.of(ABILITY_DRESS_MISSIONARY)
-                : Stream.<Ability>empty()));
+        List<Ability> result = super.getAbilities(id, fcgot, turn);
+
+        if (id == null || Ability.DRESS_MISSIONARY.equals(id)) {
+            result = new ArrayList<>(result);
+            result.add(ABILITY_DRESS_MISSIONARY);
+        }
+
+        return result;
     }
 
 

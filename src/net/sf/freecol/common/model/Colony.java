@@ -2528,12 +2528,16 @@ loop:   for (WorkLocation wl : getWorkLocationsForProducing(goodsType)) {
      * {@inheritDoc}
      */
     @Override
-    public Stream<Ability> getAbilities(String id, FreeColSpecObjectType type,
+    public List<Ability> getAbilities(String id, FreeColSpecObjectType type,
                                         Turn turn) {
         if (turn == null) turn = getGame().getTurn();
-        return concat(super.getAbilities(id, type, turn),
-                ((owner == null) ? Stream.<Ability>empty()
-                        : owner.getAbilities(id, type, turn)));
+        List<Ability> result = super.getAbilities(id, type, turn);
+        if (owner != null) {
+            result = new ArrayList<>(result);
+            result.addAll(owner.getAbilities(id, type, turn));
+        }
+
+        return result;
     }
 
 
