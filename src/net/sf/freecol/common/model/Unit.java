@@ -1802,7 +1802,7 @@ public class Unit extends GoodsLocation
         if (!hasAbility(Ability.CAPTURE_EQUIPMENT)) return null;
         final Specification spec = getSpecification();
         final Role oldRole = getRole();
-        return find(getAvailableRoles(spec.getMilitaryRolesList()),
+        return find(getAvailableRoles(spec.getMilitaryRoles()),
             r -> any(r.getRoleChanges(), rc ->
                 rc.getFrom(spec) == oldRole && rc.getCapture(spec) == role));
     }
