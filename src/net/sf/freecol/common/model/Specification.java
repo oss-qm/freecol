@@ -1656,22 +1656,13 @@ public final class Specification {
      *
      * @return An unmodifiable list of military {@code Role}s.
      */
-    public List<Role> getMilitaryRolesList() {
+    public List<Role> getMilitaryRoles() {
         if (this.militaryRoles == null) {
             this.militaryRoles = Collections.<Role>unmodifiableList(
                 transform(this.roles, Role::isOffensive, Function.identity(),
                           Role.militaryComparator));
         }
         return this.militaryRoles;
-    }
-
-    /**
-     * Get the available military roles as a stream.
-     *
-     * @return A stream of military {@code Role}s.
-     */
-    public Stream<Role> getMilitaryRoles() {
-        return getMilitaryRolesList().stream();
     }
 
     /**
