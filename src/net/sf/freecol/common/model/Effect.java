@@ -85,7 +85,7 @@ public class Effect extends FreeColSpecObjectType {
         setId(template.getId());
         setSpecification(template.getSpecification());
         this.probability = template.probability;
-        setScopes(template.getScopeList());
+        setScopes(template.getScopes());
         addFeatures(template);
     }
 
@@ -141,7 +141,7 @@ public class Effect extends FreeColSpecObjectType {
         StringBuilder sb = new StringBuilder(32);
         sb.append('[').append(getId())
             .append(" probability=").append(probability).append('%');
-        for (Scope scope : getScopeList()) sb.append(' ').append(scope);
+        for (Scope scope : getScopes()) sb.append(' ').append(scope);
         sb.append(']');
         return sb.toString();
     }
