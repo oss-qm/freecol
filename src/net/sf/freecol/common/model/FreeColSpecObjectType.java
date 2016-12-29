@@ -22,7 +22,6 @@ package net.sf.freecol.common.model;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.stream.Stream;
 
 import javax.xml.stream.XMLStreamException;
 
@@ -183,17 +182,9 @@ public abstract class FreeColSpecObjectType extends FreeColSpecObject
     /**
      * {@inheritDoc}
      */
-    public final List<Scope> getScopeList() {
+    public final List<Scope> getScopes() {
         return (this.scopes == null) ? Collections.<Scope>emptyList()
             : this.scopes;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public final Stream<Scope> getScopes() {
-        return (this.scopes == null) ? Stream.<Scope>empty()
-            : this.scopes.stream();
     }
 
     /**
@@ -260,7 +251,7 @@ public abstract class FreeColSpecObjectType extends FreeColSpecObject
 
         for (Modifier modifier : getSortedModifiers()) modifier.toXML(xw);
 
-        for (Scope scope : getScopeList()) scope.toXML(xw);
+        for (Scope scope : getScopes()) scope.toXML(xw);
     }
 
     /**
