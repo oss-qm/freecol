@@ -719,32 +719,6 @@ public class CollectionUtils {
     }
 
     /**
-     * Create a stream of files from a directory.
-     *
-     * @param dir The {@code File} that hopefully is a directory.
-     * @return A stream of {@code File}s.
-     */
-    public static Stream<File> fileStream(File dir) {
-        File[] files;
-        return (dir == null || !dir.isDirectory()
-            || (files = dir.listFiles()) == null)
-            ? Stream.<File>empty()
-            : Arrays.stream(files);
-    }
-
-    /**
-     * Create a stream of files from a directory, that each match a predicate.
-     *
-     * @param dir The {@code File} that hopefully is a directory.
-     * @param predicate The {@code Predicate} to match with.
-     * @return A stream of matching {@code File}s.
-     */
-    public static Stream<File> fileStream(File dir,
-                                          Predicate<? super File> predicate) {
-        return fileStream(dir).filter(predicate);
-    }
-
-    /**
      * Simple stream search for the first item that matches a predicate.
      *
      * @param <T> The array member type.
