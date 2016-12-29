@@ -885,7 +885,7 @@ public class Unit extends GoodsLocation
      * @return A list of available {@code Role}s.
      */
     public List<Role> getAvailableRolesList(List<Role> roles) {
-        if (roles == null) roles = getSpecification().getRolesList();
+        if (roles == null) roles = getSpecification().getRoles();
         return transform(roles, r -> roleIsAvailable(r));
     }
 
