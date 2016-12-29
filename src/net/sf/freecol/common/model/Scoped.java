@@ -20,7 +20,6 @@
 package net.sf.freecol.common.model;
 
 import java.util.List;
-import java.util.stream.Stream;
 
 import static net.sf.freecol.common.util.CollectionUtils.*;
 
@@ -31,18 +30,11 @@ import static net.sf.freecol.common.util.CollectionUtils.*;
 public interface Scoped {
 
     /**
-     * Get the scopes applicable to this effect.
-     *
-     * @return A list of {@code Scope}s.
-     */
-    public List<Scope> getScopeList();
-
-    /**
      * Get the scopes applicable to this effect as a stream.
      *
-     * @return A stream of {@code Scope}s.
+     * @return A {@code} list of {@code Scope}s.
      */
-    public Stream<Scope> getScopes();
+    public List<Scope> getScopes();
 
     /**
      * Set the scopes for this object.
@@ -65,7 +57,7 @@ public interface Scoped {
      * @return True if this effect applies.
      */
     default boolean appliesTo(FreeColObject object) {
-        List<Scope> scopes = getScopeList();
+        List<Scope> scopes = getScopes();
         return (scopes == null || scopes.isEmpty()) ? true
             : any(scopes, s -> s.appliesTo(object));
     }
