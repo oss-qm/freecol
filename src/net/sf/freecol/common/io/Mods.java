@@ -48,9 +48,14 @@ public class Mods {
      * @param dir The directory to load from.
      */
     private static void loadModDirectory(File dir) {
-        for (FreeColModFile fcmf : transform(fileStream(dir),
-                                             FreeColModFile::fileFilter,
-                                             FreeColModFile::make)) {
+        if ((dir == null) || !dir.isDirectory())
+            return;
+
+        for (File walk : dir.listFiles()) {
+            if (!FreeColModFile.fileFilter(f))
+                continue;
+
+            FreeColModFile fcmf = FreeColModFile.make(f);
             allMods.put(fcmf.getId(), fcmf);
         }
     }
