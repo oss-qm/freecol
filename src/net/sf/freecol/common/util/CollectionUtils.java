@@ -1027,63 +1027,6 @@ public class CollectionUtils {
     }
 
     /**
-     * Create a stream from an array and an immediate mapping transform.
-     *
-     * @param <T> The array member type.
-     * @param <R> The resulting stream member type.
-     * @param array The array to search.
-     * @param mapper A mapping {@code Function} to apply.
-     * @return The resulting {@code Stream}.
-     */
-    public static <T,R> Stream<R> map(T[] array,
-        Function<? super T,? extends R> mapper) {
-        return map_internal(Arrays.stream(array), mapper);
-    }
-
-    /**
-     * Create a stream from a collection and an immediate mapping transform.
-     *
-     * @param <T> The collection member type.
-     * @param <R> The resulting stream member type.
-     * @param c The {@code Collection} to search.
-     * @param mapper A mapping {@code Function} to apply.
-     * @return The resulting {@code Stream}.
-     */
-    public static <T,R> Stream<R> map(Collection<T> c,
-        Function<? super T,? extends R> mapper) {
-        return map_internal(c.stream(), mapper);
-    }
-
-    /**
-     * Apply a mapping to a stream.
-     *
-     * @param <T> Generic type T
-     * @param <R> Generic type R
-     * @param stream The {@code Stream} to map.
-     * @param mapper A mapping {@code Function} to apply.
-     * @return The resulting {@code Stream}.
-     */
-    public static <T,R> Stream<R> map(Stream<T> stream,
-        Function<? super T,? extends R> mapper) {
-        return (stream == null) ? Stream.<R>empty()
-            : map_internal(stream, mapper);
-    }
-
-    /**
-     * Implement map.
-     *
-     * @param <T> Generic type T
-     * @param <R> Generic type R
-     * @param stream The {@code Stream} to map.
-     * @param mapper A mapping {@code Function} to apply.
-     * @return The resulting {@code Stream}.
-     */
-    private static <T,R> Stream<R> map_internal(Stream<T> stream,
-        Function<? super T,? extends R> mapper) {
-        return stream.map(mapper);
-    }
-
-    /**
      * Create a predicate for a type that returns true if it equals a key.
      *
      * @param <T> The input type.
