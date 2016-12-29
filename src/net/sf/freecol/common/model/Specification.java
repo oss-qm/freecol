@@ -1622,17 +1622,8 @@ public final class Specification {
      *
      * @return A list of available {@code Role}s.
      */
-    public List<Role> getRolesList() {
+    public List<Role> getRoles() {
         return this.roles;
-    }
-
-    /**
-     * Get all the available roles as a stream.
-     *
-     * @return A stream of available {@code Role}s.
-     */
-    public Stream<Role> getRoles() {
-        return getRolesList().stream();
     }
 
     /**
