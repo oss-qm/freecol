@@ -157,7 +157,7 @@ public class GoodsDetailPanel extends ColopediaGameObjectTypePanel<GoodsType> {
                 }
             }
             List<Role> roles = new ArrayList<>();
-            allTypes = filterBuildables(getSpecification().getRolesList(),
+            allTypes = filterBuildables(getSpecification().getRoles(),
                                         roles, type);
             if (!roles.isEmpty()) {
                 panel.add(Utility.localizedLabel("colopedia.goods.equipment"),
