@@ -597,24 +597,6 @@ public class CollectionUtils {
     }
 
     /**
-     * Concatenate streams.
-     *
-     * @param <T> Generic type of {@link Stream}
-     * @param s0 The first {@code Stream}.
-     * @param streams The {@code Stream}s to concatenate (nulls ignored).
-     * @return The concatenated stream.
-     */
-    @SafeVarargs
-    public static <T> Stream<T> concat(Stream<T> s0, Stream<T>... streams) {
-        Stream<T>[] sts = streams;
-        Stream<T> ret = (s0 == null) ? Stream.empty() : s0;
-        for (int i = 0; i < sts.length; i++) {
-            if (sts[i] != null) ret = Stream.concat(ret, sts[i]);
-        }
-        return ret;
-    }
-
-    /**
      * Count the number of members of an array.
      *
      * @param <T> The array member type.
