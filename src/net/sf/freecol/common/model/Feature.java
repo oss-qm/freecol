@@ -22,7 +22,6 @@ package net.sf.freecol.common.model;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.stream.Stream;
 
 import javax.xml.stream.XMLStreamException;
 
@@ -90,7 +89,7 @@ public abstract class Feature extends FreeColSpecObject
         this.lastTurn = other.lastTurn;
         this.duration = other.duration;
         this.temporary = other.temporary;
-        setScopes(other.getScopeList());
+        setScopes(other.getScopes());
     }
 
     /**
@@ -274,17 +273,9 @@ public abstract class Feature extends FreeColSpecObject
     /**
      * {@inheritDoc}
      */
-    public final List<Scope> getScopeList() {
+    public final List<Scope> getScopes() {
         return (this.scopes == null) ? Collections.<Scope>emptyList()
-            : new ArrayList<>(this.scopes);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public final Stream<Scope> getScopes() {
-        return (this.scopes == null) ? Stream.<Scope>empty()
-            : getScopeList().stream();
+            : this.scopes;
     }
 
     /**
@@ -356,7 +347,7 @@ public abstract class Feature extends FreeColSpecObject
     protected void writeChildren(FreeColXMLWriter xw) throws XMLStreamException {
         super.writeChildren(xw);
 
-        for (Scope scope : getScopeList()) scope.toXML(xw);
+        for (Scope scope : getScopes()) scope.toXML(xw);
     }
 
     /**
@@ -445,8 +436,8 @@ public abstract class Feature extends FreeColSpecObject
             } else if (lastTurn.getNumber() != feature.lastTurn.getNumber()) {
                 return false;
             }
-            List<Scope> tScopes = getScopeList();
-            List<Scope> fScopes = feature.getScopeList();
+            List<Scope> tScopes = getScopes();
+            List<Scope> fScopes = feature.getScopes();
             if (tScopes.size() != fScopes.size()
                 // Not very efficient, but we do not expect many scopes
                 || any(this.scopes, s -> !feature.scopes.contains(s))
@@ -470,7 +461,7 @@ public abstract class Feature extends FreeColSpecObject
         hash += 31 * ((temporary) ? 1 : 0);
         // FIXME: is this safe?  It is an easy way to ignore
         // the order of scope elements.
-        hash += sum(getScopeList(), s -> Utils.hashCode(s));
+        hash += sum(getScopes(), s -> Utils.hashCode(s));
         return hash;
     }
 }
