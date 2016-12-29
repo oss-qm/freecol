@@ -147,7 +147,7 @@ public class RandomUtils {
                                         Stream<T> stream, Random random) {
         return (stream == null) ? null
             : getRandomMember(logger, logMe,
-                              stream.collect(Collectors.toList()), random);
+                              stream.collect(Collectors.<T>toList()), random);
     }
 
     /**
