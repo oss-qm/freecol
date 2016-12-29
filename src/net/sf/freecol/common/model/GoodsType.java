@@ -501,7 +501,7 @@ public final class GoodsType extends FreeColSpecObjectType {
         List<BuildableType> buildableTypes = new ArrayList<>();
         buildableTypes.addAll(spec.getBuildingTypeList());
         buildableTypes.addAll(spec.getUnitTypeList());
-        buildableTypes.addAll(spec.getRolesList());
+        buildableTypes.addAll(spec.getRoles());
         forEach(flatten(buildableTypes, BuildableType::getRequiredGoods),
                 ag -> ag.getType().buildingMaterial = true);
 
