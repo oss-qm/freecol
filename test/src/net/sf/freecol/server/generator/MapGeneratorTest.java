@@ -178,7 +178,7 @@ public class MapGeneratorTest extends FreeColTestCase {
             // has at least one settlement.
             int settlements = 0;
             int capitals = 0;
-            for (IndianSettlement s : p.getIndianSettlementList()) {
+            for (IndianSettlement s : p.getIndianSettlements()) {
                 settlements++;
                 if (s.isCapital()) capitals++;
             }
