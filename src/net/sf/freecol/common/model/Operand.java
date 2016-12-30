@@ -210,7 +210,7 @@ public class Operand extends Scope {
                                   c -> ourCount(c.getBuildings()));
                     break;
                 case SETTLEMENTS:
-                    result += ourCount(player.getSettlementList());
+                    result += ourCount(player.getSettlements());
                     break;
                 case FOUNDING_FATHERS:
                     result += ourCount(player.getFathers());
@@ -249,11 +249,11 @@ public class Operand extends Scope {
             return sum(player.getColonies(), c -> ourCount(c.getBuildings()));
         case SETTLEMENTS:
             if (methodName == null) {
-                return ourCount(player.getSettlementList())
+                return ourCount(player.getSettlements())
                     + spec.getInteger(GameOptions.SETTLEMENT_LIMIT_MODIFIER);
             }
             final String methodValue = getMethodValue();
-            return count(player.getSettlementList(),
+            return count(player.getSettlements(),
                 s -> String.valueOf(s.invokeMethod(methodName,
                         Boolean.class, Boolean.FALSE)).equals(methodValue));
         case FOUNDING_FATHERS:

@@ -1338,7 +1338,7 @@ public class EuropeanAIPlayer extends MissionAIPlayer {
         if (!player.canBuildColonies()) return 0;
 
         int nColonies = 0, nPorts = 0, nWorkers = 0, nEuropean = 0;
-        for (Settlement settlement : player.getSettlementList()) {
+        for (Settlement settlement : player.getSettlements()) {
             nColonies++;
             if (settlement.isConnectedPort()) nPorts++;
             nWorkers += count(settlement.getAllUnitsList(), Unit::isPerson);
