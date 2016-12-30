@@ -633,7 +633,7 @@ public class ServerPlayer extends Player implements ServerModelObject {
         // Clean up missions and remove tension/alarm/stance.
         for (Player other : getGame().getLivePlayers(this)) {
             if (isEuropean() && other.isIndian()) {
-                for (IndianSettlement is : other.getIndianSettlementList()) {
+                for (IndianSettlement is : other.getIndianSettlements()) {
                     ServerIndianSettlement sis = (ServerIndianSettlement)is;
                     if (is.hasMissionary(this)) sis.csKillMissionary(null, cs);
                     is.getTile().cacheUnseen();//+til
@@ -1384,9 +1384,9 @@ public class ServerPlayer extends Player implements ServerModelObject {
         // Propagate tension change as settlement alarm to all
         // settlements except the one that originated it (if any).
         if (isIndian()) {
-            for (IndianSettlement is : transform(getIndianSettlements(),
-                    i -> i != origin && i.hasContacted(player))) {
-                ((ServerIndianSettlement)is).csModifyAlarm(player, add,
+            for (IndianSettlement is : getIndianSettlementsContacted(player)) {
+                if (is != origin)
+                    ((ServerIndianSettlement)is).csModifyAlarm(player, add,
                                                            false, cs);//+til
             }
         }
@@ -1758,7 +1758,7 @@ outer:  for (Effect effect : effects) {
             // The simple way to do it is just to save all old tension
             // levels and check if they have changed after applying
             // all the changes.
-            List<IndianSettlement> allSettlements = getIndianSettlementList();
+            List<IndianSettlement> allSettlements = getIndianSettlements();
             java.util.Map<IndianSettlement,
                 java.util.Map<Player, Tension.Level>> oldLevels = new HashMap<>();
             for (IndianSettlement is : allSettlements) {
@@ -1970,8 +1970,7 @@ outer:  for (Effect effect : effects) {
                 for (Player p : transform(game.getLiveNativePlayers(),
                                           p -> p.hasContacted(this))) {
                     p.setTension(this, new Tension(Tension.TENSION_MIN));
-                    for (IndianSettlement is : transform(p.getIndianSettlements(),
-                                                         is -> is.hasContacted(this))) {
+                    for (IndianSettlement is : p.getIndianSettlementsContacted(this)) {
                         is.getTile().cacheUnseen();//+til
                         is.setAlarm(this, new Tension(Tension.TENSION_MIN));//-til
                         cs.add(See.only(this), is);
@@ -2557,8 +2556,7 @@ outer:  for (Effect effect : effects) {
             // FIXME: just the tension
             cs.add(See.perhaps().always(this), defenderPlayer);
             csChangeStance(Stance.PEACE, defenderPlayer, true, cs);
-            for (IndianSettlement is : transform(defenderPlayer.getIndianSettlements(),
-                                                 is -> is.hasContacted(this))) {
+            for (IndianSettlement is : defenderPlayer.getIndianSettlements()) {
                 is.getAlarm(this).setValue(Tension.SURRENDERED);
                 // Only update attacker with settlements that have
                 // been seen, as contact can occur with its members.
@@ -2704,7 +2702,7 @@ outer:  for (Effect effect : effects) {
 
         // Burn down the missions
         boolean here = is.hasMissionary(attackerPlayer);
-        for (IndianSettlement s : nativePlayer.getIndianSettlementsWithMissionaryList(attackerPlayer)) {
+        for (IndianSettlement s : nativePlayer.getIndianSettlementsWithMissionary(attackerPlayer)) {
             ((ServerIndianSettlement)s).csKillMissionary(null, cs);
         }
         // Backtrack on updating this tile, avoiding duplication in csCombat
