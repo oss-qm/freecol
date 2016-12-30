@@ -26,10 +26,10 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.function.Predicate;
 
 import javax.swing.AbstractCellEditor;
 import javax.swing.DefaultCellEditor;
@@ -445,9 +445,12 @@ public final class PlayersTable extends JTable {
             this.preGameController = preGameController;
             this.nationOptions = nationOptions;
             this.thisPlayer = thisPlayer;
-            final Predicate<Nation> nationPred = n -> !n.isUnknownEnemy()
-                && nationOptions.getNations().get(n) != null;
-            this.nations = transform(spec.getNations(), nationPred);
+
+            this.nations = new ArrayList<>();
+            for (Nation n : spec.getNations())
+                if (!n.isUnknownEnemy() && nationOptions.getNations().get(n) != null)
+                    this.nations.add(n);
+
             for (Nation n : this.nations) this.nationMap.put(n, null);
             this.nationMap.put(thisPlayer.getNation(), thisPlayer);
         }
