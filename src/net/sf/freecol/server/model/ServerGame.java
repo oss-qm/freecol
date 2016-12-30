@@ -50,6 +50,7 @@ import net.sf.freecol.common.model.Goods;
 import net.sf.freecol.common.model.GoodsLocation;
 import net.sf.freecol.common.model.HighSeas;
 import net.sf.freecol.common.model.HistoryEvent;
+import net.sf.freecol.common.model.IndianSettlement;
 import net.sf.freecol.common.model.Limit;
 import net.sf.freecol.common.model.Location;
 import net.sf.freecol.common.model.ModelMessage;
@@ -372,9 +373,8 @@ public class ServerGame extends Game implements TurnTaker {
         Set<Tile> updated = new HashSet<>();
         ServerPlayer strongest = (ServerPlayer)strongAI;
         ServerPlayer weakest = (ServerPlayer)weakAI;
-        forEach(flatten(getLiveNativePlayers(),
-                        p -> p.getIndianSettlementsWithMissionary(weakest)),
-            is -> {
+        for (Player p : getLiveNativePlayers()) {
+            for (IndianSettlement is : p.getIndianSettlementsWithMissionary(weakest)) {
                 lb.add(" ", is.getName(), "(mission)");
                 is.getTile().cacheUnseen(strongest);//+til
                 tiles.add(is.getTile());
@@ -385,7 +385,8 @@ public class ServerGame extends Game implements TurnTaker {
                     is.getTile().updateIndianSettlement(strongest);
                     cs.add(See.perhaps().always(strongest), is);
                 }
-            });
+            }
+        }
         Set<Unit> contacts = new HashSet<>();
         for (Colony c : weakest.getColonies()) {
             updated.addAll(c.getOwnedTiles());

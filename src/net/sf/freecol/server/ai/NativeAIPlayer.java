@@ -140,7 +140,7 @@ public class NativeAIPlayer extends MissionAIPlayer {
 
         // Give defensive missions up to the minimum expected defence,
         // leave the rest with the default wander-hostile mission.
-        for (IndianSettlement is : player.getIndianSettlementList()) {
+        for (IndianSettlement is : player.getIndianSettlements()) {
             List<Unit> units = is.getAllUnitsList();
             while (units.size() > is.getRequiredDefenders()) {
                 Unit u = units.remove(0);
@@ -189,7 +189,7 @@ public class NativeAIPlayer extends MissionAIPlayer {
     private void secureSettlements(int[] randoms, LogBuilder lb) {
         int randomIdx = 0;
         List<IndianSettlement> settlements
-            = getPlayer().getIndianSettlementList();
+            = getPlayer().getIndianSettlements();
         for (IndianSettlement is : settlements) {
             // Spread arms and horses between camps
             // FIXME: maybe make this dependent on difficulty level?
@@ -467,7 +467,7 @@ public class NativeAIPlayer extends MissionAIPlayer {
         int randomIdx = 0;
         lb.mark();
 
-        for (IndianSettlement is : player.getIndianSettlementList()) {
+        for (IndianSettlement is : player.getIndianSettlements()) {
             // Do not bring gifts all the time.
             if (randoms[randomIdx++] >= giftProbability) continue;
 
@@ -567,7 +567,7 @@ public class NativeAIPlayer extends MissionAIPlayer {
         int randomIdx = 0;
         lb.mark();
 
-        for (IndianSettlement is : player.getIndianSettlementList()) {
+        for (IndianSettlement is : player.getIndianSettlements()) {
             // Do not demand tribute all of the time.
             if (randoms[randomIdx++] >= demandProbability) continue;
 
