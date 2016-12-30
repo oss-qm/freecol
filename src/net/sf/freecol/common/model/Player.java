@@ -2441,8 +2441,12 @@ public class Player extends FreeColGameObject implements Nameable {
      *     or null if not found.
      */
     public IndianSettlement getIndianSettlementByName(String name) {
-        return find(getIndianSettlements(),
-                    matchKeyEquals(name, IndianSettlement::getName));
+        synchronized (this.settlements) {
+            for (Settlement s : this.settlements)
+                if (s instanceof IndianSettlement && Utils.equals(name, ((IndianSettlement)s).getName))
+                    return (IndianSettlement)s;
+        }
+        return null;
     }
 
     /**
@@ -2502,25 +2506,35 @@ public class Player extends FreeColGameObject implements Nameable {
     }
 
     /**
-     * Get a stream of all the indian settlements this player owns.
-     *
-     * @return A stream of the {@code IndianSettlement}s this player owns.
-     */
-    public Stream<IndianSettlement> getIndianSettlements() {
-        return getIndianSettlementList().stream();
-    }
-
-    /**
      * Get a list of all the IndianSettlements this player owns.
      *
      * @return A list of the {@code IndianSettlement}s this player owns.
      */
-    public List<IndianSettlement> getIndianSettlementList() {
-        List<IndianSettlement> result = new ArrayList<>();
-        for (Settlement s : this.settlements)
-            if (s instanceof IndianSettlement)
-                result.add((IndianSettlement)s);
-        return result;
+    public List<IndianSettlement> getIndianSettlements() {
+        synchronized (this.settlements) {
+            List<IndianSettlement> result = new ArrayList<>();
+            for (Settlement s : this.settlements)
+                if (s instanceof IndianSettlement)
+                    result.add((IndianSettlement)s);
+            return result;
+        }
+    }
+
+    /**
+     * Get a list of all the IndianSettlements this player owns, that have
+     * been contacted by given player.
+     *
+     * @return A list of this player's {@code IndianSettlement}s, that have
+     * been contacted by given player.
+     */
+    public List<IndianSettlement> getIndianSettlementsContacted(Player player) {
+        synchronized (this.settlements) {
+            List<IndianSettlement> result = new ArrayList<>();
+            for (Settlement s : this.settlements)
+                if (s instanceof IndianSettlement && s.hasContacted(player))
+                    result.add((IndianSettlement)s);
+            return result;
+        }
     }
 
     /**
@@ -2531,24 +2545,32 @@ public class Player extends FreeColGameObject implements Nameable {
      * @return A list of the {@code IndianSettlement}s with a matching
      *     missionary.
      */
-    public List<IndianSettlement> getIndianSettlementsWithMissionaryList(Player p) {
-        List<IndianSettlement> result = new ArrayList<>();
-        for (Settlement s : this.settlements)
-            if ((s instanceof IndianSettlement) && ((IndianSettlement)s).hasMissionary(p))
-                result.add((IndianSettlement)s);
-        return result;
+    public List<IndianSettlement> getIndianSettlementsWithMissionary(Player p) {
+        synchronized (this.settlements) {
+            List<IndianSettlement> result = new ArrayList<>();
+            for (Settlement s : this.settlements)
+                if ((s instanceof IndianSettlement) && ((IndianSettlement)s).hasMissionary(p))
+                    result.add((IndianSettlement)s);
+            return result;
+        }
     }
 
     /**
-     * Get a stream of all indian settlements owned by this player with
+     * Check whether player has an indian settlements owned by this player with
      * a missionary from a given player.
      *
      * @param p The {@code Player}.
-     * @return A stream of the {@code IndianSettlement}s with a matching
-     *     missionary.
+     * @return A True if there player has an indian settlement with missionary
+     *     from given player.
      */
-    public Stream<IndianSettlement> getIndianSettlementsWithMissionary(Player p) {
-        return getIndianSettlementsWithMissionaryList(p).stream();
+    public final boolean hasIndianSettlementsWithMissionary(Player p) {
+        synchronized (this.settlements) {
+            List<IndianSettlement> result = new ArrayList<>();
+            for (Settlement s : this.settlements)
+                if ((s instanceof IndianSettlement) && ((IndianSettlement)s).hasMissionary(p))
+                    return true;
+            return false;
+        }
     }
 
     /**
@@ -2917,7 +2939,7 @@ public class Player extends FreeColGameObject implements Nameable {
                 // All missions if using enhanced missionaries.
                 if (spec.getBoolean(GameOptions.ENHANCED_MISSIONARIES))
                     for (Player other : getGame().getLiveNativePlayers(this))
-                        for (IndianSettlement is : getIndianSettlementsWithMissionaryList(this))
+                        for (IndianSettlement is : getIndianSettlementsWithMissionary(this))
                             vismap.setVisible(is);
 
                 // All other European settlements if can see all colonies.

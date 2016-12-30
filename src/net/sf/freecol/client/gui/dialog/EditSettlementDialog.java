@@ -228,7 +228,7 @@ public final class EditSettlementDialog extends FreeColDialog<IndianSettlement>
             if (this.capital.isSelected() && !is.isCapital()) {
                 // make sure we downgrade the old capital
                 for (IndianSettlement indianSettlement
-                         : is.getOwner().getIndianSettlementList()) {
+                         : is.getOwner().getIndianSettlements()) {
                     indianSettlement.setCapital(false);
                 }
                 is.setCapital(true);
