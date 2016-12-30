@@ -645,7 +645,7 @@ public class ServerPlayer extends Player implements ServerModelObject {
         }
 
         // Remove settlements.  Update formerly owned tiles.
-        List<Settlement> settlements = getSettlementList();
+        List<Settlement> settlements = getSettlements();
         while (!settlements.isEmpty()) {
             csDisposeSettlement(settlements.remove(0), cs);
         }
@@ -950,7 +950,7 @@ public class ServerPlayer extends Player implements ServerModelObject {
         }
         invalidateCanSeeTiles();//+vis(this)
         if (!reveal) {
-            for (Settlement s : getSettlementList()) exploreForSettlement(s);
+            for (Settlement s : getSettlements()) exploreForSettlement(s);
             for (Unit u : getUnitList()) exploreForUnit(u);
         }
         return result;
@@ -4360,7 +4360,7 @@ outer:  for (Effect effect : effects) {
         final Game game = getGame();
 
         // Settlements
-        List<Settlement> settlements = getSettlementList();
+        List<Settlement> settlements = getSettlements();
         int newSoL = 0, newImmigration = getImmigration();
         for (Settlement settlement : settlements) {
             ((ServerModelObject)settlement).csNewTurn(random, lb, cs);
