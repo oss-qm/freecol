@@ -1074,8 +1074,12 @@ public class Game extends FreeColGameObject {
      *     specified name (the settlement might not be visible to a client).
      */
     public Settlement getSettlementByName(String name) {
-        return find(flatten(getLivePlayers(), Player::getSettlements),
-                    matchKeyEquals(name, Settlement::getName));
+        for (Player p : this.players)
+            if (p.isLive())
+                for (Settlement s : p.getSettlements())
+                    if (Utils.equals(name, s.getName()))
+                        return s;
+        return null;
     }
 
     /**

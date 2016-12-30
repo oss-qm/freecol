@@ -2253,21 +2253,23 @@ public class Player extends FreeColGameObject implements Nameable {
     /**
      * Gets a the settlements this player owns.
      *
-     * @return The list of {@code Settlements} this player owns.
+     * @return The list of {@code Settlement}s this player owns.
      */
-    public List<Settlement> getSettlementList() {
+    public List<Settlement> getSettlements() {
         synchronized (this.settlements) {
             return new ArrayList<>(this.settlements);
         }
     }
 
     /**
-     * Get a stream of the settlements this player owns.
+     * Gets the first settlement this player owns.
      *
-     * @return The strean of {@code Settlements} this player owns.
+     * @return The first {@code Settlement} this player owns.
      */
-    public Stream<Settlement> getSettlements() {
-        return getSettlementList().stream();
+    public Settlement getFirstSettlement() {
+        synchronized (this.settlements) {
+            return this.settlements.get(0);
+        }
     }
 
     /**
@@ -2916,7 +2918,7 @@ public class Player extends FreeColGameObject implements Nameable {
                 vismap.setVisible(unit);
 
             // All the settlements.
-            for (Settlement settlement : getSettlementList())
+            for (Settlement settlement : getSettlements())
                 vismap.setVisible(settlement);
 
             if (isEuropean()) {
@@ -3381,7 +3383,7 @@ public class Player extends FreeColGameObject implements Nameable {
      * @return True if the player has no settlements (on the map) yet.
      */
     private boolean hasZeroSettlements() {
-        List<Settlement> settlements = getSettlementList();
+        List<Settlement> settlements = getSettlements();
         return settlements.isEmpty()
             || (settlements.size() == 1
                 && settlements.get(0).getTile().getSettlement() == null);
