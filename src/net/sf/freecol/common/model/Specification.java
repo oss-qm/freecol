@@ -544,7 +544,11 @@ public final class Specification {
         nationTypes.clear();
         nationTypes.addAll(indianNationTypes);
         nationTypes.addAll(europeanNationTypes);
-        REFNationTypes.addAll(transform(europeanNationTypes, NationType::isREF));
+
+        for (EuropeanNationType nt : europeanNationTypes)
+            if (nt.isREF())
+                REFNationTypes.add(nt);
+
         europeanNationTypes.removeAll(REFNationTypes);
 
         experts.clear();
@@ -2118,8 +2122,8 @@ public final class Specification {
             });
 
         // Nation FOUND_COLONY -> FOUNDS_COLONIES
-        for (EuropeanNationType ent : transform(europeanNationTypes,
-                nt -> nt.hasAbility(Ability.FOUND_COLONY))) {
+        for (EuropeanNationType ent : europeanNationTypes) {
+            if (!ent.hasAbility(Ability.FOUND_COLONY)) continue;
             ent.removeAbilities(Ability.FOUND_COLONY);
             ent.addAbility(new Ability(Ability.FOUNDS_COLONIES, ent, true));
         }
@@ -2185,10 +2189,9 @@ public final class Specification {
         // ability to have man-o-war.  Older specs used
         // INDEPENDENCE_DECLARED but we can not directly use that or
         // the REF gets access to colonialRegulars.
-        for (NationType ent : transform(europeanNationTypes,
-                nt -> nt.isREF() && !nt.hasAbility(Ability.INDEPENDENT_NATION))) {
-            ent.addAbility(new Ability(Ability.INDEPENDENT_NATION));
-        }
+        for (NationType ent : europeanNationTypes)
+            if (ent.isREF() && !ent.hasAbility(Ability.INDEPENDENT_NATION))
+                ent.addAbility(new Ability(Ability.INDEPENDENT_NATION));
 
         // Resource type modifiers had the wrong priority
         forEach(flatten(resourceTypeList, ResourceType::getModifiers), m -> {
@@ -2225,10 +2228,10 @@ public final class Specification {
         }
 
         // European nation type production modifier indexes moved to the spec
-        for (Modifier mod : transform(flatten(europeanNationTypes,
-                    EuropeanNationType::getModifiers), goodsPred)) {
-            mod.setModifierIndex(Modifier.NATION_PRODUCTION_INDEX);
-        }
+        for (EuropeanNationType ent : europeanNationTypes)
+            for (Modifier m : ent.getModifiers())
+                if (allTypes.get(m.getId()) instanceof GoodsType)
+                    m.setModifierIndex(Modifier.NATION_PRODUCTION_INDEX);
 
         // TownHall, Chapel et al now have unattended production types
         // (replacing modifiers).
