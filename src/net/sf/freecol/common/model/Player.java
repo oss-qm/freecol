@@ -2268,21 +2268,23 @@ public class Player extends FreeColGameObject implements Nameable {
     /**
      * Gets a the settlements this player owns.
      *
-     * @return The list of {@code Settlements} this player owns.
+     * @return The list of {@code Settlement}s this player owns.
      */
-    public List<Settlement> getSettlementList() {
+    public List<Settlement> getSettlements() {
         synchronized (this.settlements) {
             return new ArrayList<>(this.settlements);
         }
     }
 
     /**
-     * Get a stream of the settlements this player owns.
+     * Gets the first settlement this player owns.
      *
-     * @return The strean of {@code Settlements} this player owns.
+     * @return The first {@code Settlement} this player owns.
      */
-    public Stream<Settlement> getSettlements() {
-        return getSettlementList().stream();
+    public Settlement getFirstSettlement() {
+        synchronized (this.settlements) {
+            return this.settlements.get(0);
+        }
     }
 
     /**

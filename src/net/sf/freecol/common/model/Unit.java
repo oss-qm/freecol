@@ -2668,7 +2668,7 @@ public class Unit extends GoodsLocation
         final Player owner = getOwner();
         Settlement sett = minimize(owner.getSettlements(),
                                    settlementStartComparator);
-        if (sett == null) sett = first(owner.getSettlements());
+        if (sett == null) sett = owner.getFirstSettlements();
         if (sett != null) return sett;
 
         // Owner has no settlements.  If it is the REF, start from a
