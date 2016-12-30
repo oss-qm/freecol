@@ -936,10 +936,11 @@ public class Game extends FreeColGameObject {
      * @return A vacant {@code Nation} or null if none found.
      */
     public Nation getVacantNation() {
-        Entry<Nation, NationState> entry
-            = find(nationOptions.getNations().entrySet(),
-                   matchKey(NationState.AVAILABLE, Entry::getValue));
-        return (entry == null) ? null : entry.getKey();
+        for (Entry<Nation, NationState> e : nationOptions.getNations().entrySet())
+            if (e.getValue() == NationState.AVAILABLE)
+                return e.getKey();
+
+        return null;
     }
 
     /**
@@ -948,9 +949,11 @@ public class Game extends FreeColGameObject {
      * @return A list of available {@code Nation}s.
      */
     public final List<Nation> getVacantNations() {
-        return transform(nationOptions.getNations().entrySet(),
-                         matchKey(NationState.AVAILABLE, Entry::getValue),
-                         Entry::getKey);
+        List<Nation> result = new ArrayList<>();
+        for (Entry<Nation, NationState> e : nationOptions.getNations().entrySet())
+            if (NationState.AVAILABLE == e.getValue())
+                result.add(e.getKey());
+        return result;
     }
 
     /**
