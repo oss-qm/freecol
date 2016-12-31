@@ -169,7 +169,7 @@ public abstract class UnitLocation extends FreeColGameObject implements Location
     }
 
     // Some useful utilities, marked final as they will work as long
-    // as working implementations of getUnits/List(), getUnitCount(),
+    // as working implementations of getUnits(), getUnitCount(),
     // getUnitCapacity() and getSettlement() are provided.
 
     /**
@@ -218,7 +218,10 @@ public abstract class UnitLocation extends FreeColGameObject implements Location
      *     {@code Location}.
      */
     public int getTotalUnitCount() {
-        return sum(getUnits(), u -> 1 + u.getUnitCount());
+        int result = 0;
+        for (Unit u : getUnits())
+            result += 1 + u.getUnitCount();
+        return result;
     }
 
     /**
@@ -230,8 +233,10 @@ public abstract class UnitLocation extends FreeColGameObject implements Location
      * @see Unit#isCarrier
      */
     public boolean hasCarrierWithSpace(int space) {
-        return any(getUnits(), u -> u.isCarrier() && !u.isDamaged()
-            && u.getSpaceLeft() >= space);
+        for (Units u : getUnits())
+            if (u.isCarrier() && !u.isDamaged() && u.getSpaceLeft() >= space)
+                return true;
+        return false;
     }
 
     /**
@@ -240,7 +245,11 @@ public abstract class UnitLocation extends FreeColGameObject implements Location
      * @return A list of naval {@code Unit}s present.
      */
     public List<Unit> getNavalUnits() {
-        return transform(getUnits(), Unit::isNaval);
+        List<Unit> result = new ArrayList<>();
+        for (Unit u : getUnits())
+            if (u.isNaval())
+                result.add(u);
+        return result;
     }
 
     /**
@@ -250,7 +259,10 @@ public abstract class UnitLocation extends FreeColGameObject implements Location
      * @return A suitable carrier or null if none found.
      */
     public Unit getCarrierForUnit(Unit unit) {
-        return find(getUnits(), u -> u.couldCarry(unit));
+        for (Unit u : getUnits())
+            if (u.couldCarry(unit))
+                return u;
+        return null;
     }
 
 
@@ -445,7 +457,10 @@ public abstract class UnitLocation extends FreeColGameObject implements Location
      * @return The sum of the space taken by the units in this location.
      */
     public int getSpaceTaken() {
-        return sum(getUnits(), Unit::getSpaceTaken);
+        int result = 0;
+        for (Unit u : getUnits())
+            result += u.getSpaceTaken();
+        return result;
     }
 
     /**
