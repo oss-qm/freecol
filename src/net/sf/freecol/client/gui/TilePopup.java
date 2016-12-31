@@ -357,10 +357,11 @@ public final class TilePopup extends JPopupMenu {
             add(menuItem);
         }
 
-        Unit unit = find(tile.getUnits(),
-                         u -> u.canCarryGoods() && u.hasSpaceLeft());
-        if (unit != null) {
-            DebugUtils.addGoodsAdditionEntry(freeColClient, unit, this);
+        for (Unit unit : title.getUnits()) {
+            if (unit.canCarryGoods() && unit.hasSpaceLeft()) {
+                DebugUtils.addGoodsAdditionEntry(freeColClient, unit, this);
+                break;
+            }
         }
 
         JMenuItem dumpItem = new JMenuItem("Dump tile");
@@ -400,8 +401,9 @@ public final class TilePopup extends JPopupMenu {
         menuItem.setEnabled(enabled);
         menu.add(menuItem);
 
-        int lineCount = 1 + sum(unit.getUnits(),
-                                u -> addUnit(menu, u, true, true));
+        for (Unit u : unit.getUnits())
+            lineCount += u -> addUnit(menu, u, true, true);
+
         boolean hasGoods = false;
         for (Goods goods: unit.getGoodsList()) {
             text = (indent ? "         " : "     ")

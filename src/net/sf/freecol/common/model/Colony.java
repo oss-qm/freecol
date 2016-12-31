@@ -1707,12 +1707,13 @@ public class Colony extends Settlement implements Nameable, TradeLocation {
     public boolean isUnderSiege() {
         int friendlyUnits = 0;
         int enemyUnits = 0;
-        for (Unit u : iterable(flatten(getColonyTiles(),
-                ct -> ct.getWorkTile().getUnits()))) {
-            if (u.getOwner() == getOwner()) {
-                if (u.isDefensiveUnit()) friendlyUnits++;
-            } else if (getOwner().atWarWith(u.getOwner())) {
-                if (u.isOffensiveUnit()) enemyUnits++;
+        for (Unit u : getColonyTiles()) {
+            for (ColonyTile ct : ct.getWorkTile().getUnits()) {
+                if (u.getOwner() == getOwner()) {
+                    if (u.isDefensiveUnit()) friendlyUnits++;
+                } else if (getOwner().atWarWith(u.getOwner())) {
+                    if (u.isOffensiveUnit()) enemyUnits++;
+                }
             }
         }
         return enemyUnits > friendlyUnits;
@@ -1812,11 +1813,16 @@ public class Colony extends Settlement implements Nameable, TradeLocation {
      * @return A potential teacher, or null of none found.
      */
     public Unit findTeacher(Unit student) {
-        return (getSpecification().getBoolean(GameOptions.ALLOW_STUDENT_SELECTION))
-                ? null // No automatic assignment
-                : find(flatten(getBuildings(), Building::canTeach,
-                Building::getUnits),
-                u -> u.getStudent() == null);
+        if (getSpecification().getBoolean(GameOptions.ALLOW_STUDENT_SELECTION))
+            return null; // No automatic assignment
+
+        for (Building b : getBuildings())
+            if (b.canTeach())
+                for (Unit teacher : b.getUnits())
+                    if (teacher.getStudent() == null)
+                        return teacher;
+
+        return null;
     }
 
     /**
@@ -2177,8 +2183,9 @@ loop:       if (wl.getGenericPotential(goodsType) > 0) {
 
         // We have an expert not doing the job of their expertise.
         // Check if there is a non-expert doing the job instead.
-        for (Unit nonExpert : transform(getUnits(), u ->
-                u.getWorkType() == expertise && u.getType() != expertType)) {
+        for (Unit nonExpert : getUnits()) {
+            if (!(u.getWorkType() == expertise && u.getType() != expertType))
+                continue;
 
             // We have found a unit of a different type doing the
             // job of this expert's expertise now check if the

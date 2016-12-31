@@ -206,8 +206,11 @@ public class TradeRoute extends FreeColGameObject
      * @return A list of assigned {@code Unit}s.
      */
     public List<Unit> getAssignedUnits() {
-        return transform(getOwner().getUnits(),
-                         matchKey(this, Unit::getTradeRoute));
+        List<Unit> result = new ArrayList<>();
+        for (Unit u : getOwner().getUnits())
+            if (this == u.getTradeRoute())
+                result.add(u);
+        return result;
     }
 
     /**

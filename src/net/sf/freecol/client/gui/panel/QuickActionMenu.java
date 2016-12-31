@@ -238,8 +238,9 @@ public final class QuickActionMenu extends JPopupMenu {
         final InGameController igc = freeColClient.getInGameController();
 
         boolean added = false;
-        for (Unit unit : transform(loc.getUnits(), u ->
-                (u.isCarrier() && u.canCarryGoods() && u.canAdd(goods)))) {
+        for (Unit unit : loc.getUnits()) {
+            if (!(u.isCarrier() && u.canCarryGoods() && u.canAdd(goods)))
+                continue;
             StringTemplate template
                 = StringTemplate.template("quickActionMenu.loadOnTo")
                     .addStringTemplate("%unit%",
@@ -838,8 +839,9 @@ public final class QuickActionMenu extends JPopupMenu {
                                       ag.getType(), ag.getAmount());
 
         boolean added = false;
-        for (Unit unit : transform(europe.getUnits(), u ->
-                (u.isCarrier() && u.canCarryGoods() && u.canAdd(goods)))) {
+        for (Unit unit : europe.getUnits()) {
+            if (!(u.isCarrier() && u.canCarryGoods() && u.canAdd(goods)))
+                continue;
             StringTemplate template = StringTemplate.template("loadOnTo")
                 .addStringTemplate("%unit%",
                     unit.getLabel(Unit.UnitLabelType.NATIONAL));

@@ -116,8 +116,9 @@ public class Building extends WorkLocation
             colony.addFeatures(buildingType);
 
             // Colonists which can't work here must be put outside
-            eject.addAll(transform(getUnits(),
-                                   u -> !canAddType(u.getType())));
+            for (Unit u : getUnits())
+                if (!canAddType(u.getType()))
+                    eject.add(u);
         }
 
         // Colonists exceding units limit must be put outside
@@ -283,8 +284,9 @@ public class Building extends WorkLocation
         } else {
             for (AbstractGoods output : iterable(getOutputs())) {
                 final GoodsType goodsType = output.getType();
-                float production = sum(getUnits(),
-                                       u -> getUnitProduction(u, goodsType));
+                float production = 0;
+                for (Unit u : getUnits())
+                    production += getUnitProduction(u, goodsType);
                 // Unattended production always applies for buildings!
                 production += getBaseProduction(null, goodsType, null);
                 production = applyModifiers(production, turn,
