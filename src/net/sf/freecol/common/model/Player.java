@@ -35,8 +35,6 @@ import java.util.Set;
 import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.logging.Logger;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 import javax.xml.stream.XMLStreamException;
 
@@ -1553,8 +1551,11 @@ public class Player extends FreeColGameObject implements Nameable {
      */
     public int calculateStrength(boolean naval) {
         final CombatModel cm = getGame().getCombatModel();
-        return (int)sumDouble(getUnits(), u -> u.isNaval() == naval,
-                              u -> cm.getOffencePower(u, null));
+        double result = 0;
+        for (Unit u : getUnits())
+            if (u.isNaval())
+                result += cm.getOffencePower(u, null);
+        return (int)result;
     }
 
     /**
@@ -1592,7 +1593,8 @@ public class Player extends FreeColGameObject implements Nameable {
         java.util.Map<UnitType, HashMap<String, Integer>> unitHash
             = new HashMap<>();
         List<AbstractUnit> units = new ArrayList<>();
-        for (Unit unit : transform(getUnits(), Unit::isOffensiveUnit)) {
+        for (Unit unit : getUnits()) {
+            if (!unit.isOffensiveUnit()) continue;
             UnitType unitType = defaultType;
             if (unit.getType().getOffence() > 0
                 || unit.hasAbility(Ability.EXPERT_SOLDIER)) {
@@ -2024,7 +2026,13 @@ public class Player extends FreeColGameObject implements Nameable {
      * @return A list of suitable carriers.
      */
     public List<Unit> getCarriersForUnit(Unit unit) {
-        return transform(getUnits(), u -> u.couldCarry(unit));
+        List<Unit> result = new ArrayList<>();
+        synchronized (this.units) {
+            for (Unit u : getUnits())
+                if (u.couldCarry(unit))
+                    result.add(u);
+        }
+        return result;
     }
 
     /**
@@ -2034,7 +2042,12 @@ public class Player extends FreeColGameObject implements Nameable {
      * @return The number of units.
      */
     public int getUnitCount(boolean naval) {
-        return count(getUnits(), u -> u.isNaval() == naval);
+        synchronized (this.units) {
+            int cnt = 0;
+            for (Unit u : this.units)
+                if (u.isNaval() == naval) cnt++;
+            return cnt;
+        }
     }
 
     /**
@@ -2043,8 +2056,13 @@ public class Player extends FreeColGameObject implements Nameable {
      * @return The number of units
      */
     public int getNumberOfKingLandUnits() {
-        return count(getUnits(),
-                     u -> u.hasAbility(Ability.REF_UNIT) && !u.isNaval());
+        synchronized (this.units) {
+            int cnt = 0;
+            for (Unit u : this.units)
+                if (u.hasAbility(Ability.REF_UNIT) && !u.isNaval())
+                    cnt++;
+            return cnt;
+        }
     }
 
     /**
@@ -2054,8 +2072,12 @@ public class Player extends FreeColGameObject implements Nameable {
      * @return True if this player owns at least one of the specified unit type.
      */
     public boolean hasUnitType(String typeId) {
-        return any(getUnits(),
-                   matchKeyEquals(typeId, u -> u.getType().getId()));
+        synchronized (this.units) {
+            for (Units u : this.units)
+                if (Utils.equals(typeId, u.getType().getId()))
+                    return true;
+            return false;
+        }
     }
 
     /**
@@ -3274,10 +3296,11 @@ public class Player extends FreeColGameObject implements Nameable {
      * @return The reason why/not the tile can be owned by this player.
      */
     private NoClaimReason canOwnTileReason(Tile tile) {
-        return (any(tile.getUnits(),
-                    u -> u.getOwner() != this && u.isOffensiveUnit()))
-            ? NoClaimReason.OCCUPIED // The tile is held against us
-            : (isEuropean())
+        for (tile.getUnits())
+            if (u.getOwner() != this && u.isOffensiveUnit())
+                return NoClaimReason.OCCUPIED; // The tile is held against us
+
+        return isEuropean()
             ? ((tile.hasLostCityRumour())
                 ? NoClaimReason.RUMOUR
                 : NoClaimReason.NONE)
@@ -3733,9 +3756,10 @@ public class Player extends FreeColGameObject implements Nameable {
                 }
             }
 
-            for (Unit u : transform(t.getUnits(),
-                                    u -> !owns(u) && u.isOffensiveUnit()
-                                        && atWarWith(u.getOwner()))) {
+            for (Unit u : t.getUnits()) {
+                if (!(!owns(u) && u.isOffensiveUnit() && atWarWith(u.getOwner())))
+                    continue;
+
                 values.set(ColonyValueCategory.A_ADJACENT.ordinal(),
                     values.get(ColonyValueCategory.A_ADJACENT.ordinal())
                     * MOD_ENEMY_UNIT[1]);
@@ -3779,9 +3803,9 @@ public class Player extends FreeColGameObject implements Nameable {
                     }
                 }
 
-                for (Unit u : transform(t.getUnits(),
-                                        u -> (!owns(u) && u.isOffensiveUnit()
-                                            && atWarWith(u.getOwner())))) {
+                for (Unit u : t.getUnits()) {
+                    if (!(!owns(u) && u.isOffensiveUnit() && atWarWith(u.getOwner())))
+                        continue;
                     values.set(ColonyValueCategory.A_NEARBY.ordinal(),
                         values.get(ColonyValueCategory.A_NEARBY.ordinal())
                         * MOD_ENEMY_UNIT[radius]);

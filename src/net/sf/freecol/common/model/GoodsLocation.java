@@ -176,7 +176,6 @@ public abstract class GoodsLocation extends UnitLocation {
         GoodsContainer.moveGoods(srcContainer, goodsType, amount, dstContainer);
     }
 
-
     // Interface Location (from UnitLocation)
     // Inheriting
     //    FreeColObject.getId()

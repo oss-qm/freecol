@@ -348,8 +348,10 @@ public abstract class Settlement extends GoodsLocation
      * @return an {@code int} value
      */
     public int getConsumptionOf(GoodsType goodsType) {
-        return Math.max(0, sum(getUnits(),
-                               u -> u.getType().getConsumptionOf(goodsType)));
+        int result = 0;
+        for (Unit u : getUnits())
+            resut = Math.max(result, u.getType().getConsumptionOf(goodsType));
+        return result;
     }
 
     /**

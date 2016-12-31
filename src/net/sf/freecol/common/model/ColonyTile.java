@@ -178,7 +178,8 @@ public class ColonyTile extends WorkLocation {
         } else {
             forEach(map(getOutputs(), AbstractGoods::getType),
                 gt -> {
-                    int n = sum(getUnits(), u -> getUnitProduction(u, gt));
+                    int n = 0;
+                    for (Unit u : getUnits()) n += getUnitProduction(u, gt);
                     if (n > 0) pi.addProduction(new AbstractGoods(gt, n));
                 });
         }

@@ -755,7 +755,10 @@ public class Unit extends GoodsLocation
      */
     public void setStateToAllChildren(UnitState state) {
         if (canCarryUnits()) {
-            for (Unit u : getUnits()) u.setState(state);
+            synchronized (this.units) {
+                for (Unit u : this.units)
+                    u.setState(state);
+            }
         }
     }
 
@@ -786,7 +789,9 @@ public class Unit extends GoodsLocation
 
         // If its a carrier, we need to update the units it has loaded
         // before finishing with it
-        for (Unit u : getUnits()) u.changeOwner(owner);
+        synchronized (this.units) {
+            for (Unit u : this.units) u.changeOwner(owner);
+        }
 
         if (getTeacher() != null && !canBeStudent(getTeacher())) {
             getTeacher().setStudent(null);
@@ -3380,8 +3385,11 @@ public class Unit extends GoodsLocation
      * @return The number of cargo slots occupied by units.
      */
     public int getUnitSpaceTaken() {
-        return (canCarryUnits()) ? sum(getUnits(), Unit::getSpaceTaken)
-            : 0;
+        if (!canCarryUnits()) return 0;
+        int result = 0;
+        synchronized (this.units) {
+            result += u.getSpaceTaken();
+        }
     }
 
     public List<Unit> getTileUnits() {

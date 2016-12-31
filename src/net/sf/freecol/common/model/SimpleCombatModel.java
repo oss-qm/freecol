@@ -159,9 +159,9 @@ public class SimpleCombatModel extends CombatModel {
         } else if (combatIsBombard(attacker, defender)) {
             Settlement attackerSettlement = (Settlement) attacker;
             if (attackerSettlement.hasAbility(Ability.BOMBARD_SHIPS)) {
-                result += sumDouble(attackerSettlement.getTile().getUnits(),
-                                    u -> u.hasAbility(Ability.BOMBARD),
-                                    u -> u.getType().getOffence());
+                for (Unit u : attackerSettlement.getTile().getUnits())
+                    if (u.hasAbility(Ability.BOMBARD))
+                        result += u.getType().getOffence();
             }
             if (result > MAXIMUM_BOMBARD_POWER) result = MAXIMUM_BOMBARD_POWER;
             if (lb != null) lb.add(" bombard=", result);

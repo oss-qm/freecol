@@ -80,10 +80,6 @@ import static net.sf.freecol.common.util.CollectionUtils.*;
 public final class ReportCompactColonyPanel extends ReportPanel
     implements ActionListener {
 
-    /** Predicate to select units that are not working. */
-    private static final Predicate<Unit> notWorkingPred = u ->
-        u.getState() != Unit.UnitState.FORTIFIED && u.getState() != Unit.UnitState.SENTRY;
-
     /** Container class for all the information about a colony. */
     private static class ColonySummary {
 
@@ -203,8 +199,9 @@ public final class ReportCompactColonyPanel extends ReportPanel
 
             for (GoodsType gt : goodsTypes) produce(gt);
 
-            this.notWorking.addAll(transform(colony.getTile().getUnits(),
-                                             notWorkingPred));
+            for (Unit u : colony.getTileUnits())
+                if (u.getState() != Unit.UnitState.FORTIFIED && u.getState() != Unit.UnitState.SENTRY)
+                    this.notWorking.add(u);
 
             // Collect the types of the units at work in the colony
             // (colony tiles and buildings) that are suboptimal (and
@@ -226,9 +223,9 @@ public final class ReportCompactColonyPanel extends ReportPanel
                 }
 
                 // Check if the units are working.
-                this.notWorking.addAll(transform(wl.getUnits(),
-                                       u -> (u.getTeacher() == null
-                                           && u.getWorkType() == null)));
+                for (Unit u : wl.getUnits())
+                    if (u.getTeacher() == null && u.getWorkType() == null)
+                        this.notWorking.add(u);
 
                 // Add work location suggestions.
                 forEachMapEntry(wl.getSuggestions(),
@@ -575,12 +572,13 @@ public final class ReportCompactColonyPanel extends ReportPanel
                 c = cAlarm;
                 if (n == 1) {
                     TileImprovementSuggestion tis = first(s.tileSuggestions);
-                    if (any(tis.tile.getUnits(),
-                            u -> (u.getState() == Unit.UnitState.IMPROVING
+                    for (Unit u : tis.tile.getUnits()) {
+                        if (u.getState() == Unit.UnitState.IMPROVING
                                 && u.getWorkImprovement() != null
-                                && u.getWorkImprovement().getType()
-                                    == tis.tileImprovementType))) {
-                        c = cWarn; // Work is underway
+                                && u.getWorkImprovement().getType()) {
+                            c = cWarn;
+                            break;
+                        }
                     }
                     t = stpld("report.colony.tile." + ti.getSuffix()
                               + ".specific")

@@ -182,13 +182,14 @@ public final class SelectDestinationDialog extends FreeColDialog<Location>
                     IndianSettlement is = (IndianSettlement)loc;
                     UnitType sk = is.getLearnableSkill();
                     if (sk != null) {
-                        final Predicate<Unit> upgradePred = u ->
-                            u.getUnitChange(UnitChangeType.NATIVES) != null;
-                        Unit up = (unit.isCarrier())
-                            ? find(unit.getUnits(), upgradePred)
-                            : (upgradePred.test(unit)) ? unit
-                            : null;
-                        if (up != null) {
+                        if (unit.isCarrier()) {
+                            for (Unit u : unit.getUnits()) {
+                                if (u.getUnitChange(UnitChangeType.NATIVES) != null) {
+                                    lb.add("[", Messages.getName(sk), "]");
+                                    break;
+                                }
+                            }
+                        } else if (unit.getUnitChange(UnitChangeType.NATIVES) != null) {
                             lb.add("[", Messages.getName(sk), "]");
                         }
                     }

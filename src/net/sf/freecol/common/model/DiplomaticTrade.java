@@ -364,10 +364,11 @@ public class DiplomaticTrade extends FreeColGameObject {
      * @return A list of {@code Unit}s offered in this trade.
      */
     public List<Unit> getUnitsGivenBy(Player player) {
-        return transform(this.items,
-                         ti -> ti instanceof UnitTradeItem
-                             && ti.getSource() == player,
-                         TradeItem::getUnit);
+        List<Unit> result = new ArrayList<>();
+        for (TradeItem ti : this.items)
+            if (ti instanceof UnitTradeItem && ti.getSource() == player)
+                result.add(ti.getUnit());
+        return result;
     }
 
     /**
