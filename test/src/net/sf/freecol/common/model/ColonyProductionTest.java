@@ -146,7 +146,7 @@ public class ColonyProductionTest extends FreeColTestCase {
 
         // Clear the town hall
         Building townHall = colony.getBuilding(townHallType);
-        for (Unit u : townHall.getUnitList()) {
+        for (Unit u : townHall.getUnits()) {
             u.setLocation(colony.getWorkLocationFor(u, foodType));
         }
         assertTrue(townHall.isEmpty());
@@ -357,7 +357,7 @@ public class ColonyProductionTest extends FreeColTestCase {
         assertEquals(cottonType, tile.getProduction().get(1).getType());
         assertEquals(2, tile.getProduction().get(1).getAmount());
 
-        for (Unit unit : colony.getUnitList()) {
+        for (Unit unit : colony.getUnits()) {
             ProductionInfo unitInfo = colony.getProductionInfo(unit);
             assertNotNull(unitInfo);
             assertEquals(2, unitInfo.getConsumption().size());

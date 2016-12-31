@@ -38,6 +38,7 @@ import java.awt.geom.RoundRectangle2D;
 import java.awt.image.BufferedImage;
 import java.util.EnumMap;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 import java.util.logging.Level;
@@ -1001,12 +1002,14 @@ public final class MapViewer extends FreeColClientHolder {
         } else {
             // Find the unit with the most moves left, preferring
             // active units.
-            List<Unit> units = unitTile.getUnitList();
-            result = units.remove(0);
+            Iterator<Unit> units = unitTile.getUnits().iterator();
+            if (!units.hasNext()) return null;
+            result = units.next();
             int best = result.getMovesLeft();
             boolean carrier,
                 active = result.getState() == Unit.UnitState.ACTIVE;
-            for (Unit u : units) {
+            while (units.hasNext()) {
+                Unit u = units.next();
                 carrier = false;
                 if (active) {
                     if (u.getState() == Unit.UnitState.ACTIVE) {
@@ -1031,7 +1034,7 @@ public final class MapViewer extends FreeColClientHolder {
                 if (carrier) {
                     // Check for active units on carriers.  Usually the
                     // carrier takes precedence.
-                    for (Unit c : u.getUnitList()) {
+                    for (Unit c : u.getUnits()) {
                         if (active) {
                             if (best < c.getMovesLeft()) {
                                 best = c.getMovesLeft();

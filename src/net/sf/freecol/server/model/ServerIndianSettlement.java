@@ -119,7 +119,7 @@ public class ServerIndianSettlement extends IndianSettlement
         setLearnableSkill(template.getLearnableSkill());
         setCapital(template.isCapital());
         // FIXME: the template settlement might have additional owned units
-        for (Unit unit: template.getUnitList()) {
+        for (Unit unit: template.getUnits()) {
             Unit newUnit = new ServerUnit(game, this,
                                           unit);//-vis: safe, not on map yet
             add(newUnit);
@@ -180,7 +180,7 @@ public class ServerIndianSettlement extends IndianSettlement
             // missions) into the settlement so we can ignore the
             // tile-residents.
             ServerUnit brave = (ServerUnit)getRandomMember(logger, "Convert",
-                getAllUnitsList(), random);
+                getAllUnits(), random);
             colony.csAddConvert(brave, cs);
         }
     }

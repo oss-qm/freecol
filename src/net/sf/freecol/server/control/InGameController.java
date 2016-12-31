@@ -1365,7 +1365,7 @@ public final class InGameController extends Controller {
         Europe europe = serverPlayer.getEurope();
         StringTemplate seized = StringTemplate.label(", ");
         boolean lost = false;
-        for (Unit u : europe.getUnitList()) {
+        for (Unit u : europe.getUnits()) {
             seized.addStringTemplate(u.getLabel());
             cs.addRemove(See.only(serverPlayer), null, u);
             u.dispose();
@@ -1408,7 +1408,7 @@ public final class InGameController extends Controller {
         java.util.Map<UnitType, List<Unit>> unitMap = new HashMap<>();
         for (Colony colony : transform(serverPlayer.getColonies(),
                                        c -> c.getSoL() > 50)) {
-            List<Unit> allUnits = colony.getAllUnitsList();
+            List<Unit> allUnits = colony.getAllUnits();
             int limit = (allUnits.size() + 2) * (colony.getSoL() - 50) / 100;
 
             unitMap.clear();
@@ -1507,7 +1507,7 @@ public final class InGameController extends Controller {
         }
 
         // Make the mercenary force offer
-        serverPlayer.csMercenaries(monarch.getMercenaryForce().getUnitList(),
+        serverPlayer.csMercenaries(monarch.getMercenaryForce().getUnits(),
             Monarch.MonarchAction.HESSIAN_MERCENARIES, random, cs);
 
         // Pity to have to update such a heavy object as the player,

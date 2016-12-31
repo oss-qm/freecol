@@ -93,7 +93,7 @@ public class SchoolTest extends FreeColTestCase {
      *            Unit.EXPERT_FARMER.
      * @return A list of all the units of the given type in this colony.
      */
-    private List<Unit> getUnitList(Colony colony, UnitType type) {
+    private List<Unit> getUnits(Colony colony, UnitType type) {
         return transform(colony.getUnits(), matchKey(type, Unit::getType));
     }
 
@@ -115,7 +115,7 @@ public class SchoolTest extends FreeColTestCase {
 
         Colony colony = getStandardColony(5);
 
-        Iterator<Unit> units = colony.getUnitList().iterator();
+        Iterator<Unit> units = colony.getUnits().iterator();
 
         Unit lumberJack = units.next();
         lumberJack.setType(expertLumberJackType);
@@ -165,8 +165,8 @@ public class SchoolTest extends FreeColTestCase {
         Colony colony = colBuilder.build();
         Building school = addSchoolToColony(game, colony, SchoolLevel.COLLEGE);
 
-        Unit student = getUnitList(colony, freeColonistType).get(0);
-        List<Unit> teacherList = getUnitList(colony, expertLumberJackType);
+        Unit student = getUnits(colony, freeColonistType).get(0);
+        List<Unit> teacherList = getUnits(colony, expertLumberJackType);
         Unit teacher1 = teacherList.get(0);
         Unit teacher2 = teacherList.get(1);
         assertNull("Teacher1 should not have a student yet",

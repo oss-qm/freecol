@@ -368,7 +368,7 @@ public class UnitTest extends FreeColTestCase {
                      soldier.getTile());
 
         boolean found = false;
-        for (Unit u : colonyTile.getUnitList()) {
+        for (Unit u : colonyTile.getUnits()) {
             if (u == soldier) found = true;
         }
         assertTrue("Unit not found in tile", found);
@@ -382,7 +382,7 @@ public class UnitTest extends FreeColTestCase {
                    soldier.isInColony());
         assertEquals("Soldier tile should be the colony tile", colonyTile,
                      soldier.getTile());
-        for (Unit u : colonyTile.getUnitList()) {
+        for (Unit u : colonyTile.getUnits()) {
             if (u == soldier) fail("Unit building colony still in tile");
         }
 
@@ -432,18 +432,18 @@ public class UnitTest extends FreeColTestCase {
         assertEquals("Colonist should be dutch", dutch,
                      colonist.getOwner());
         assertEquals("Dutch player should have 1 unit", 1,
-                     dutch.getUnitList().size());
+                     dutch.getUnits().size());
         assertEquals("French player should have no units", 0,
-                     french.getUnitList().size());
+                     french.getUnits().size());
 
         // change owner
         colonist.changeOwner(french);
         assertEquals("Colonist should be french", french,
                      colonist.getOwner());
         assertEquals("Dutch player should have no units", 0,
-                     dutch.getUnitList().size());
+                     dutch.getUnits().size());
         assertEquals("French player should have 1 unit", 1,
-                     french.getUnitList().size());
+                     french.getUnits().size());
     }
 
     public void testCarrierOwnerChange(){
@@ -472,9 +472,9 @@ public class UnitTest extends FreeColTestCase {
         assertEquals("Colonist should be dutch", dutch,
                      colonist.getOwner());
         assertEquals("Dutch player should have 2 units", 2,
-                     dutch.getUnitList().size());
+                     dutch.getUnits().size());
         assertEquals("French player should have no units", 0,
-                     french.getUnitList().size());
+                     french.getUnits().size());
 
         // change carrier owner
         galleon.changeOwner(french);
@@ -483,9 +483,9 @@ public class UnitTest extends FreeColTestCase {
         assertEquals("Colonist should be french", french,
                      colonist.getOwner());
         assertEquals("Dutch player should have no units", 0,
-                     dutch.getUnitList().size());
+                     dutch.getUnits().size());
         assertEquals("French player should have 2 units", 2,
-                     french.getUnitList().size());
+                     french.getUnits().size());
     }
 
 
@@ -495,7 +495,7 @@ public class UnitTest extends FreeColTestCase {
         game.setMap(map);
 
         Colony colony = getStandardColony(1);
-        Unit unit = colony.getUnitList().get(0);
+        Unit unit = colony.getUnits().get(0);
         String initial = "/" + Integer.toString(unit.getInitialMovesLeft()/3);
 
         String[] expected = new String[] {
@@ -572,10 +572,10 @@ public class UnitTest extends FreeColTestCase {
         assertEquals(44, other.getGoodsCount(cottonType));
         assertEquals(1, merchantman.getUnitCount());
         assertEquals(1, other.getUnitCount());
-        assertFalse(merchantman.getUnitList().get(0)
-                    == other.getUnitList().get(0));
-        assertEquals(merchantman.getUnitList().get(0).getId(),
-            other.getUnitList().get(0).getId());
+        assertFalse(merchantman.getUnits().get(0)
+                    == other.getUnits().get(0));
+        assertEquals(merchantman.getUnits().get(0).getId(),
+            other.getUnits().get(0).getId());
     }
 
     public void testDefaultRole() {

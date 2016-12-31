@@ -855,7 +855,7 @@ logger.finest("Debug first contact " + this + " to " + ((settlement == null) ? "
         // Disembark in colony.
         if (isCarrier() && !isEmpty() && newTile.getColony() != null
             && getSpecification().getBoolean(GameOptions.DISEMBARK_IN_COLONY)) {
-            for (Unit u : getUnitList()) {
+            for (Unit u : getUnits()) {
                 ((ServerUnit)u).csMove(newTile, random, cs);
             }
             setMovesLeft(0);

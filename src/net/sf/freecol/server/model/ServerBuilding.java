@@ -78,7 +78,7 @@ public class ServerBuilding extends Building implements ServerModelObject {
     private void csTeach(ChangeSet cs) {
         final ServerPlayer owner = (ServerPlayer)getColony().getOwner();
 
-        for (Unit teacher : getUnitList()) {
+        for (Unit teacher : getUnits()) {
             Unit student = teacher.getStudent();
 
             if (student != null && student.getTeacher() != teacher) {

@@ -215,7 +215,7 @@ public final class EditSettlementDialog extends FreeColDialog<IndianSettlement>
                 // FIXME: recalculate tile ownership properly, taking
                 // settlement radius into account
                 is.setOwner(newPlayer);
-                for (Unit u : is.getAllUnitsList()) {
+                for (Unit u : is.getAllUnits()) {
                     u.setOwner(newPlayer);
                     u.setEthnicity(newNation.getId());
                     u.setNationality(newNation.getId());
@@ -247,7 +247,7 @@ public final class EditSettlementDialog extends FreeColDialog<IndianSettlement>
                 }
             } else if (numberOfUnits < 0) {
                 List<Unit> unitList
-                    = is.getUnitList().subList(0, -numberOfUnits);
+                    = is.getUnits().subList(0, -numberOfUnits);
                 for (Unit unit : unitList) {
                     unit.dispose();
                 }
@@ -265,7 +265,7 @@ public final class EditSettlementDialog extends FreeColDialog<IndianSettlement>
             }
             // Dispose of units and settlement on tile
             Tile tile = is.getTile();
-            for (Unit unit : tile.getUnitList()) unit.dispose();
+            for (Unit unit : tile.getUnits()) unit.dispose();
             is.exciseSettlement();
         }
         for (Tile t : tiles) gui.refreshTile(t);

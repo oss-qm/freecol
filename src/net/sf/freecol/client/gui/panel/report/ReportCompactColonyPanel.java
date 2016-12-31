@@ -220,7 +220,7 @@ public final class ReportCompactColonyPanel extends ReportPanel
             for (WorkLocation wl :transform(colony.getAvailableWorkLocations(),
                                             WorkLocation::canBeWorked)) {
                 if (wl.canTeach()) {
-                    for (Unit u : wl.getUnitList()) {
+                    for (Unit u : wl.getUnits()) {
                         teachers.put(u, u.getNeededTurnsOfTraining()
                             - u.getTurnsOfTraining());
                     }
