@@ -203,7 +203,7 @@ public class Operand extends Scope {
             for (Player player : game.getLivePlayers()) {
                 switch (this.operandType) {
                 case UNITS:
-                    result += ourCount(player.getUnitList());
+                    result += ourCount(player.getUnits());
                     break;
                 case BUILDINGS:
                     result += sum(player.getColonies(),
@@ -244,7 +244,7 @@ public class Operand extends Scope {
         final String methodName = getMethodName();
         switch (this.operandType) {
         case UNITS:
-            return ourCount(player.getUnitList());
+            return ourCount(player.getUnits());
         case BUILDINGS:
             return sum(player.getColonies(), c -> ourCount(c.getBuildings()));
         case SETTLEMENTS:
@@ -280,7 +280,7 @@ public class Operand extends Scope {
         final Colony colony = (Colony)settlement;
         switch (this.operandType) {
         case UNITS:
-            return ourCount(colony.getUnitList());
+            return ourCount(colony.getUnits());
         case BUILDINGS:
             return ourCount(colony.getBuildings());
         default:

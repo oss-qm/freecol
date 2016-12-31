@@ -164,7 +164,7 @@ public class BuildingPanel extends MigPanel implements PropertyChangeListener {
             add(upkeep);
         }
 
-        for (Unit unit : building.getUnitList()) {
+        for (Unit unit : building.getUnits()) {
             UnitLabel unitLabel = new UnitLabel(freeColClient, unit, true);
             unitLabels.add(unitLabel);
             add(unitLabel);

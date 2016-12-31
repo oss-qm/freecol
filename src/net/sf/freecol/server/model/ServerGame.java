@@ -406,7 +406,7 @@ public class ServerGame extends Game implements ServerModelObject {
             ((ServerColony)c).csChangeOwner(strongest, false, cs);//-vis(both),-til
             lb.add(" ", c.getName());
         }
-        for (Unit unit : weakest.getUnitList()) {
+        for (Unit unit : weakest.getUnits()) {
             lb.add(" ", unit.getId());
             if (unit.isOnCarrier()) {
                 ; // Allow carrier to handle

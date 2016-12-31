@@ -150,7 +150,7 @@ public class NationTypeTest extends FreeColTestCase {
         BuildingType carpenterHouse = spec().getBuildingType("model.building.carpenterHouse");
         assertFalse("Hammer production bonus should not apply to buildings",
                     modifiers.get(0).appliesTo(carpenterHouse));
-        for (Unit unit : colony.getUnitList()) {
+        for (Unit unit : colony.getUnits()) {
             assertTrue("Hammer production bonus should apply to all persons",
                        modifiers.get(0).appliesTo(unit.getType()));
         }
@@ -163,7 +163,7 @@ public class NationTypeTest extends FreeColTestCase {
         BuildingType traderHouse = spec().getBuildingType("model.building.furTraderHouse");
         assertFalse("Coat production bonus should not apply to buildings",
                     modifiers.get(0).appliesTo(traderHouse));
-        for (Unit unit : colony.getUnitList()) {
+        for (Unit unit : colony.getUnits()) {
             assertTrue("Coat production bonus should apply to all persons",
                        modifiers.get(0).appliesTo(unit.getType()));
         }

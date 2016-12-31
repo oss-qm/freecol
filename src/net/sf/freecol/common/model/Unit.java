@@ -740,7 +740,7 @@ public class Unit extends GoodsLocation
      */
     public void setStateToAllChildren(UnitState state) {
         if (canCarryUnits()) {
-            for (Unit u : getUnitList()) u.setState(state);
+            for (Unit u : getUnits()) u.setState(state);
         }
     }
 
@@ -771,7 +771,7 @@ public class Unit extends GoodsLocation
 
         // If its a carrier, we need to update the units it has loaded
         // before finishing with it
-        for (Unit u : getUnitList()) u.changeOwner(owner);
+        for (Unit u : getUnits()) u.changeOwner(owner);
 
         if (getTeacher() != null && !canBeStudent(getTeacher())) {
             getTeacher().setStudent(null);
@@ -3352,6 +3352,11 @@ public class Unit extends GoodsLocation
             : 0;
     }
 
+    public List<Unit> getTileUnits() {
+        if (getTile() == null) return Collections.<Unit>emptyList();
+        return getTile().getUnits();
+    }
+
     /**
      * Gets the space occupied by cargo in this unit (both goods and units).
      *
@@ -3780,7 +3785,7 @@ public class Unit extends GoodsLocation
         Unit ret = null;
         if (isOnCarrier()) {
             Unit carrier = getCarrier().copy(game, Unit.class);
-            for (Unit u : carrier.getUnitList()) {
+            for (Unit u : carrier.getUnits()) {
                 if (u.getId().equals(getId())) {
                     ret = u;
                 } else {
@@ -3949,7 +3954,7 @@ public class Unit extends GoodsLocation
     //   UnitLocation.contains
     //   UnitLocation.canAdd
     //   UnitLocation.getUnitCount
-    //   UnitLocation.getUnitList
+    //   UnitLocation.getUnits
     //   GoodsLocation.getGoodsContainer
 
     /**

@@ -58,8 +58,7 @@ public class PlayerTest extends FreeColTestCase {
         Unit unit4 = new ServerUnit(game, map.getTile(5, 8), dutch,
                                     freeColonist);
 
-        int count = count(dutch.getUnitList());
-        assertTrue(count == 4);
+        assertTrue(dutch.getUnits().size() == 4);
 
         unit1.dispose();
         assertFalse(dutch.hasUnit(unit1));
