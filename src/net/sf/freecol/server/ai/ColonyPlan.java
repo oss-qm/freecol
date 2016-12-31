@@ -1418,7 +1418,7 @@ plans:          for (WorkLocationPlan w : getFoodPlans()) {
         // follow.  Do a cleanup pass to sort these out.
         List<Unit> experts = new ArrayList<>();
         List<Unit> nonExperts = new ArrayList<>();
-        for (Unit u : col.getUnitList()) {
+        for (Unit u : col.getUnits()) {
             if (u.getType().getExpertProduction() != null) {
                 if (u.getType().getExpertProduction() != u.getWorkType()) {
                     experts.add(u);
@@ -1446,7 +1446,7 @@ plans:          for (WorkLocationPlan w : getFoodPlans()) {
         for (Unit u : new ArrayList<>(workers)) {
             GoodsType work = u.getType().getExpertProduction();
             if (work != null) {
-                Unit other = trySwapExpert(u, col.getUnitList(), col);
+                Unit other = trySwapExpert(u, col.getUnits(), col);
                 if (other != null) {
                     lb.add("    Swapped ", u.getId(), "(",
                         u.getType().getSuffix(), ") for ", other, "\n");

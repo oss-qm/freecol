@@ -100,7 +100,7 @@ public abstract class UnitPanel extends MigPanel
         removeAll();
 
         if (portPanel != null) {
-            for (Unit unit : transform(portPanel.getUnitList(),
+            for (Unit unit : transform(portPanel.getUnits(),
                                        u -> accepts(u))) {
                 UnitLabel unitLabel
                     = new UnitLabel(portPanel.getFreeColClient(), unit);

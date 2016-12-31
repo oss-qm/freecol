@@ -925,7 +925,7 @@ public final class NegotiationDialog extends FreeColDialog<DiplomaticTrade> {
                         getUnitUnitList(null));
                 this.unitOfferPanel = new UnitTradeItemPanel(player,
                         ((ourUnit != null) ? getUnitUnitList(ourUnit)
-                                : ourColony.getUnitList()));
+                                : ourColony.getUnits()));
                 break;
             case TRIBUTE:
                 this.stancePanel = new StanceTradeItemPanel(player, otherPlayer);
@@ -1067,9 +1067,9 @@ public final class NegotiationDialog extends FreeColDialog<DiplomaticTrade> {
         List<Unit> ul = new ArrayList<>();
         if (unit != null) {
             if (unit.isCarrier()) {
-                ul.addAll(unit.getUnitList());
+                ul.addAll(unit.getUnits());
             } else if (unit.isOnCarrier()) {
-                ul.addAll(unit.getCarrier().getUnitList());
+                ul.addAll(unit.getCarrier().getUnits());
             } else {
                 ul.add(unit);
             }
