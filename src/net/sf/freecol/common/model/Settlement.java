@@ -367,7 +367,7 @@ public abstract class Settlement extends GoodsLocation
      * @return an {@code int} value
      */
     public int getConsumptionOf(GoodsType goodsType) {
-        return Math.max(0, sum(getUnits(),
+        return Math.max(0, sum(getUnitList(),
                                u -> u.getType().getConsumptionOf(goodsType)));
     }
 
@@ -468,6 +468,15 @@ public abstract class Settlement extends GoodsLocation
         return units;
     }
 
+    /**
+     * Get the units on the tile.
+     *
+     * @return A list of {@code Unit}s.
+     */
+    public List<Unit> getTileUnits() {
+        if (this.tile == null) return Collections.<Unit>emptyList();
+        return tile.getUnitList();
+    }
 
     // Override FreeColGameObject
 

@@ -1747,7 +1747,7 @@ public class Colony extends Settlement implements Nameable, TradeLocation {
      */
     public double getTotalDefencePower() {
         final CombatModel cm = getGame().getCombatModel();
-        return sumDouble(getTile().getUnits(), Unit::isDefensiveUnit,
+        return sumDouble(getTile().getUnitList(), Unit::isDefensiveUnit,
                 u -> cm.getDefencePower(null, u));
     }
 
@@ -1822,7 +1822,7 @@ public class Colony extends Settlement implements Nameable, TradeLocation {
         int friendlyUnits = 0;
         int enemyUnits = 0;
         for (Unit u : iterable(flatten(getColonyTiles(),
-                ct -> ct.getWorkTile().getUnits()))) {
+                ct -> ct.getWorkTile().getUnitList()))) {
             if (u.getOwner() == getOwner()) {
                 if (u.isDefensiveUnit()) friendlyUnits++;
             } else if (getOwner().atWarWith(u.getOwner())) {
@@ -1909,8 +1909,12 @@ public class Colony extends Settlement implements Nameable, TradeLocation {
      *
      * @return A stream of teacher {@code Unit}s.
      */
-    public Stream<Unit> getTeachers() {
-        return flatten(getBuildings(), Building::canTeach, Building::getUnits);
+    public List<Unit> getTeachers() {
+        List<Unit> result = new ArrayList<>();
+        for (Building b : getBuildings())
+            if (b.canTeach())
+                result.addAll(b.getUnitList());
+        return result;
     }
 
     /**
@@ -1925,7 +1929,7 @@ public class Colony extends Settlement implements Nameable, TradeLocation {
         return (getSpecification().getBoolean(GameOptions.ALLOW_STUDENT_SELECTION))
                 ? null // No automatic assignment
                 : find(flatten(getBuildings(), Building::canTeach,
-                Building::getUnits),
+                Building::getUnitList),
                 u -> u.getStudent() == null);
     }
 
@@ -1948,7 +1952,7 @@ public class Colony extends Settlement implements Nameable, TradeLocation {
         Unit min_unit = null;
         int  min_skill = Integer.MAX_VALUE;
 
-        for (Unit u : getUnits()) {
+        for (Unit u : getUnitList()) {
             if (!(u.getTeacher() == null && u.canBeStudent(teacher)))
                 continue;
 
@@ -2283,7 +2287,7 @@ loop:   for (WorkLocation wl : getWorkLocationsForProducing(goodsType)) {
 
         // We have an expert not doing the job of their expertise.
         // Check if there is a non-expert doing the job instead.
-        for (Unit nonExpert : transform(getUnits(), u ->
+        for (Unit nonExpert : transform(getUnitList(), u ->
                 u.getWorkType() == expertise && u.getType() != expertType)) {
 
             // We have found a unit of a different type doing the
@@ -2647,14 +2651,6 @@ loop:   for (WorkLocation wl : getWorkLocationsForProducing(goodsType)) {
      * {@inheritDoc}
      */
     @Override
-    public Stream<Unit> getUnits() {
-        return flatten(getCurrentWorkLocations(), WorkLocation::getUnits);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
     public List<Unit> getUnitList() {
         List<Unit> result = new ArrayList<>();
         synchronized (this.colonyTiles) {
@@ -2793,7 +2789,7 @@ loop:   for (WorkLocation wl : getWorkLocationsForProducing(goodsType)) {
 
         double max_defense = 0;
         Unit max_unit = null;
-        for (Unit u : getUnits()) {
+        for (Unit u : getUnitList()) {
             double defpwr = cm.getDefencePower(attacker, u);
             if ((max_unit == null) || (defpwr > max_defense)) {
                 max_defense = defpwr;

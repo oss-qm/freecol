@@ -64,7 +64,7 @@ public class EuropeWas {
 
         int max_id = 0;
         Unit max_unit = null;
-        for (Unit u : europe.getUnits()) {
+        for (Unit u : europe.getUnitList()) {
             int uid = u.getIdNumber();
             if (uid > max_id) {
                 max_id = uid;

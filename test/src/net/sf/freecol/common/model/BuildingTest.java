@@ -202,8 +202,8 @@ public class BuildingTest extends FreeColTestCase {
             freeColonistType, building.getExpertUnitType() };
         Tile tile = colony.getTile();
         for (UnitType ut : unitTypes) {
-            if (none(colony.getUnits(), matchKey(ut, Unit::getType))) {
-                Unit u = find(colony.getUnits(),
+            if (none(colony.getUnitList(), matchKey(ut, Unit::getType))) {
+                Unit u = find(colony.getUnitList(),
                               matchKey(freeColonistType, Unit::getType));
                 u.changeType(ut);
             }
@@ -224,7 +224,7 @@ public class BuildingTest extends FreeColTestCase {
                     assertEquals(building.getType(), bt);
                     clearBuilding(building);
                     colony.setProductionBonus(level);
-                    Unit worker = find(colony.getUnits(),
+                    Unit worker = find(colony.getUnitList(),
                                        matchKey(ut, Unit::getType));
                     assertNotNull(worker);
                     worker.setWorkType(outputType);

@@ -76,7 +76,7 @@ public class UnitIterator implements Iterator<Unit> {
      */
     private final void update() {
         this.units.clear();
-        for (Unit u : owner.getUnits())
+        for (Unit u : owner.getUnitList())
             if (testUnit(u))
                 this.units.add(u);
 

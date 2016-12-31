@@ -529,7 +529,7 @@ public class ServerIndianSettlement extends IndianSettlement
         int storedFood = getGoodsCount(spec.getPrimaryFoodType());
         if (storedFood <= 0 && getUnitCount() > 0) {
             Unit victim = getRandomMember(logger, "Choose starver",
-                                          getUnits(), random);
+                                          getUnitList(), random);
             ((ServerUnit)victim).csRemove(See.only(owner),
                 this, cs);//-vis(owner)
             lb.add(" FAMINE");

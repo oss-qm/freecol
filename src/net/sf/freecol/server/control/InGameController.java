@@ -516,7 +516,7 @@ public final class InGameController extends Controller {
 
         if (teleport) { // Teleport in the units.
             Set<Tile> seen = new HashSet<>();
-            for (Unit u : transform(serverPlayer.getUnits(), Unit::isNaval)) {
+            for (Unit u : transform(serverPlayer.getUnitList(), Unit::isNaval)) {
                 Tile entry = u.getEntryLocation().getTile();
                 u.setLocation(entry);//-vis(serverPlayer)
                 u.setWorkLeft(-1);
@@ -531,7 +531,7 @@ public final class InGameController extends Controller {
             serverPlayer.invalidateCanSeeTiles();//+vis(serverPlayer)
         } else {
             // Put navy on the high seas, with 1-turn sail time
-            for (Unit u : transform(serverPlayer.getUnits(), Unit::isNaval)) {
+            for (Unit u : transform(serverPlayer.getUnitList(), Unit::isNaval)) {
                 u.setWorkLeft(1);
                 u.setDestination(u.getEntryLocation());
                 u.setLocation(u.getOwner().getHighSeas());//-vis: safe!map
@@ -582,7 +582,7 @@ public final class InGameController extends Controller {
                 && serverPlayer.csChangeOwner(u, independent,
                     UnitChangeType.CAPTURE, null, cs));
         List<Unit> surrenderUnits
-            = transform(serverPlayer.getUnits(), surrenderPred);
+            = transform(serverPlayer.getUnitList(), surrenderPred);
         for (Unit u : surrenderUnits) {
             u.setMovesLeft(0);
             u.setState(Unit.UnitState.ACTIVE);
@@ -1376,7 +1376,7 @@ public final class InGameController extends Controller {
             ((ServerUnit)u).csRemove(See.only(serverPlayer), null, cs);
             lost = true;
         }
-        for (Unit u : transform(serverPlayer.getHighSeas().getUnits(),
+        for (Unit u : transform(serverPlayer.getHighSeas().getUnitList(),
                                 matchKey(europe, Unit::getDestination))) {
             seized.addStringTemplate(u.getLabel());
             ((ServerUnit)u).csRemove(See.only(serverPlayer), null, cs);

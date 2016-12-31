@@ -238,7 +238,7 @@ public final class QuickActionMenu extends JPopupMenu {
         final InGameController igc = freeColClient.getInGameController();
 
         boolean added = false;
-        for (Unit unit : transform(loc.getUnits(), u ->
+        for (Unit unit : transform(loc.getUnitList(), u ->
                 (u.isCarrier() && u.canCarryGoods() && u.canAdd(goods)))) {
             StringTemplate template
                 = StringTemplate.template("quickActionMenu.loadOnTo")
@@ -838,7 +838,7 @@ public final class QuickActionMenu extends JPopupMenu {
                                       ag.getType(), ag.getAmount());
 
         boolean added = false;
-        for (Unit unit : transform(europe.getUnits(), u ->
+        for (Unit unit : transform(europe.getUnitList(), u ->
                 (u.isCarrier() && u.canCarryGoods() && u.canAdd(goods)))) {
             StringTemplate template = StringTemplate.template("loadOnTo")
                 .addStringTemplate("%unit%",

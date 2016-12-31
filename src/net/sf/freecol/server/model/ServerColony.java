@@ -558,7 +558,7 @@ public class ServerColony extends Colony implements TurnTaker {
                 for (AbstractGoods goods : productionInfo.getProduction()) {
                     UnitType expert = spec.getExpertForProducing(goods.getType());
                     int experience = goods.getAmount() / wl.getUnitCount();
-                    for (Unit unit : transform(wl.getUnits(),
+                    for (Unit unit : transform(wl.getUnitList(),
                             u -> u.getExperienceType() == goods.getType()
                             && u.getUnitChange(UnitChangeType.EXPERIENCE,
                                                expert) != null)) {
@@ -650,7 +650,7 @@ public class ServerColony extends Colony implements TurnTaker {
                 if (net + stored < 0) {
                     if (getUnitCount() > 1) {
                         Unit victim = getRandomMember(logger, "Starver",
-                                                      getUnits(), random);
+                                                      getUnitList(), random);
                         ((ServerUnit)victim).csRemove(See.only(owner), null,
                             cs);//-vis: safe, all within colony
 

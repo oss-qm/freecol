@@ -200,7 +200,7 @@ public final class TilePopup extends JPopupMenu {
         Container currentMenu = this;
         boolean moreUnits = false;
         Unit firstUnit = tile.getFirstUnit();
-        for (Unit u : sort(tile.getUnits(), Unit.typeRoleComparator)) {
+        for (Unit u : sort(tile.getUnitList(), Unit.typeRoleComparator)) {
             if (lineCount > maxUnits) {
                 JMenu more = Utility.localizedMenu("more");
                 more.setFont(more.getFont().deriveFont(Font.ITALIC));
@@ -357,7 +357,7 @@ public final class TilePopup extends JPopupMenu {
             add(menuItem);
         }
 
-        Unit unit = find(tile.getUnits(),
+        Unit unit = find(tile.getUnitList(),
                          u -> u.canCarryGoods() && u.hasSpaceLeft());
         if (unit != null) {
             DebugUtils.addGoodsAdditionEntry(freeColClient, unit, this);
@@ -400,7 +400,7 @@ public final class TilePopup extends JPopupMenu {
         menuItem.setEnabled(enabled);
         menu.add(menuItem);
 
-        int lineCount = 1 + sum(unit.getUnits(),
+        int lineCount = 1 + sum(unit.getUnitList(),
                                 u -> addUnit(menu, u, true, true));
         boolean hasGoods = false;
         for (Goods goods: unit.getGoodsList()) {

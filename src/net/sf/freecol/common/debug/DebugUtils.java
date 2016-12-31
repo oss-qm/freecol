@@ -630,7 +630,7 @@ public class DebugUtils {
     private static void checkDesyncTile(Game cGame, ServerPlayer sPlayer,
                                         Tile sTile, LogBuilder lb) {
         Tile cTile = cGame.getFreeColGameObject(sTile.getId(), Tile.class);
-        for (Unit su : transform(sTile.getUnits(), u -> sPlayer.canSeeUnit(u))) {
+        for (Unit su : transform(sTile.getUnitList(), u -> sPlayer.canSeeUnit(u))) {
             Unit cu = cGame.getFreeColGameObject(su.getId(), Unit.class);
             if (cu == null) {
                 lb.add("Unit missing on client-side.\n", "  Server: ",

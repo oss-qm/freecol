@@ -404,7 +404,7 @@ public class LabourData {
     private void gatherData(Player player) {
         List<UnitType> labourTypes = getLabourTypes(player);
 
-        for (Unit unit : transform(player.getUnits(),
+        for (Unit unit : transform(player.getUnitList(),
                                    u -> labourTypes.contains(u.getType()))) {
             Location location = unit.getLocation();
             UnitData data = getUnitData(unit.getType());

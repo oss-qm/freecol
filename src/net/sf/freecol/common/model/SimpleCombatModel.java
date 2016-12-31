@@ -159,7 +159,7 @@ public class SimpleCombatModel extends CombatModel {
         } else if (combatIsBombard(attacker, defender)) {
             Settlement attackerSettlement = (Settlement) attacker;
             if (attackerSettlement.hasAbility(Ability.BOMBARD_SHIPS)) {
-                result += sumDouble(attackerSettlement.getTile().getUnits(),
+                result += sumDouble(attackerSettlement.getTile().getUnitList(),
                                     u -> u.hasAbility(Ability.BOMBARD),
                                     u -> u.getType().getOffence());
             }

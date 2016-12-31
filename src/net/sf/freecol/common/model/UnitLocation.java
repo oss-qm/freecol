@@ -196,7 +196,7 @@ public abstract class UnitLocation extends FreeColGameObject implements Location
      * @return The first {@code Unit}.
      */
     public final Unit getFirstUnit() {
-        return first(getUnits());
+        return first(getUnitList());
     }
 
     /**
@@ -218,7 +218,7 @@ public abstract class UnitLocation extends FreeColGameObject implements Location
      *     {@code Location}.
      */
     public int getTotalUnitCount() {
-        return sum(getUnits(), u -> 1 + u.getUnitCount());
+        return sum(getUnitList(), u -> 1 + u.getUnitCount());
     }
 
     /**
@@ -230,7 +230,7 @@ public abstract class UnitLocation extends FreeColGameObject implements Location
      * @see Unit#isCarrier
      */
     public boolean hasCarrierWithSpace(int space) {
-        return any(getUnits(), u -> u.isCarrier() && !u.isDamaged()
+        return any(getUnitList(), u -> u.isCarrier() && !u.isDamaged()
             && u.getSpaceLeft() >= space);
     }
 
@@ -240,7 +240,7 @@ public abstract class UnitLocation extends FreeColGameObject implements Location
      * @return A list of naval {@code Unit}s present.
      */
     public List<Unit> getNavalUnits() {
-        return transform(getUnits(), Unit::isNaval);
+        return transform(getUnitList(), Unit::isNaval);
     }
 
     /**
@@ -250,7 +250,7 @@ public abstract class UnitLocation extends FreeColGameObject implements Location
      * @return A suitable carrier or null if none found.
      */
     public Unit getCarrierForUnit(Unit unit) {
-        return find(getUnits(), u -> u.couldCarry(unit));
+        return find(getUnitList(), u -> u.couldCarry(unit));
     }
 
 
@@ -389,16 +389,6 @@ public abstract class UnitLocation extends FreeColGameObject implements Location
      * {@inheritDoc}
      */
     @Override
-    public Stream<Unit> getUnits() {
-        synchronized (this.units) {
-            return getUnitList().stream();
-        }
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
     public List<Unit> getUnitList() {
         synchronized (this.units) {
             return (this.units.isEmpty()) ? Collections.<Unit>emptyList()
@@ -455,7 +445,7 @@ public abstract class UnitLocation extends FreeColGameObject implements Location
      * @return The sum of the space taken by the units in this location.
      */
     public int getSpaceTaken() {
-        return sum(getUnits(), Unit::getSpaceTaken);
+        return sum(getUnitList(), Unit::getSpaceTaken);
     }
 
     /**

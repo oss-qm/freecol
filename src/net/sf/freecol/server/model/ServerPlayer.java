@@ -831,7 +831,7 @@ public class ServerPlayer extends Player implements TurnTaker {
      */
     public boolean updateScore() {
         int oldScore = this.score;
-        this.score = sum(getUnits(), Unit::getScoreValue)
+        this.score = sum(getUnitList(), Unit::getScoreValue)
             + getColoniesLiberty()
             + SCORE_FOUNDING_FATHER * count(getFathers());
         int gold = getGold();
@@ -1794,7 +1794,7 @@ outer:  for (Effect effect : effects) {
                         if (enemy.isEuropean()) {
                             Integer alarm = extra.get(enemy);
                             if (alarm == null) continue;
-                            alarm += (int)sumDouble(tile.getUnits(),
+                            alarm += (int)sumDouble(tile.getUnitList(),
                                 u -> u.isOffensiveUnit() && !u.isNaval(),
                                 u -> u.getType().getOffence());
                             extra.put(enemy, alarm);
@@ -1877,7 +1877,7 @@ outer:  for (Effect effect : effects) {
         for (Colony c : getColoniesCanBombard()) {
             Tile tile = c.getTile();
             for (Unit u : transform(flatten(tile.getSurroundingTiles(1, 1),
-                                            Tile::getUnits),
+                                            Tile::getUnitList),
                                     bombardUnit)) {
                 csCombat(c, u, null, random, cs);
             }
@@ -1945,7 +1945,7 @@ outer:  for (Effect effect : effects) {
                 Set<Tile> tiles
                     = transform(concat(flatten(colonies,
                                                c -> c.getVisibleTiles().stream()),
-                                       flatten(getUnits(),
+                                       flatten(getUnitList(),
                                                u -> u.getVisibleTiles().stream())),
                                 t -> !canSee(t), Function.identity(),
                                 Collectors.toSet());
@@ -2035,7 +2035,7 @@ outer:  for (Effect effect : effects) {
                 break;
 
             case "model.event.movementChange":
-                for (Unit u : transform(getUnits(), u -> u.getMovesLeft() > 0)) {
+                for (Unit u : transform(getUnitList(), u -> u.getMovesLeft() > 0)) {
                     u.setMovesLeft(u.getInitialMovesLeft());
                     cs.addPartial(See.only(this), u,
                         "movesLeft", String.valueOf(u.getMovesLeft()));
@@ -2972,7 +2972,7 @@ outer:  for (Effect effect : effects) {
                                      ChangeSet cs) {
         boolean captureRepairing = getSpecification()
             .getBoolean(GameOptions.CAPTURE_UNITS_UNDER_REPAIR);
-        List<Unit> units = transform(colony.getTile().getUnits(),
+        List<Unit> units = transform(colony.getTile().getUnitList(),
             u -> u.isNaval() && !(captureRepairing && u.isDamaged()));
         if (!units.isEmpty()) {
             final ServerPlayer shipPlayer = (ServerPlayer)colony.getOwner();
@@ -3735,7 +3735,7 @@ outer:  for (Effect effect : effects) {
     private void csSinkColonyShips(Unit attacker, Colony colony, ChangeSet cs) {
         boolean captureRepairing = getSpecification()
             .getBoolean(GameOptions.CAPTURE_UNITS_UNDER_REPAIR);
-        List<Unit> units = transform(colony.getTile().getUnits(),
+        List<Unit> units = transform(colony.getTile().getUnitList(),
             u -> u.isNaval() && !(captureRepairing && u.isDamaged()));
         if (!units.isEmpty()) {
             final ServerPlayer shipPlayer = (ServerPlayer)colony.getOwner();

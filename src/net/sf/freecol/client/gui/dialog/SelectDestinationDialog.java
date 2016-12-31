@@ -184,7 +184,7 @@ public final class SelectDestinationDialog extends FreeColDialog<Location>
                         final Predicate<Unit> upgradePred = u ->
                             u.getUnitChange(UnitChangeType.NATIVES) != null;
                         Unit up = (unit.isCarrier())
-                            ? find(unit.getUnits(), upgradePred)
+                            ? find(unit.getUnitList(), upgradePred)
                             : (upgradePred.test(unit)) ? unit
                             : null;
                         if (up != null) {

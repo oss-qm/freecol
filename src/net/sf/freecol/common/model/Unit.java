@@ -698,7 +698,7 @@ public class Unit extends GoodsLocation
                 if (!workImprovement.isComplete()
                     && (tile = workImprovement.getTile()) != null
                     && tile.getTileItemContainer() != null
-                    && none(tile.getUnits(), u ->
+                    && none(tile.getUnitList(), u ->
                         u != this && u.getState() == UnitState.IMPROVING
                              && u.getWorkImprovement() == workImprovement)) {
                     workImprovement.getTile().getTileItemContainer()
@@ -2287,7 +2287,7 @@ public class Unit extends GoodsLocation
         } else { // moving to sea, check for embarkation
             return (defender == null || !getOwner().owns(defender))
                 ? MoveType.MOVE_NO_ACCESS_EMBARK
-                : (any(target.getUnits(), u -> u.canAdd(this)))
+                : (any(target.getUnitList(), u -> u.canAdd(this)))
                 ? MoveType.EMBARK
                 : MoveType.MOVE_NO_ACCESS_FULL;
         }
@@ -3190,7 +3190,7 @@ public class Unit extends GoodsLocation
                             && (p = u.findPath(start)) != null
                             && p.getTotalTurns() < range);
                     };
-                    if (any(transform(tile.getUnits(), attackerPred))) {
+                    if (any(transform(tile.getUnitList(), attackerPred))) {
                         found = path;
                         return true;
                     }
@@ -3366,8 +3366,18 @@ public class Unit extends GoodsLocation
      * @return The number of cargo slots occupied by units.
      */
     public int getUnitSpaceTaken() {
-        return (canCarryUnits()) ? sum(getUnits(), Unit::getSpaceTaken)
+        return (canCarryUnits()) ? sum(getUnitList(), Unit::getSpaceTaken)
             : 0;
+    }
+
+    /**
+     * Gets a {@code List} of {@code Unit}s on this Unit's current tile
+     *
+     * @return {@code List} of {@code Unit}s on the current {@code Tile}
+     */
+    public List<Unit> getTileUnits() {
+        if (getTile() == null) return Collections.<Unit>emptyList();
+        return getTile().getUnitList();
     }
 
     /**

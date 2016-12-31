@@ -1139,7 +1139,6 @@ public class IndianSettlement extends Settlement implements TradeLocation {
     //   GoodsLocation.contains
     //   UnitLocation.canAdd
     //   UnitLocation.getUnitCount
-    //   UnitLocation.getUnits
     //   UnitLocation.getUnitList
     //   Settlement.getSettlement
     //   final Settlement.getRank
@@ -1588,7 +1587,7 @@ public class IndianSettlement extends Settlement implements TradeLocation {
         super.readChildren(xr);
 
         // @compat 0.10.1
-        for (Unit u : transform(getUnits(), u -> u.getLocation() != this)) {
+        for (Unit u : transform(getUnitList(), u -> u.getLocation() != this)) {
             u.setLocationNoUpdate(this);
             logger.warning("Fixing unit location"
                 + " from " + u.getLocation()

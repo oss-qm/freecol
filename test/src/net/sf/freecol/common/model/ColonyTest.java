@@ -299,7 +299,7 @@ public class ColonyTest extends FreeColTestCase {
         Tile colonyTile = colony.getTile();
         assertEquals(colonyTile.getType(), plainsTileType);
 
-        Unit colonist = first(colony.getUnits());
+        Unit colonist = colony.getFirstUnit();
         Tile workedTile = null;
         for (ColonyTile ct : colony.getColonyTiles()) {
             if (ct.isColonyCenterTile()) continue;

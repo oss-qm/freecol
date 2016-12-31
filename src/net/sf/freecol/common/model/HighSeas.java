@@ -120,7 +120,6 @@ public class HighSeas extends UnitLocation {
     //   UnitLocation.contains
     //   UnitLocation.canAdd
     //   UnitLocation.getUnitCount
-    //   UnitLocation.getUnits
     //   UnitLocation.getUnitList
     //   UnitLocation.getGoodsContainer
     //   UnitLocation.getSettlement
