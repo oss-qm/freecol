@@ -999,7 +999,7 @@ public class Player extends FreeColGameObject implements Nameable {
      *     world or a nation is in rebellion against us.
      */
     public boolean isWorkForREF() {
-        return Unit.anyHasTile(getUnits())
+        return Unit.anyHasTile(getUnitList())
             ? true // Work to do still if there exists a unit in the new world
             : !getRebels().isEmpty();
     }
@@ -1538,7 +1538,7 @@ public class Player extends FreeColGameObject implements Nameable {
      */
     public int calculateStrength(boolean naval) {
         final CombatModel cm = getGame().getCombatModel();
-        return (int)sumDouble(getUnits(), u -> u.isNaval() == naval,
+        return (int)sumDouble(getUnitList(), u -> u.isNaval() == naval,
                               u -> cm.getOffencePower(u, null));
     }
 
@@ -1577,7 +1577,7 @@ public class Player extends FreeColGameObject implements Nameable {
         java.util.Map<UnitType, HashMap<String, Integer>> unitHash
             = new HashMap<>();
         List<AbstractUnit> units = new ArrayList<>();
-        for (Unit unit : transform(getUnits(), Unit::isOffensiveUnit)) {
+        for (Unit unit : transform(getUnitList(), Unit::isOffensiveUnit)) {
             UnitType unitType = defaultType;
             if (unit.getType().getOffence() > 0
                 || unit.hasAbility(Ability.EXPERT_SOLDIER)) {
@@ -1917,19 +1917,8 @@ public class Player extends FreeColGameObject implements Nameable {
     }
 
     /**
-     * Get a stream of the players units.
-     *
-     * Have to serialize the copy created by getUnitList, otherwise
-     * concurrent modification exceptions show up.
-     *
-     * @return A stream of the player {@code Unit}s.
-     */
-    public Stream<Unit> getUnits() {
-        return getUnitList().stream();
-    }
-
-    /**
      * Get a copy of the players units.
+     * (copying instead of reference for concurrency)
      *
      * @return A list of the player {@code Unit}s.
      */
@@ -2020,7 +2009,7 @@ public class Player extends FreeColGameObject implements Nameable {
      * @return A list of suitable carriers.
      */
     public List<Unit> getCarriersForUnit(Unit unit) {
-        return transform(getUnits(), u -> u.couldCarry(unit));
+        return transform(getUnitList(), u -> u.couldCarry(unit));
     }
 
     /**
@@ -2030,7 +2019,7 @@ public class Player extends FreeColGameObject implements Nameable {
      * @return The number of units.
      */
     public int getUnitCount(boolean naval) {
-        return count(getUnits(), u -> u.isNaval() == naval);
+        return count(getUnitList(), u -> u.isNaval() == naval);
     }
 
     /**
@@ -2039,7 +2028,7 @@ public class Player extends FreeColGameObject implements Nameable {
      * @return The number of units
      */
     public int getNumberOfKingLandUnits() {
-        return count(getUnits(),
+        return count(getUnitList(),
                      u -> u.hasAbility(Ability.REF_UNIT) && !u.isNaval());
     }
 
@@ -2050,7 +2039,7 @@ public class Player extends FreeColGameObject implements Nameable {
      * @return True if this player owns at least one of the specified unit type.
      */
     public boolean hasUnitType(String typeId) {
-        return any(getUnits(),
+        return any(getUnitList(),
                    matchKeyEquals(typeId, u -> u.getType().getId()));
     }
 
@@ -2914,7 +2903,7 @@ public class Player extends FreeColGameObject implements Nameable {
 
             // Only consider units directly on the map, not those on a
             // carrier or in Europe.
-            for (Unit unit : getUnits())
+            for (Unit unit : getUnitList())
                 vismap.setVisible(unit);
 
             // All the settlements.
@@ -3270,7 +3259,7 @@ public class Player extends FreeColGameObject implements Nameable {
      * @return The reason why/not the tile can be owned by this player.
      */
     private NoClaimReason canOwnTileReason(Tile tile) {
-        return (any(tile.getUnits(),
+        return (any(tile.getUnitList(),
                     u -> u.getOwner() != this && u.isOffensiveUnit()))
             ? NoClaimReason.OCCUPIED // The tile is held against us
             : (isEuropean())
@@ -3652,7 +3641,7 @@ public class Player extends FreeColGameObject implements Nameable {
                 }
             }
 
-            for (Unit u : transform(t.getUnits(),
+            for (Unit u : transform(t.getUnitList(),
                                     u -> !owns(u) && u.isOffensiveUnit()
                                         && atWarWith(u.getOwner()))) {
                 values.set(ColonyValueCategory.A_ADJACENT.ordinal(),
@@ -3698,7 +3687,7 @@ public class Player extends FreeColGameObject implements Nameable {
                     }
                 }
 
-                for (Unit u : transform(t.getUnits(),
+                for (Unit u : transform(t.getUnitList(),
                                         u -> (!owns(u) && u.isOffensiveUnit()
                                             && atWarWith(u.getOwner())))) {
                     values.set(ColonyValueCategory.A_NEARBY.ordinal(),

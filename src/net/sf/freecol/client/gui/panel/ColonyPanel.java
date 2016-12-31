@@ -39,6 +39,7 @@ import java.beans.PropertyChangeListener;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.Collections;
 
 import javax.swing.ComponentInputMap;
 import javax.swing.ImageIcon;
@@ -608,7 +609,7 @@ public final class ColonyPanel extends PortPanel
         // Check for non-producing locations that can now produce.
         for (WorkLocation wl : colony.getCurrentWorkLocationsList()) {
             boolean change = false, check = wl.getProductionType() == null;
-            for (Unit unit : transform(wl.getUnits(), u ->
+            for (Unit unit : transform(wl.getUnitList(), u ->
                     (check || !wl.produces(u.getWorkType())))) {
                 GoodsType workType = wl.getWorkFor(unit);
                 if (workType != null && workType != unit.getWorkType()) {
@@ -976,7 +977,9 @@ public final class ColonyPanel extends PortPanel
      */
     @Override
     public List<Unit> getUnitList() {
-        return sort(colony.getTile().getUnits());
+        List<Unit> result = colony.getTileUnits();
+        Collections.sort(result);
+        return result;
     }
 
 

@@ -1466,7 +1466,7 @@ plans:          for (WorkLocationPlan w : getFoodPlans()) {
                 workers.remove(u);
             } else break;
         }
-        for (Unit u : transform(col.getUnits(), u -> !u.hasDefaultRole())) {
+        for (Unit u : transform(col.getUnitList(), u -> !u.hasDefaultRole())) {
             logger.warning("assignWorkers bogus role for " + u);
             u.changeRole(spec().getDefaultRole(), 0);
         }

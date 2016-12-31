@@ -194,7 +194,7 @@ public final class CostDeciders {
             // threat in an adjacent tile.
             final Player owner = unit.getOwner();
             for (Tile t : tile.getSurroundingTiles(1,1)) {
-                for (Unit u : t.getUnits()) {
+                for (Unit u : t.getUnitList()) {
                     if (u.getOwner() != owner
                         && (u.hasAbility(Ability.PIRACY) ||
                             (u.getOwner().atWarWith(owner) && u.isOffensiveUnit())

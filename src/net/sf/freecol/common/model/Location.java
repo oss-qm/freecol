@@ -20,7 +20,6 @@
 package net.sf.freecol.common.model;
 
 import java.util.List;
-import java.util.stream.Stream;
 
 import net.sf.freecol.client.gui.ImageLibrary;
 import net.sf.freecol.common.ObjectWithId;
@@ -113,13 +112,6 @@ public interface Location extends ObjectWithId {
      * @return The number of units at this Location.
      */
     public int getUnitCount();
-
-    /**
-     * Gets a stream of all the units present at this location.
-     *
-     * @return A stream of all the units at this location.
-     */
-    public Stream<Unit> getUnits();
 
     /**
      * Gets a list of all the units present at this location.

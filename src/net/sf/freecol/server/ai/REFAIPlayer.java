@@ -419,7 +419,7 @@ public class REFAIPlayer extends EuropeanAIPlayer {
                     if (tile != null && !tile.isEmpty()
                         && !tile.isLand()
                         && rebel.owns(tile.getFirstUnit())) {
-                        rebelNavy.addAll(transform(tile.getUnits(), u ->
+                        rebelNavy.addAll(transform(tile.getUnitList(), u ->
                                 (u.isOffensiveUnit() && u.isNaval()
                                     && !rebelNavy.contains(u))));
                     }
@@ -736,7 +736,7 @@ public class REFAIPlayer extends EuropeanAIPlayer {
                 AIUnit found = null;
                 Colony target = null;
                 for (AIUnit aiCarrier : aiCarriers) {
-                    found = first(transform(aiCarrier.getUnit().getUnits(),
+                    found = first(transform(aiCarrier.getUnit().getUnitList(),
                                             u -> u.hasAbility(Ability.REF_UNIT),
                                             u -> getAIUnit(u),
                                             toListNoNulls()));

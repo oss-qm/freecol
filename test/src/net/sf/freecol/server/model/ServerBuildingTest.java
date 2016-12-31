@@ -121,7 +121,11 @@ public class ServerBuildingTest extends FreeColTestCase {
      * @return A list of all the units of the given type in this colony.
      */
     private List<Unit> getUnitList(Colony colony, UnitType type) {
-        return transform(colony.getUnits(), matchKey(type, Unit::getType));
+        List<Unit> result = new ArrayList<>();
+        for (Unit u : colony.getUnitList())
+            if (u.getType() == type)
+                result.add(u);
+        return result;
     }
 
     /**

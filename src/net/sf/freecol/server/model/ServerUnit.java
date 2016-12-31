@@ -289,7 +289,7 @@ public class ServerUnit extends Unit implements TurnTaker {
         }
 
         // Cancel other co-located improvements of the same type
-        for (Unit unit : transform(tile.getUnits(),
+        for (Unit unit : transform(tile.getUnitList(),
                 u -> (u.getWorkImprovement() != null
                     && u.getWorkImprovement().getType() == ti.getType()
                     && u.getState() == UnitState.IMPROVING))) {
@@ -379,7 +379,7 @@ public class ServerUnit extends Unit implements TurnTaker {
                 || tile.getColony() != null
                 || tile.getFirstUnit() == null
                 || (enemy = tile.getFirstUnit().getOwner()) == player) continue;
-            for (Unit enemyUnit : transform(tile.getUnits(), u ->
+            for (Unit enemyUnit : transform(tile.getUnitList(), u ->
                     (u.isNaval()
                         && ((u.isOffensiveUnit() && player.atWarWith(enemy))
                             || pirate || u.hasAbility(Ability.PIRACY))))) {
@@ -736,7 +736,7 @@ public class ServerUnit extends Unit implements TurnTaker {
      * @param cs A {@code ChangeSet} to update.
      */
     private void csActivateSentries(Tile tile, ChangeSet cs) {
-        for (Unit u : transform(tile.getUnits(),
+        for (Unit u : transform(tile.getUnitList(),
                                 matchKey(UnitState.SENTRY, Unit::getState))) {
             u.setState(UnitState.ACTIVE);
             cs.add(See.perhaps(), u);

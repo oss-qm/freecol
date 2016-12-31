@@ -300,7 +300,7 @@ public class NativeAIPlayer extends MissionAIPlayer {
                     bonus = (float)tension.getLevel().ordinal()
                         - Tension.Level.CONTENT.ordinal();
                 }
-                value += sumDouble(t.getUnits(),
+                value += sumDouble(t.getUnitList(),
                                    u -> cm.getOffencePower(u, is) > threshold,
                                    u -> cm.getOffencePower(u, is) + bonus);
                 if (value > 0.0) threats.put(t, value);

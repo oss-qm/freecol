@@ -205,7 +205,7 @@ public final class ReportCompactColonyPanel extends ReportPanel
 
             for (GoodsType gt : goodsTypes) produce(gt);
 
-            this.notWorking.addAll(transform(colony.getTile().getUnits(),
+            this.notWorking.addAll(transform(colony.getTile().getUnitList(),
                                              notWorkingPred));
 
             // Collect the types of the units at work in the colony
@@ -228,7 +228,7 @@ public final class ReportCompactColonyPanel extends ReportPanel
                 }
 
                 // Check if the units are working.
-                this.notWorking.addAll(transform(wl.getUnits(),
+                this.notWorking.addAll(transform(wl.getUnitList(),
                                        u -> (u.getTeacher() == null
                                            && u.getWorkType() == null)));
 
@@ -575,7 +575,7 @@ public final class ReportCompactColonyPanel extends ReportPanel
                 c = cAlarm;
                 if (n == 1) {
                     TileImprovementSuggestion tis = first(s.tileSuggestions);
-                    if (any(tis.tile.getUnits(),
+                    if (any(tis.tile.getUnitList(),
                             u -> (u.getState() == Unit.UnitState.IMPROVING
                                 && u.getWorkImprovement() != null
                                 && u.getWorkImprovement().getType()

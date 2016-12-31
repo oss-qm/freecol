@@ -109,7 +109,7 @@ public class ChangeAction extends UnitAction {
                     return;
                 }
             }
-            Unit active = find(tile.getUnits(),
+            Unit active = find(tile.getUnitList(),
                                u -> (u != unit
                                    && u.getState() == Unit.UnitState.ACTIVE
                                    && u.getMovesLeft() > 0));

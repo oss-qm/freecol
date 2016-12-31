@@ -297,7 +297,7 @@ public class AIColony extends AIObject implements PropertyChangeListener {
                 && (validAIU = getAIUnit(u)) != null
                 && validAIU.isAvailableForWork(colony);
         };
-        for (Unit u : transform(tile.getUnits(), workerPred)) {
+        for (Unit u : transform(tile.getUnitList(), workerPred)) {
             workers.add(u);
             was.add(new UnitWas(u));
         }
@@ -375,7 +375,7 @@ public class AIColony extends AIObject implements PropertyChangeListener {
         int tipSize = tileImprovementPlans.size();
         if (tipSize > 0) {
             List<Unit> pioneers
-                = transform(tile.getUnits(), u -> u.getPioneerScore() >= 0,
+                = transform(tile.getUnitList(), u -> u.getPioneerScore() >= 0,
                             Function.identity(), pioneerComparator);
             for (Unit u : pioneers) {
                 final AIUnit aiu = getAIUnit(u);
@@ -478,7 +478,7 @@ public class AIColony extends AIObject implements PropertyChangeListener {
         final Predicate<Unit> explorerPred = u -> u.isPerson()
             && (u.getType().getSkill() <= 0
                 || u.hasAbility(Ability.EXPERT_SCOUT));
-        List<Unit> scouts = transform(tile.getUnits(), explorerPred,
+        List<Unit> scouts = transform(tile.getUnitList(), explorerPred,
                                       Function.identity(), scoutComparator);
         for (Tile t : transform(tile.getSurroundingTiles(1,1),
                                 Tile::hasLostCityRumour)) {
@@ -508,7 +508,7 @@ public class AIColony extends AIObject implements PropertyChangeListener {
         final Specification spec = getSpecification();
         final Tile tile = colony.getTile();
         final Player player = colony.getOwner();
-        boolean hasDefender = any(tile.getUnits(),
+        boolean hasDefender = any(tile.getUnitList(),
             u -> u.isDefensiveUnit()
                 && getAIUnit(u).hasDefendSettlementMission());
         if (!hasDefender) return;
@@ -575,7 +575,7 @@ public class AIColony extends AIObject implements PropertyChangeListener {
         for (Unit u : colony.getTile().getUnitList()) lb.add(" ", u);
         List<GoodsType> libertyGoods = getSpecification()
             .getLibertyGoodsTypeList();
-        out: for (Unit u : transform(colony.getTile().getUnits(),
+        out: for (Unit u : transform(colony.getTile().getUnitList(),
                                      Unit::isPerson)) {
             for (WorkLocation wl : transform(colony.getAvailableWorkLocations(),
                                              w -> w.canAdd(u))) {
@@ -1010,7 +1010,7 @@ public class AIColony extends AIObject implements PropertyChangeListener {
             colony.getAdjustedNetProductionOf(gt));
         List<GoodsType> producing
             = sort(transform(flatten(colony.getAvailableWorkLocations(),
-                                     WorkLocation::getUnits),
+                                     WorkLocation::getUnitList),
                              isNotNull(Unit::getWorkType),
                              u -> u.getWorkType().getStoredAs(),
                              Collectors.toSet()),
@@ -1132,7 +1132,7 @@ public class AIColony extends AIObject implements PropertyChangeListener {
                 (u.roleIsAvailable(role)
                     && (u.hasDefaultRole()
                         || Role.isCompatibleWith(role, u.getRole())));
-            if (any(colony.getTile().getUnits(), rolePred)) {
+            if (any(colony.getTile().getUnitList(), rolePred)) {
                 for (AbstractGoods ag : role.getRequiredGoodsList()) {
                     required.incrementCount(ag.getType(), ag.getAmount());
                 }

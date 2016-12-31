@@ -68,7 +68,7 @@ public final class ReportCargoPanel extends ReportUnitPanel {
 
     @Override
     protected void gatherData() {
-        for (Unit u : CollectionUtils.transform(getMyPlayer().getUnits(), Unit::isCarrier)) {
+        for (Unit u : CollectionUtils.transform(getMyPlayer().getUnitList(), Unit::isCarrier)) {
             addUnit(u, "carriers");
         }
     }

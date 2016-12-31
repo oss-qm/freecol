@@ -2430,14 +2430,6 @@ public class Map extends FreeColGameObject implements Location {
      * {@inheritDoc}
      */
     @Override
-    public Stream<Unit> getUnits() {
-        return Stream.<Unit>empty();
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
     public List<Unit> getUnitList() {
         return Collections.<Unit>emptyList();
     }

@@ -724,7 +724,7 @@ public final class InGameController extends FreeColClientHolder {
         List<ModelMessage> messages = new ArrayList<>();
         final Predicate<Unit> tradePred = u ->
             u.isReadyToTrade() && player.owns(u);
-        for (Unit unit : transform(player.getUnits(), tradePred,
+        for (Unit unit : transform(player.getUnitList(), tradePred,
                                    Function.identity(),
                                    tradeRouteUnitComparator)) {
             getGUI().setActiveUnit(unit);
@@ -1298,7 +1298,7 @@ public final class InGameController extends FreeColClientHolder {
 
         // Disembark selected units able to move.
         final List<Unit> disembarkable
-            = transform(unit.getUnits(),
+            = transform(unit.getUnitList(),
                         u -> u.getMoveType(tile).isProgress());
         if (disembarkable.isEmpty()) return false; // Fail, did not find one
         for (Unit u : disembarkable) changeState(u, UnitState.ACTIVE);
@@ -1358,7 +1358,7 @@ public final class InGameController extends FreeColClientHolder {
         Tile destinationTile = sourceTile.getNeighbourOrNull(direction);
         Unit carrier = null;
         List<ChoiceItem<Unit>> choices
-            = transform(destinationTile.getUnits(),
+            = transform(destinationTile.getUnitList(),
                         u -> u.canAdd(unit),
                         u -> new ChoiceItem<>(u.getDescription(Unit.UnitLabelType.NATIONAL), u));
         if (choices.isEmpty()) {
@@ -1514,7 +1514,7 @@ public final class InGameController extends FreeColClientHolder {
             && options.getBoolean(ClientOptions.AUTOLOAD_SENTRIES)) {
             // Autoload sentries if selected
             List<Unit> waiting = (unit.getColony() != null)
-                ? unit.getTile().getUnitList()
+                ? unit.getTileUnits()
                 : Collections.<Unit>emptyList();
             for (Unit u : waiting) {
                 if (u.getState() != UnitState.SENTRY
@@ -3730,7 +3730,7 @@ public final class InGameController extends FreeColClientHolder {
         boolean update = false;
         if (getClientOptions().getBoolean(ClientOptions.AUTOLOAD_EMIGRANTS)
             && unit.isInEurope()) {
-            for (Unit u : transform(unit.getOwner().getEurope().getUnits(),
+            for (Unit u : transform(unit.getOwner().getEurope().getUnitList(),
                     u -> (!u.isNaval()
                         && u.getState() == UnitState.SENTRY
                         && unit.canAdd(u)))) {
