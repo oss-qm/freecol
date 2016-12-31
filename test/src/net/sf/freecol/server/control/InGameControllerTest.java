@@ -620,7 +620,7 @@ public class InGameControllerTest extends FreeColTestCase {
         tile2.setExplored(dutch, true);
         tile2.setExplored(french, true);
         dutch.addAbility(new Ability(Ability.INDEPENDENCE_DECLARED));
-        Unit colonist = first(colony.getUnits());
+        Unit colonist = colony.getFirstUnits();
         colonist.changeType(colonialType);
         assertEquals("Colonist should be Colonial Regular",
                      colonialType, colonist.getType());
@@ -735,7 +735,7 @@ public class InGameControllerTest extends FreeColTestCase {
 
         Tile tile2 = map.getTile(4, 8);
         tile2.setExplored(dutch, true);
-        Unit colonist = first(colony.getUnits());
+        Unit colonist = colony.getFirstUnit();
         Unit defender = new ServerUnit(getGame(), colony.getTile(), dutch,
                                        veteranType, dragoonRole);
         Unit attacker = new ServerUnit(getGame(), tile2, inca, braveType,
@@ -953,7 +953,7 @@ public class InGameControllerTest extends FreeColTestCase {
         inca.setStance(dutch, Stance.WAR);
         Tile tile2 = map.getTile(4, 8);
         tile2.setExplored(dutch, true);
-        Unit colonist = first(colony.getUnits());
+        Unit colonist = colony.getFirstUnits();
         Unit attacker = new ServerUnit(getGame(), tile2, inca, braveType,
                                        nativeDragoonRole);
         assertEquals("Colonist should be the colony best defender",
@@ -1749,7 +1749,7 @@ public class InGameControllerTest extends FreeColTestCase {
         assertEquals("Initial number of muskets in Indian camp not as expected",
             musketsReqPerUnit, camp.getGoodsCount(musketsType));
 
-        Unit brave = camp.getUnitList().get(0);
+        Unit brave = camp.getUnits().get(0);
         assertFalse("Brave should not be mounted",
                     brave.isMounted());
         assertFalse("Brave should not be armed",
@@ -1799,7 +1799,7 @@ public class InGameControllerTest extends FreeColTestCase {
         assertEquals("Initial number of muskets in camp not as expected",
                      musketsReq/2, camp.getGoodsCount(musketsType));
 
-        Unit brave = camp.getUnitList().get(0);
+        Unit brave = camp.getUnits().get(0);
         assertTrue("Initial brave has default role",
                    brave.hasDefaultRole());
         assertFalse("Initial brave should not be mounted",
@@ -1838,8 +1838,8 @@ public class InGameControllerTest extends FreeColTestCase {
         igc.addFoundingFather(dutch, father);
 
         assertEquals(2, dutch.getUnitCount());
-        UnitType[] types = { dutch.getUnitList().get(0).getType(),
-                             dutch.getUnitList().get(1).getType() };
+        UnitType[] types = { dutch.getUnits().get(0).getType(),
+                             dutch.getUnits().get(1).getType() };
         assertTrue((colonistType == types[0] && statesmanType == types[1])
             || (colonistType == types[1] && statesmanType == types[0]));
     }
@@ -2110,7 +2110,7 @@ public class InGameControllerTest extends FreeColTestCase {
 
         ServerColony colony = (ServerColony)getStandardColony(2);
         colony.addGoods(lumberType, 100);
-        Unit unit = colony.getUnitList().get(0);
+        Unit unit = colony.getUnits().get(0);
         Building building = colony.getBuilding(carpenterHouse);
 
         assertEquals("Production()", 0,

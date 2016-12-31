@@ -23,6 +23,7 @@ import java.awt.Color;
 import java.awt.FlowLayout;
 import java.util.List;
 import java.util.function.Function;
+import java.util.Collections;
 
 import javax.swing.JPanel;
 
@@ -63,16 +64,17 @@ public final class ReportEducationPanel extends ReportPanel {
                     bp.initialize();
                     reportPanel.add(bp);
                     JPanel teacherPanel = getPanel("report.education.teachers");
-                    List<Unit> teachers = transform(colony.getUnits(),
-                        u -> building.canAdd(u), Function.identity(),
-                        Unit.increasingSkillComparator);
+                    List<Unit> teachers = new ArrayList<>();
+                    for (Unit u : colony.getUnits()) {
+                        if (building.canAdd(u)) teachers.add(u);
+                    Collections.sort(teachers, Unit.increasingSkillComparator);
                     for (Unit u : teachers) {
                         teacherPanel.add(new UnitLabel(freeColClient, u,
                                                        true, true));
                     }
                     reportPanel.add(teacherPanel, "split 2, flowy, grow");
                     JPanel studentPanel = getPanel("report.education.students");
-                    for (Unit unit : colony.getUnitList()) {
+                    for (Unit unit : colony.getUnits()) {
                         Unit teacher = find(teachers, u -> unit.canBeStudent(u));
                         if (teacher != null) {
                             UnitLabel ul = new UnitLabel(freeColClient, unit,

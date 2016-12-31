@@ -219,7 +219,7 @@ public final class TilePopup extends JPopupMenu {
             JMenuItem activateAllItem = Utility.localizedMenuItem(StringTemplate
                 .template("activateAllUnits"));
             activateAllItem.addActionListener((ActionEvent ae) -> {
-                    for (Unit unit : tile.getUnitList()) igc.clearOrders(unit);
+                    for (Unit unit : tile.getUnits()) igc.clearOrders(unit);
                     gui.setActiveUnit(tile.getFirstUnit());
                 });
             add(activateAllItem);
@@ -253,7 +253,7 @@ public final class TilePopup extends JPopupMenu {
         JMenu changeRole = new JMenu("Change role");
         changeRole.setOpaque(false);
 
-        for (final Unit unit : tile.getUnitList()) {
+        for (final Unit unit : tile.getUnits()) {
             JMenuItem toMenuItem = new JMenuItem(unit.toString());
             toMenuItem.addActionListener((ActionEvent ae) -> {
                     DebugUtils.changeOwnership(freeColClient, unit);
@@ -331,7 +331,7 @@ public final class TilePopup extends JPopupMenu {
         if (!tile.isEmpty()) {
             JMenuItem adda = new JMenuItem("Reset moves");
             adda.setOpaque(false);
-            final List<Unit> tileUnits = tile.getUnitList();
+            final List<Unit> tileUnits = tile.getUnits();
             adda.addActionListener((ActionEvent ae) -> {
                     DebugUtils.resetMoves(freeColClient, tileUnits);
                 });

@@ -335,7 +335,7 @@ public class AIColonyTest extends FreeColTestCase {
         ServerPlayer player = (ServerPlayer) colony.getOwner();
         assertEquals("Wrong number of units in colony", 1,
             colony.getUnitCount());
-        Unit lumberjack = colony.getUnitList().get(0);
+        Unit lumberjack = colony.getUnits().get(0);
 
         aiColony.propertyChange(null); // force rearranging workers
         aiColony.rearrangeColony(lb);

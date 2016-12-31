@@ -131,7 +131,7 @@ public abstract class PortPanel extends FreeColPanel {
      *
      * @return A list of {@code Unit}s.
      */
-    public abstract List<Unit> getUnitList();
+    public abstract List<Unit> getUnits();
 
 
     // Override JComponent

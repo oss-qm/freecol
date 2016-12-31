@@ -167,7 +167,7 @@ public class BuildingTest extends FreeColTestCase {
 
     private void clearBuilding(Building b) {
         final Colony colony = b.getColony();
-        for (Unit u : b.getUnitList()) {
+        for (Unit u : b.getUnits()) {
             u.setLocation(colony.getTile());
             u.setWorkType(grainType);
             colony.joinColony(u);
@@ -229,7 +229,7 @@ public class BuildingTest extends FreeColTestCase {
                     worker.setWorkType(outputType);
                     worker.setLocation(building);
                     assertEquals(1, building.getUnitCount());
-                    assertEquals(worker, building.getUnitList().get(0));
+                    assertEquals(worker, building.getUnits().get(0));
                     assertEquals(outputType, worker.getWorkType());
                     colony.invalidateCache();
                     assertEquals(colony.getProductionBonus(), level);
@@ -351,9 +351,9 @@ public class BuildingTest extends FreeColTestCase {
         // liberty to zero the production bonus.
         Colony colony = getStandardColony(10);
         while (colony.getProductionBonus() < 0) colony.modifyLiberty(100);
-        Unit unit0 = colony.getUnitList().get(0);
-        Unit unit1 = colony.getUnitList().get(1);
-        Unit unit2 = colony.getUnitList().get(2);
+        Unit unit0 = colony.getUnits().get(0);
+        Unit unit1 = colony.getUnits().get(1);
+        Unit unit2 = colony.getUnits().get(2);
 
         assertFalse(chapelType.hasAbility(Ability.DRESS_MISSIONARY));
         assertFalse(unit0.hasAbility(Ability.DRESS_MISSIONARY));
@@ -496,7 +496,7 @@ public class BuildingTest extends FreeColTestCase {
 
         Colony colony = getStandardColony(6);
         Tile tile = colony.getTile();
-        List<Unit> units = colony.getUnitList();
+        List<Unit> units = colony.getUnits();
 
         // Standard colony tends to place units in the town hall
         for (Unit u : units) {
@@ -521,7 +521,7 @@ public class BuildingTest extends FreeColTestCase {
                 + " to building type " + building.getType(),
                 building.canAdd(units.get(maxUnits)));
             for (int index = 0; index < maxUnits; index++) {
-                building.remove(building.getUnitList().get(0));
+                building.remove(building.getUnits().get(0));
             }
         }
     }
@@ -540,7 +540,7 @@ public class BuildingTest extends FreeColTestCase {
 
         Colony colony = getStandardColony(10);
 
-        Iterator<Unit> units = colony.getUnitList().iterator();
+        Iterator<Unit> units = colony.getUnits().iterator();
 
         Unit farmer = units.next();
         farmer.setType(expertFarmerType);
@@ -725,7 +725,7 @@ public class BuildingTest extends FreeColTestCase {
         game.setMap(getTestMap(true));
 
         Colony colony = getStandardColony(2);
-        List<Unit> units = colony.getUnitList();
+        List<Unit> units = colony.getUnits();
         Unit colonist = units.get(0);
         Unit worker = units.get(1);
 
@@ -737,7 +737,7 @@ public class BuildingTest extends FreeColTestCase {
         assertEquals(plainsType, worker.getWorkTile().getType());
 
         assertTrue(weaver.add(worker));
-        assertEquals(worker, weaver.getUnitList().get(0));
+        assertEquals(worker, weaver.getUnits().get(0));
 
         colony.addGoods(cottonType, 2);
         colony.invalidateCache();
@@ -834,13 +834,13 @@ public class BuildingTest extends FreeColTestCase {
 
         Colony colony = getStandardColony(6);
         Player owner = colony.getOwner();
-        Unit colonist = colony.getUnitList().get(0);
-        Unit statesman = colony.getUnitList().get(1);
+        Unit colonist = colony.getUnits().get(0);
+        Unit statesman = colony.getUnits().get(1);
         statesman.setType(elderStatesmanType);
 
         Tile tile = colony.getTile();
         Building building = colony.getBuilding(townHallType);
-        for (Unit u : building.getUnitList()) u.setLocation(tile);
+        for (Unit u : building.getUnits()) u.setLocation(tile);
 
         assertTrue("No initial modifiers",
                    none(colony.getModifiers("model.goods.bells")));
@@ -928,10 +928,10 @@ public class BuildingTest extends FreeColTestCase {
         game.setMap(getTestMap(true));
 
         Colony colony = getStandardColony(6);
-        Unit unit = colony.getUnitList().get(0);
+        Unit unit = colony.getUnits().get(0);
         Building building = colony.getBuilding(townHallType);
         Tile tile = colony.getTile();
-        for (Unit u : building.getUnitList()) u.setLocation(tile);
+        for (Unit u : building.getUnits()) u.setLocation(tile);
 
         int bellProduction = building.getTotalProductionOf(bellsType);
         int expectBellProd = 1;
@@ -955,7 +955,7 @@ public class BuildingTest extends FreeColTestCase {
         game.setMap(getTestMap(true));
 
         Colony colony = getStandardColony(6);
-        Unit unit = colony.getUnitList().get(0);
+        Unit unit = colony.getUnits().get(0);
         Building building = colony.getBuilding(townHallType);
         clearWorkLocation(building);
 
@@ -986,7 +986,7 @@ public class BuildingTest extends FreeColTestCase {
         game.setMap(getTestMap(true));
 
         Colony colony = getStandardColony(4);
-        Unit unit = colony.getUnitList().get(0);
+        Unit unit = colony.getUnits().get(0);
         for (Building building : colony.getBuildings()) {
             clearWorkLocation(building);
             unit.setLocation(building);
@@ -1110,7 +1110,7 @@ public class BuildingTest extends FreeColTestCase {
 
         Colony colony = getStandardColony(8);
         Tile tile = colony.getTile();
-        List<Unit> units = colony.getUnitList();
+        List<Unit> units = colony.getUnits();
         assertEquals(8, units.size());
 
         // Make sure there are enough goods to get started, and make

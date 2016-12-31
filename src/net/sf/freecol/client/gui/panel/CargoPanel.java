@@ -107,7 +107,7 @@ public class CargoPanel extends FreeColPanel
 
         if (carrier != null) {
             DragListener dl = new DragListener(getFreeColClient(), this);
-            for (Unit unit : carrier.getUnitList()) {
+            for (Unit unit : carrier.getUnits()) {
                 UnitLabel label = new UnitLabel(getFreeColClient(), unit);
                 if (isEditable()) {
                     label.setTransferHandler(defaultTransferHandler);

@@ -622,7 +622,7 @@ public class TileTest extends FreeColTestCase {
         }
         ColonyTile firstColonyTile = colony.getColonyTile(firstTile);
 
-        Unit unit = colony.getUnitList().get(0);
+        Unit unit = colony.getUnits().get(0);
         assertEquals(colonistType, unit.getType());
         unit.setLocation(firstColonyTile);
         unit.changeWorkType(lumber);
@@ -683,13 +683,13 @@ public class TileTest extends FreeColTestCase {
         Tile tile = colony.getTile().getNeighbourOrNull(Direction.N);
         ColonyTile colonyTile = colony.getColonyTile(tile);
         tile.addResource(new Resource(game, tile, mineralsResource));
-        for (Unit u : colonyTile.getUnitList()) {
+        for (Unit u : colonyTile.getUnits()) {
             u.setLocation(colony.getBuilding(townHallType));
         }
         assertTrue(colonyTile.isEmpty());
         assertEquals(colonyTile.getWorkTile().getOwningSettlement(), colony);
 
-        Unit unit = colony.getUnitList().get(0);
+        Unit unit = colony.getUnits().get(0);
         assertEquals(colonistType, unit.getType());
         assertTrue(silver.isFarmed());
         assertEquals(0, tundra.getPotentialProduction(silver, colonistType));
@@ -704,7 +704,7 @@ public class TileTest extends FreeColTestCase {
         Tile marshTile = colony.getTile().getNeighbourOrNull(Direction.S);
         marshTile.setType(marsh);
         ColonyTile marshColonyTile = colony.getColonyTile(marshTile);
-        for (Unit u : marshColonyTile.getUnitList()) {
+        for (Unit u : marshColonyTile.getUnits()) {
             u.setLocation(colony.getBuilding(townHallType));
         }
         // No production yet

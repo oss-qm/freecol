@@ -98,7 +98,7 @@ public final class ReportRequirementsPanel extends ReportPanel {
         for (Colony colony : colonies) {
             TypeCountMap<UnitType> newUnitCount = new TypeCountMap<>();
             Set<UnitType> newCanTrain = new HashSet<>();
-            for (Unit unit : colony.getUnitList()) {
+            for (Unit unit : colony.getUnits()) {
                 newUnitCount.incrementCount(unit.getType(), 1);
                 if (colony.canTrain(unit.getType())) {
                     newCanTrain.add(unit.getType());
@@ -149,7 +149,7 @@ public final class ReportRequirementsPanel extends ReportPanel {
         }
 
         for (ColonyTile colonyTile : colony.getColonyTiles()) {
-            for (Unit unit : colonyTile.getUnitList()) {
+            for (Unit unit : colonyTile.getUnits()) {
                 GoodsType workType = unit.getWorkType();
                 UnitType expert = spec.getExpertForProducing(workType);
                 if (unitCount.get(colony).getCount(expert) == 0
@@ -167,7 +167,7 @@ public final class ReportRequirementsPanel extends ReportPanel {
 
                 // check if this building has no expert producing goods
                 if (goodsType != null && expert != null
-                    && !building.getUnitList().isEmpty()
+                    && !building.getUnits().isEmpty()
                     && !missingExpertWarning.contains(expert)
                     && unitCount.get(colony).getCount(expert) == 0) {
                     // Post-independence, special goods requirements diminish.
@@ -269,7 +269,7 @@ public final class ReportRequirementsPanel extends ReportPanel {
             ArrayList<Colony> severalExperts = new ArrayList<>();
             ArrayList<Colony> canTrainExperts = new ArrayList<>();
             for (Colony colony : colonies) {
-                for (Unit unit : colony.getUnitList()) {
+                for (Unit unit : colony.getUnits()) {
                     GoodsType expertise = unit.getType().getExpertProduction();
                     if ((unit.getSkillLevel() > 0) && (expertise == goodsType)) {
                         if (unit.getLocation() instanceof Building) {

@@ -86,7 +86,7 @@ public class ServerBuildingTest extends FreeColTestCase {
      */
     private Colony getSchoolColony(int n, SchoolLevel slevel) {
         Colony colony = getStandardColony(n);
-        for (Unit u : colony.getUnitList()) u.setType(elderStatesmanType);
+        for (Unit u : colony.getUnits()) u.setType(elderStatesmanType);
         BuildingType type = null;
         switch (slevel) {
         case SCHOOLHOUSE:
@@ -103,7 +103,7 @@ public class ServerBuildingTest extends FreeColTestCase {
         }
         Building school = new ServerBuilding(colony.getGame(), colony, type);
         colony.addBuilding(school);
-        assertEquals(school.getUnitList().size(), 0);
+        assertEquals(school.getUnits().size(), 0);
         colony.addGoods(grainType, 150); // prevent starving during tests
         return colony;
     }
@@ -121,8 +121,12 @@ public class ServerBuildingTest extends FreeColTestCase {
      *            Unit.EXPERT_FARMER.
      * @return A list of all the units of the given type in this colony.
      */
-    private List<Unit> getUnitList(Colony colony, UnitType type) {
-        return transform(colony.getUnits(), matchKey(type, Unit::getType));
+    private List<Unit> getUnits(Colony colony, UnitType type) {
+        List<Unit> result = new ArrayList<>();
+        for (Unit u : colony.getUnits())
+            if (u.getType() == type)
+                result.add(u);
+        return result;
     }
 
     /**
@@ -138,7 +142,7 @@ public class ServerBuildingTest extends FreeColTestCase {
         Colony colony = getSchoolColony(4, SchoolLevel.SCHOOLHOUSE);
         Building school = colony.getBuilding(schoolType);
         assertTrue(school.canTeach());
-        Iterator<Unit> units = colony.getUnitList().iterator();
+        Iterator<Unit> units = colony.getUnits().iterator();
 
         Unit colonist = units.next();
         colonist.setType(freeColonistType);
@@ -171,7 +175,7 @@ public class ServerBuildingTest extends FreeColTestCase {
 
         Colony colony = getSchoolColony(4, SchoolLevel.COLLEGE);
         Building college = colony.getBuilding(collegeType);
-        Iterator<Unit> units = colony.getUnitList().iterator();
+        Iterator<Unit> units = colony.getUnits().iterator();
 
         Unit colonist = units.next();
         colonist.setType(freeColonistType);
@@ -199,7 +203,7 @@ public class ServerBuildingTest extends FreeColTestCase {
         assertEquals(4, colony.getUnitCount());
         Building university = colony.getBuilding(universityType);
         assertNotNull(university);
-        Iterator<Unit> units = colony.getUnitList().iterator();
+        Iterator<Unit> units = colony.getUnits().iterator();
 
         Unit colonist = units.next();
         colonist.setType(freeColonistType);
@@ -257,7 +261,7 @@ public class ServerBuildingTest extends FreeColTestCase {
         Building townHall = colony.getBuilding(townHallType);
         Building lumberMill = colony.getBuilding(lumberMillType);
         Building college = colony.getBuilding(collegeType);
-        Iterator<Unit> units = colony.getUnitList().iterator();
+        Iterator<Unit> units = colony.getUnits().iterator();
 
         clearWorkLocation(townHall);
         Unit colonist1 = units.next();
@@ -293,17 +297,17 @@ public class ServerBuildingTest extends FreeColTestCase {
         blacksmith.setLocation(college);
         assertNotNull(blacksmith.getStudent());
 
-        assertEquals(4, getUnitList(colony, freeColonistType).size());
-        assertEquals(1, getUnitList(colony, expertLumberJackType).size());
-        assertEquals(1, getUnitList(colony, masterBlacksmithType).size());
+        assertEquals(4, getUnits(colony, freeColonistType).size());
+        assertEquals(1, getUnits(colony, expertLumberJackType).size());
+        assertEquals(1, getUnits(colony, masterBlacksmithType).size());
 
-        while (4 == getUnitList(colony, freeColonistType).size()) {
+        while (4 == getUnits(colony, freeColonistType).size()) {
             ServerTestHelper.newTurn();
         }
 
-        assertEquals(3, getUnitList(colony, freeColonistType).size());
-        assertEquals(2, getUnitList(colony, expertLumberJackType).size());
-        assertEquals(1, getUnitList(colony, masterBlacksmithType).size());
+        assertEquals(3, getUnits(colony, freeColonistType).size());
+        assertEquals(2, getUnits(colony, expertLumberJackType).size());
+        assertEquals(1, getUnits(colony, masterBlacksmithType).size());
 
         lumberjack.setLocation(colony.getWorkLocationFor(lumberjack,
                                                          grainType));
@@ -313,13 +317,13 @@ public class ServerBuildingTest extends FreeColTestCase {
         ore.setLocation(college);
         assertNotNull(ore.getStudent());
 
-        while (3 == getUnitList(colony, freeColonistType).size()) {
+        while (3 == getUnits(colony, freeColonistType).size()) {
             ServerTestHelper.newTurn();
         }
         assertEquals(masterBlacksmithType, smithToBe.getType());
-        assertEquals(2, getUnitList(colony, freeColonistType).size());
-        assertEquals(1, getUnitList(colony, expertOreMinerType).size());
-        assertEquals(2, getUnitList(colony, masterBlacksmithType).size());
+        assertEquals(2, getUnits(colony, freeColonistType).size());
+        assertEquals(1, getUnits(colony, expertOreMinerType).size());
+        assertEquals(2, getUnits(colony, masterBlacksmithType).size());
 
         blacksmith.setLocation(colony.getWorkLocationFor(blacksmith,
                                                          grainType));
@@ -327,20 +331,20 @@ public class ServerBuildingTest extends FreeColTestCase {
         veteran.setLocation(college);
         assertNotNull(veteran.getStudent());
 
-        while (2 == getUnitList(colony, freeColonistType).size()) {
+        while (2 == getUnits(colony, freeColonistType).size()) {
             ServerTestHelper.newTurn();
         }
-        assertEquals(1, getUnitList(colony, freeColonistType).size());
-        assertEquals(2, getUnitList(colony, expertOreMinerType).size());
+        assertEquals(1, getUnits(colony, freeColonistType).size());
+        assertEquals(2, getUnits(colony, expertOreMinerType).size());
 
         ore.setLocation(colony.getWorkLocationFor(ore, grainType));
         assertNull(ore.getStudent());
 
-        while (1 == getUnitList(colony, freeColonistType).size()) {
+        while (1 == getUnits(colony, freeColonistType).size()) {
             ServerTestHelper.newTurn();
         }
-        assertEquals(0, getUnitList(colony, freeColonistType).size());
-        assertEquals(2, getUnitList(colony, veteranSoldierType).size());
+        assertEquals(0, getUnits(colony, freeColonistType).size());
+        assertEquals(2, getUnits(colony, veteranSoldierType).size());
 
         FreeColTestUtils.setStudentSelection(selection);
     }
@@ -356,7 +360,7 @@ public class ServerBuildingTest extends FreeColTestCase {
         Building university = colony.getBuilding(universityType);
         Building townHall = colony.getBuilding(townHallType);
         clearWorkLocation(townHall);
-        Iterator<Unit> units = colony.getUnitList().iterator();
+        Iterator<Unit> units = colony.getUnits().iterator();
 
         Unit colonist1 = units.next();
         colonist1.setType(freeColonistType);
@@ -380,22 +384,22 @@ public class ServerBuildingTest extends FreeColTestCase {
 
         assertTrue("Should be longer to train blacksmith then ore miner",
             black.getNeededTurnsOfTraining() > ore.getNeededTurnsOfTraining());
-        assertEquals(3, getUnitList(colony, freeColonistType).size());
-        assertEquals(1, getUnitList(colony, masterBlacksmithType).size());
-        assertEquals(1, getUnitList(colony, expertOreMinerType).size());
+        assertEquals(3, getUnits(colony, freeColonistType).size());
+        assertEquals(1, getUnits(colony, masterBlacksmithType).size());
+        assertEquals(1, getUnits(colony, expertOreMinerType).size());
 
         trainForTurns(colony, ore.getNeededTurnsOfTraining());
-        assertEquals(2, getUnitList(colony, freeColonistType).size());
-        assertEquals(1, getUnitList(colony, masterBlacksmithType).size());
-        assertEquals(2, getUnitList(colony, expertOreMinerType).size());
+        assertEquals(2, getUnits(colony, freeColonistType).size());
+        assertEquals(1, getUnits(colony, masterBlacksmithType).size());
+        assertEquals(2, getUnits(colony, expertOreMinerType).size());
         assertNotNull(ore.getStudent());
         assertNotNull(black.getStudent());
 
         trainForTurns(colony, black.getNeededTurnsOfTraining()
                       - black.getTurnsOfTraining());
-        assertEquals(1, getUnitList(colony, freeColonistType).size());
-        assertEquals(2, getUnitList(colony, masterBlacksmithType).size());
-        assertEquals(2, getUnitList(colony, expertOreMinerType).size());
+        assertEquals(1, getUnits(colony, freeColonistType).size());
+        assertEquals(2, getUnits(colony, masterBlacksmithType).size());
+        assertEquals(2, getUnits(colony, expertOreMinerType).size());
 
         FreeColTestUtils.setStudentSelection(selection);
     }
@@ -410,7 +414,7 @@ public class ServerBuildingTest extends FreeColTestCase {
 
         Colony colony = getSchoolColony(4, SchoolLevel.UNIVERSITY);
         Building university = colony.getBuilding(universityType);
-        Iterator<Unit> units = colony.getUnitList().iterator();
+        Iterator<Unit> units = colony.getUnits().iterator();
 
         Unit colonist = units.next();
         colonist.setType(freeColonistType);
@@ -433,14 +437,14 @@ public class ServerBuildingTest extends FreeColTestCase {
         assertTrue(colonist.getTeacher() == blackSmith);
         assertNull(lumberJack.getStudent());
 
-        assertEquals(1, getUnitList(colony, freeColonistType).size());
-        assertEquals(1, getUnitList(colony, expertLumberJackType).size());
-        assertEquals(1, getUnitList(colony, masterBlacksmithType).size());
+        assertEquals(1, getUnits(colony, freeColonistType).size());
+        assertEquals(1, getUnits(colony, expertLumberJackType).size());
+        assertEquals(1, getUnits(colony, masterBlacksmithType).size());
 
         trainForTurns(colony, blackSmith.getNeededTurnsOfTraining());
-        assertEquals(0, getUnitList(colony, freeColonistType).size());
-        assertEquals(1, getUnitList(colony, expertLumberJackType).size());
-        assertEquals(2, getUnitList(colony, masterBlacksmithType).size());
+        assertEquals(0, getUnits(colony, freeColonistType).size());
+        assertEquals(1, getUnits(colony, expertLumberJackType).size());
+        assertEquals(2, getUnits(colony, masterBlacksmithType).size());
 
         FreeColTestUtils.setStudentSelection(selection);
     }
@@ -455,7 +459,7 @@ public class ServerBuildingTest extends FreeColTestCase {
 
         Colony colony = getSchoolColony(4, SchoolLevel.UNIVERSITY);
         Building university = colony.getBuilding(universityType);
-        Iterator<Unit> units = colony.getUnitList().iterator();
+        Iterator<Unit> units = colony.getUnits().iterator();
 
         Unit colonist = units.next();
         colonist.setType(freeColonistType);
@@ -475,12 +479,12 @@ public class ServerBuildingTest extends FreeColTestCase {
         assertNull(lumberjack2.getStudent());
 
         for (int i = lumberjack1.getNeededTurnsOfTraining(); i > 0; i--) {
-            assertEquals(1, getUnitList(colony, freeColonistType).size());
+            assertEquals(1, getUnits(colony, freeColonistType).size());
             trainForTurns(colony, 1);
         }
 
-        assertEquals(0, getUnitList(colony, freeColonistType).size());
-        assertEquals(3, getUnitList(colony, expertLumberJackType).size());
+        assertEquals(0, getUnits(colony, freeColonistType).size());
+        assertEquals(3, getUnits(colony, expertLumberJackType).size());
 
         FreeColTestUtils.setStudentSelection(selection);
     }
@@ -495,7 +499,7 @@ public class ServerBuildingTest extends FreeColTestCase {
 
         Colony colony = getSchoolColony(4, SchoolLevel.UNIVERSITY);
         Building university = colony.getBuilding(universityType);
-        Iterator<Unit> units = colony.getUnitList().iterator();
+        Iterator<Unit> units = colony.getUnits().iterator();
 
         Unit colonist = units.next();
         colonist.setType(freeColonistType);
@@ -517,29 +521,29 @@ public class ServerBuildingTest extends FreeColTestCase {
         assertEquals(colonist.getTeacher(), lumber);
         assertNull(ore.getStudent());
 
-        assertEquals(1, getUnitList(colony, freeColonistType).size());
-        assertEquals(1, getUnitList(colony, expertLumberJackType).size());
-        assertEquals(1, getUnitList(colony, expertOreMinerType).size());
+        assertEquals(1, getUnits(colony, freeColonistType).size());
+        assertEquals(1, getUnits(colony, expertLumberJackType).size());
+        assertEquals(1, getUnits(colony, expertOreMinerType).size());
 
         ServerTestHelper.newTurn();
-        assertEquals(1, getUnitList(colony, freeColonistType).size());
-        assertEquals(1, getUnitList(colony, expertLumberJackType).size());
-        assertEquals(1, getUnitList(colony, expertOreMinerType).size());
+        assertEquals(1, getUnits(colony, freeColonistType).size());
+        assertEquals(1, getUnits(colony, expertLumberJackType).size());
+        assertEquals(1, getUnits(colony, expertOreMinerType).size());
 
         ServerTestHelper.newTurn();
-        assertEquals(1, getUnitList(colony, freeColonistType).size());
-        assertEquals(1, getUnitList(colony, expertLumberJackType).size());
-        assertEquals(1, getUnitList(colony, expertOreMinerType).size());
+        assertEquals(1, getUnits(colony, freeColonistType).size());
+        assertEquals(1, getUnits(colony, expertLumberJackType).size());
+        assertEquals(1, getUnits(colony, expertOreMinerType).size());
 
         ServerTestHelper.newTurn();
-        assertEquals(1, getUnitList(colony, freeColonistType).size());
-        assertEquals(1, getUnitList(colony, expertLumberJackType).size());
-        assertEquals(1, getUnitList(colony, expertOreMinerType).size());
+        assertEquals(1, getUnits(colony, freeColonistType).size());
+        assertEquals(1, getUnits(colony, expertLumberJackType).size());
+        assertEquals(1, getUnits(colony, expertOreMinerType).size());
 
         ServerTestHelper.newTurn();
-        assertEquals(0, getUnitList(colony, freeColonistType).size());
-        assertEquals(2, getUnitList(colony, expertLumberJackType).size());
-        assertEquals(1, getUnitList(colony, expertOreMinerType).size());
+        assertEquals(0, getUnits(colony, freeColonistType).size());
+        assertEquals(2, getUnits(colony, expertLumberJackType).size());
+        assertEquals(1, getUnits(colony, expertOreMinerType).size());
 
         FreeColTestUtils.setStudentSelection(selection);
     }
@@ -553,7 +557,7 @@ public class ServerBuildingTest extends FreeColTestCase {
 
         Colony colony = getSchoolColony(4, SchoolLevel.UNIVERSITY);
         Building university = colony.getBuilding(universityType);
-        Iterator<Unit> units = colony.getUnitList().iterator();
+        Iterator<Unit> units = colony.getUnits().iterator();
 
         Unit criminal = units.next();
         criminal.setType(pettyCriminalType);
@@ -569,7 +573,7 @@ public class ServerBuildingTest extends FreeColTestCase {
 
         // PETTY_CRIMINALS become INDENTURED_SERVANTS
         trainForTurns(colony, teacher.getNeededTurnsOfTraining());
-        assertEquals(0, getUnitList(colony, pettyCriminalType).size());
+        assertEquals(0, getUnits(colony, pettyCriminalType).size());
         assertEquals(indenturedServantType, criminal.getType());
 
         FreeColTestUtils.setStudentSelection(selection);
@@ -585,7 +589,7 @@ public class ServerBuildingTest extends FreeColTestCase {
 
         Colony colony = getSchoolColony(4, SchoolLevel.UNIVERSITY);
         Building university = colony.getBuilding(universityType);
-        Iterator<Unit> units = colony.getUnitList().iterator();
+        Iterator<Unit> units = colony.getUnits().iterator();
 
         Unit criminal = units.next();
         criminal.setType(pettyCriminalType);
@@ -599,7 +603,7 @@ public class ServerBuildingTest extends FreeColTestCase {
         assertEquals(criminal, teacher.getStudent());
 
         trainForTurns(colony, teacher.getNeededTurnsOfTraining());
-        assertEquals(0, getUnitList(colony, pettyCriminalType).size());
+        assertEquals(0, getUnits(colony, pettyCriminalType).size());
         assertEquals(indenturedServantType, criminal.getType());
 
         FreeColTestUtils.setStudentSelection(selection);
@@ -614,7 +618,7 @@ public class ServerBuildingTest extends FreeColTestCase {
 
         Colony colony = getSchoolColony(4, SchoolLevel.UNIVERSITY);
         Building university = colony.getBuilding(universityType);
-        Iterator<Unit> units = colony.getUnitList().iterator();
+        Iterator<Unit> units = colony.getUnits().iterator();
 
         Unit indenturedServant = units.next();
         indenturedServant.setType(indenturedServantType);
@@ -628,7 +632,7 @@ public class ServerBuildingTest extends FreeColTestCase {
 
         // Train to become free colonist
         trainForTurns(colony, teacher.getNeededTurnsOfTraining());
-        assertEquals(0, getUnitList(colony, indenturedServantType).size());
+        assertEquals(0, getUnits(colony, indenturedServantType).size());
         assertEquals(freeColonistType, indenturedServant.getType());
 
         FreeColTestUtils.setStudentSelection(selection);
@@ -646,7 +650,7 @@ public class ServerBuildingTest extends FreeColTestCase {
 
         Colony colony = getSchoolColony(4, SchoolLevel.UNIVERSITY);
         Building university = colony.getBuilding(universityType);
-        Iterator<Unit> units = colony.getUnitList().iterator();
+        Iterator<Unit> units = colony.getUnits().iterator();
         Unit outsider = new ServerUnit(game, colony.getTile(),
                                        colony.getOwner(), freeColonistType);
 
@@ -666,11 +670,11 @@ public class ServerBuildingTest extends FreeColTestCase {
         trainForTurns(colony, teacher.getNeededTurnsOfTraining() - 1);
         colonist.setLocation(colony.getTile());
         outsider.setLocation(townHall);
-        assertEquals(1, getUnitList(colony, freeColonistType).size());
+        assertEquals(1, getUnits(colony, freeColonistType).size());
         assertEquals(teacher.getStudent(), outsider);
 
         ServerTestHelper.newTurn();
-        assertEquals(0, getUnitList(colony, freeColonistType).size());
+        assertEquals(0, getUnits(colony, freeColonistType).size());
         assertEquals(expertOreMinerType, outsider.getType());
 
         FreeColTestUtils.setStudentSelection(selection);
@@ -690,7 +694,7 @@ public class ServerBuildingTest extends FreeColTestCase {
         colony.addGoods(foodType, 100);
 
         Building university = colony.getBuilding(universityType);
-        Iterator<Unit> units = colony.getUnitList().iterator();
+        Iterator<Unit> units = colony.getUnits().iterator();
 
         Unit colonist = units.next();
         colonist.setType(freeColonistType);
@@ -719,10 +723,10 @@ public class ServerBuildingTest extends FreeColTestCase {
         ServerTestHelper.newTurn();
         assertEquals(2, teacher1.getTurnsOfTraining());
         assertEquals(2, teacher2.getTurnsOfTraining());
-        assertEquals(1, getUnitList(colony, freeColonistType).size());
-        assertEquals(1, getUnitList(colony, pettyCriminalType).size());
-        assertEquals(1, getUnitList(colony, expertOreMinerType).size());
-        assertEquals(1, getUnitList(colony, masterCarpenterType).size());
+        assertEquals(1, getUnits(colony, freeColonistType).size());
+        assertEquals(1, getUnits(colony, pettyCriminalType).size());
+        assertEquals(1, getUnits(colony, expertOreMinerType).size());
+        assertEquals(1, getUnits(colony, masterCarpenterType).size());
 
         // Now we want the colonist to be a carpenter. We just want to
         // shuffle the teachers.  Move them out of the school.
@@ -736,8 +740,8 @@ public class ServerBuildingTest extends FreeColTestCase {
         ServerTestHelper.newTurn();
         assertEquals(0, teacher1.getTurnsOfTraining());
         assertEquals(0, teacher2.getTurnsOfTraining());
-        assertEquals(1, getUnitList(colony, freeColonistType).size());
-        assertEquals(1, getUnitList(colony, pettyCriminalType).size());
+        assertEquals(1, getUnits(colony, freeColonistType).size());
+        assertEquals(1, getUnits(colony, pettyCriminalType).size());
 
         // Move teachers back to school, miner first to pick up the criminal
         teacher1.setLocation(university);
@@ -756,18 +760,18 @@ public class ServerBuildingTest extends FreeColTestCase {
         assertEquals(3, teacher2.getTurnsOfTraining());
         assertEquals(4, teacher1.getNeededTurnsOfTraining());
         assertEquals(4, teacher2.getNeededTurnsOfTraining());
-        assertEquals(1, getUnitList(colony, freeColonistType).size());
-        assertEquals(1, getUnitList(colony, pettyCriminalType).size());
+        assertEquals(1, getUnits(colony, freeColonistType).size());
+        assertEquals(1, getUnits(colony, pettyCriminalType).size());
 
         ServerTestHelper.newTurn();
 
         // Teacher1's student (criminal) should be a servant now
         // Teacher2's student (colonist) should be a carpenter now
-        assertEquals(0, getUnitList(colony, freeColonistType).size());
-        assertEquals(0, getUnitList(colony, pettyCriminalType).size());
-        assertEquals(1, getUnitList(colony, indenturedServantType).size());
-        assertEquals(1, getUnitList(colony, expertOreMinerType).size());
-        assertEquals(2, getUnitList(colony, masterCarpenterType).size());
+        assertEquals(0, getUnits(colony, freeColonistType).size());
+        assertEquals(0, getUnits(colony, pettyCriminalType).size());
+        assertEquals(1, getUnits(colony, indenturedServantType).size());
+        assertEquals(1, getUnits(colony, expertOreMinerType).size());
+        assertEquals(2, getUnits(colony, masterCarpenterType).size());
 
         assertEquals(0, teacher1.getTurnsOfTraining());
         assertEquals(0, teacher2.getTurnsOfTraining());
@@ -781,7 +785,7 @@ public class ServerBuildingTest extends FreeColTestCase {
 
         Colony colony = getSchoolColony(4, SchoolLevel.UNIVERSITY);
         Building university = colony.getBuilding(universityType);
-        Iterator<Unit> units = colony.getUnitList().iterator();
+        Iterator<Unit> units = colony.getUnits().iterator();
 
         Unit colonist = units.next();
         colonist.setType(freeColonistType);
@@ -835,7 +839,7 @@ public class ServerBuildingTest extends FreeColTestCase {
         colony.addGoods(foodType, 100);
 
         Building university = colony.getBuilding(universityType);
-        Iterator<Unit> units = colony.getUnitList().iterator();
+        Iterator<Unit> units = colony.getUnits().iterator();
 
         Unit colonist = units.next();
         colonist.setType(freeColonistType);
@@ -860,10 +864,10 @@ public class ServerBuildingTest extends FreeColTestCase {
         // wait a little
         ServerTestHelper.newTurn();
         ServerTestHelper.newTurn();
-        assertEquals(1, getUnitList(colony, freeColonistType).size());
-        assertEquals(1, getUnitList(colony, pettyCriminalType).size());
-        assertEquals(1, getUnitList(colony, expertOreMinerType).size());
-        assertEquals(1, getUnitList(colony, masterCarpenterType).size());
+        assertEquals(1, getUnits(colony, freeColonistType).size());
+        assertEquals(1, getUnits(colony, pettyCriminalType).size());
+        assertEquals(1, getUnits(colony, expertOreMinerType).size());
+        assertEquals(1, getUnits(colony, masterCarpenterType).size());
         assertEquals(2, teacher1.getTurnsOfTraining());
         assertEquals(2, teacher2.getTurnsOfTraining());
 
@@ -872,10 +876,10 @@ public class ServerBuildingTest extends FreeColTestCase {
         teacher2.setLocation(otherColony);
         assertEquals(0, teacher1.getTurnsOfTraining());
         assertEquals(0, teacher2.getTurnsOfTraining());
-        assertEquals(1, getUnitList(colony, freeColonistType).size());
-        assertEquals(1, getUnitList(colony, pettyCriminalType).size());
-        assertEquals(0, getUnitList(colony, expertOreMinerType).size());
-        assertEquals(0, getUnitList(colony, masterCarpenterType).size());
+        assertEquals(1, getUnits(colony, freeColonistType).size());
+        assertEquals(1, getUnits(colony, pettyCriminalType).size());
+        assertEquals(0, getUnits(colony, expertOreMinerType).size());
+        assertEquals(0, getUnits(colony, masterCarpenterType).size());
 
         // Put them back here
         teacher2.setLocation(university);
@@ -887,29 +891,29 @@ public class ServerBuildingTest extends FreeColTestCase {
 
         // Check that 2 new turns aren't enough for training
         ServerTestHelper.newTurn();
-        assertEquals(1, getUnitList(colony, freeColonistType).size());
-        assertEquals(1, getUnitList(colony, pettyCriminalType).size());
-        assertEquals(1, getUnitList(colony, expertOreMinerType).size());
-        assertEquals(1, getUnitList(colony, masterCarpenterType).size());
+        assertEquals(1, getUnits(colony, freeColonistType).size());
+        assertEquals(1, getUnits(colony, pettyCriminalType).size());
+        assertEquals(1, getUnits(colony, expertOreMinerType).size());
+        assertEquals(1, getUnits(colony, masterCarpenterType).size());
 
         ServerTestHelper.newTurn();
-        assertEquals(1, getUnitList(colony, freeColonistType).size());
-        assertEquals(1, getUnitList(colony, pettyCriminalType).size());
-        assertEquals(1, getUnitList(colony, expertOreMinerType).size());
-        assertEquals(1, getUnitList(colony, masterCarpenterType).size());
+        assertEquals(1, getUnits(colony, freeColonistType).size());
+        assertEquals(1, getUnits(colony, pettyCriminalType).size());
+        assertEquals(1, getUnits(colony, expertOreMinerType).size());
+        assertEquals(1, getUnits(colony, masterCarpenterType).size());
 
         ServerTestHelper.newTurn();
-        assertEquals(1, getUnitList(colony, freeColonistType).size());
-        assertEquals(1, getUnitList(colony, pettyCriminalType).size());
-        assertEquals(1, getUnitList(colony, expertOreMinerType).size());
-        assertEquals(1, getUnitList(colony, masterCarpenterType).size());
+        assertEquals(1, getUnits(colony, freeColonistType).size());
+        assertEquals(1, getUnits(colony, pettyCriminalType).size());
+        assertEquals(1, getUnits(colony, expertOreMinerType).size());
+        assertEquals(1, getUnits(colony, masterCarpenterType).size());
 
         ServerTestHelper.newTurn();
-        assertEquals(0, getUnitList(colony, freeColonistType).size());
-        assertEquals(0, getUnitList(colony, pettyCriminalType).size());
-        assertEquals(1, getUnitList(colony, indenturedServantType).size());
-        assertEquals(2, getUnitList(colony, expertOreMinerType).size());
-        assertEquals(1, getUnitList(colony, masterCarpenterType).size());
+        assertEquals(0, getUnits(colony, freeColonistType).size());
+        assertEquals(0, getUnits(colony, pettyCriminalType).size());
+        assertEquals(1, getUnits(colony, indenturedServantType).size());
+        assertEquals(2, getUnits(colony, expertOreMinerType).size());
+        assertEquals(1, getUnits(colony, masterCarpenterType).size());
 
         FreeColTestUtils.setStudentSelection(selection);
     }
@@ -923,7 +927,7 @@ public class ServerBuildingTest extends FreeColTestCase {
 
         Colony colony = getSchoolColony(4, SchoolLevel.UNIVERSITY);
         Building university = colony.getBuilding(universityType);
-        Iterator<Unit> units = colony.getUnitList().iterator();
+        Iterator<Unit> units = colony.getUnits().iterator();
         Unit colonist = units.next();
         colonist.setType(freeColonistType);
         colonist.setLocation(colony.getBuilding(townHallType));
@@ -938,8 +942,8 @@ public class ServerBuildingTest extends FreeColTestCase {
         assertEquals(2, lumberjack.getNeededTurnsOfTraining());
 
         trainForTurns(colony, 2);
-        assertEquals(0, getUnitList(colony, freeColonistType).size());
-        assertEquals(2, getUnitList(colony, expertLumberJackType).size());
+        assertEquals(0, getUnits(colony, freeColonistType).size());
+        assertEquals(2, getUnits(colony, expertLumberJackType).size());
 
         FreeColTestUtils.setStudentSelection(selection);
     }
@@ -955,7 +959,7 @@ public class ServerBuildingTest extends FreeColTestCase {
 
         Colony colony = getSchoolColony(4, SchoolLevel.UNIVERSITY);
         Building university = colony.getBuilding(universityType);
-        Iterator<Unit> units = colony.getUnitList().iterator();
+        Iterator<Unit> units = colony.getUnits().iterator();
 
         Unit colonist = units.next();
         colonist.setType(freeColonistType);
@@ -985,8 +989,8 @@ public class ServerBuildingTest extends FreeColTestCase {
         assertEquals(colonist.getTeacher(), miner);
 
         trainForTurns(colony, miner.getNeededTurnsOfTraining());
-        assertEquals(0, getUnitList(colony, freeColonistType).size());
-        assertEquals(2, getUnitList(colony, expertOreMinerType).size());
+        assertEquals(0, getUnits(colony, freeColonistType).size());
+        assertEquals(2, getUnits(colony, expertOreMinerType).size());
 
         FreeColTestUtils.setStudentSelection(selection);
     }
@@ -1004,7 +1008,7 @@ public class ServerBuildingTest extends FreeColTestCase {
         colony.addGoods(foodType, 100);
 
         Building university = colony.getBuilding(universityType);
-        Iterator<Unit> units = colony.getUnitList().iterator();
+        Iterator<Unit> units = colony.getUnits().iterator();
 
         Unit colonist = units.next();
         colonist.setType(freeColonistType);
@@ -1031,7 +1035,7 @@ public class ServerBuildingTest extends FreeColTestCase {
         assertEquals(criminal, teacher.getStudent());
         trainForTurns(colony, teacher.getNeededTurnsOfTraining());
 
-        assertEquals(0, getUnitList(colony, pettyCriminalType).size());
+        assertEquals(0, getUnits(colony, pettyCriminalType).size());
         assertEquals(indenturedServantType, criminal.getType());
         criminal.setLocation(getGame().getMap().getTile(10,8));
 
@@ -1042,9 +1046,9 @@ public class ServerBuildingTest extends FreeColTestCase {
         assertEquals(indenturedServant, teacher.getStudent());
         trainForTurns(colony, teacher.getNeededTurnsOfTraining());
 
-        assertEquals(0, getUnitList(colony, indenturedServantType).size());
-        assertEquals(2, getUnitList(colony, freeColonistType).size());
-        assertEquals(1, getUnitList(colony, expertOreMinerType).size());
+        assertEquals(0, getUnits(colony, indenturedServantType).size());
+        assertEquals(2, getUnits(colony, freeColonistType).size());
+        assertEquals(1, getUnits(colony, expertOreMinerType).size());
         assertEquals(freeColonistType, indenturedServant.getType());
 
         // Colonist(former servant) training continues
@@ -1053,9 +1057,9 @@ public class ServerBuildingTest extends FreeColTestCase {
         assertEquals(colonist.getTeacher(), null);
 
         trainForTurns(colony, teacher.getNeededTurnsOfTraining());
-        assertEquals(0, getUnitList(colony, indenturedServantType).size());
-        assertEquals(1, getUnitList(colony, freeColonistType).size());
-        assertEquals(2, getUnitList(colony, expertOreMinerType).size());
+        assertEquals(0, getUnits(colony, indenturedServantType).size());
+        assertEquals(1, getUnits(colony, freeColonistType).size());
+        assertEquals(2, getUnits(colony, expertOreMinerType).size());
         assertEquals(expertOreMinerType, indenturedServant.getType());
         assertEquals(indenturedServant.getTeacher(), null);
 
@@ -1075,7 +1079,7 @@ public class ServerBuildingTest extends FreeColTestCase {
         colony.addGoods(foodType, 100);
 
         Building university = colony.getBuilding(universityType);
-        Iterator<Unit> units = colony.getUnitList().iterator();
+        Iterator<Unit> units = colony.getUnits().iterator();
 
         Unit indenturedServant = units.next();
         indenturedServant.setType(indenturedServantType);
@@ -1104,11 +1108,11 @@ public class ServerBuildingTest extends FreeColTestCase {
         // petty criminal should have been promoted to indentured servant
         assertEquals(freeColonistType, indenturedServant.getType());
         assertEquals(indenturedServantType, criminal.getType());
-        assertEquals(1, getUnitList(colony, expertOreMinerType).size());
-        assertEquals(1, getUnitList(colony, expertLumberJackType).size());
-        assertEquals(1, getUnitList(colony, freeColonistType).size());
-        assertEquals(1, getUnitList(colony, indenturedServantType).size());
-        assertEquals(0, getUnitList(colony, pettyCriminalType).size());
+        assertEquals(1, getUnits(colony, expertOreMinerType).size());
+        assertEquals(1, getUnits(colony, expertLumberJackType).size());
+        assertEquals(1, getUnits(colony, freeColonistType).size());
+        assertEquals(1, getUnits(colony, indenturedServantType).size());
+        assertEquals(0, getUnits(colony, pettyCriminalType).size());
         criminal.setLocation(getGame().getMap().getTile(10,8));
         assertNull(teacher1.getStudent());
         assertEquals(teacher2, indenturedServant.getTeacher());
@@ -1116,11 +1120,11 @@ public class ServerBuildingTest extends FreeColTestCase {
         // Train again
         trainForTurns(colony, teacher2.getNeededTurnsOfTraining());
         assertEquals(expertLumberJackType, indenturedServant.getType());
-        assertEquals(1, getUnitList(colony, expertOreMinerType).size());
-        assertEquals(2, getUnitList(colony, expertLumberJackType).size());
-        assertEquals(0, getUnitList(colony, freeColonistType).size());
-        assertEquals(0, getUnitList(colony, indenturedServantType).size());
-        assertEquals(0, getUnitList(colony, pettyCriminalType).size());
+        assertEquals(1, getUnits(colony, expertOreMinerType).size());
+        assertEquals(2, getUnits(colony, expertLumberJackType).size());
+        assertEquals(0, getUnits(colony, freeColonistType).size());
+        assertEquals(0, getUnits(colony, indenturedServantType).size());
+        assertEquals(0, getUnits(colony, pettyCriminalType).size());
 
         FreeColTestUtils.setStudentSelection(selection);
     }
@@ -1132,7 +1136,7 @@ public class ServerBuildingTest extends FreeColTestCase {
         Colony colony = getSchoolColony(4, SchoolLevel.UNIVERSITY);
         Building university = colony.getBuilding(universityType);
         colony.getOwner().addAbility(new Ability(Ability.INDEPENDENCE_DECLARED));
-        Iterator<Unit> units = colony.getUnitList().iterator();
+        Iterator<Unit> units = colony.getUnits().iterator();
 
         Unit regular = units.next();
         regular.setType(colonialRegularType);
@@ -1157,7 +1161,7 @@ public class ServerBuildingTest extends FreeColTestCase {
 
         Colony colony = getSchoolColony(2, SchoolLevel.SCHOOLHOUSE);
         Building school = colony.getBuilding(schoolType);
-        Iterator<Unit> units = colony.getUnitList().iterator();
+        Iterator<Unit> units = colony.getUnits().iterator();
 
         Unit lumber = units.next();
         lumber.setType(expertLumberJackType);
@@ -1196,7 +1200,7 @@ public class ServerBuildingTest extends FreeColTestCase {
         Colony colony = getSchoolColony(6, SchoolLevel.UNIVERSITY);
         Building university = colony.getBuilding(universityType);
 
-        Iterator<Unit> units = colony.getUnitList().iterator();
+        Iterator<Unit> units = colony.getUnits().iterator();
 
         Unit carpenter = units.next();
         carpenter.setType(masterCarpenterType);

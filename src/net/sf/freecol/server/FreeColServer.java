@@ -1146,7 +1146,7 @@ public final class FreeColServer {
                 if (!p.isIndian() && p.getEurope() != null) {
                     p.initializeHighSeas();
 
-                    for (Unit u : p.getEurope().getUnitList()) {
+                    for (Unit u : p.getEurope().getUnits()) {
                         // Move units to high seas.  Use setLocation()
                         // so that units are removed from Europe, and
                         // appear in correct panes in the EuropePanel

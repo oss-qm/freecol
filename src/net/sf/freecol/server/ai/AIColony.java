@@ -288,7 +288,7 @@ public class AIColony extends AIObject implements PropertyChangeListener {
         // Note the special case of a unit aiming to build a colony on this
         // tile, which happens regularly with the initial AI colony.
         // Remember where the units came from.
-        List<Unit> workers = colony.getUnitList();
+        List<Unit> workers = colony.getUnits();
         List<UnitWas> was = transform(workers, alwaysTrue(),
                                       u -> new UnitWas(u));
         final Predicate<Unit> workerPred = u -> {
@@ -366,7 +366,7 @@ public class AIColony extends AIObject implements PropertyChangeListener {
         }
 
         // Return any units with the wrong mission
-        for (Unit u : colony.getUnitList()) {
+        for (Unit u : colony.getUnits()) {
             final AIUnit aiu = getAIUnit(u);
             if (!aiu.tryWorkInsideColonyMission(this, lb)) result.add(aiu);
         }
@@ -385,7 +385,7 @@ public class AIColony extends AIObject implements PropertyChangeListener {
             }
         }
 
-        for (Unit u : tile.getUnitList()) {
+        for (Unit u : tile.getUnits()) {
             final AIUnit aiu = getAIUnit(u);
             if (!aiu.trySomeUsefulMission(colony, lb)) result.add(aiu);
         }
@@ -572,7 +572,7 @@ public class AIColony extends AIObject implements PropertyChangeListener {
         LogBuilder lb = new LogBuilder(64);
         lb.add("Colony ", colony.getName(), " rearrangement leaves no units, ",
             colony.getTile().getUnitCount(), " available:");
-        for (Unit u : colony.getTile().getUnitList()) lb.add(" ", u);
+        for (Unit u : colony.getTile().getUnits()) lb.add(" ", u);
         List<GoodsType> libertyGoods = getSpecification()
             .getLibertyGoodsTypeList();
         out: for (Unit u : transform(colony.getTile().getUnits(),
@@ -603,7 +603,7 @@ public class AIColony extends AIObject implements PropertyChangeListener {
      * @param wl The {@code WorkLocation} to stop using.
      */
     public void stopUsing(WorkLocation wl) {
-        for (Unit u : wl.getUnitList()) {
+        for (Unit u : wl.getUnits()) {
             AIMessage.askPutOutsideColony(getAIUnit(u));
         }
         if (colony.getUnitCount() <= 0) avertAutoDestruction();
@@ -1024,7 +1024,7 @@ public class AIColony extends AIObject implements PropertyChangeListener {
         // Add some weight when multiple cases of the same expert are
         // needed, rather than generating heaps of wishes.
         TypeCountMap<UnitType> experts = new TypeCountMap<>();
-        for (Unit unit : colony.getUnitList()) {
+        for (Unit unit : colony.getUnits()) {
             GoodsType goods = unit.getWorkType();
             UnitType expert = (goods == null
                 || goods == unit.getType().getExpertProduction()) ? null

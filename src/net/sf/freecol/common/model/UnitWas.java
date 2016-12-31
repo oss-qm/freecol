@@ -60,7 +60,7 @@ public class UnitWas implements Comparable<UnitWas> {
         this.work = unit.getWorkType();
         this.workAmount = getAmount(loc, work);
         this.movesLeft = unit.getMovesLeft();
-        this.units = unit.getUnitList();
+        this.units = unit.getUnits();
         this.colony = unit.getColony();
         if (unit.getGoodsContainer() != null) {
             unit.getGoodsContainer().saveState();
@@ -152,7 +152,7 @@ public class UnitWas implements Comparable<UnitWas> {
         if (unit.getGoodsContainer() != null) {
             ret |= unit.getGoodsContainer().fireChanges();
         }
-        if (!units.equals(unit.getUnitList())) {
+        if (!units.equals(unit.getUnits())) {
             unit.firePropertyChange(Unit.CARGO_CHANGE, null, unit);
             ret = true;
         }

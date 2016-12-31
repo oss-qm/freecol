@@ -190,7 +190,7 @@ public abstract class ReportUnitPanel extends ReportPanel {
                         GoodsLabel goodsLabel = new GoodsLabel(getGUI(), goods);
                         reportPanel.add(goodsLabel);
                     }
-                    for (Unit unitLoaded : u.getUnitList()) {
+                    for (Unit unitLoaded : u.getUnits()) {
                         UnitLabel unitLoadedLabel
                             = new UnitLabel(getFreeColClient(), unitLoaded, true);
                         reportPanel.add(unitLoadedLabel);

@@ -44,7 +44,7 @@ public class IndianSettlementTest extends FreeColTestCase {
             = new FreeColTestCase.IndianSettlementBuilder(game);
         IndianSettlement camp = builder.initialBravesInCamp(1).build();
 
-        Unit indianBrave = camp.getUnitList().get(0);
+        Unit indianBrave = camp.getUnits().get(0);
 
         assertNull("No auto-equip, no muskets",
                    indianBrave.getAutomaticRole());

@@ -2110,7 +2110,7 @@ public final class Tile extends UnitLocation implements Named, Ownable {
     // Inherits
     //   FreeColObject.getId
     //   UnitLocation.getUnitCount
-    //   UnitLocation.getUnitList
+    //   UnitLocation.getUnits
     //   UnitLocation.getGoodsContainer
 
     /**

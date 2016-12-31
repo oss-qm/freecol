@@ -388,7 +388,7 @@ public class REFAIPlayer extends EuropeanAIPlayer {
                 lb.add("[", ship);
                 lb.mark();
                 used = 0;
-                for (Unit u : aiu.getUnit().getUnitList()) {
+                for (Unit u : aiu.getUnit().getUnitst()) {
                     AIUnit laiu = aiMain.getAIUnit(u);
                     m = getSeekAndDestroyMission(laiu, t.colony);
                     if (m != null) lb.add(" ", m);
@@ -763,7 +763,7 @@ public class REFAIPlayer extends EuropeanAIPlayer {
                     TransportMission tm
                         = aiCarrier.getMission(TransportMission.class);
                     AIUnit aiu;
-                    for (Unit u : aiCarrier.getUnit().getUnitList()) {
+                    for (Unit u : aiCarrier.getUnit().getUnits()) {
                         if (u.hasAbility(Ability.REF_UNIT)
                             && (aiu = getAIUnit(u)) != null
                             && (m = getSeekAndDestroyMission(aiu, target)) != null) {

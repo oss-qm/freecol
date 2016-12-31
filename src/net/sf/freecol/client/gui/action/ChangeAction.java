@@ -99,7 +99,7 @@ public class ChangeAction extends UnitAction {
             getGUI().setActiveUnit(unit.getCarrier());
         } else {
             boolean activeUnitFound = false;
-            for (Unit u : tile.getUnitList()) {
+            for (Unit u : tile.getUnits()) {
                 if (u == unit) {
                     activeUnitFound = true;
                 } else if (activeUnitFound

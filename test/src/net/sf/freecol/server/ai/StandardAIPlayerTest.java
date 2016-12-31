@@ -86,7 +86,7 @@ public class StandardAIPlayerTest extends FreeColTestCase {
         assertEquals("No muskets should exist in camp", 0,
             camp.getGoodsCount(musketsType));
 
-        for (Unit unit : camp.getUnitList()) {
+        for (Unit unit : camp.getUnits()) {
             assertFalse("Indian should not have mounted braves",
                 unit.isMounted());
             assertFalse("Indian should not have armed braves",
@@ -107,7 +107,7 @@ public class StandardAIPlayerTest extends FreeColTestCase {
         // Verify results
         int mounted = 0;
         int armed = 0;
-        for (Unit unit : camp.getUnitList()) {
+        for (Unit unit : camp.getUnits()) {
             if (unit.isMounted()) mounted++;
             if (unit.isArmed()) armed++;
         }
@@ -141,7 +141,7 @@ public class StandardAIPlayerTest extends FreeColTestCase {
         assertEquals("No muskets should exist in camp", 0,
             camp.getGoodsCount(musketsType));
 
-        for (Unit unit : camp.getUnitList()) {
+        for (Unit unit : camp.getUnits()) {
             if (unit.isMounted()) {
                 fail("Indian should not have mounted braves");
             }
@@ -164,7 +164,7 @@ public class StandardAIPlayerTest extends FreeColTestCase {
         // Verify results
         int mounted = 0;
         int armed = 0;
-        for (Unit unit : camp.getUnitList()) {
+        for (Unit unit : camp.getUnits()) {
             if (unit.isMounted()) mounted++;
             if (unit.isArmed()) armed++;
         }

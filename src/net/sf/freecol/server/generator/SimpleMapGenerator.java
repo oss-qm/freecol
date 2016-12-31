@@ -275,7 +275,7 @@ public class SimpleMapGenerator implements MapGenerator {
                 map.getTile(it.getX(), it.getY()).changeOwnership(owner, sis);
             }
 
-            List<Unit> iUnits = is.getUnitList();
+            List<Unit> iUnits = is.getUnits();
             if (iUnits.isEmpty()) {
                 sis.addUnits(random);
             } else {

@@ -703,7 +703,7 @@ public class TransportMission extends Mission {
         if (carrier.isAtSea()) return; // Let it emerge.
         final AIUnit aiCarrier = getAIUnit();
 
-        List<Unit> unitsPresent = carrier.getUnitList();
+        List<Unit> unitsPresent = carrier.getUnits();
         List<Goods> goodsPresent = carrier.getCompactGoods();
         List<TransportableAIObject> todo = new ArrayList<>();
         List<TransportableAIObject> drop = new ArrayList<>();

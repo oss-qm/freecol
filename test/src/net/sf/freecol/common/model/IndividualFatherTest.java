@@ -185,7 +185,7 @@ public class IndividualFatherTest extends FreeColTestCase {
 
         Colony colony = getStandardColony(4);
         Player player = colony.getOwner();
-        Unit unit = colony.getUnitList().get(0);
+        Unit unit = colony.getUnits().get(0);
 
         NationType inca = spec().getNationType("model.nationType.inca");
         SettlementType incaCity
@@ -206,7 +206,7 @@ public class IndividualFatherTest extends FreeColTestCase {
 
         Colony colony = getStandardColony(4);
         ServerPlayer player = (ServerPlayer)colony.getOwner();
-        Unit unit = colony.getUnitList().get(0);
+        Unit unit = colony.getUnits().get(0);
         unit.setType(nativeConvertType);
 
         player.csAddFoundingFather(bartolomeDeLasCasas, null, new ChangeSet());
@@ -271,7 +271,7 @@ public class IndividualFatherTest extends FreeColTestCase {
         game.setMap(getTestMap(true));
 
         Colony colony = getStandardColony();
-        Unit unit = colony.getUnitList().get(0);
+        Unit unit = colony.getUnits().get(0);
         Player player = colony.getOwner();
         Player iroquois = getGame().getPlayerByNationId("model.nation.iroquois");
         Tile colonyCenterTile = colony.getTile();
@@ -287,7 +287,7 @@ public class IndividualFatherTest extends FreeColTestCase {
 
         // Set up disputed tile
         ColonyTile colonyTile = colony.getColonyTile(disputedTile);
-        for (Unit u : colonyTile.getUnitList()) {
+        for (Unit u : colonyTile.getUnits()) {
             u.setLocation(colony.getTile());
         }
         disputedTile.changeOwnership(iroquois, indianSettlement);
@@ -313,9 +313,9 @@ public class IndividualFatherTest extends FreeColTestCase {
         Building townHall = colony.getBuilding(townHallType);
         clearWorkLocation(townHall);
 
-        Unit statesman1 = colony.getUnitList().get(0);
-        Unit statesman2 = colony.getUnitList().get(1);
-        Unit statesman3 = colony.getUnitList().get(2);
+        Unit statesman1 = colony.getUnits().get(0);
+        Unit statesman2 = colony.getUnits().get(1);
+        Unit statesman3 = colony.getUnits().get(2);
 
         statesman1.setType(statesmanType);
         statesman1.setLocation(townHall);
@@ -359,7 +359,7 @@ public class IndividualFatherTest extends FreeColTestCase {
 
         Colony colony = getStandardColony();
         Player player = colony.getOwner();
-        Unit colonist = colony.getUnitList().get(0);
+        Unit colonist = colony.getUnits().get(0);
 
         assertNull("No Revere, no auto-equip.",
                    colonist.getAutomaticRole());
