@@ -351,7 +351,7 @@ public class DebugUtils {
 
         // Is there a server-unit with space left?
         Unit sCarrier = (sTile.isLand() || unitChoice.isNaval()) ? null
-            : find(sTile.getUnitList(), u ->
+            : find(sTile.getUnits(), u ->
                 u.isNaval() && u.getSpaceLeft() >= unitChoice.getSpaceTaken());
 
         ServerUnit sUnit
@@ -747,7 +747,7 @@ public class DebugUtils {
             units.put(Messages.message("sailingToAmerica"), toAmerica);
             lb.add("\n==", Messages.message(p.getCountryLabel()), "==\n");
 
-            for (Unit u : p.getEurope().getUnitList()) {
+            for (Unit u : p.getEurope().getUnits()) {
                 if (u.getDestination() instanceof Map) {
                     toAmerica.add(u);
                 } else if (u.getDestination() instanceof Europe) {
@@ -827,7 +827,7 @@ public class DebugUtils {
      */
     public static void displayUnits(final FreeColClient freeColClient) {
         final Player player = freeColClient.getMyPlayer();
-        List<Unit> all = player.getUnitList();
+        List<Unit> all = player.getUnits();
         LogBuilder lb = new LogBuilder(256);
         lb.add("\nActive units:\n");
 
@@ -911,7 +911,7 @@ public class DebugUtils {
                 gui.setActiveUnit(u);
                 first = false;
             }
-            for (Unit u2 : u.getUnitList()) {
+            for (Unit u2 : u.getUnits()) {
                 Unit su2 = sGame.getFreeColGameObject(u2.getId(), Unit.class);
                 u2.setMovesLeft(u2.getInitialMovesLeft());
                 su2.setMovesLeft(su2.getInitialMovesLeft());
@@ -1177,7 +1177,7 @@ public class DebugUtils {
         }
 
         lb.add("\nUnits present\n");
-        for (Unit u : sis.getUnitList()) {
+        for (Unit u : sis.getUnits()) {
             Mission m = aiMain.getAIUnit(u).getMission();
             lb.add(u, " at ", u.getLocation());
             if (m != null) {

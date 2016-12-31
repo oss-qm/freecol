@@ -1140,7 +1140,6 @@ public class IndianSettlement extends Settlement implements TradeLocation {
     //   UnitLocation.canAdd
     //   UnitLocation.getUnitCount
     //   UnitLocation.getUnits
-    //   UnitLocation.getUnitList
     //   Settlement.getSettlement
     //   final Settlement.getRank
 
@@ -1233,7 +1232,7 @@ public class IndianSettlement extends Settlement implements TradeLocation {
     public Unit getDefendingUnit(Unit attacker) {
         Unit defender = null;
         double defencePower = -1.0;
-        for (Unit nextUnit : getUnitList()) {
+        for (Unit nextUnit : getUnits()) {
             double unitPower = attacker.getGame().getCombatModel()
                 .getDefencePower(attacker, nextUnit);
             if (Unit.betterDefender(defender, defencePower,

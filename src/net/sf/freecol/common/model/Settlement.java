@@ -461,13 +461,22 @@ public abstract class Settlement extends GoodsLocation
      *
      * @return A list of {@code Unit}s.
      */
-    public List<Unit> getAllUnitsList() {
-        List<Unit> units = getUnitList();
-        if (units.isEmpty()) return getTile().getUnitList();
-        units.addAll(getTile().getUnitList());
+    public List<Unit> getAllUnits() {
+        List<Unit> units = getUnits();
+        if (units.isEmpty()) return getTile().getUnits();
+        units.addAll(getTile().getUnits());
         return units;
     }
 
+    /**
+     * Get the units on the tile.
+     *
+     * @return A list of {@code Unit}s.
+     */
+    public List<Unit> getTileUnits() {
+        if (this.tile == null) return Collections.<Unit>emptyList();
+        return tile.getUnits();
+    }
 
     // Override FreeColGameObject
 
@@ -563,7 +572,7 @@ public abstract class Settlement extends GoodsLocation
     //   GoodsLocation.contains
     //   UnitLocation.canAdd
     //   UnitLocation.getUnitCount
-    //   UnitLocation.getUnitList
+    //   UnitLocation.getUnits
 
     /**
      * {@inheritDoc}

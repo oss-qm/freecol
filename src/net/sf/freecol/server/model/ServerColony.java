@@ -323,7 +323,7 @@ public class ServerColony extends Colony implements TurnTaker {
         if (ct == null) return;
         Tile colonyTile = ct.getColony().getTile();
         Tile copied = colonyTile.getTileToCache();
-        if (!ejectUnits(ct, ct.getUnitList())) return;//-til
+        if (!ejectUnits(ct, ct.getUnits())) return;//-til
         colonyTile.cacheUnseen(copied);//+til
         cs.addMessage(serverPlayer,
             new ModelMessage(MessageType.WARNING,
@@ -367,7 +367,7 @@ public class ServerColony extends Colony implements TurnTaker {
             for (Tile t : transform(owned,
                     t2 -> t2 != tile && t2.getOwningSettlement() != this)) {
                 ColonyTile ct = getColonyTile(t);
-                ejectUnits(ct, ct.getUnitList());
+                ejectUnits(ct, ct.getUnits());
             }
             owned.add(tile);
         }
@@ -376,7 +376,7 @@ public class ServerColony extends Colony implements TurnTaker {
 
         String change = (newOwner.isUndead()) ? UnitChangeType.UNDEAD
             : UnitChangeType.CAPTURE;
-        List<Unit> units = getAllUnitsList();
+        List<Unit> units = getAllUnits();
         for (Unit u : units) {//-vis(both)
             oldOwner.csChangeOwner(u, newOwner, change, null, cs);
         }
@@ -873,7 +873,7 @@ public class ServerColony extends Colony implements TurnTaker {
         for (WorkLocation wl : transform(getCurrentWorkLocations(),
                                                    WorkLocation::canTeach)) {
             ServerBuilding building = (ServerBuilding)wl;
-            for (Unit teacher : building.getUnitList()) {
+            for (Unit teacher : building.getUnits()) {
                 building.csCheckTeach(teacher, cs);
             }
         }

@@ -111,7 +111,7 @@ public class ServerColonyTile extends ColonyTile implements TurnTaker {
 
         Tile workTile = getWorkTile();
         if (!isColonyCenterTile() && !isEmpty() && canBeWorked()) {
-            for (Unit unit : getUnitList()) {
+            for (Unit unit : getUnits()) {
                 Resource resource = expendResource(workTile, unit.getWorkType(),
                                                    unit.getType());
                 if (resource != null) {

@@ -1514,7 +1514,7 @@ public final class InGameController extends FreeColClientHolder {
             && options.getBoolean(ClientOptions.AUTOLOAD_SENTRIES)) {
             // Autoload sentries if selected
             List<Unit> waiting = (unit.getColony() != null)
-                ? unit.getTile().getUnitList()
+                ? unit.getTileUnits()
                 : Collections.<Unit>emptyList();
             for (Unit u : waiting) {
                 if (u.getState() != UnitState.SENTRY
@@ -2549,7 +2549,7 @@ public final class InGameController extends FreeColClientHolder {
                 unitWas.fireChanges();
                 // Check units present for treasure cash-in as they are now
                 // at a colony.
-                for (Unit u : tile.getUnitList()) checkCashInTreasureTrain(u);
+                for (Unit u : tile.getUnits()) checkCashInTreasureTrain(u);
                 colonyPanel((Colony)tile.getSettlement(), unit);
             }
             updateGUI(null);
@@ -4794,7 +4794,7 @@ public final class InGameController extends FreeColClientHolder {
         boolean ret = true;
         Colony colony = unit.getColony();
         if (colony != null) { // In colony, unload units and goods.
-            for (Unit u : unit.getUnitList()) {
+            for (Unit u : unit.getTileUnits()) {
                 ret = leaveShip(u) && ret;
             }
             for (Goods goods : unit.getGoodsList()) {

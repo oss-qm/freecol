@@ -268,7 +268,7 @@ public class CombatTest extends FreeColTestCase {
         Tile tile2 = map.getTile(4, 8);
         tile2.setExplored(dutch, true);
 
-        Unit colonist = first(colony.getUnitList());
+        Unit colonist = first(colony.getUnits());
         Unit attacker = new ServerUnit(getGame(), tile2, inca, braveType,
                                        armedBraveRole);
 
@@ -293,7 +293,7 @@ public class CombatTest extends FreeColTestCase {
         Colony colony = getStandardColony();
         Tile tile2 = map.getTile(4, 8);
         tile2.setExplored(dutch, true);
-        Unit colonist = first(colony.getUnitList());
+        Unit colonist = first(colony.getUnits());
         Unit attacker = new ServerUnit(getGame(), tile2, inca, braveType,
                                        armedBraveRole);
 
@@ -584,11 +584,11 @@ public class CombatTest extends FreeColTestCase {
         checkCombat("Capture convert", crs,
                     CombatResult.WIN, CombatResult.SLAUGHTER_UNIT,
                     CombatResult.CAPTURE_CONVERT);
-        assertEquals("One unit on tile", 1, tile2.getUnitList().size());
+        assertEquals("One unit on tile", 1, tile2.getUnits().size());
         dutch.csCombat(soldier, defender, crs, new Random(),
                        new ChangeSet());
-        assertEquals("Two units on tile", 2, tile2.getUnitList().size());
+        assertEquals("Two units on tile", 2, tile2.getUnits().size());
         assertEquals("Convert on tile", indianConvertType,
-                     tile2.getUnitList().get(1).getType());
+                     tile2.getUnits().get(1).getType());
     }
 }

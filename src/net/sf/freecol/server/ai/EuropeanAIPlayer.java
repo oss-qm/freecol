@@ -345,7 +345,7 @@ public class EuropeanAIPlayer extends MissionAIPlayer {
             Unit carrier = aiCarrier.getUnit();
             if (!carrier.isNaval()) continue;
             target = null;
-            for (Unit u : carrier.getUnitList()) {
+            for (Unit u : carrier.getUnits()) {
                 AIUnit aiu = aiMain.getAIUnit(u);
                 for (int range = buildingRange; range < maxRange;
                      range += buildingRange) {
@@ -365,7 +365,7 @@ public class EuropeanAIPlayer extends MissionAIPlayer {
             tm = (TransportMission)getTransportMission(aiCarrier);
             if (tm != null) {
                 lb.add(tm);
-                for (Unit u : carrier.getUnitList()) {
+                for (Unit u : carrier.getUnits()) {
                     AIUnit aiu = getAIMain().getAIUnit(u);
                     if (aiu == null) continue;
                     tm.queueTransportable(aiu, false, lb);
@@ -1081,8 +1081,8 @@ public class EuropeanAIPlayer extends MissionAIPlayer {
         final Europe europe = player.getEurope();
 
         lb.add("  Suppressing trade in ", type.getSuffix());
-        List<Unit> units = new ArrayList<>(europe.getUnitList());
-        units.addAll(player.getHighSeas().getUnitList());
+        List<Unit> units = new ArrayList<>(europe.getUnits());
+        units.addAll(player.getHighSeas().getUnits());
         for (Unit u : units) {
             int amount;
             AIUnit aiu;
@@ -1341,7 +1341,8 @@ public class EuropeanAIPlayer extends MissionAIPlayer {
         for (Settlement settlement : player.getSettlementList()) {
             nColonies++;
             if (settlement.isConnectedPort()) nPorts++;
-            nWorkers += count(settlement.getAllUnitsList(), Unit::isPerson);
+            for (Unit u : settlement.getAllUnits())
+                if (u.isPerson()) nWorkers++;
         }
         Europe europe = player.getEurope();
         nEuropean = (europe == null) ? 0
@@ -1411,7 +1412,7 @@ public class EuropeanAIPlayer extends MissionAIPlayer {
         }
         if (AIMessage.askEmigrate(this, slot)
             && europe.getUnitCount() == n+1) {
-            aiUnit = getAIUnit(europe.getUnitList().get(n));
+            aiUnit = getAIUnit(europe.getUnits().get(n));
             if (aiUnit != null) addAIUnit(aiUnit);
         }
         return aiUnit;
@@ -1439,7 +1440,7 @@ public class EuropeanAIPlayer extends MissionAIPlayer {
 
         if (AIMessage.askTrainUnitInEurope(this, unitType)
             && europe.getUnitCount() == n+1) {
-            aiUnit = getAIUnit(europe.getUnitList().get(n));
+            aiUnit = getAIUnit(europe.getUnits().get(n));
             if (aiUnit != null) addAIUnit(aiUnit);
         }
         return aiUnit;
@@ -1808,7 +1809,7 @@ public class EuropeanAIPlayer extends MissionAIPlayer {
                 }
                 // A new transport mission might have retargeted
                 // its passengers into new valid missions.
-                for (Unit u : aiUnit.getUnit().getUnitList()) {
+                for (Unit u : aiUnit.getUnit().getUnits()) {
                     AIUnit aiu = getAIUnit(u);
                     Mission um = aiu.getMission();
                     if (um != null && um.isValid()

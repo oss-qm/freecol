@@ -122,7 +122,7 @@ public class BuildingToolTip extends JToolTip {
         add(new JLabel(new ImageIcon(lib.getBuildingImage(building))));
 
         if (outputType != null) {
-            for (Unit unit : building.getUnitList()) {
+            for (Unit unit : building.getUnits()) {
                 UnitLabel unitLabel = new UnitLabel(freeColClient, unit, false);
                 int amount = building.getUnitProduction(unit, outputType);
                 if (amount > 0) {

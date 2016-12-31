@@ -216,7 +216,7 @@ public final class QuickActionMenu extends JPopupMenu {
         final InGameController igc = freeColClient.getInGameController();
 
         boolean added = false;
-        for (Unit unit : transform(loc.getUnitList(), u ->
+        for (Unit unit : transform(loc.getUnits(), u ->
                 (u.isCarrier() && u.canCarryUnits() && u.canAdd(tempUnit)
                     && tempUnit.getLocation() != u))) {
             StringTemplate template
@@ -265,7 +265,7 @@ public final class QuickActionMenu extends JPopupMenu {
         JMenuItem cargo = Utility.localizedMenuItem("cargoOnCarrier");
         this.add(cargo);
 
-        for (Unit passenger : unit.getUnitList()) {
+        for (Unit passenger : unit.getUnits()) {
             JMenuItem menuItem = new JMenuItem("    "
                 + passenger.getDescription(Unit.UnitLabelType.NATIONAL));
             menuItem.setFont(menuItem.getFont().deriveFont(Font.ITALIC));

@@ -292,7 +292,7 @@ public class Europe extends UnitLocation
     //   UnitLocation.remove
     //   UnitLocation.contains
     //   UnitLocation.getUnitCount
-    //   UnitLocation.getUnitList
+    //   UnitLocation.getUnits
     //   UnitLocation.getGoodsContainer
     //   UnitLocation.getSettlement
 

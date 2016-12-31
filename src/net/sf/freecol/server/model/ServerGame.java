@@ -394,7 +394,7 @@ public class ServerGame extends Game implements TurnTaker {
             lb.add(" ", c.getName());
             contacts.add(c.getFirstUnit());
         }
-        for (Unit unit : weakest.getUnitList()) {
+        for (Unit unit : weakest.getUnits()) {
             lb.add(" ", unit.getId());
             if (unit.isOnCarrier()) {
                 ; // Allow carrier to handle

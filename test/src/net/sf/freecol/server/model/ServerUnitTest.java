@@ -334,7 +334,7 @@ public class ServerUnitTest extends FreeColTestCase {
         Game game = ServerTestHelper.startServerGame(getTestMap());
 
         Colony colony = getStandardColony();
-        Unit colonist = colony.getUnitList().get(0);
+        Unit colonist = colony.getUnits().get(0);
 
         assertEquals("Colonist should not have any experience",
                      0, colonist.getExperience());
@@ -364,7 +364,7 @@ public class ServerUnitTest extends FreeColTestCase {
         assertTrue("Colony should only have 1 colonist for test setup",
                    colony.getUnitCount() == 1);
 
-        Unit colonist = colony.getUnitList().get(0);
+        Unit colonist = colony.getUnits().get(0);
         String errMsg = "Error setting test, colonist should not be an expert";
         assertTrue(errMsg, colonist.getType() == colonistType);
 
@@ -373,14 +373,14 @@ public class ServerUnitTest extends FreeColTestCase {
         assertTrue(colony.getOwner().canOwnTile(tile));
         ColonyTile colonyTile = colony.getColonyTile(tile);
         if (!colonyTile.isEmpty()) {
-            colonyTile.getUnitList().get(0).setLocation(colony.getBuilding(townHallType));
+            colonyTile.getUnits().get(0).setLocation(colony.getBuilding(townHallType));
         }
         assertTrue(colonyTile.canBeWorked());
         colonist.setLocation(colonyTile);
         colonist.changeWorkType(grainType);
         assertEquals("Wrong work allocation",
                      grainType, colonist.getWorkType());
-        assertEquals(colonyTile.getUnitList().get(0), colonist);
+        assertEquals(colonyTile.getUnits().get(0), colonist);
         // Will colonist gain experience?
         assertTrue(colonyTile.getTotalProductionOf(colonist.getWorkType()) > 0);
         // Can colonist be upgraded

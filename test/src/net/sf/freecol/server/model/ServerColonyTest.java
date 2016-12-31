@@ -124,7 +124,7 @@ public class ServerColonyTest extends FreeColTestCase {
             = AbstractGoods.findByType(colonyTile.getType().getPossibleProduction(true),foodGoodsType);
         if (foodGoods != null) foodGoods.setAmount(2);
 
-        Unit unit = colony.getUnitList().get(0);
+        Unit unit = colony.getUnits().get(0);
         unit.setLocation(colony.getWorkLocationFor(unit, bellsType));
 
         // Verify that there is enough food stored
@@ -149,7 +149,7 @@ public class ServerColonyTest extends FreeColTestCase {
         ServerPlayer player = (ServerPlayer) colony.getOwner();
 
         final Building townHall = colony.getBuilding(townHallType);
-        for (Unit u : colony.getUnitList()) {
+        for (Unit u : colony.getUnits()) {
             u.setLocation(townHall);
         }
         colony.removeGoods(foodGoodsType);
@@ -188,7 +188,7 @@ public class ServerColonyTest extends FreeColTestCase {
             colony.getUnitCount());
 
         final Building townHall = colony.getBuilding(townHallType);
-        for (Unit u : colony.getUnitList()) {
+        for (Unit u : colony.getUnits()) {
             u.setLocation(townHall);
         }
         colony.removeGoods(foodGoodsType);
@@ -315,14 +315,14 @@ public class ServerColonyTest extends FreeColTestCase {
 
         ServerBuilding townHall
             = (ServerBuilding)colony.getBuilding(townHallType);
-        Unit statesman = colony.getUnitList().get(0);
+        Unit statesman = colony.getUnits().get(0);
         townHall.setWorkFor(statesman);
         assertEquals(bellsType, statesman.getWorkType());
 
         ServerBuilding church
             = (ServerBuilding)colony.getBuilding(chapelType);
         church.upgrade();
-        Unit preacher = colony.getUnitList().get(1);
+        Unit preacher = colony.getUnits().get(1);
         church.setWorkFor(preacher);
         assertEquals(crossesType, preacher.getWorkType());
 

@@ -106,7 +106,7 @@ public final class EuropePanel extends PortPanel {
 
             HighSeas highSeas = getMyPlayer().getHighSeas();
             if (highSeas != null) {
-                for (Unit unit : highSeas.getUnitList()) {
+                for (Unit unit : highSeas.getUnits()) {
                     boolean belongs;
                     if (destination instanceof Europe) {
                         belongs = unit.getDestination() == destination;
@@ -815,7 +815,7 @@ public final class EuropePanel extends PortPanel {
                     igc().payArrears(g.getType());
                 }
             }
-            for (Unit u : unit.getUnitList()) {
+            for (Unit u : unit.getUnits()) {
                 igc().leaveShip(u);
             }
             cargoPanel.update();
@@ -845,8 +845,8 @@ public final class EuropePanel extends PortPanel {
      * @return A list of units in Europe.
      */
     @Override
-    public List<Unit> getUnitList() {
-        return europe.getUnitList();
+    public List<Unit> getUnits() {
+        return europe.getUnits();
     }
 
 

@@ -39,6 +39,7 @@ import java.beans.PropertyChangeListener;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.Collections;
 
 import javax.swing.ComponentInputMap;
 import javax.swing.ImageIcon;
@@ -196,7 +197,7 @@ public final class ColonyPanel extends PortPanel
         for (Goods goods : unit.getGoodsContainer().getGoods()) {
             igc().unloadCargo(goods, false);
         }
-        for (Unit u : unit.getUnitList()) {
+        for (Unit u : unit.getUnits()) {
             igc().leaveShip(u);
         }
         cargoPanel.update();
@@ -677,7 +678,7 @@ public final class ColonyPanel extends PortPanel
         int unitNumber = 0;
         JMenuItem subMenu = null;
 
-        for (final Unit unit : colony.getUnitList()) {
+        for (final Unit unit : colony.getUnits()) {
             WorkLocation wl = unit.getWorkLocation();
             GoodsType goodsType = unit.getWorkType();
             Unit student = unit.getStudent();
@@ -722,7 +723,7 @@ public final class ColonyPanel extends PortPanel
             colonyUnitsMenu.add(subMenu);
         }
         colonyUnitsMenu.addSeparator();
-        for (final Unit unit : colonyTile.getUnitList()) {
+        for (final Unit unit : colonyTile.getUnits()) {
             if (unit.isCarrier()) {
                 unitIcon = new ImageIcon(lib.getSmallerUnitImage(unit));
                 String menuTitle = unit.getDescription()
@@ -734,7 +735,7 @@ public final class ColonyPanel extends PortPanel
                     });
                 unitNumber++;
                 colonyUnitsMenu.add(subMenu);
-                for (final Unit innerUnit : unit.getUnitList()) {
+                for (final Unit innerUnit : unit.getUnits()) {
                     unitIcon = new ImageIcon(lib.getSmallerUnitImage(innerUnit));
                     menuTitle = innerUnit.getDescription()
                         + " " + Messages.message("cargoOnCarrier")
@@ -975,8 +976,10 @@ public final class ColonyPanel extends PortPanel
      * @return A sorted list of units on the colony tile.
      */
     @Override
-    public List<Unit> getUnitList() {
-        return sort(colony.getTile().getUnits());
+    public List<Unit> getUnits() {
+        List<Unit> result = colony.getTileUnits();
+        Collections.sort(result);
+        return result;
     }
 
 
@@ -2095,7 +2098,7 @@ public final class ColonyPanel extends PortPanel
 
                 final FreeColClient fcc = getFreeColClient();
                 UnitLabel label = null;
-                for (Unit unit : this.colonyTile.getUnitList()) {
+                for (Unit unit : this.colonyTile.getUnits()) {
                     label = new UnitLabel(fcc, unit, false, false, true);
                     if (ColonyPanel.this.isEditable()) {
                         label.setTransferHandler(defaultTransferHandler);

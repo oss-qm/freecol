@@ -217,7 +217,7 @@ public class ColonyTest extends FreeColTestCase {
         assertEquals(2, masterWeaverType.getConsumptionOf(foodGoodsType));
 
         // colonist produces bells, the colony needs them
-        Unit colonist = colony.getUnitList().get(0);
+        Unit colonist = colony.getUnits().get(0);
         Building townHall = colony.getBuilding(townHallType);
         assertEquals(townHall, colonist.getLocation());
         assertEquals(townHall, colony.getWorkLocationFor(colonist));
@@ -299,7 +299,7 @@ public class ColonyTest extends FreeColTestCase {
         Tile colonyTile = colony.getTile();
         assertEquals(colonyTile.getType(), plainsTileType);
 
-        Unit colonist = first(colony.getUnits());
+        Unit colonist = colony.getFirstUnit();
         Tile workedTile = null;
         for (ColonyTile ct : colony.getColonyTiles()) {
             if (ct.isColonyCenterTile()) continue;
@@ -522,7 +522,7 @@ public class ColonyTest extends FreeColTestCase {
                 assertEquals(owt.getOwningSettlement(), copied);
             }
             assertEquals(wl.getUnitCount(), owl.getUnitCount());
-            for (Unit u : wl.getUnitList()) {
+            for (Unit u : wl.getUnits()) {
                 Unit ou = copied.getCorresponding(u);
                 assertNotNull(ou);
                 assertFalse(u == ou);
