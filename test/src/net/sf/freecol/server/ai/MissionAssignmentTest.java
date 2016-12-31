@@ -234,7 +234,7 @@ public class MissionAssignmentTest extends FreeColTestCase {
 
         // Verify if a unit was assigned a UnitSeekAndDestroyMission
         boolean isSeekAndDestroyMission = false;
-        for (Unit brave : inca.getUnitList()) {
+        for (Unit brave : inca.getUnits()) {
             AIUnit aiUnit = aiMain.getAIUnit(brave);
             assertNotNull("Couldnt get aiUnit for players brave", aiUnit);
             assertNotNull("Unit missing mission", aiUnit.getMission());
@@ -279,7 +279,7 @@ public class MissionAssignmentTest extends FreeColTestCase {
             galleon.getUnitCount());
         assertEquals("Galleon should be full", 0, galleon.getSpaceLeft());
 
-        for (Unit brave : camp.getUnitList()) {
+        for (Unit brave : camp.getUnits()) {
             AIUnit aiUnit = aiMain.getAIUnit(brave);
             assertNotNull(aiUnit);
             new UnitWanderHostileMission(aiMain, aiUnit);
@@ -299,7 +299,7 @@ public class MissionAssignmentTest extends FreeColTestCase {
         aiInca.abortInvalidMissions();
         aiInca.secureIndianSettlement(camp, lb);
         boolean seeking = false;
-        for (Unit brave : inca.getUnitList()) {
+        for (Unit brave : inca.getUnits()) {
             AIUnit aiUnit = aiMain.getAIUnit(brave);
             assertNotNull(aiUnit);
             if (aiUnit.hasMission(UnitSeekAndDestroyMission.class)) {

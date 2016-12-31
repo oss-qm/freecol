@@ -904,7 +904,7 @@ public abstract class WorkLocation extends UnitLocation
      */
     public int evaluateFor(Player player) {
         int result = 0;
-        for (Unit u : getUnitList()) {
+        for (Unit u : getUnits()) {
             int v = u.evaluateFor(player);
             if (v == Integer.MIN_VALUE) return Integer.MIN_VALUE;
             result += v;

@@ -206,7 +206,7 @@ public abstract class UnitLocation extends FreeColGameObject implements Location
      */
     public final Unit getLastUnit() {
         if (isEmpty()) return null;
-        List<Unit> units = getUnitList();
+        List<Unit> units = getUnits();
         return units.get(units.size()-1);
     }
 
@@ -389,17 +389,7 @@ public abstract class UnitLocation extends FreeColGameObject implements Location
      * {@inheritDoc}
      */
     @Override
-    public Stream<Unit> getUnits() {
-        synchronized (this.units) {
-            return getUnitList().stream();
-        }
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public List<Unit> getUnitList() {
+    public List<Unit> getUnits() {
         synchronized (this.units) {
             return (this.units.isEmpty()) ? Collections.<Unit>emptyList()
                 : new ArrayList<>(this.units);

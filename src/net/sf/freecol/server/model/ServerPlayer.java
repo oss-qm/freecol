@@ -494,7 +494,7 @@ public class ServerPlayer extends Player implements ServerModelObject {
         // carriers with units, carriers with goods.
         boolean hasCarrier = false, hasColonist = false, hasEmbarked = false,
             hasGoods = false;
-        for (Unit unit : getUnitList()) {
+        for (Unit unit : getUnits()) {
             if (unit.isCarrier()) {
                 if (unit.hasGoodsCargo()) hasGoods = true;
                 hasCarrier = true;
@@ -605,7 +605,7 @@ public class ServerPlayer extends Player implements ServerModelObject {
         final int landREFUnitsRequired = 7; // FIXME: magic number
         boolean naval = false;
         int land = 0;
-        for (Unit u : getUnitList()) {
+        for (Unit u : getUnits()) {
             if (u.isNaval()) naval = true; else {
                 if (u.hasAbility(Ability.REF_UNIT)) land++;
             }
@@ -659,7 +659,7 @@ public class ServerPlayer extends Player implements ServerModelObject {
         }
 
         // Remove units
-        List<Unit> units = getUnitList();
+        List<Unit> units = getUnits();
         while (!units.isEmpty()) {
             Unit u = units.remove(0);
             if (u.hasTile()) cs.add(See.perhaps(), u.getTile());
@@ -951,7 +951,7 @@ public class ServerPlayer extends Player implements ServerModelObject {
         invalidateCanSeeTiles();//+vis(this)
         if (!reveal) {
             for (Settlement s : getSettlements()) exploreForSettlement(s);
-            for (Unit u : getUnitList()) exploreForUnit(u);
+            for (Unit u : getUnits()) exploreForUnit(u);
         }
         return result;
     }
@@ -1640,7 +1640,7 @@ outer:  for (Effect effect : effects) {
     }
 
     public Unit getUnitForEffect(Colony colony, Effect effect, Random random) {
-        List<Unit> units = transform(colony.getAllUnitsList(),
+        List<Unit> units = transform(colony.getAllUnits(),
                                      u -> effect.appliesTo(u.getType()));
         return (units.isEmpty()) ? null
             : getRandomMember(logger, "Select unit for effect", units, random);
@@ -1907,16 +1907,16 @@ outer:  for (Effect effect : effects) {
                       .addNamed("%foundingFather%", father)
                       .add("%description%", father.getDescriptionKey()));
 
-        List<AbstractUnit> units = father.getUnitList();
+        List<AbstractUnit> units = father.getUnits();
         if (units != null && !units.isEmpty() && europe != null) {
-            createUnits(father.getUnitList(), europe);//-vis: safe, Europe
+            createUnits(father.getUnits(), europe);//-vis: safe, Europe
             europeDirty = true;
         }
 
         UnitChangeType uct
             = spec.getUnitChangeType(UnitChangeType.FOUNDING_FATHER);
         if (uct != null && uct.appliesTo(this)) {
-            for (Unit u : getUnitList()) {
+            for (Unit u : getUnits()) {
                 for (UnitChange uc : uct.getUnitChanges(u.getType())) {
                     u.changeType(uc.to);//-vis(this)
                     visibilityChange = true;
@@ -2808,7 +2808,7 @@ outer:  for (Effect effect : effects) {
         ServerPlayer attackerPlayer = (ServerPlayer)attacker.getOwner();
         ServerPlayer nativePlayer = (ServerPlayer)is.getOwner();
         StringTemplate convertNation = nativePlayer.getNationLabel();
-        List<Unit> units = is.getAllUnitsList();
+        List<Unit> units = is.getAllUnits();
         ServerUnit convert = (ServerUnit)getRandomMember(logger,
             "Choose convert", units, random);
         if (nativePlayer.csChangeOwner(convert, attackerPlayer,
@@ -3069,7 +3069,7 @@ outer:  for (Effect effect : effects) {
         for (Goods g : ship.getGoodsContainer().getCompactGoods()) {
             ship.remove(g);
         }
-        for (Unit u : ship.getUnitList()) {
+        for (Unit u : ship.getUnits()) {
             ship.remove(u);
             cs.addRemove(See.only(player), null, u);//-vis: safe, within unit
             u.dispose();
@@ -3654,7 +3654,7 @@ outer:  for (Effect effect : effects) {
         boolean changed = false;
         BuildingType type = building.getType();
         if (type.getUpgradesFrom() == null) {
-            changed = colony.ejectUnits(building, building.getUnitList());//-til
+            changed = colony.ejectUnits(building, building.getUnits());//-til
             colony.destroyBuilding(building);//-til
             changed |= building.getType().isDefenceType();
             cs.addRemove(See.only((ServerPlayer)colony.getOwner()), colony,
@@ -3664,7 +3664,7 @@ outer:  for (Effect effect : effects) {
             // e.g. removing docks should shut down fishing.
             for (WorkLocation wl : transform(colony.getAllWorkLocations(),
                                              w -> !w.isEmpty() && !w.canBeWorked())) {
-                changed |= colony.ejectUnits(wl, wl.getUnitList());//-til
+                changed |= colony.ejectUnits(wl, wl.getUnits());//-til
                 logger.info("Units ejected from workLocation "
                     + wl.getId() + " on loss of "
                     + building.getType().getSuffix());
@@ -4236,7 +4236,7 @@ outer:  for (Effect effect : effects) {
                 return false;
             }
 
-            for (Unit u : unit.getUnitList()) {
+            for (Unit u : unit.getUnits()) {
                 if ((uc = u.getUnitChange(change, null, newOwner)) == null) {
                     ; // no change for this passenger
                 } else if (uc.isAvailableTo(newOwner)) {
@@ -4261,7 +4261,7 @@ outer:  for (Effect effect : effects) {
         unit.changeOwner(newOwner);
         if (loc != null) unit.setLocation(loc);
         if (unit.isCarrier()) {
-            cs.addRemoves(See.only(this), unit, unit.getUnitList());
+            cs.addRemoves(See.only(this), unit, unit.getUnits());
         }
         cs.add(See.only(newOwner), newOwner.exploreForUnit(unit));
         return true;
@@ -4389,7 +4389,7 @@ outer:  for (Effect effect : effects) {
             modifyImmigration(europe.getImmigration(newImmigration));
         }
         // Units.
-        for (Unit unit : getUnitList()) {
+        for (Unit unit : getUnits()) {
             try {
                 ((ServerModelObject) unit).csNewTurn(random, lb, cs);
             } catch (ClassCastException e) {

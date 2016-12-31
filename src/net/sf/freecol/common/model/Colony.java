@@ -1824,7 +1824,7 @@ public class Colony extends Settlement implements Nameable, TradeLocation {
                 if (v == Integer.MIN_VALUE) return Integer.MIN_VALUE;
                 result += v;
             }
-            for (Unit u : getTile().getUnitList()) {
+            for (Unit u : getTile().getUnits()) {
                 v = u.evaluateFor(player);
                 if (v == Integer.MIN_VALUE) return Integer.MIN_VALUE;
                 result += v;
@@ -1882,8 +1882,12 @@ public class Colony extends Settlement implements Nameable, TradeLocation {
      *
      * @return A stream of teacher {@code Unit}s.
      */
-    public Stream<Unit> getTeachers() {
-        return flatten(getBuildings(), Building::canTeach, Building::getUnits);
+    public List<Unit> getTeachers() {
+        List<Unit> result = new ArrayList<>();
+        for (Building b : getBuildings())
+            if (b.canTeach())
+                result.addAll(b.getUnits());
+        return result;
     }
 
     /**
@@ -1977,7 +1981,7 @@ public class Colony extends Settlement implements Nameable, TradeLocation {
      */
     public List<Consumer> getConsumers() {
         List<Consumer> result = new ArrayList<>();
-        result.addAll(getUnitList());
+        result.addAll(getUnits());
         result.addAll(getBuildings());
         result.add(buildQueue);
         result.add(populationQueue);
@@ -2507,7 +2511,7 @@ loop:   for (WorkLocation wl : getWorkLocationsForProducing(goodsType)) {
                 : find(map(getColonyTiles(), ColonyTile::getWorkTile),
                 matchKeyEquals(id, Tile::getId)))
                 : (fco instanceof Unit)
-                ? (T)find(getAllUnitsList(),
+                ? (T)find(getAllUnits(),
                 matchKeyEquals(id, Unit::getId))
                 : null;
     }
@@ -2546,7 +2550,7 @@ loop:   for (WorkLocation wl : getWorkLocationsForProducing(goodsType)) {
     //   to return the union of the units in the work locations, which may
     //   or not be the best idea.  Another choice would be to return all
     //   the units in the work locations, plus those present on the tile,
-    //   which is provided by Settlement.getAllUnitsList.
+    //   which is provided by Settlement.getAllUnits.
     //   TODO: look at all the uses, see if this makes sense.
     // Inherits
     //   FreeColObject.getId
@@ -2619,16 +2623,11 @@ loop:   for (WorkLocation wl : getWorkLocationsForProducing(goodsType)) {
      * {@inheritDoc}
      */
     @Override
-    public Stream<Unit> getUnits() {
-        return flatten(getCurrentWorkLocations(), WorkLocation::getUnits);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public List<Unit> getUnitList() {
-        return toList(getUnits());
+    public List<Unit> getUnits() {
+        List<Unit> result = new ArrayList<>();
+        for (WorkLocation wl : getCurrentWorkLocations())
+            result.addAll(wl.getUnits());
+        return result;
     }
 
     /**

@@ -122,7 +122,7 @@ public class Building extends WorkLocation
 
         // Colonists exceding units limit must be put outside
         int extra = getUnitCount() - getUnitCapacity() - eject.size();
-        for (Unit unit : getUnitList()) {
+        for (Unit unit : getUnits()) {
             if (extra <= 0) break;
             if (!eject.contains(unit)) {
                 eject.add(unit);
@@ -396,7 +396,7 @@ public class Building extends WorkLocation
     //   UnitLocation.canAdd
     //   WorkLocation.remove
     //   UnitLocation.getUnitCount
-    //   UnitLocation.getUnitList
+    //   UnitLocation.getUnits
     //   UnitLocation.getGoodsContainer
     //   final WorkLocation.getSettlement
     //   final WorkLocation.getColony

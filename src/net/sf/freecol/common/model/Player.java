@@ -1563,7 +1563,7 @@ public class Player extends FreeColGameObject implements Nameable {
      */
     public List<AbstractUnit> getREFUnits() {
         return (getPlayerType() == PlayerType.COLONIAL)
-            ? getMonarch().getExpeditionaryForce().getUnitList()
+            ? getMonarch().getExpeditionaryForce().getUnits()
             : null;
     }
 
@@ -1917,23 +1917,12 @@ public class Player extends FreeColGameObject implements Nameable {
     }
 
     /**
-     * Get a stream of the players units.
-     *
-     * Have to serialize the copy created by getUnitList, otherwise
-     * concurrent modification exceptions show up.
-     *
-     * @return A stream of the player {@code Unit}s.
-     */
-    public Stream<Unit> getUnits() {
-        return getUnitList().stream();
-    }
-
-    /**
      * Get a copy of the players units.
+     * (copying instead of reference for concurrency)
      *
      * @return A list of the player {@code Unit}s.
      */
-    public List<Unit> getUnitList() {
+    public List<Unit> getUnits() {
         synchronized (this.units) {
             return (this.units.isEmpty()) ? Collections.<Unit>emptyList()
                 : new ArrayList<>(this.units);
@@ -3905,7 +3894,7 @@ public class Player extends FreeColGameObject implements Nameable {
     @Override
     public int checkIntegrity(boolean fix) {
         int result = super.checkIntegrity(fix);
-        for (Unit unit : getUnitList()) {
+        for (Unit unit : getUnits()) {
             if (unit.getOwner() == null) {
                 if (fix) {
                     unit.setOwner(this);
