@@ -568,6 +568,26 @@ public class Colony extends Settlement implements Nameable, TradeLocation {
     }
 
     /**
+     * Count the freely available work locations in this colony.
+     *
+     * @return amount of available {@code WorkLocation}s.
+     */
+    public int countAvailableWorkLocations() {
+        int result = 0;
+        synchronized (this.colonyTiles) {
+            for (ColonyTile walk : this.colonyTiles)
+                if (walk.isAvailable())
+                    result++;
+        }
+        synchronized (this.buildingMap) {
+            for (Building walk : this.buildingMap.values())
+                if (walk.isAvailable())
+                    result++;
+        }
+        return result;
+    }
+
+    /**
      * Gets a list of all current work locations in this colony.
      *
      * @return The list of current {@code WorkLocation}s.
