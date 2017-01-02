@@ -508,7 +508,7 @@ public class ColonyTest extends FreeColTestCase {
         assertEquals(oct.getColony(), copied);
         assertEquals(oct.getOwningSettlement(), copied);
 
-        for (WorkLocation wl : colony.getAllWorkLocationsList()) {
+        for (WorkLocation wl : colony.getAllWorkLocations()) {
             WorkLocation owl = copied.getCorresponding(wl);
             assertNotNull(owl);
             assertFalse(wl == owl);
