@@ -367,7 +367,7 @@ public class Unit extends GoodsLocation
                 } else {
                     // Other roles can be characterized by their goods.
                     List<AbstractGoods> requiredGoods
-                        = role.getRequiredGoodsList(getRoleCount());
+                        = role.getRequiredGoods(getRoleCount());
                     boolean first = true;
                     extra = StringTemplate.label("");
                     for (AbstractGoods ag : requiredGoods) {
