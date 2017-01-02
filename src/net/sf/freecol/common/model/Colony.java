@@ -979,7 +979,7 @@ public class Colony extends Settlement implements Nameable, TradeLocation {
      */
     public int getTurnsToComplete(BuildableType buildable,
                                   AbstractGoods needed) {
-        final List<AbstractGoods> required = buildable.getRequiredGoodsList();
+        final List<AbstractGoods> required = buildable.getRequiredGoods();
         int turns = 0, satisfied = 0, failing = 0, underway = 0;
 
         ProductionInfo info = productionCache.getProductionInfo(buildQueue);
@@ -1196,7 +1196,7 @@ public class Colony extends Settlement implements Nameable, TradeLocation {
         if (buildable == null) return Collections.<AbstractGoods>emptyList();
 
         List<AbstractGoods> required = new ArrayList<>();
-        for (AbstractGoods ag : buildable.getRequiredGoodsList()) {
+        for (AbstractGoods ag : buildable.getRequiredGoods()) {
             int amount = ag.getAmount();
             GoodsType type = ag.getType();
             while (type != null) {
@@ -2868,7 +2868,7 @@ loop:   for (WorkLocation wl : getWorkLocationsForProducing(goodsType)) {
 
             if (buildable != null) {
                 available -= AbstractGoods.getCount(goods.getType(),
-                        buildable.getRequiredGoodsList());
+                        buildable.getRequiredGoods());
             }
 
             if (available < goods.getAmount()) return false;
