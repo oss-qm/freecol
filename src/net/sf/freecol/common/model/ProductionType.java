@@ -155,6 +155,18 @@ public class ProductionType extends FreeColSpecObject {
     }
 
     /**
+     * Check whether this production type can consume an {@code AbstractGoods}
+     */
+    public final boolean canConsume(AbstractGoods goods) {
+        if (inputs != null)
+            for (AbstractGoods walk : inputs)
+                if (walk.isType(goods.getType()))
+                    return true;
+
+        return false;
+    }
+
+    /**
      * Set the input goods.
      *
      * @param newInputs The new list of input {@code AbstractGoods}.

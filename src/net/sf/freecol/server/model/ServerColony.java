@@ -195,10 +195,11 @@ public class ServerColony extends Colony implements ServerModelObject {
     public boolean ejectUnits(WorkLocation workLocation, List<Unit> units) {
         if (units == null || units.isEmpty()) return false;
         unit: for (Unit u : units) {
-            for (WorkLocation wl : transform(getAvailableWorkLocations(),
-                                             w -> w != workLocation && w.canAdd(u))) {
-                u.setLocation(wl);//-vis: safe/colony
-                continue unit;
+            for (WorkLocation wl : getAvailableWorkLocations()) {
+                if ((wl != workLocation) && wl.canAdd(u)) {
+                    u.setLocation(wl);//-vis: safe/colony
+                    continue unit;
+                }
             }
             u.setLocation(getTile());//-vis: safe/colony
         }
@@ -547,7 +548,7 @@ public class ServerColony extends Colony implements ServerModelObject {
         container.saveState();
 
         // Check for learning by experience
-        for (WorkLocation workLocation : getCurrentWorkLocationsList()) {
+        for (WorkLocation workLocation : getCurrentWorkLocations()) {
             ((ServerModelObject)workLocation).csNewTurn(random, lb, cs);
             ProductionInfo productionInfo = getProductionInfo(workLocation);
             if (productionInfo == null) continue;

@@ -47,7 +47,7 @@ import static net.sf.freecol.common.util.CollectionUtils.*;
 import net.sf.freecol.common.option.GameOptions;
 import net.sf.freecol.common.util.LogBuilder;
 import net.sf.freecol.common.util.RandomChoice;
-
+import net.sf.freecol.common.util.Utils;
 
 /**
  * Represents a colony. A colony contains {@link Building}s and
@@ -455,7 +455,7 @@ public class Colony extends Settlement implements Nameable, TradeLocation {
 
         Occupation best = new Occupation(null, null, null);
         int bestAmount = 0;
-        for (WorkLocation wl : getCurrentWorkLocationsList()) {
+        for (WorkLocation wl : getCurrentWorkLocations()) {
             bestAmount = best.improve(unit, wl, bestAmount, workTypes, lb);
         }
 
@@ -538,7 +538,7 @@ public class Colony extends Settlement implements Nameable, TradeLocation {
      *
      * @return The list of work locations.
      */
-    public List<WorkLocation> getAllWorkLocationsList() {
+    public List<WorkLocation> getAllWorkLocations() {
         List<WorkLocation> ret = new ArrayList<>();
         synchronized (this.colonyTiles) {
             ret.addAll(this.colonyTiles);
@@ -550,19 +550,22 @@ public class Colony extends Settlement implements Nameable, TradeLocation {
     }
 
     /**
-     * Gets a stream of every work location in this colony.
+     * Gets a list of every work location in this colony.
      *
-     * @return The stream of work locations.
+     * @return The list of work locations.
      */
-    public Stream<WorkLocation> getAllWorkLocations() {
-        Stream<WorkLocation> ret = Stream.<WorkLocation>empty();
+    public WorkLocation findWorkLocationById(String id) {
         synchronized (this.colonyTiles) {
-            ret = concat(ret, map(this.colonyTiles, ct -> (WorkLocation)ct));
+            for (ColonyTile walk : this.colonyTiles)
+                if (Utils.equals(id, walk.getId()))
+                    return walk;
         }
         synchronized (this.buildingMap) {
-            ret = concat(ret, map(this.buildingMap.values(), b -> (WorkLocation)b));
+            for (Building walk : this.buildingMap.values())
+                if (Utils.equals(id, walk.getId()))
+                    return walk;
         }
-        return ret;
+        return null;
     }
 
     /**
@@ -571,18 +574,62 @@ public class Colony extends Settlement implements Nameable, TradeLocation {
      *
      * @return The list of available {@code WorkLocation}s.
      */
-    public List<WorkLocation> getAvailableWorkLocationsList() {
-        return transform(getAllWorkLocations(), WorkLocation::isAvailable);
+    public int countAvailableWorkLocations() {
+        int result = 0;
+        synchronized (this.colonyTiles) {
+            for (ColonyTile walk : this.colonyTiles)
+                if (walk.isAvailable())
+                    result++;
+        }
+        synchronized (this.buildingMap) {
+            for (Building walk : this.buildingMap.values())
+                if (walk.isAvailable())
+                    result++;
+        }
+        return result;
     }
 
     /**
-     * Get a stream of all freely available work locations in this
-     * colony.
+     * Count the freely available work locations in this colony.
      *
-     * @return The stream of available {@code WorkLocation}s.
+     * @return The list of available {@code WorkLocation}s.
      */
-    public Stream<WorkLocation> getAvailableWorkLocations() {
-        return getAvailableWorkLocationsList().stream();
+    public List<WorkLocation> getAvailableWorkLocations() {
+        List<WorkLocation> result = new ArrayList<>();
+        synchronized (this.colonyTiles) {
+            for (ColonyTile walk : this.colonyTiles)
+                if (walk.isAvailable())
+                    result.add(walk);
+        }
+        synchronized (this.buildingMap) {
+            for (Building walk : this.buildingMap.values())
+                if (walk.isAvailable())
+                    result.add(walk);
+        }
+        return result;
+    }
+
+    /**
+     * Gets a list of all freely available work locations
+     * in this colony, that can add given unit.
+     *
+     * @param unit The {@code Unit} about to be added.
+     * @param skip An optional WorkLocation to skip
+     * @return The list of available {@code WorkLocation}s.
+     */
+    public int getAvailableWorkLocationsCanAdd(Unit unit, WorkLocation skip) {
+        int result = 0;
+        synchronized (this.colonyTiles) {
+            for (ColonyTile walk : this.colonyTiles)
+                if (walk != skip && walk.isAvailable() && walk.canAdd(unit))
+                    result++;
+        }
+        synchronized (this.buildingMap) {
+            for (Building walk : this.buildingMap.values())
+                if (walk != skip && walk.isAvailable() && walk.canAdd(unit))
+                    result++;
+        }
+        return result;
     }
 
     /**
@@ -590,17 +637,19 @@ public class Colony extends Settlement implements Nameable, TradeLocation {
      *
      * @return The list of current {@code WorkLocation}s.
      */
-    public List<WorkLocation> getCurrentWorkLocationsList() {
-        return transform(getAllWorkLocations(), WorkLocation::isCurrent);
-    }
-
-    /**
-     * Get a stream of all current work locations in this colony.
-     *
-     * @return The stream of current {@code WorkLocation}s.
-     */
-    public Stream<WorkLocation> getCurrentWorkLocations() {
-        return getCurrentWorkLocationsList().stream();
+    public List<WorkLocation> getCurrentWorkLocations() {
+        List<WorkLocation> result = new ArrayList<>();
+        synchronized (this.colonyTiles) {
+            for (ColonyTile walk : this.colonyTiles)
+                if (walk.isCurrent())
+                    result.add(walk);
+        }
+        synchronized (this.buildingMap) {
+            for (Building walk : this.buildingMap.values())
+                if (walk.isCurrent())
+                    result.add(walk);
+        }
+        return result;
     }
 
     /**
@@ -664,7 +713,17 @@ public class Colony extends Settlement implements Nameable, TradeLocation {
      *     {@code Ability}, or null if not found.
      */
     public WorkLocation getWorkLocationWithAbility(String ability) {
-        return find(getCurrentWorkLocations(), wl -> wl.hasAbility(ability));
+        synchronized (this.colonyTiles) {
+            for (ColonyTile ct : this.colonyTiles)
+                if (ct.isCurrent() && ct.hasAbility(ability))
+                    return ct;
+        }
+        synchronized (this.buildingMap) {
+            for (Building b : this.buildingMap.values())
+                if (b.isCurrent() && b.hasAbility(ability))
+                    return b;
+        }
+        return null;
     }
 
     /**
@@ -693,7 +752,17 @@ public class Colony extends Settlement implements Nameable, TradeLocation {
      *     {@code Modifier}, or null if not found.
      */
     public WorkLocation getWorkLocationWithModifier(String modifier) {
-        return find(getCurrentWorkLocations(), wl -> wl.hasModifier(modifier));
+        synchronized (this.colonyTiles) {
+            for (WorkLocation walk : this.colonyTiles)
+                if (walk.isCurrent() && walk.hasModifier(modifier))
+                    return walk;
+        }
+        synchronized (this.buildingMap) {
+            for (WorkLocation walk : this.buildingMap.values())
+                if (walk.isCurrent() && walk.hasModifier(modifier))
+                    return walk;
+        }
+        return null;
     }
 
     /**
@@ -720,8 +789,18 @@ public class Colony extends Settlement implements Nameable, TradeLocation {
      *     the given type of goods.
      */
     public List<WorkLocation> getWorkLocationsForConsuming(GoodsType goodsType) {
-        return transform(getCurrentWorkLocations(),
-                wl -> AbstractGoods.anyIsType(wl.getInputs(), goodsType));
+        List<WorkLocation> ret = new ArrayList<>();
+        synchronized (this.colonyTiles) {
+            for (WorkLocation walk : this.colonyTiles)
+                if (walk.isCurrent() && AbstractGoods.anyIsType(walk.getInputs(), goodsType))
+                    ret.add(walk);
+        }
+        synchronized (this.buildingMap) {
+            for (WorkLocation walk : this.buildingMap.values())
+                if (walk.isCurrent() && AbstractGoods.anyIsType(walk.getInputs(), goodsType))
+                    ret.add(walk);
+        }
+        return ret;
     }
 
     /**
@@ -732,8 +811,18 @@ public class Colony extends Settlement implements Nameable, TradeLocation {
      *     the given type of goods.
      */
     public List<WorkLocation> getWorkLocationsForProducing(GoodsType goodsType) {
-        return transform(getCurrentWorkLocations(),
-                wl -> AbstractGoods.anyIsType(wl.getOutputs(), goodsType));
+        List<WorkLocation> result = new ArrayList<>();
+        synchronized (this.colonyTiles) {
+            for (WorkLocation walk : this.colonyTiles)
+                if (walk.isCurrent() && AbstractGoods.anyIsType(walk.getOutputs(), goodsType))
+                    result.add(walk);
+        }
+        synchronized (this.buildingMap) {
+            for (WorkLocation walk : this.buildingMap.values())
+                if (walk.isCurrent() && AbstractGoods.anyIsType(walk.getOutputs(), goodsType))
+                    result.add(walk);
+        }
+        return result;
     }
 
     /**
@@ -746,7 +835,17 @@ public class Colony extends Settlement implements Nameable, TradeLocation {
      *      the given type of goods, or null if not found.
      */
     public WorkLocation getWorkLocationForProducing(GoodsType goodsType) {
-        return first(getWorkLocationsForProducing(goodsType));
+        synchronized (this.colonyTiles) {
+            for (WorkLocation walk : this.colonyTiles)
+                if (walk.isCurrent() && AbstractGoods.anyIsType(walk.getOutputs(), goodsType))
+                    return walk;
+        }
+        synchronized (this.buildingMap) {
+            for (WorkLocation walk : this.buildingMap.values())
+                if (walk.isCurrent() && AbstractGoods.anyIsType(walk.getOutputs(), goodsType))
+                    return walk;
+        }
+        return null;
     }
 
     /**
@@ -1712,7 +1811,7 @@ public class Colony extends Settlement implements Nameable, TradeLocation {
         int result, v;
         if (player.owns(this)) {
             result = 0;
-            for (WorkLocation wl : getAvailableWorkLocationsList()) {
+            for (WorkLocation wl : getAvailableWorkLocations()) {
                 v = wl.evaluateFor(player);
                 if (v == Integer.MIN_VALUE) return Integer.MIN_VALUE;
                 result += v;
@@ -2033,7 +2132,7 @@ public class Colony extends Settlement implements Nameable, TradeLocation {
      * present.
      */
     public void updateProductionTypes() {
-        for (WorkLocation wl : getAvailableWorkLocationsList()) {
+        for (WorkLocation wl : getAvailableWorkLocations()) {
             wl.updateProductionType();
         }
     }
@@ -2394,8 +2493,7 @@ loop:   for (WorkLocation wl : getWorkLocationsForProducing(goodsType)) {
     public <T extends FreeColObject> T getCorresponding(T fco) {
         final String id = fco.getId();
         return (fco instanceof WorkLocation)
-                ? (T)find(getAllWorkLocations(),
-                matchKeyEquals(id, WorkLocation::getId))
+                ? (T)findWorkLocationById(id)
                 : (fco instanceof Tile)
                 ? (T)((getTile().getId().equals(id)) ? getTile()
                 : find(map(getColonyTiles(), ColonyTile::getWorkTile),
