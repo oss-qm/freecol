@@ -1961,8 +1961,9 @@ public class CollectionUtils {
      * @return A list of the stream contents.
      */
     public static <T extends Comparable<? super T>> List<T> sort(T[] array) {
-        final Comparator<T> comparator = Comparator.naturalOrder();
-        return sort_internal(Arrays.stream(array), comparator);
+        List<T> result = Arrays.<T>asList(array);
+        Collections.sort(result);
+        return result;
     }
 
     /**
@@ -1974,7 +1975,9 @@ public class CollectionUtils {
      * @return A list of the stream contents.
      */
     public static <T> List<T> sort(T[] array, Comparator<? super T> comparator) {
-        return sort_internal(Arrays.stream(array), comparator);
+        List<T> result = Arrays.<T>asList(array);
+        Collections.sort(result, comparator);
+        return result;
     }
 
     /**
@@ -1985,8 +1988,9 @@ public class CollectionUtils {
      * @return A list of the stream contents.
      */
     public static <T extends Comparable<? super T>> List<T> sort(Collection<T> c) {
-        final Comparator<T> comparator = Comparator.naturalOrder();
-        return sort_internal(c.stream(), comparator);
+        ArrayList<T> result = new ArrayList<T>(c);
+        Collections.sort(result);
+        return result;
     }
 
     /**
@@ -1999,7 +2003,9 @@ public class CollectionUtils {
      */
     public static <T> List<T> sort(Collection<T> c,
                                    Comparator<? super T> comparator) {
-        return sort_internal(c.stream(), comparator);
+        List<T> result = new ArrayList<T>(c);
+        Collections.sort(result, comparator);
+        return result;
     }
 
     /**
