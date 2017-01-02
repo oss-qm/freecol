@@ -507,44 +507,4 @@ public class CollectionUtils {
         Collections.sort(result, comparator);
         return result;
     }
-
-    /**
-     * Convenience function to collect a stream to a list.
-     *
-     * @param <T> The stream member type.
-     * @param stream The {@code Stream} to collect.
-     * @return A list of the stream contents.
-     */
-    public static <T extends Comparable<? super T>> List<T> sort(Stream<T> stream) {
-        final Comparator<T> comparator = Comparator.naturalOrder();
-        return (stream == null) ? Collections.<T>emptyList()
-            : sort_internal(stream, comparator);
-    }
-
-    /**
-     * Convenience function to collect a stream to a list.
-     *
-     * @param <T> The stream member type.
-     * @param stream The {@code Stream} to collect.
-     * @param comparator A {@code Comparator} to sort with.
-     * @return A list of the stream contents.
-     */
-    public static <T> List<T> sort(Stream<T> stream,
-                                   Comparator<? super T> comparator) {
-        return (stream == null) ? Collections.<T>emptyList()
-            : sort_internal(stream, comparator);
-    }
-
-    /**
-     * Implement sort.
-     *
-     * @param <T> The stream member type.
-     * @param stream The {@code Stream} to collect.
-     * @param comparator A {@code Comparator} to sort with.
-     * @return A list of the stream contents.
-     */
-    private static <T> List<T> sort_internal(Stream<T> stream,
-                                             Comparator<? super T> comparator) {
-        return stream.sorted(comparator).collect(Collectors.<T>toList());
-    }
 }
