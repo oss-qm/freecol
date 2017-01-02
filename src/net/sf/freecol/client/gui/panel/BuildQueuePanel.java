@@ -494,7 +494,7 @@ public class BuildQueuePanel extends FreeColPanel implements ItemListener {
             }
 
             ImageLibrary lib = getImageLibrary();
-            List<AbstractGoods> required = value.getRequiredGoodsList();
+            List<AbstractGoods> required = value.getRequiredGoods();
             int size = required.size();
             for (int i = 0; i < size; i++) {
                 AbstractGoods goods = required.get(i);

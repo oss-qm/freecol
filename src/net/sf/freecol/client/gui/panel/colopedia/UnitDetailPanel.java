@@ -207,7 +207,7 @@ public class UnitDetailPanel extends ColopediaGameObjectTypePanel<UnitType> {
         if (type.needsGoodsToBuild()) {
             panel.add(Utility.localizedLabel("colopedia.unit.goodsRequired"),
                             "newline 20");
-            List<AbstractGoods> required = type.getRequiredGoodsList();
+            List<AbstractGoods> required = type.getRequiredGoods();
             AbstractGoods goods = first(required);
             if (required.size() > 1) {
                 panel.add(getGoodsButton(goods.getType(), goods.getAmount()),
