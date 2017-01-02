@@ -410,10 +410,10 @@ public abstract class WorkLocation extends UnitLocation
     /**
      * Get the {@code AbstractGoods} consumed by this work location.
      *
-     * @return A stream of {@code AbstractGoods} consumed.
+     * @return A {@code List} of {@code AbstractGoods} consumed.
      */
-    public Stream<AbstractGoods> getInputs() {
-        return (productionType == null) ? Stream.<AbstractGoods>empty()
+    public List<AbstractGoods> getInputs() {
+        return (productionType == null) ? Collections.<AbstractGoods>emptyList()
             : productionType.getInputs();
     }
 
@@ -422,8 +422,8 @@ public abstract class WorkLocation extends UnitLocation
      *
      * @return A stream of {@code AbstractGoods} produced.
      */
-    public Stream<AbstractGoods> getOutputs() {
-        return (productionType == null) ? Stream.<AbstractGoods>empty()
+    public List<AbstractGoods> getOutputs() {
+        return (productionType == null) ? Collections.<AbstractGoods>emptyList()
             : productionType.getOutputs();
     }
 
@@ -444,7 +444,7 @@ public abstract class WorkLocation extends UnitLocation
      * @return True if there are any inputs.
      */
     public boolean hasInputs() {
-        return any(getInputs());
+        return getInputs().size() > 0;
     }
 
     /**

@@ -990,7 +990,7 @@ public class BuildingTest extends FreeColTestCase {
         for (Building building : colony.getBuildings()) {
             clearWorkLocation(building);
             unit.setLocation(building);
-            for (AbstractGoods output : iterable(building.getOutputs())) {
+            for (AbstractGoods output : building.getOutputs()) {
                 GoodsType outputType = output.getType();
                 for (UnitType type : transform(spec().getUnitTypeList(),
                         ut -> (building.getType().canAdd(ut)

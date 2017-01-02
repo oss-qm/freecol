@@ -160,7 +160,7 @@ public class ColonyTile extends WorkLocation {
         final Colony colony = getColony();
         ProductionInfo pi = new ProductionInfo();
         if (isColonyCenterTile()) {
-            forEach(getOutputs(), output -> {
+            for (AbstractGoods output : getOutputs()) {
                     boolean onlyNaturalImprovements = getSpecification()
                         .getBoolean(GameOptions.ONLY_NATURAL_IMPROVEMENTS)
                         && !output.getType().isFoodType();
@@ -174,13 +174,13 @@ public class ColonyTile extends WorkLocation {
                     AbstractGoods production
                         = new AbstractGoods(output.getType(), potential);
                     pi.addProduction(production);
-                });
+            }
         } else {
-            forEach(map(getOutputs(), AbstractGoods::getType),
-                gt -> {
+            for (AbstractGoos ag : getOutputs()) {
+                    GoodsType gt = ag.getType();
                     int n = sum(getUnits(), u -> getUnitProduction(u, gt));
                     if (n > 0) pi.addProduction(new AbstractGoods(gt, n));
-                });
+            }
         }
         return pi;
     }

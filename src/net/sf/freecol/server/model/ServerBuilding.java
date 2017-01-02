@@ -219,8 +219,8 @@ public class ServerBuilding extends Building implements ServerModelObject {
      */
     public void csCheckMissingInput(ProductionInfo pi, ChangeSet cs) {
         if (!canAutoProduce() && pi.getProduction().isEmpty()) {
-            for (GoodsType gt : transform(getInputs(), alwaysTrue(),
-                                          AbstractGoods::getType)) {
+            for (AbstractGoods ag : getInputs()) {
+                GoodsType gt = ag.getType();
                 cs.addMessage(getOwner(),
                     new ModelMessage(ModelMessage.MessageType.MISSING_GOODS,
                                      "model.building.notEnoughInput",
