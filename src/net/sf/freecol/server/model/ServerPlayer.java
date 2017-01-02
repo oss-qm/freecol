@@ -3438,7 +3438,7 @@ outer:  for (Effect effect : effects) {
 
         // Autoequipment is not actually with the unit, it is stored
         // in the settlement of the unit.  Remove it from there.
-        for (AbstractGoods ag : role.getRequiredGoodsList()) {
+        for (AbstractGoods ag : role.getRequiredGoods()) {
             settlement.removeGoods(ag);
         }
 

@@ -52,7 +52,7 @@ public class StandardAIPlayerTest extends FreeColTestCase {
     }
 
     private void setupNativeDragoons() {
-        for (AbstractGoods ag : nativeDragoonRole.getRequiredGoodsList()) {
+        for (AbstractGoods ag : nativeDragoonRole.getRequiredGoods()) {
             if (ag.getType() == horsesType) {
                 horsesReqPerUnit = ag.getAmount();
             } else if (ag.getType() == musketsType) {
