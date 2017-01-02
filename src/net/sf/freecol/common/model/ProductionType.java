@@ -21,10 +21,10 @@ package net.sf.freecol.common.model;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 import java.util.function.Predicate;
-import java.util.stream.Stream;
 
 import javax.xml.stream.XMLStreamException;
 
@@ -149,9 +149,9 @@ public class ProductionType extends FreeColSpecObject {
      *
      * @return A stream of the input {@code AbstractGoods}.
      */
-    public final Stream<AbstractGoods> getInputs() {
-        return (inputs == null) ? Stream.<AbstractGoods>empty()
-            : inputs.stream();
+    public final List<AbstractGoods> getInputs() {
+        return (inputs == null) ? Collections.<AbstractGoods>emptyList()
+            : inputs;
     }
 
     /**
@@ -177,11 +177,11 @@ public class ProductionType extends FreeColSpecObject {
     /**
      * Get the output goods.
      *
-     * @return A stream of the output {@code AbstractGoods}.
+     * @return A {@code List} of the output {@code AbstractGoods}.
      */
-    public final Stream<AbstractGoods> getOutputs() {
-        return (outputs == null) ? Stream.<AbstractGoods>empty()
-            : outputs.stream();
+    public final List<AbstractGoods> getOutputs() {
+        return (outputs == null) ? Collections.<AbstractGoods>emptyList()
+            : outputs;
     }
 
     /**
