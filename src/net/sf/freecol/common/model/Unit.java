@@ -887,21 +887,9 @@ public class Unit extends GoodsLocation
      *     available roles are used.
      * @return A list of available {@code Role}s.
      */
-    public List<Role> getAvailableRolesList(List<Role> roles) {
+    public List<Role> getAvailableRoles(List<Role> roles) {
         if (roles == null) roles = getSpecification().getRoles();
         return transform(roles, r -> roleIsAvailable(r));
-    }
-
-    /**
-     * Filter a list of roles to return only those available to this unit,
-     * returning a stream.
-     *
-     * @param roles The list of {@code Role}s to filter, if null all
-     *     available roles are used.
-     * @return A stream of available {@code Role}s.
-     */
-    public Stream<Role> getAvailableRoles(List<Role> roles) {
-        return getAvailableRolesList(roles).stream();
     }
 
     /**
