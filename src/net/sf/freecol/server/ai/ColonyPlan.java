@@ -1216,7 +1216,7 @@ public class ColonyPlan {
         // Greedy assignment of other workers to plans.
         List<AbstractGoods> buildGoods = new ArrayList<>();
         BuildableType build = col.getCurrentlyBuilding();
-        if (build != null) buildGoods.addAll(build.getRequiredGoodsList());
+        if (build != null) buildGoods.addAll(build.getRequiredGoods());
         List<WorkLocationPlan> wlps;
         WorkLocationPlan wlp;
         boolean done = false;

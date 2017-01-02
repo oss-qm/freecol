@@ -24,7 +24,6 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Stream;
 
 import javax.swing.JList;
 import javax.xml.stream.XMLStreamException;
@@ -157,22 +156,11 @@ public abstract class BuildableType extends FreeColSpecObjectType {
      *
      * @return A deep copy of the list of required goods.
      */
-    public List<AbstractGoods> getRequiredGoodsList() {
+    public List<AbstractGoods> getRequiredGoods() {
         return (this.requiredGoods == null)
                 ? Collections.<AbstractGoods>emptyList()
                 : transform(this.requiredGoods, alwaysTrue(),
                 ag -> new AbstractGoods(ag.getType(), ag.getAmount()));
-    }
-
-    /**
-     * Get the goods required to build an instance of this buildable
-     * as a stream.
-     *
-     * @return A stream of the required goods.
-     */
-    public Stream<AbstractGoods> getRequiredGoods() {
-        return (this.requiredGoods == null) ? Stream.<AbstractGoods>empty()
-                : getRequiredGoodsList().stream();
     }
 
     /**
@@ -183,7 +171,7 @@ public abstract class BuildableType extends FreeColSpecObjectType {
      * @return The amount of goods required.
      */
     public int getRequiredAmountOf(GoodsType type) {
-        return AbstractGoods.getCount(type, getRequiredGoodsList());
+        return AbstractGoods.getCount(type, getRequiredGoods());
     }
 
     /**
@@ -322,7 +310,7 @@ public abstract class BuildableType extends FreeColSpecObjectType {
             }
         }
 
-        for (AbstractGoods goods : getRequiredGoodsList()) {
+        for (AbstractGoods goods : getRequiredGoods()) {
             xw.writeStartElement(REQUIRED_GOODS_TAG);
 
             xw.writeAttribute(ID_ATTRIBUTE_TAG, goods.getType());
