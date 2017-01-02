@@ -1661,28 +1661,6 @@ public final class Specification {
     }
 
     /**
-     * Gets the roles suitable for a REF unit.
-     *
-     * @param naval If true, choose roles for naval units, if not, land units.
-     * @return A list of {@code Role}s suitable for REF units.
-     */
-    public List<Role> getREFRolesList(boolean naval) {
-        return transform(((naval) ? Stream.of(getDefaultRole())
-                             : getMilitaryRoles()),
-                         r -> r.requiresAbility(Ability.REF_UNIT));
-    }
-
-    /**
-     * Gets the roles suitable for a REF unit as a stream.
-     *
-     * @param naval If true, choose roles for naval units, if not, land units.
-     * @return A stream of {@code Role}s suitable for REF units.
-     */
-    public Stream<Role> getREFRoles(boolean naval) {
-        return getREFRolesList(naval).stream();
-    }
-
-    /**
      * Get a role with an ability.
      *
      * @param id The ability identifier to look for.
@@ -1692,7 +1670,10 @@ public final class Specification {
      *     ability, or null if none found.
      */
     public Role getRoleWithAbility(String id, List<Role> roles) {
-        return find(getRoles(), r -> r.hasAbility(id));
+        for (Role r : this.roles)
+            if (r.hasAbility(id))
+                return r;
+        return null;
     }
 
     /**
@@ -2030,7 +2011,7 @@ public final class Specification {
         }
 
         StrCat cat = new StrCat(" ");
-        for (Role r : getRoles())
+        for (Role r : this.roles)
             cat.add(r.getId());
 
         logger.info("Loading role backward compatibility fragment: "
