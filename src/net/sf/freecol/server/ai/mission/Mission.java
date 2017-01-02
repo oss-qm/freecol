@@ -613,7 +613,7 @@ public abstract class Mission extends AIObject {
                     Colony colony = (Colony)s;
                     // Favour coastal
                     value += ((colony.isConnectedPort()) ? 10 : 0)
-                        + colony.getAvailableWorkLocationsList().size();
+                        + colony.countAvailableWorkLocation();
                 }
                 return value;
             });
