@@ -418,6 +418,13 @@ public abstract class WorkLocation extends UnitLocation
     }
 
     /**
+     * Check whether this WorkLocation can consume an {@code AbstractGoods}
+     */
+    public final boolean canConsume(AbstractGoods ag) {
+        return (productionType == null ? false : productionType.canConsume(ag));
+    }
+
+    /**
      * Get the {@code AbstractGoods} produced by this work location.
      *
      * @return A stream of {@code AbstractGoods} produced.
