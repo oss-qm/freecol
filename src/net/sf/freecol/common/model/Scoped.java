@@ -56,11 +56,5 @@ public interface Scoped {
      * @param object The {@code FreeColObject} to check.
      * @return True if this effect applies.
      */
-    default boolean appliesTo(FreeColObject object) {
-        List<Scope> scopes = getScopes();
-        if (scopes == null || scopes.isEmpty()) return true;
-        for (Scope s : scope)
-            if (s.appliesTo(object)) return true;
-        return false;
-    }
+    boolean appliesTo(FreeColObject object);
 }

@@ -190,6 +190,16 @@ public abstract class FreeColSpecObjectType extends FreeColSpecObject
     /**
      * {@inheritDoc}
      */
+    public boolean appliesTo(FreeColObject object) {
+        if (this.scopes == null || this.scopes.isEmpty()) return true;
+        for (Scope s : this.scopes)
+            if (s.appliesTo(object)) return true;
+        return false;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     public final void setScopes(List<Scope> scopes) {
         this.scopes = scopes;
     }
