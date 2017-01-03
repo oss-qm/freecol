@@ -31,6 +31,7 @@ import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.util.List;
 import java.util.logging.Logger;
+import java.util.Collections;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -170,9 +171,8 @@ public final class InfoPanel extends FreeColPanel {
                         .addAmount("%cost%", tile.getType().getBasicMoveCost()/3));
                     add(moveLabel, "span " + PRODUCTION);
 
-                    List<AbstractGoods> produce
-                        = sort(tile.getType().getPossibleProduction(true),
-                               AbstractGoods.descendingAmountComparator);
+                    List<AbstractGoods> produce = tile.getType().getPossibleProduction(true);
+                    Collections.sort(produce, AbstractGoods.descendingAmountComparator);
                     if (produce.isEmpty()) {
                         add(new JLabel(), "span " + PRODUCTION);
                     } else {
