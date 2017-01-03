@@ -360,9 +360,11 @@ public final class TileType extends FreeColSpecObjectType
      * @param unattended Select unattended production.
      * @return A stream of produced {@code AbstractGoods}.
      */
-    public Stream<AbstractGoods> getPossibleProduction(boolean unattended) {
-        return flatten(getAvailableProductionTypes(unattended),
-                       pt -> pt.getOutputList());
+    public List<AbstractGoods> getPossibleProduction(boolean unattended) {
+        List<AbstractGoods> result = new ArrayList<>();
+        for (ProductionType pt : getAvailableProductionTypes(unattended))
+            result.addAll(pt.getOutputList());
+        return result;
     }
 
     /**
