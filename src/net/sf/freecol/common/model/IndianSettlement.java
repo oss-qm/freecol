@@ -28,6 +28,8 @@ import java.util.Map.Entry;
 import java.util.Random;
 import java.util.logging.Logger;
 
+import javax.swing.JLabel;
+
 import javax.xml.stream.XMLStreamException;
 
 import net.sf.freecol.client.gui.Canvas;
@@ -1431,6 +1433,13 @@ public class IndianSettlement extends Settlement implements TradeLocation {
         return ((IndianSettlement) tradeLocation).getName();
     }
 
+
+    /**
+     * {@inheritDoc}
+     */
+    public JLabel getNameAsJlabel() {
+        return new JLabel(getLocationName(this));
+    }
 
     // Override FreeColGameObject
 
