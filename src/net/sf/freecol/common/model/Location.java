@@ -185,9 +185,7 @@ public interface Location extends ObjectWithId {
      * @param player The active player
      * @return The string with the Location's name.
      */
-    public default String getNameForLabel(Player player) {
-        return "";
-    }
+    public String getNameForLabel(Player player);
 
     /**
      * Return an ImageIcon for a Location
