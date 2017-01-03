@@ -28,6 +28,8 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import javax.swing.ImageIcon;
+
 import javax.xml.stream.XMLStreamException;
 
 import net.sf.freecol.common.io.FreeColXMLReader;
@@ -36,6 +38,7 @@ import net.sf.freecol.common.util.LogBuilder;
 import static net.sf.freecol.common.util.CollectionUtils.*;
 import net.sf.freecol.common.util.Utils;
 
+import net.sf.freecol.client.gui.ImageLibrary;
 
 /**
  * The {@code WorkLocation} is a place in a {@link Colony} where
@@ -768,6 +771,14 @@ public abstract class WorkLocation extends UnitLocation
         return LocationUtil.getRank(getTile());
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public ImageIcon getLocationImage(final int cellHeight,
+                                      final ImageLibrary library) {
+        return null;
+    }
 
     // Interface UnitLocation
     // Inherits:
