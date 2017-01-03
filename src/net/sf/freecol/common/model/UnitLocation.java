@@ -24,6 +24,8 @@ import java.util.Collections;
 import java.util.List;
 import java.util.logging.Logger;
 
+import javax.swing.ImageIcon;
+
 import javax.xml.stream.XMLStreamException;
 
 import net.sf.freecol.common.i18n.Messages;
@@ -31,6 +33,8 @@ import net.sf.freecol.common.io.FreeColXMLReader;
 import net.sf.freecol.common.io.FreeColXMLWriter;
 import static net.sf.freecol.common.util.CollectionUtils.*;
 import static net.sf.freecol.common.util.StringUtils.*;
+
+import net.sf.freecol.client.gui.ImageLibrary;
 
 
 /**
@@ -450,6 +454,14 @@ public abstract class UnitLocation extends FreeColGameObject implements Location
             ? (IndianSettlement)settlement : null;
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public ImageIcon getLocationImage(final int cellHeight,
+                                      final ImageLibrary library) {
+        return null;
+    }
 
     /**
      * {@inheritDoc}
