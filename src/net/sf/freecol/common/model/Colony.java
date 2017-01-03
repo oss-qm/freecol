@@ -31,6 +31,7 @@ import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import javax.swing.JLabel;
 import javax.xml.stream.XMLStreamException;
 
 import net.sf.freecol.FreeCol;
@@ -2975,6 +2976,14 @@ loop:   for (WorkLocation wl : getWorkLocationsForProducing(goodsType)) {
 
     // Interface TradeLocation
     //   getGoodsCount provided in GoodsContainer
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JLabel getNameAsJlabel() {
+        return new JLabel(getLocationName(this));
+    }
 
     /**
      * {@inheritDoc}
