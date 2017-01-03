@@ -451,6 +451,14 @@ public abstract class UnitLocation extends FreeColGameObject implements Location
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public String getNameForLabel(Player player) {
+        return "";
+    }
+
     // Overrideable routines to be implemented by UnitLocation subclasses.
 
     /**
