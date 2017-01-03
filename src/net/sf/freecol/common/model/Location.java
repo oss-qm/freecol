@@ -194,8 +194,6 @@ public interface Location extends ObjectWithId {
      * @param library The SwingGUI image library
      * @return The ImageIcon, null by default.
      */
-    public default ImageIcon getLocationImage(final int cellHeight,
-                                              final ImageLibrary library) {
-        return null;
-    }
+    public ImageIcon getLocationImage(final int cellHeight,
+                                              final ImageLibrary library);
 }
