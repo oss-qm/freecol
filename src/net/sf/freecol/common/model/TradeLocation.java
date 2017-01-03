@@ -70,9 +70,7 @@ public interface TradeLocation {
      *
      * @return The JLabel with the result of {@link #getLocationName(TradeLocation)}
      */
-    public default JLabel getNameAsJlabel() {
-        return new JLabel(getLocationName(this));
-    }
+    public JLabel getNameAsJlabel();
 
     /**
      * Returns whether a TradeLocation be set as the input location on a TradeRouteInputPanel
