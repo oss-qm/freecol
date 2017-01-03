@@ -234,6 +234,16 @@ public abstract class Feature extends FreeColSpecObject
     }
 
     /**
+     * {@inheritDoc}
+     */
+    public boolean appliesTo(FreeColObject object) {
+        if (this.scopes == null || this.scopes.isEmpty()) return true;
+        for (Scope s : this.scopes)
+            if (s.appliesTo(object)) return true;
+        return false;
+    }
+
+    /**
      * Is this feature out of date with respect to a given turn?
      *
      * @param turn The {@code Turn} to compare to.
