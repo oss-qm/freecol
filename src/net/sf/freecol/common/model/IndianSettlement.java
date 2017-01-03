@@ -1433,6 +1433,13 @@ public class IndianSettlement extends Settlement implements TradeLocation {
         return ((IndianSettlement) tradeLocation).getName();
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Boolean canBeInput() {
+        return false;
+    }
 
     /**
      * {@inheritDoc}

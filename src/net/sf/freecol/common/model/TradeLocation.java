@@ -77,7 +77,5 @@ public interface TradeLocation {
      *
      * @return true, if possible, false by default
      */
-    public default Boolean canBeInput() {
-        return false;
-    }
+    public Boolean canBeInput();
 }

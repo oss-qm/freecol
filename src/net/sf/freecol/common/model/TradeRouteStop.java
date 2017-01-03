@@ -264,6 +264,13 @@ public class TradeRouteStop extends FreeColGameObject implements TradeLocation {
         return null;
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Boolean canBeInput() {
+        return false;
+    }
 
     /**
      * {@inheritDoc}
