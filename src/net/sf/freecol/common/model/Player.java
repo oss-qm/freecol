@@ -2576,9 +2576,18 @@ public class Player extends FreeColGameObject implements Nameable {
      * @return This players closest port.
      */
     public Settlement getClosestPortForEurope() {
-        final Comparator<Settlement> comp
-            = Comparator.comparingInt(Settlement::getHighSeasCount);
-        return minimize(getSettlements(), comp);
+        int dist = Integer.MAX_VALUE;
+        Settlement nearest = null;
+
+        for (Settlement s : getSettlementList()) {
+            int d = s.getHighSeasCount();
+            if (d < dist) {
+                dist = d;
+                nearest = s;
+            }
+        }
+
+        return nearest;
     }
 
 
