@@ -24,7 +24,6 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
-import java.util.function.ToIntFunction;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.stream.Stream;
@@ -329,9 +328,11 @@ public abstract class WorkLocation extends UnitLocation
             delta -= getPotentialProduction(goodsType, unit.getType());
         }
         // Do we have a chance of satisfying the inputs?
-        final ToIntFunction<AbstractGoods> prod = ag ->
-            colony.getNetProductionOf(ag.getType());
-        delta = Math.min(delta, min(productionType.getInputList(), prod));
+        for (AbstractGoods ag : productionType.getInputList()) {
+            int v = colony.getNetProductionOf(ag.getType());
+            if (v < delta) delta = v;
+        }
+
         if (delta <= 0) return null;
 
         // Is the production actually a good idea?  Not if we are independent
