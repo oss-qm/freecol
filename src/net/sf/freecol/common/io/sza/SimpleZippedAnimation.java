@@ -36,8 +36,6 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
-import java.util.function.Predicate;
-import java.util.function.ToIntFunction;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 
@@ -118,13 +116,6 @@ public final class SimpleZippedAnimation implements Iterable<AnimationEvent> {
         }
     }
 
-    private static final Predicate<AnimationEvent> isIAEI = ae ->
-        ae instanceof ImageAnimationEvent;
-    private static final ToIntFunction<AnimationEvent> ifIAEIWidth = ae ->
-        ((ImageAnimationEventImpl)ae).getWidth();
-    private static final ToIntFunction<AnimationEvent> ifIAEIHeight = ae ->
-        ((ImageAnimationEventImpl)ae).getHeight();
-
     /** The descriptor file to find in the zip files. */
     private static final String ANIMATION_DESCRIPTOR_FILE = "animation.txt";
 
@@ -175,7 +166,17 @@ public final class SimpleZippedAnimation implements Iterable<AnimationEvent> {
      * @param evl The list of {@code AnimationEvent}s.
      */
     private SimpleZippedAnimation(final List<AnimationEvent> evl) {
-        this(evl, max(evl, isIAEI, ifIAEIWidth), max(evl, isIAEI, ifIAEIHeight));
+        this.events = evl;
+        int w = 0;
+        int h = 0;
+        for (AnimationEvent ae : evl) {
+            if (ae instanceof ImageAnimationEvent) {
+                w += Math.max(w, ((ImageAnimationEventImpl)ae).getWidth());
+                h += Math.max(h, ((ImageAnimationEventImpl)ae).getHeight());
+            }
+        }
+        this.width = w;
+        this.height = h;
     }
 
     /**
