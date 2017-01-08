@@ -108,7 +108,7 @@ public final class MapGeneratorOptionsDialog extends OptionsDialog {
                 panel.add(scrollPane);
             }
         }
-        initialize(frame, choices());
+        initialize(frame, this.<OptionGroup>choices());
     }
 
     /**
