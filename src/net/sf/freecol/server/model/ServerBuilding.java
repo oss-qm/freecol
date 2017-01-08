@@ -154,9 +154,9 @@ public class ServerBuilding extends Building implements ServerModelObject {
                 new ModelMessage(ModelMessage.MessageType.UNIT_IMPROVED,
                                  "model.building.unitEducated",
                                  getColony(), this)
-                    .addStringTemplate("%oldName%", oldName)
-                    .addStringTemplate("%unit%", newName)
-                    .addName("%colony%", getColony().getName()));
+                    .<ModelMessage>addStringTemplate("%oldName%", oldName)
+                    .<ModelMessage>addStringTemplate("%unit%", newName)
+                    .<ModelMessage>addName("%colony%", getColony().getName()));
         }
         student.setTurnsOfTraining(0);
         student.setMovesLeft(0);
@@ -184,8 +184,8 @@ public class ServerBuilding extends Building implements ServerModelObject {
             cs.addMessage(owner,
                 new ModelMessage(ModelMessage.MessageType.WARNING,
                                  "model.building.noStudent", colony, teacher)
-                    .addStringTemplate("%teacher%", teacher.getLabel())
-                    .addName("%colony%", colony.getName()));
+                    .<ModelMessage>addStringTemplate("%teacher%", teacher.getLabel())
+                    .<ModelMessage>addName("%colony%", colony.getName()));
             return false;
         }
         teacher.setStudent(student);
@@ -225,9 +225,9 @@ public class ServerBuilding extends Building implements ServerModelObject {
                     new ModelMessage(ModelMessage.MessageType.MISSING_GOODS,
                                      "model.building.notEnoughInput",
                                      this, gt)
-                        .addNamed("%inputGoods%", gt)
-                        .addNamed("%building%", this)
-                        .addName("%colony%", getColony().getName()));
+                        .<ModelMessage>addNamed("%inputGoods%", gt)
+                        .<ModelMessage>addNamed("%building%", this)
+                        .<ModelMessage>addName("%colony%", getColony().getName()));
             }
         }
     }

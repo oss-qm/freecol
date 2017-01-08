@@ -390,7 +390,7 @@ public class DOMUtils {
         Element element, int index) {
         Element e = getChildElement(element, index);
         return (e == null) ? null
-            : readElement(game, e, true);
+            : DOMUtils.<T>readElement(game, e, true);
     }
 
     /**
@@ -407,7 +407,7 @@ public class DOMUtils {
         Element element, int index, Class<T> returnClass) {
         Element e = getChildElement(element, index);
         return (e == null) ? null
-            : readElement(game, e, true, returnClass);
+            : DOMUtils.<T>readElement(game, e, true, returnClass);
     }
 
     /**

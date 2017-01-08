@@ -448,13 +448,13 @@ public class ServerGame extends Game implements ServerModelObject {
         cs.addGlobalMessage(this, null,
             new ModelMessage(ModelMessage.MessageType.FOREIGN_DIPLOMACY,
                              "model.game.spanishSuccession", strongAI)
-                .addStringTemplate("%loserNation%", loser)
-                .addStringTemplate("%nation%", winner));
+                .<ModelMessage>addStringTemplate("%loserNation%", loser)
+                .<ModelMessage>addStringTemplate("%nation%", winner));
         cs.addGlobalHistory(this,
             new HistoryEvent(getTurn(),
                 HistoryEvent.HistoryEventType.SPANISH_SUCCESSION, null)
-                   .addStringTemplate("%loserNation%", loser)
-                   .addStringTemplate("%nation%", winner));
+                   .<HistoryEvent>addStringTemplate("%loserNation%", loser)
+                   .<HistoryEvent>addStringTemplate("%nation%", winner));
         setSpanishSuccession(true);
         cs.addPartial(See.all(), this, "spanishSuccession");
         tiles.removeAll(updated);
@@ -615,9 +615,9 @@ public class ServerGame extends Game implements ServerModelObject {
                         new ModelMessage(MessageType.FOREIGN_DIPLOMACY,
                                          Stance.WAR.getOtherStanceChangeKey(),
                                          source)
-                            .addStringTemplate("%attacker%",
+                            .<ModelMessage>addStringTemplate("%attacker%",
                                 source.getNationLabel())
-                            .addStringTemplate("%defender%",
+                            .<ModelMessage>addStringTemplate("%defender%",
                                 victim.getNationLabel()));
                 } else {
                     logger.warning("Incite trade failure: " + victim);
