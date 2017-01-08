@@ -165,15 +165,15 @@ public class ServerColony extends Colony implements ServerModelObject {
                           new ModelMessage(MessageType.UNIT_ADDED,
                                            "model.colony.newColonist",
                                            this, unit)
-                              .addName("%colony%", getName()));
+                              .<ModelMessage>addName("%colony%", getName()));
         } else {
             unit.setName(owner.getNameForUnit(type, random));
             cs.addMessage(owner,
                           new ModelMessage(MessageType.UNIT_ADDED,
                                            "model.colony.unitReady",
                                            this, unit)
-                              .addName("%colony%", getName())
-                              .addStringTemplate("%unit%", unit.getLabel()));
+                              .<ModelMessage>addName("%colony%", getName())
+                              .<ModelMessage>addStringTemplate("%unit%", unit.getLabel()));
         }
 
         logger.info("New unit in " + getName() + ": " + type.getSuffix());
@@ -239,8 +239,8 @@ public class ServerColony extends Colony implements ServerModelObject {
             cs.addMessage(owner,
                 new ModelMessage(MessageType.BUILDING_COMPLETED,
                                  "model.colony.buildingReady", this)
-                    .addName("%colony%", getName())
-                    .addNamed("%building%", type));
+                    .<ModelMessage>addName("%colony%", getName())
+                    .<ModelMessage>addNamed("%building%", type));
             if (owner.isAI()) {
                 firePropertyChange(REARRANGE_COLONY, true, false);
             }
@@ -282,7 +282,7 @@ public class ServerColony extends Colony implements ServerModelObject {
                     cs.addMessage(owner,
                         new ModelMessage(MessageType.WARNING,
                                          "model.colony.cannotBuild", this)
-                            .addName("%colony%", getName()));
+                            .<ModelMessage>addName("%colony%", getName()));
                 }
                 return null;
 
@@ -291,8 +291,8 @@ public class ServerColony extends Colony implements ServerModelObject {
                     new ModelMessage(MessageType.WARNING,
                                      "model.colony.buildNeedPop",
                                      this)
-                        .addName("%colony%", getName())
-                        .addNamed("%building%", buildable));
+                        .<ModelMessage>addName("%colony%", getName())
+                        .<ModelMessage>addNamed("%building%", buildable));
                 break;
             default: // Are there other warnings to send?
                 logger.warning("Unexpected build failure at " + getName()
@@ -329,9 +329,9 @@ public class ServerColony extends Colony implements ServerModelObject {
             new ModelMessage(MessageType.WARNING,
                              "model.colony.workersEvicted",
                              this, this)
-                .addName("%colony%", getName())
-                .addStringTemplate("%location%", tile.getLocationLabel())
-                .addStringTemplate("%enemyUnit%", enemyUnit.getLabel()));
+                .<ModelMessage>addName("%colony%", getName())
+                .<ModelMessage>addStringTemplate("%location%", tile.getLocationLabel())
+                .<ModelMessage>addStringTemplate("%enemyUnit%", enemyUnit.getLabel()));
         cs.add(See.only(serverPlayer), ct);
         cs.add(See.perhaps(), getTile()); // Colony size might have changed
     }
@@ -489,8 +489,8 @@ public class ServerColony extends Colony implements ServerModelObject {
             cs.addMessage(newOwner,
                 new ModelMessage(MessageType.UNIT_ADDED,
                                 "model.colony.newConvert", brave)
-                    .addStringTemplate("%nation%", nation)
-                    .addName("%colony%", getName()));
+                    .<ModelMessage>addStringTemplate("%nation%", nation)
+                    .<ModelMessage>addName("%colony%", getName()));
             newOwner.invalidateCanSeeTiles();//+vis(other)
             logger.fine("Convert at " + getName() + " for " + getName());
         }
@@ -591,10 +591,10 @@ public class ServerColony extends Colony implements ServerModelObject {
                             new ModelMessage(MessageType.MISSING_GOODS,
                                              "model.colony.buildableNeedsGoods",
                                              this, build)
-                                .addName("%colony%", getName())
-                                .addNamed("%buildable%", build)
-                                .addAmount("%amount%", needed.getAmount())
-                                .addNamed("%goodsType%", needed.getType()));
+                                .<ModelMessage>addName("%colony%", getName())
+                                .<ModelMessage>addNamed("%buildable%", build)
+                                .<ModelMessage>addAmount("%amount%", needed.getAmount())
+                                .<ModelMessage>addNamed("%goodsType%", needed.getType()));
                     }
                 }
             } else {
@@ -655,13 +655,13 @@ public class ServerColony extends Colony implements ServerModelObject {
                             new ModelMessage(MessageType.UNIT_LOST,
                                              "model.colony.colonistStarved",
                                              this)
-                                .addName("%colony%", getName()));
+                                .<ModelMessage>addName("%colony%", getName()));
                     } else { // Its dead, Jim.
                         cs.addMessage(owner,
                             new ModelMessage(MessageType.UNIT_LOST,
                                              "model.colony.colonyStarved",
                                              this)
-                                .addName("%colony%", getName()));
+                                .<ModelMessage>addName("%colony%", getName()));
                         owner.csDisposeSettlement(this, cs);
                         return;
                     }
@@ -672,8 +672,8 @@ public class ServerColony extends Colony implements ServerModelObject {
                             new ModelMessage(MessageType.WARNING,
                                              "model.colony.famineFeared",
                                              this)
-                                .addName("%colony%", getName())
-                                .addAmount("%number%", turns));
+                                .<ModelMessage>addName("%colony%", getName())
+                                .<ModelMessage>addAmount("%number%", turns));
                         lb.add(" famine in ", turns,
                                " food=", stored, " production=", net);
                     }
@@ -740,8 +740,8 @@ public class ServerColony extends Colony implements ServerModelObject {
                 cs.addMessage(owner,
                     new ModelMessage(MessageType.GOODS_MOVEMENT,
                                      "model.colony.customs.sale", this)
-                        .addName("%colony%", getName())
-                        .addName("%data%", lb2.toString()));
+                        .<ModelMessage>addName("%colony%", getName())
+                        .<ModelMessage>addName("%data%", lb2.toString()));
                 cs.addPartial(See.only(owner), owner, "gold");
                 lb.add(lb2.toString());
             }
@@ -766,9 +766,9 @@ public class ServerColony extends Colony implements ServerModelObject {
                     new ModelMessage(MessageType.WAREHOUSE_CAPACITY,
                                      "model.colony.warehouseEmpty",
                                      this, type)
-                        .addNamed("%goods%", type)
-                        .addAmount("%level%", low)
-                        .addName("%colony%", getName()));
+                        .<ModelMessage>addNamed("%goods%", type)
+                        .<ModelMessage>addAmount("%level%", low)
+                        .<ModelMessage>addName("%colony%", getName()));
                 continue;
             }
             if (type.limitIgnored()) continue;
@@ -791,10 +791,10 @@ public class ServerColony extends Colony implements ServerModelObject {
                 cs.addMessage(owner,
                     new ModelMessage(MessageType.WAREHOUSE_CAPACITY,
                                      messageId, this, type)
-                        .addNamed("%goods%", type)
-                        .addAmount("%waste%", waste)
-                        .addAmount("%level%", high)
-                        .addName("%colony%", getName()));
+                        .<ModelMessage>addNamed("%goods%", type)
+                        .<ModelMessage>addAmount("%waste%", waste)
+                        .<ModelMessage>addAmount("%level%", high)
+                        .<ModelMessage>addName("%colony%", getName()));
             }
 
             // No problem this turn, but what about the next?
@@ -808,9 +808,9 @@ public class ServerColony extends Colony implements ServerModelObject {
                         new ModelMessage(MessageType.WAREHOUSE_CAPACITY,
                                          "model.colony.warehouseSoonFull",
                                          this, type)
-                            .addNamed("%goods%", goods)
-                            .addName("%colony%", getName())
-                            .addAmount("%amount%", loss));
+                            .<ModelMessage>addNamed("%goods%", goods)
+                            .<ModelMessage>addName("%colony%", getName())
+                            .<ModelMessage>addAmount("%amount%", loss));
                 }
             }
         }
@@ -841,7 +841,7 @@ public class ServerColony extends Colony implements ServerModelObject {
                 cs.addMessage(owner,
                     new ModelMessage(MessageType.BUILDING_COMPLETED,
                         "model.colony.notBuildingAnything", this)
-                        .addName("%colony%", getName()));
+                        .<ModelMessage>addName("%colony%", getName()));
             }
         }
 
@@ -854,9 +854,9 @@ public class ServerColony extends Colony implements ServerModelObject {
                                      ? "model.colony.soLIncrease"
                                      : "model.colony.soLDecrease"),
                                  this, spec.getGoodsType("model.goods.bells"))
-                    .addAmount("%oldSoL%", oldSonsOfLiberty)
-                    .addAmount("%newSoL%", sonsOfLiberty)
-                    .addName("%colony%", getName()));
+                    .<ModelMessage>addAmount("%oldSoL%", oldSonsOfLiberty)
+                    .<ModelMessage>addAmount("%newSoL%", sonsOfLiberty)
+                    .<ModelMessage>addName("%colony%", getName()));
 
             ModelMessage govMgtMessage = checkForGovMgtChangeMessage();
             if (govMgtMessage != null) {

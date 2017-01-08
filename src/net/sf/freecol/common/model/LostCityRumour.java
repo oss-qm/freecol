@@ -282,7 +282,7 @@ public class LostCityRumour extends TileItem {
             ? new ModelMessage(ModelMessage.MessageType.LOST_CITY_RUMOUR,
                                RumourType.NOTHING.getAlternateDescriptionKey("mayans"),
                                player)
-                .addAmount("%years%",
+                .<ModelMessage>addAmount("%years%",
                     MAYAN_PROPHESY_YEAR - game.getTurn().getYear())
             : new ModelMessage(ModelMessage.MessageType.LOST_CITY_RUMOUR,
                                NameCache.getRumourNothingKey(random),

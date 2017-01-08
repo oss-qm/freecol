@@ -442,14 +442,14 @@ public class ServerIndianSettlement extends IndianSettlement
                     new ModelMessage(ModelMessage.MessageType.UNIT_LOST,
                                      "model.indianSettlement.mission.destroyed",
                                      this)
-                        .addStringTemplate("%settlement%",
+                        .<ModelMessage>addStringTemplate("%settlement%",
                             getLocationLabelFor(missionaryOwner)));
             } else {
                 cs.addMessage(missionaryOwner,
                     new ModelMessage(ModelMessage.MessageType.FOREIGN_DIPLOMACY,
                                      "model.indianSettlement.mission.denounced",
                                      this)
-                        .addStringTemplate("%settlement%",
+                        .<ModelMessage>addStringTemplate("%settlement%",
                             getLocationLabelFor(missionaryOwner)));
             }
         }
@@ -503,9 +503,9 @@ public class ServerIndianSettlement extends IndianSettlement
         cs.addMessage(enemy,
             new ModelMessage(ModelMessage.MessageType.FOREIGN_DIPLOMACY,
                              key, this)
-                .addStringTemplate("%nation%", getOwner().getNationLabel())
-                .addStringTemplate("%enemy%", enemy.getNationLabel())
-                .addName("%settlement%", getName()));
+                .<ModelMessage>addStringTemplate("%nation%", getOwner().getNationLabel())
+                .<ModelMessage>addStringTemplate("%enemy%", enemy.getNationLabel())
+                .<ModelMessage>addName("%settlement%", getName()));
     }
 
 
