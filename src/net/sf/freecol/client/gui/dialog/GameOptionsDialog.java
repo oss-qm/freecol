@@ -63,7 +63,7 @@ public final class GameOptionsDialog extends OptionsDialog {
             }
         }
 
-        initialize(frame, choices());
+        initialize(frame, this.<OptionGroup>choices());
     }
 
 

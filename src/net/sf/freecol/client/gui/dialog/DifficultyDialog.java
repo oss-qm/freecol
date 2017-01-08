@@ -103,7 +103,7 @@ public final class DifficultyDialog extends OptionsDialog
             this.panel.add(loadButton);
             this.panel.add(saveButton);
         }
-        initialize(frame, choices());
+        initialize(frame, this.<OptionGroup>choices());
     }
 
 
