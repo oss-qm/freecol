@@ -716,12 +716,12 @@ public class ServerPlayer extends Player implements ServerModelObject {
             : "model.player.dead.native";
         cs.addGlobalMessage(getGame(), null,
             new ModelMessage(MessageType.FOREIGN_DIPLOMACY, key, this)
-                .addStringTemplate("%nation%", getNationLabel()));
+                .<ModelMessage>addStringTemplate("%nation%", getNationLabel()));
         Game game = getGame();
         cs.addGlobalHistory(game,
             new HistoryEvent(game.getTurn(),
                              HistoryEvent.HistoryEventType.NATION_DESTROYED, null)
-                .addStringTemplate("%nation%", getNationLabel()));
+                .<HistoryEvent>addStringTemplate("%nation%", getNationLabel()));
         csKill(cs);
     }
 
@@ -1323,7 +1323,7 @@ public class ServerPlayer extends Player implements ServerModelObject {
             }
             cs.addHistory(this, new HistoryEvent(getGame().getTurn(),
                     HistoryEvent.getEventTypeFromStance(stance), otherPlayer)
-                .addStringTemplate("%nation%", otherPlayer.getNationLabel()));
+                .<HistoryEvent>addStringTemplate("%nation%", otherPlayer.getNationLabel()));
             logger.info("Stance modification " + getName()
                 + " " + old + " -> " + stance + " wrt " + otherPlayer.getName());
             this.addStanceChange(other);
@@ -1331,7 +1331,7 @@ public class ServerPlayer extends Player implements ServerModelObject {
                 cs.addMessage(other,
                     new ModelMessage(MessageType.FOREIGN_DIPLOMACY,
                                      stance.getStanceChangeKey(), this)
-                        .addStringTemplate("%nation%", getNationLabel()));
+                        .<ModelMessage>addStringTemplate("%nation%", getNationLabel()));
             }
             cs.addStance(See.only(this), this, stance, otherPlayer);
             cs.addStance(See.only(other), this, stance, otherPlayer);
@@ -1345,7 +1345,7 @@ public class ServerPlayer extends Player implements ServerModelObject {
             }
             cs.addHistory(otherPlayer, new HistoryEvent(getGame().getTurn(),
                     HistoryEvent.getEventTypeFromStance(stance), this)
-                .addStringTemplate("%nation%", this.getNationLabel()));
+                .<HistoryEvent>addStringTemplate("%nation%", this.getNationLabel()));
             logger.info("Stance modification " + otherPlayer.getName()
                 + " " + old + " -> " + stance
                 + " wrt " + getName() + " (symmetric)");
@@ -1354,7 +1354,7 @@ public class ServerPlayer extends Player implements ServerModelObject {
                 cs.addMessage(this,
                     new ModelMessage(MessageType.FOREIGN_DIPLOMACY,
                                      stance.getStanceChangeKey(), otherPlayer)
-                        .addStringTemplate("%nation%",
+                        .<ModelMessage>addStringTemplate("%nation%",
                             otherPlayer.getNationLabel()));
             }
             cs.addStance(See.only(this), otherPlayer, stance, this);
@@ -1466,8 +1466,8 @@ public class ServerPlayer extends Player implements ServerModelObject {
                         new ModelMessage(MessageType.DEFAULT,
                                          "model.player.disaster.strikes",
                                          colony)
-                            .addName("%colony%", colony.getName())
-                            .addName("%disaster%", disaster));
+                            .<ModelMessage>addName("%colony%", colony.getName())
+                            .<ModelMessage>addName("%disaster%", disaster));
                     for (ModelMessage message : messages) {
                         cs.addMessage(this, message);
                     }
@@ -1549,7 +1549,7 @@ outer:  for (Effect effect : effects) {
                         cs.addPartial(See.only(this), this, "gold");
                         mm = new ModelMessage(MessageType.DEFAULT,
                                               effect.getId(), this)
-                            .addAmount("%amount%", plunder);
+                            .<ModelMessage>addAmount("%amount%", plunder);
                         break;
                     case Effect.LOSS_OF_BUILDING:
                         Building building = getBuildingForEffect(colony, effect, random);
@@ -1557,7 +1557,7 @@ outer:  for (Effect effect : effects) {
                             // Add message before damaging building
                             mm = new ModelMessage(MessageType.DEFAULT,
                                                   effect.getId(), colony)
-                                .addNamed("%building%", building.getType());
+                                .<ModelMessage>addNamed("%building%", building.getType());
                             csDamageBuilding(building, cs);
                             colonyDirty = true;
                         }
@@ -1571,7 +1571,7 @@ outer:  for (Effect effect : effects) {
                             colony.removeGoods(goods);
                             mm = new ModelMessage(MessageType.DEFAULT,
                                                   effect.getId(), colony)
-                                .addStringTemplate("%goods%", goods.getLabel(true));
+                                .<ModelMessage>addStringTemplate("%goods%", goods.getLabel(true));
                             colonyDirty = true;
                         }
                         break;
@@ -1584,7 +1584,7 @@ outer:  for (Effect effect : effects) {
                                     mm = new ModelMessage(MessageType.DEFAULT,
                                         "model.player.disaster.effect.colonyDestroyed",
                                         this)
-                                        .addName("%colony%", colony.getName());
+                                        .<ModelMessage>addName("%colony%", colony.getName());
                                     messages.add(mm);
                                     csDisposeSettlement(colony, cs);
                                     colonyDirty = false;
@@ -1592,7 +1592,7 @@ outer:  for (Effect effect : effects) {
                                 }
                                 mm = new ModelMessage(MessageType.DEFAULT,
                                                       effect.getId(), colony)
-                                    .addStringTemplate("%unit%",
+                                    .<ModelMessage>addStringTemplate("%unit%",
                                         unit.getLabel());
                                 cs.addRemove(See.only(this), null, unit);
                                 unit.dispose();//-vis: Safe, entirely within colony
@@ -1609,14 +1609,14 @@ outer:  for (Effect effect : effects) {
                                     mm = new ModelMessage(MessageType.DEFAULT,
                                                           effect.getId(),
                                                           colony)
-                                        .addStringTemplate("%unit%",
+                                        .<ModelMessage>addStringTemplate("%unit%",
                                             unit.getLabel());
                                     csSinkShip(unit, null, cs);
                                 } else {
                                     mm = new ModelMessage(MessageType.DEFAULT,
                                                           effect.getId(),
                                                           colony)
-                                        .addStringTemplate("%unit%",
+                                        .<ModelMessage>addStringTemplate("%unit%",
                                             unit.getLabel());
                                     csDamageShip(unit, repairLocation, cs);
                                 }
@@ -1911,7 +1911,7 @@ outer:  for (Effect effect : effects) {
         addFather(father);
         addHistory(new HistoryEvent(turn,
                 HistoryEvent.HistoryEventType.FOUNDING_FATHER, this)
-                    .addNamed("%father%", father));
+                    .<HistoryEvent>addNamed("%father%", father));
         // FIXME: We do not want to have to update the whole player
         // just to get the FF into the client, but for now if there
         // are modifiers that is the only way to do it.
@@ -1920,8 +1920,8 @@ outer:  for (Effect effect : effects) {
             new ModelMessage(ModelMessage.MessageType.SONS_OF_LIBERTY,
                              "model.player.foundingFatherJoinedCongress",
                              this)
-                      .addNamed("%foundingFather%", father)
-                      .add("%description%", father.getDescriptionKey()));
+                      .<ModelMessage>addNamed("%foundingFather%", father)
+                      .<ModelMessage>add("%description%", father.getDescriptionKey()));
 
         List<AbstractUnit> units = father.getUnits();
         if (units != null && !units.isEmpty() && europe != null) {
@@ -2159,8 +2159,8 @@ outer:  for (Effect effect : effects) {
                 new ModelMessage(ModelMessage.MessageType.UNIT_ADDED,
                                  "model.player.autoRecruit",
                                  this, unit)
-                    .addNamed("%europe%", europe)
-                    .addStringTemplate("%unit%", unit.getLabel()));
+                    .<ModelMessage>addNamed("%europe%", europe)
+                    .<ModelMessage>addStringTemplate("%unit%", unit.getLabel()));
             break;
         default:
             throw new IllegalArgumentException("Bogus migration type");
@@ -2213,8 +2213,8 @@ outer:  for (Effect effect : effects) {
                 cs.addMessage(defenderPlayer,
                     new ModelMessage(ModelMessage.MessageType.COMBAT_RESULT,
                                      "combat.raid.ours", colony)
-                        .addName("%colony%", colony.getName())
-                        .addStringTemplate("%nation%", attackerNation));
+                        .<ModelMessage>addName("%colony%", colony.getName())
+                        .<ModelMessage>addStringTemplate("%nation%", attackerNation));
             }
         } else if (isBombard) {
             attackerSettlement = (Settlement)attacker;
@@ -2691,8 +2691,8 @@ outer:  for (Effect effect : effects) {
         cs.addMessage(player,
             new ModelMessage(ModelMessage.MessageType.COMBAT_RESULT,
                              "combat.automaticDefence", unit)
-                .addStringTemplate("%unit%", unit.getLabel())
-                .addName("%colony%", settlement.getName()));
+                .<ModelMessage>addStringTemplate("%unit%", unit.getLabel())
+                .<ModelMessage>addName("%colony%", settlement.getName()));
     }
 
     /**
@@ -2713,8 +2713,8 @@ outer:  for (Effect effect : effects) {
         cs.addMessage(attackerPlayer,
             new ModelMessage(ModelMessage.MessageType.COMBAT_RESULT,
                              "combat.burnMissions", attacker, is)
-                .addStringTemplate("%nation%", attackerNation)
-                .addStringTemplate("%enemyNation%", nativeNation));
+                .<ModelMessage>addStringTemplate("%nation%", attackerNation)
+                .<ModelMessage>addStringTemplate("%enemyNation%", nativeNation));
 
         // Burn down the missions
         boolean here = is.hasMissionary(attackerPlayer);
@@ -2761,27 +2761,27 @@ outer:  for (Effect effect : effects) {
         cs.addHistory(attackerPlayer,
             new HistoryEvent(game.getTurn(),
                 HistoryEvent.HistoryEventType.CONQUER_COLONY, attackerPlayer)
-                .addStringTemplate("%nation%", colonyNation)
-                .addName("%colony%", colony.getName()));
+                .<HistoryEvent>addStringTemplate("%nation%", colonyNation)
+                .<HistoryEvent>addName("%colony%", colony.getName()));
         cs.addHistory(colonyPlayer,
             new HistoryEvent(game.getTurn(),
                 HistoryEvent.HistoryEventType.COLONY_CONQUERED, attackerPlayer)
-                      .addStringTemplate("%nation%", attackerNation)
-                      .addName("%colony%", colony.getName()));
+                      .<HistoryEvent>addStringTemplate("%nation%", attackerNation)
+                      .<HistoryEvent>addName("%colony%", colony.getName()));
         cs.addMessage(attackerPlayer,
             new ModelMessage(ModelMessage.MessageType.COMBAT_RESULT,
                              "combat.colonyCaptured.enemy", colony)
-                .addName("%colony%", colony.getName())
-                .addStringTemplate("%unit%", attacker.getLabel())
-                .addStringTemplate("%enemyNation%", colonyNation)
-                .addAmount("%amount%", plunder));
+                .<ModelMessage>addName("%colony%", colony.getName())
+                .<ModelMessage>addStringTemplate("%unit%", attacker.getLabel())
+                .<ModelMessage>addStringTemplate("%enemyNation%", colonyNation)
+                .<ModelMessage>addAmount("%amount%", plunder));
         cs.addMessage(colonyPlayer,
             new ModelMessage(ModelMessage.MessageType.COMBAT_RESULT,
                             "combat.colonyCaptured.ours", tile)
-                .addName("%colony%", colony.getName())
-                .addStringTemplate("%enemyUnit%", attacker.getLabel())
-                .addStringTemplate("%enemyNation%", attackerNation)
-                .addAmount("%amount%", plunder));
+                .<ModelMessage>addName("%colony%", colony.getName())
+                .<ModelMessage>addStringTemplate("%enemyUnit%", attacker.getLabel())
+                .<ModelMessage>addStringTemplate("%enemyNation%", attackerNation)
+                .<ModelMessage>addAmount("%amount%", plunder));
         colonyPlayer.csLoseLocation(colony, cs);
 
         // Allocate some plunder
@@ -2839,9 +2839,9 @@ outer:  for (Effect effect : effects) {
             cs.addMessage(attackerPlayer,
                 new ModelMessage(ModelMessage.MessageType.COMBAT_RESULT,
                                  "combat.newConvertFromAttack", convert)
-                    .addStringTemplate("%unit%", attacker.getLabel())
-                    .addStringTemplate("%enemyNation%", convertNation)
-                    .addStringTemplate("%enemyUnit%", convert.getLabel()));
+                    .<ModelMessage>addStringTemplate("%unit%", attacker.getLabel())
+                    .<ModelMessage>addStringTemplate("%enemyNation%", convertNation)
+                    .<ModelMessage>addStringTemplate("%enemyUnit%", convert.getLabel()));
             attackerPlayer.invalidateCanSeeTiles();//+vis(attackerPlayer)
         }
     }
@@ -2887,8 +2887,8 @@ outer:  for (Effect effect : effects) {
                               new ModelMessage(ModelMessage.MessageType.COMBAT_RESULT,
                                                "combat.equipmentCaptured",
                                                winnerPlayer)
-                                  .addStringTemplate("%nation%", winnerNation)
-                                  .addNamed("%equipment%", goodsType));
+                                  .<ModelMessage>addStringTemplate("%nation%", winnerNation)
+                                  .<ModelMessage>addNamed("%equipment%", goodsType));
 
                 // CHEAT: Immediately transferring the captured goods
                 // back to a potentially remote settlement is pretty
@@ -2944,21 +2944,21 @@ outer:  for (Effect effect : effects) {
             cs.addMessage(winnerPlayer,
                 new ModelMessage(ModelMessage.MessageType.COMBAT_RESULT,
                                  key, loser)
-                    .addDefaultId("combat.unitCaptured.enemy")
-                    .addStringTemplate("%location%", winnerLocation)
-                    .addStringTemplate("%unit%", winner.getLabel())
-                    .addStringTemplate("%enemyNation%", loserNation)
-                    .addStringTemplate("%enemyUnit%", loserLabel));
+                    .<ModelMessage>addDefaultId("combat.unitCaptured.enemy")
+                    .<ModelMessage>addStringTemplate("%location%", winnerLocation)
+                    .<ModelMessage>addStringTemplate("%unit%", winner.getLabel())
+                    .<ModelMessage>addStringTemplate("%enemyNation%", loserNation)
+                    .<ModelMessage>addStringTemplate("%enemyUnit%", loserLabel));
         }
         key = "combat.unitCaptured.ours." + loser.getType().getSuffix();
         cs.addMessage(loserPlayer,
             new ModelMessage(ModelMessage.MessageType.COMBAT_RESULT,
                              key, oldTile)
-                .addDefaultId("combat.unitCaptured.ours")
-                .addStringTemplate("%location%", loserLocation)
-                .addStringTemplate("%unit%", loserLabel)
-                .addStringTemplate("%enemyNation%", winnerNation)
-                .addStringTemplate("%enemyUnit%", winner.getLabel()));
+                .<ModelMessage>addDefaultId("combat.unitCaptured.ours")
+                .<ModelMessage>addStringTemplate("%location%", loserLocation)
+                .<ModelMessage>addStringTemplate("%unit%", loserLabel)
+                .<ModelMessage>addStringTemplate("%enemyNation%", winnerNation)
+                .<ModelMessage>addStringTemplate("%enemyUnit%", winner.getLabel()));
         winnerPlayer.invalidateCanSeeTiles();//+vis(winnerPlayer)
         loserPlayer.invalidateCanSeeTiles();//+vis(loserPlayer)
     }
@@ -2988,9 +2988,9 @@ outer:  for (Effect effect : effects) {
             cs.addMessage(shipPlayer,
                 new ModelMessage(ModelMessage.MessageType.COMBAT_RESULT,
                                  "combat.shipsDamaged", shipPlayer)
-                    .addStringTemplate("%ships%", t)
-                    .addAmount("%number%", units.size())
-                    .addStringTemplate("%repairLocation%",
+                    .<ModelMessage>addStringTemplate("%ships%", t)
+                    .<ModelMessage>addAmount("%number%", units.size())
+                    .<ModelMessage>addStringTemplate("%repairLocation%",
                         repairLocation.getLocationLabelFor(shipPlayer)));
         }
     }
@@ -3014,20 +3014,20 @@ outer:  for (Effect effect : effects) {
         cs.addMessage(attackerPlayer,
             new ModelMessage(ModelMessage.MessageType.COMBAT_RESULT,
                              "combat.shipDamaged.enemy", attacker)
-                .addStringTemplate("%location%",
+                .<ModelMessage>addStringTemplate("%location%",
                     shipLocation.getLocationLabelFor(attackerPlayer))
-                .addStringTemplate("%unit%", attacker.getLabel())
-                .addStringTemplate("%enemyNation%", shipNation)
-                .addStringTemplate("%enemyUnit%", ship.getLabel()));
+                .<ModelMessage>addStringTemplate("%unit%", attacker.getLabel())
+                .<ModelMessage>addStringTemplate("%enemyNation%", shipNation)
+                .<ModelMessage>addStringTemplate("%enemyUnit%", ship.getLabel()));
         cs.addMessage(shipPlayer,
             new ModelMessage(ModelMessage.MessageType.COMBAT_RESULT,
                              "combat.shipDamaged.ours", ship)
-                .addStringTemplate("%location%",
+                .<ModelMessage>addStringTemplate("%location%",
                     shipLocation.getLocationLabelFor(shipPlayer))
-                .addStringTemplate("%unit%", ship.getLabel())
-                .addStringTemplate("%enemyUnit%", attacker.getLabel())
-                .addStringTemplate("%enemyNation%", attackerNation)
-                .addStringTemplate("%repairLocation%", repairLoc));
+                .<ModelMessage>addStringTemplate("%unit%", ship.getLabel())
+                .<ModelMessage>addStringTemplate("%enemyUnit%", attacker.getLabel())
+                .<ModelMessage>addStringTemplate("%enemyNation%", attackerNation)
+                .<ModelMessage>addStringTemplate("%repairLocation%", repairLoc));
 
         csDamageShip(ship, repair, cs);
     }
@@ -3052,21 +3052,21 @@ outer:  for (Effect effect : effects) {
             new ModelMessage(ModelMessage.MessageType.COMBAT_RESULT,
                              "combat.shipDamagedByBombardment.enemy",
                              settlement)
-                .addStringTemplate("%location%",
+                .<ModelMessage>addStringTemplate("%location%",
                     settlement.getLocationLabelFor(attackerPlayer))
-                .addNamed("%building%", building)
-                .addStringTemplate("%enemyNation%", shipNation)
-                .addStringTemplate("%enemyUnit%", ship.getLabel()));
+                .<ModelMessage>addNamed("%building%", building)
+                .<ModelMessage>addStringTemplate("%enemyNation%", shipNation)
+                .<ModelMessage>addStringTemplate("%enemyUnit%", ship.getLabel()));
         cs.addMessage(shipPlayer,
             new ModelMessage(ModelMessage.MessageType.COMBAT_RESULT,
                              "combat.shipDamagedByBombardment.ours", ship)
-                .addStringTemplate("%location%",
+                .<ModelMessage>addStringTemplate("%location%",
                     settlement.getLocationLabelFor(shipPlayer))
-                .addStringTemplate("%unit%", ship.getLabel())
-                .addNamed("%building%", building)
-                .addStringTemplate("%enemyNation%",
+                .<ModelMessage>addStringTemplate("%unit%", ship.getLabel())
+                .<ModelMessage>addNamed("%building%", building)
+                .<ModelMessage>addStringTemplate("%enemyNation%",
                     attackerPlayer.getNationLabel())
-                .addStringTemplate("%repairLocation%", repairLoc));
+                .<ModelMessage>addStringTemplate("%repairLocation%", repairLoc));
 
         csDamageShip(ship, repair, cs);
     }
@@ -3137,22 +3137,22 @@ outer:  for (Effect effect : effects) {
         cs.addMessage(winnerPlayer,
             new ModelMessage(ModelMessage.MessageType.COMBAT_RESULT,
                              key, winner)
-                .addDefaultId("combat.unitDemoted.enemy")
-                .addStringTemplate("%location%", winnerLocation)
-                .addStringTemplate("%unit%", winner.getLabel())
-                .addStringTemplate("%enemyNation%", loserNation)
-                .addStringTemplate("%oldName%", loserLabel)
-                .addStringTemplate("%enemyUnit%", loser.getLabel()));
+                .<ModelMessage>addDefaultId("combat.unitDemoted.enemy")
+                .<ModelMessage>addStringTemplate("%location%", winnerLocation)
+                .<ModelMessage>addStringTemplate("%unit%", winner.getLabel())
+                .<ModelMessage>addStringTemplate("%enemyNation%", loserNation)
+                .<ModelMessage>addStringTemplate("%oldName%", loserLabel)
+                .<ModelMessage>addStringTemplate("%enemyUnit%", loser.getLabel()));
         key = "combat.unitDemoted.ours." + suffix;
         cs.addMessage(loserPlayer,
             new ModelMessage(ModelMessage.MessageType.COMBAT_RESULT,
                              key, loser)
-                .addDefaultId("combat.unitDemoted.ours")
-                .addStringTemplate("%location%", loserLocation)
-                .addStringTemplate("%oldName%", loserLabel)
-                .addStringTemplate("%unit%", loser.getLabel())
-                .addStringTemplate("%enemyNation%", winnerNation)
-                .addStringTemplate("%enemyUnit%", winner.getLabel()));
+                .<ModelMessage>addDefaultId("combat.unitDemoted.ours")
+                .<ModelMessage>addStringTemplate("%location%", loserLocation)
+                .<ModelMessage>addStringTemplate("%oldName%", loserLabel)
+                .<ModelMessage>addStringTemplate("%unit%", loser.getLabel())
+                .<ModelMessage>addStringTemplate("%enemyNation%", winnerNation)
+                .<ModelMessage>addStringTemplate("%enemyUnit%", winner.getLabel()));
     }
 
     /**
@@ -3176,21 +3176,21 @@ outer:  for (Effect effect : effects) {
         cs.addHistory(colonyPlayer,
             new HistoryEvent(game.getTurn(),
                 HistoryEvent.HistoryEventType.COLONY_DESTROYED, attackerPlayer)
-                .addStringTemplate("%nation%", attackerNation)
-                .addName("%colony%", colony.getName()));
+                .<HistoryEvent>addStringTemplate("%nation%", attackerNation)
+                .<HistoryEvent>addName("%colony%", colony.getName()));
         cs.addMessage(colonyPlayer,
             new ModelMessage(ModelMessage.MessageType.COMBAT_RESULT,
                              "combat.colonyBurned.ours", colony.getTile())
-                .addName("%colony%", colony.getName())
-                .addStringTemplate("%enemyNation%", attackerNation)
-                .addStringTemplate("%enemyUnit%", attacker.getLabel())
-                .addAmount("%amount%", plunder));
+                .<ModelMessage>addName("%colony%", colony.getName())
+                .<ModelMessage>addStringTemplate("%enemyNation%", attackerNation)
+                .<ModelMessage>addStringTemplate("%enemyUnit%", attacker.getLabel())
+                .<ModelMessage>addAmount("%amount%", plunder));
         cs.addGlobalMessage(game, colonyPlayer,
             new ModelMessage(ModelMessage.MessageType.COMBAT_RESULT,
                              "combat.colonyBurned.other", colonyPlayer)
-                .addName("%colony%", colony.getName())
-                .addStringTemplate("%nation%", colonyNation)
-                .addStringTemplate("%attackerNation%", attackerNation));
+                .<ModelMessage>addName("%colony%", colony.getName())
+                .<ModelMessage>addStringTemplate("%nation%", colonyNation)
+                .<ModelMessage>addStringTemplate("%attackerNation%", attackerNation));
         colonyPlayer.csLoseLocation(colony, cs);
 
         // Allocate some plunder.
@@ -3250,8 +3250,8 @@ outer:  for (Effect effect : effects) {
         int score = spec.getInteger(GameOptions.DESTROY_SETTLEMENT_SCORE);
         HistoryEvent h = new HistoryEvent(game.getTurn(),
             HistoryEvent.HistoryEventType.DESTROY_SETTLEMENT, this)
-                .addStringTemplate("%nation%", nativeNation)
-                .addName("%settlement%", settlementName);
+                .<HistoryEvent>addStringTemplate("%nation%", nativeNation)
+                .<HistoryEvent>addName("%settlement%", settlementName);
         h.setScore(score);
         cs.addHistory(attackerPlayer, h);
 
@@ -3259,22 +3259,22 @@ outer:  for (Effect effect : effects) {
         cs.addMessage(attackerPlayer,
             new ModelMessage(ModelMessage.MessageType.COMBAT_RESULT,
                              "combat.destroySettlement.enemy", attacker)
-                .addName("%settlement%", settlementName)
-                .addStringTemplate("%unit%", attacker.getLabel())
-                .addStringTemplate("%nativeNation%", nativeNation)
-                .addAmount("%amount%", plunder));
+                .<ModelMessage>addName("%settlement%", settlementName)
+                .<ModelMessage>addStringTemplate("%unit%", attacker.getLabel())
+                .<ModelMessage>addStringTemplate("%nativeNation%", nativeNation)
+                .<ModelMessage>addAmount("%amount%", plunder));
         if (capital) {
             cs.addMessage(attackerPlayer,
                 new ModelMessage(ModelMessage.MessageType.FOREIGN_DIPLOMACY,
                                  "combat.destroySettlement.enemy.capital",
                                  attacker)
-                    .addStringTemplate("%nation%", nativeNation));
+                    .<ModelMessage>addStringTemplate("%nation%", nativeNation));
         }
         if (nativePlayer.checkForDeath() == IS_DEAD) {
             h = new HistoryEvent(game.getTurn(),
                 HistoryEvent.HistoryEventType.DESTROY_NATION, this)
-                    .addStringTemplate("%nation%", attackerNation)
-                    .addStringTemplate("%nativeNation%", nativeNation);
+                    .<HistoryEvent>addStringTemplate("%nation%", attackerNation)
+                    .<HistoryEvent>addStringTemplate("%nativeNation%", nativeNation);
             h.setScore(SCORE_NATION_DESTROYED);
             cs.addGlobalHistory(game, h);
         }
@@ -3366,19 +3366,19 @@ outer:  for (Effect effect : effects) {
         cs.addMessage(attackerPlayer,
             new ModelMessage(ModelMessage.MessageType.COMBAT_RESULT,
                              "combat.shipEvaded.enemy", attacker)
-                .addStringTemplate("%location%",
+                .<ModelMessage>addStringTemplate("%location%",
                     attackerLocation.getLocationLabelFor(attackerPlayer))
-                .addStringTemplate("%unit%", attacker.getLabel())
-                .addStringTemplate("%enemyNation%", defenderNation)
-                .addStringTemplate("%enemyUnit%", defender.getLabel()));
+                .<ModelMessage>addStringTemplate("%unit%", attacker.getLabel())
+                .<ModelMessage>addStringTemplate("%enemyNation%", defenderNation)
+                .<ModelMessage>addStringTemplate("%enemyUnit%", defender.getLabel()));
         cs.addMessage(defenderPlayer,
             new ModelMessage(ModelMessage.MessageType.COMBAT_RESULT,
                              "combat.shipEvaded.ours", defender)
-                .addStringTemplate("%location%",
+                .<ModelMessage>addStringTemplate("%location%",
                     defenderLocation.getLocationLabelFor(defenderPlayer))
-                .addStringTemplate("%unit%", defender.getLabel())
-                .addStringTemplate("%enemyNation%", attackerNation)
-                .addStringTemplate("%enemyUnit%", attacker.getLabel()));
+                .<ModelMessage>addStringTemplate("%unit%", defender.getLabel())
+                .<ModelMessage>addStringTemplate("%enemyNation%", attackerNation)
+                .<ModelMessage>addStringTemplate("%enemyUnit%", attacker.getLabel()));
     }
 
     /**
@@ -3398,19 +3398,19 @@ outer:  for (Effect effect : effects) {
         cs.addMessage(attackerPlayer,
             new ModelMessage(ModelMessage.MessageType.COMBAT_RESULT,
                              "combat.shipEvadedBombardment.enemy", settlement)
-                .addStringTemplate("%location%",
+                .<ModelMessage>addStringTemplate("%location%",
                     settlement.getLocationLabelFor(attackerPlayer))
-                .addNamed("%building%", building)
-                .addStringTemplate("%enemyNation%", defenderNation)
-                .addStringTemplate("%enemyUnit%", defender.getLabel()));
+                .<ModelMessage>addNamed("%building%", building)
+                .<ModelMessage>addStringTemplate("%enemyNation%", defenderNation)
+                .<ModelMessage>addStringTemplate("%enemyUnit%", defender.getLabel()));
         cs.addMessage(defenderPlayer,
             new ModelMessage(ModelMessage.MessageType.COMBAT_RESULT,
                              "combat.shipEvadedBombardment.ours", defender)
-                .addStringTemplate("%location%",
+                .<ModelMessage>addStringTemplate("%location%",
                     settlement.getLocationLabelFor(defenderPlayer))
-                .addStringTemplate("%unit%", defender.getLabel())
-                .addNamed("%building%", building)
-                .addStringTemplate("%enemyNation%",
+                .<ModelMessage>addStringTemplate("%unit%", defender.getLabel())
+                .<ModelMessage>addNamed("%building%", building)
+                .<ModelMessage>addStringTemplate("%enemyNation%",
                     attackerPlayer.getNationLabel()));
     }
 
@@ -3463,20 +3463,20 @@ outer:  for (Effect effect : effects) {
         cs.addMessage(attackerPlayer,
             new ModelMessage(ModelMessage.MessageType.COMBAT_RESULT,
                              "combat.unitDemotedToUnarmed.enemy", attacker)
-                .addStringTemplate("%location%",
+                .<ModelMessage>addStringTemplate("%location%",
                      settlement.getLocationLabelFor(attackerPlayer))
-                .addStringTemplate("%unit%", attacker.getLabel())
-                .addStringTemplate("%oldName%", defenderLabel)
-                .addStringTemplate("%enemyNation%", defenderNation)
-                .addStringTemplate("%enemyUnit%", defender.getLabel()));
+                .<ModelMessage>addStringTemplate("%unit%", attacker.getLabel())
+                .<ModelMessage>addStringTemplate("%oldName%", defenderLabel)
+                .<ModelMessage>addStringTemplate("%enemyNation%", defenderNation)
+                .<ModelMessage>addStringTemplate("%enemyUnit%", defender.getLabel()));
         cs.addMessage(defenderPlayer,
             new ModelMessage(ModelMessage.MessageType.COMBAT_RESULT,
                              "combat.unitLoseAutoEquip", defender)
-                .addStringTemplate("%location%",
+                .<ModelMessage>addStringTemplate("%location%",
                     settlement.getLocationLabelFor(defenderPlayer))
-                .addStringTemplate("%unit%", defender.getLabel())
-                .addStringTemplate("%enemyNation%", attackerNation)
-                .addStringTemplate("%enemyUnit%", attacker.getLabel()));
+                .<ModelMessage>addStringTemplate("%unit%", defender.getLabel())
+                .<ModelMessage>addStringTemplate("%enemyNation%", attackerNation)
+                .<ModelMessage>addStringTemplate("%enemyUnit%", attacker.getLabel()));
     }
 
     /**
@@ -3515,41 +3515,41 @@ outer:  for (Effect effect : effects) {
             cs.addMessage(winnerPlayer,
                 new ModelMessage(ModelMessage.MessageType.COMBAT_RESULT,
                                  "combat.unitDemotedToUnarmed.enemy", winner)
-                    .addStringTemplate("%location%", winnerLocation)
-                    .addStringTemplate("%unit%", winner.getLabel())
-                    .addStringTemplate("%oldName%", loserLabel)
-                    .addStringTemplate("%enemyNation%", loserNation)
-                    .addStringTemplate("%enemyUnit%", loser.getLabel()));
+                    .<ModelMessage>addStringTemplate("%location%", winnerLocation)
+                    .<ModelMessage>addStringTemplate("%unit%", winner.getLabel())
+                    .<ModelMessage>addStringTemplate("%oldName%", loserLabel)
+                    .<ModelMessage>addStringTemplate("%enemyNation%", loserNation)
+                    .<ModelMessage>addStringTemplate("%enemyUnit%", loser.getLabel()));
             cs.addMessage(loserPlayer,
                 new ModelMessage(ModelMessage.MessageType.COMBAT_RESULT,
                                  "combat.unitDemotedToUnarmed.ours", loser)
-                    .addStringTemplate("%location%", loserLocation)
-                    .addStringTemplate("%oldName%", loserLabel)
-                    .addStringTemplate("%unit%", loser.getLabel())
-                    .addStringTemplate("%enemyNation%", winnerNation)
-                    .addStringTemplate("%enemyUnit%", winner.getLabel()));
+                    .<ModelMessage>addStringTemplate("%location%", loserLocation)
+                    .<ModelMessage>addStringTemplate("%oldName%", loserLabel)
+                    .<ModelMessage>addStringTemplate("%unit%", loser.getLabel())
+                    .<ModelMessage>addStringTemplate("%enemyNation%", winnerNation)
+                    .<ModelMessage>addStringTemplate("%enemyUnit%", winner.getLabel()));
             loser.setState(Unit.UnitState.ACTIVE);
         } else {
             key = "combat.unitDemoted.enemy." + loser.getType().getSuffix();
             cs.addMessage(winnerPlayer,
                 new ModelMessage(ModelMessage.MessageType.COMBAT_RESULT,
                                  key, winner)
-                    .addDefaultId("combat.unitDemoted.enemy")
-                    .addStringTemplate("%location%", winnerLocation)
-                    .addStringTemplate("%unit%", winner.getLabel())
-                    .addStringTemplate("%oldName%", loserLabel)
-                    .addStringTemplate("%enemyNation%", loserNation)
-                    .addStringTemplate("%enemyUnit%", loser.getLabel()));
+                    .<ModelMessage>addDefaultId("combat.unitDemoted.enemy")
+                    .<ModelMessage>addStringTemplate("%location%", winnerLocation)
+                    .<ModelMessage>addStringTemplate("%unit%", winner.getLabel())
+                    .<ModelMessage>addStringTemplate("%oldName%", loserLabel)
+                    .<ModelMessage>addStringTemplate("%enemyNation%", loserNation)
+                    .<ModelMessage>addStringTemplate("%enemyUnit%", loser.getLabel()));
             key = "combat.unitDemoted.ours." + loser.getType().getSuffix();
             cs.addMessage(loserPlayer,
                 new ModelMessage(ModelMessage.MessageType.COMBAT_RESULT,
                                  key, loser)
-                    .addDefaultId("combat.unitDemoted.ours")
-                    .addStringTemplate("%location%", loserLocation)
-                    .addStringTemplate("%oldName%", loserLabel)
-                    .addStringTemplate("%unit%", loser.getLabel())
-                    .addStringTemplate("%enemyNation%", winnerNation)
-                    .addStringTemplate("%enemyUnit%", winner.getLabel()));
+                    .<ModelMessage>addDefaultId("combat.unitDemoted.ours")
+                    .<ModelMessage>addStringTemplate("%location%", loserLocation)
+                    .<ModelMessage>addStringTemplate("%oldName%", loserLabel)
+                    .<ModelMessage>addStringTemplate("%unit%", loser.getLabel())
+                    .<ModelMessage>addStringTemplate("%enemyNation%", winnerNation)
+                    .<ModelMessage>addStringTemplate("%enemyUnit%", winner.getLabel()));
         }
     }
 
@@ -3570,8 +3570,8 @@ outer:  for (Effect effect : effects) {
             cs.addMessage(this,
                 new ModelMessage(ModelMessage.MessageType.GOODS_MOVEMENT,
                     "combat.tradeRouteSuspended", this)
-                    .addName("%route%", tr.getName())
-                    .addStringTemplate("%stop%", loc.getLocationLabel()));
+                    .<ModelMessage>addName("%route%", tr.getName())
+                    .<ModelMessage>addStringTemplate("%stop%", loc.getLocationLabel()));
             cs.add(See.only(this), tr);
         }
     }
@@ -3606,10 +3606,10 @@ outer:  for (Effect effect : effects) {
             cs.addMessage(colonyPlayer,
                 new ModelMessage(ModelMessage.MessageType.COMBAT_RESULT,
                                  "combat.raid.building", colony)
-                    .addName("%colony%", colony.getName())
-                    .addNamed("%building%", building)
-                    .addStringTemplate("%enemyNation%", attackerNation)
-                    .addStringTemplate("%enemyUnit%", attacker.getLabel()));
+                    .<ModelMessage>addName("%colony%", colony.getName())
+                    .<ModelMessage>addNamed("%building%", building)
+                    .<ModelMessage>addStringTemplate("%enemyNation%", attackerNation)
+                    .<ModelMessage>addStringTemplate("%enemyUnit%", attacker.getLabel()));
         } else if (pillage < buildingList.size() + shipList.size()) {
             Unit ship = shipList.get(pillage - buildingList.size());
             if (ship.getRepairLocation() == null) {
@@ -3627,11 +3627,11 @@ outer:  for (Effect effect : effects) {
             cs.addMessage(colonyPlayer,
                 new ModelMessage(ModelMessage.MessageType.COMBAT_RESULT,
                                  "combat.raid.goods", colony, goods)
-                    .addName("%colony%", colony.getName())
-                    .addAmount("%amount%", goods.getAmount())
-                    .addNamed("%goods%", goods.getType())
-                    .addStringTemplate("%enemyNation%", attackerNation)
-                    .addStringTemplate("%enemyUnit%", attacker.getLabel()));
+                    .<ModelMessage>addName("%colony%", colony.getName())
+                    .<ModelMessage>addAmount("%amount%", goods.getAmount())
+                    .<ModelMessage>addNamed("%goods%", goods.getType())
+                    .<ModelMessage>addStringTemplate("%enemyNation%", attackerNation)
+                    .<ModelMessage>addStringTemplate("%enemyUnit%", attacker.getLabel()));
 
         } else {
             int plunder = Math.max(1, colony.getPlunder(attacker, random) / 5);
@@ -3641,17 +3641,17 @@ outer:  for (Effect effect : effects) {
             cs.addMessage(colonyPlayer,
                 new ModelMessage(ModelMessage.MessageType.COMBAT_RESULT,
                                  "combat.raid.plunder", colony)
-                    .addAmount("%amount%", plunder)
-                    .addName("%colony%", colony.getName())
-                    .addStringTemplate("%enemyNation%", attackerNation)
-                    .addStringTemplate("%enemyUnit%", attacker.getLabel()));
+                    .<ModelMessage>addAmount("%amount%", plunder)
+                    .<ModelMessage>addName("%colony%", colony.getName())
+                    .<ModelMessage>addStringTemplate("%enemyNation%", attackerNation)
+                    .<ModelMessage>addStringTemplate("%enemyUnit%", attacker.getLabel()));
         }
         cs.addGlobalMessage(getGame(), colonyPlayer,
             new ModelMessage(ModelMessage.MessageType.COMBAT_RESULT,
                              "combat.raid.other", colonyPlayer)
-                .addName("%colony%", colony.getName())
-                .addStringTemplate("%colonyNation%", colonyNation)
-                .addStringTemplate("%nation%", attackerNation));
+                .<ModelMessage>addName("%colony%", colony.getName())
+                .<ModelMessage>addStringTemplate("%colonyNation%", colonyNation)
+                .<ModelMessage>addStringTemplate("%nation%", attackerNation));
     }
 
     /**
@@ -3720,8 +3720,8 @@ outer:  for (Effect effect : effects) {
         cs.addMessage(winnerPlayer,
             new ModelMessage(ModelMessage.MessageType.COMBAT_RESULT,
                              "combat.unitPromoted", winner)
-                .addStringTemplate("%oldName%", winnerLabel)
-                .addStringTemplate("%unit%", winner.getLabel()));
+                .<ModelMessage>addStringTemplate("%oldName%", winnerLabel)
+                .<ModelMessage>addStringTemplate("%unit%", winner.getLabel()));
     }
 
     /**
@@ -3747,8 +3747,8 @@ outer:  for (Effect effect : effects) {
             cs.addMessage(shipPlayer,
                 new ModelMessage(ModelMessage.MessageType.COMBAT_RESULT,
                                  "combat.shipsSunk", shipPlayer)
-                    .addStringTemplate("%ships%", t)
-                    .addAmount("%number%", units.size()));
+                    .<ModelMessage>addStringTemplate("%ships%", t)
+                    .<ModelMessage>addAmount("%number%", units.size()));
         }
     }
 
@@ -3770,19 +3770,19 @@ outer:  for (Effect effect : effects) {
         cs.addMessage(attackerPlayer,
             new ModelMessage(ModelMessage.MessageType.COMBAT_RESULT,
                              "combat.shipSunk.enemy", attackerUnit)
-                .addStringTemplate("%location%",
+                .<ModelMessage>addStringTemplate("%location%",
                     shipLocation.getLocationLabelFor(attackerPlayer))
-                .addStringTemplate("%unit%", attackerUnit.getLabel())
-                .addStringTemplate("%enemyUnit%", ship.getLabel())
-                .addStringTemplate("%enemyNation%", shipNation));
+                .<ModelMessage>addStringTemplate("%unit%", attackerUnit.getLabel())
+                .<ModelMessage>addStringTemplate("%enemyUnit%", ship.getLabel())
+                .<ModelMessage>addStringTemplate("%enemyNation%", shipNation));
         cs.addMessage(shipPlayer,
             new ModelMessage(ModelMessage.MessageType.COMBAT_RESULT,
                              "combat.shipSunk.ours", ship.getTile())
-                .addStringTemplate("%location%",
+                .<ModelMessage>addStringTemplate("%location%",
                     shipLocation.getLocationLabelFor(shipPlayer))
-                .addStringTemplate("%unit%", ship.getLabel())
-                .addStringTemplate("%enemyUnit%", attackerUnit.getLabel())
-                .addStringTemplate("%enemyNation%", attackerNation));
+                .<ModelMessage>addStringTemplate("%unit%", ship.getLabel())
+                .<ModelMessage>addStringTemplate("%enemyUnit%", attackerUnit.getLabel())
+                .<ModelMessage>addStringTemplate("%enemyNation%", attackerNation));
 
         csSinkShip(ship, attackerPlayer, cs);
     }
@@ -3804,19 +3804,19 @@ outer:  for (Effect effect : effects) {
         cs.addMessage(attackerPlayer,
             new ModelMessage(ModelMessage.MessageType.COMBAT_RESULT,
                              "combat.shipSunkByBombardment.enemy", settlement)
-                .addStringTemplate("%location%",
+                .<ModelMessage>addStringTemplate("%location%",
                     settlement.getLocationLabelFor(attackerPlayer))
-                .addNamed("%building%", building)
-                .addStringTemplate("%enemyUnit%", ship.getLabel())
-                .addStringTemplate("%enemyNation%", shipNation));
+                .<ModelMessage>addNamed("%building%", building)
+                .<ModelMessage>addStringTemplate("%enemyUnit%", ship.getLabel())
+                .<ModelMessage>addStringTemplate("%enemyNation%", shipNation));
         cs.addMessage(shipPlayer,
             new ModelMessage(ModelMessage.MessageType.COMBAT_RESULT,
                              "combat.shipSunkByBombardment", ship.getTile())
-                .addStringTemplate("%location%",
+                .<ModelMessage>addStringTemplate("%location%",
                     settlement.getLocationLabelFor(shipPlayer))
-                .addStringTemplate("%unit%", ship.getLabel())
-                .addNamed("%building%", building)
-                .addStringTemplate("%enemyNation%",
+                .<ModelMessage>addStringTemplate("%unit%", ship.getLabel())
+                .<ModelMessage>addNamed("%building%", building)
+                .<ModelMessage>addStringTemplate("%enemyNation%",
                     attackerPlayer.getNationLabel()));
 
         csSinkShip(ship, attackerPlayer, cs);
@@ -3869,27 +3869,27 @@ outer:  for (Effect effect : effects) {
         cs.addMessage(winnerPlayer,
             new ModelMessage(ModelMessage.MessageType.COMBAT_RESULT,
                              key, winner)
-                .addDefaultId("combat.unitSlaughtered.enemy")
-                .addStringTemplate("%location%", winnerLocation)
-                .addStringTemplate("%unit%", winner.getLabel())
-                .addStringTemplate("%enemyNation%", loserNation)
-                .addStringTemplate("%enemyUnit%", loser.getLabel()));
+                .<ModelMessage>addDefaultId("combat.unitSlaughtered.enemy")
+                .<ModelMessage>addStringTemplate("%location%", winnerLocation)
+                .<ModelMessage>addStringTemplate("%unit%", winner.getLabel())
+                .<ModelMessage>addStringTemplate("%enemyNation%", loserNation)
+                .<ModelMessage>addStringTemplate("%enemyUnit%", loser.getLabel()));
         key = "combat.unitSlaughtered.ours." + loser.getType().getSuffix();
         cs.addMessage(loserPlayer,
             new ModelMessage(ModelMessage.MessageType.COMBAT_RESULT,
                              key, loser.getTile())
-                .addDefaultId("combat.unitSlaughtered.ours")
-                .addStringTemplate("%location%", loserLocation)
-                .addStringTemplate("%unit%", loser.getLabel())
-                .addStringTemplate("%enemyNation%", winnerNation)
-                .addStringTemplate("%enemyUnit%", winner.getLabel()));
+                .<ModelMessage>addDefaultId("combat.unitSlaughtered.ours")
+                .<ModelMessage>addStringTemplate("%location%", loserLocation)
+                .<ModelMessage>addStringTemplate("%unit%", loser.getLabel())
+                .<ModelMessage>addStringTemplate("%enemyNation%", winnerNation)
+                .<ModelMessage>addStringTemplate("%enemyUnit%", winner.getLabel()));
         if (loserPlayer.isIndian() && loserPlayer.checkForDeath() == IS_DEAD) {
             StringTemplate nativeNation = loserPlayer.getNationLabel();
             cs.addGlobalHistory(getGame(),
                 new HistoryEvent(getGame().getTurn(),
                     HistoryEvent.HistoryEventType.DESTROY_NATION, winnerPlayer)
-                .addStringTemplate("%nation%", winnerPlayer.getNationLabel())
-                .addStringTemplate("%nativeNation%", nativeNation));
+                .<HistoryEvent>addStringTemplate("%nation%", winnerPlayer.getNationLabel())
+                .<HistoryEvent>addStringTemplate("%nativeNation%", nativeNation));
         }
 
         // Destroy unit.  Note See.only visibility used to handle the
@@ -3991,9 +3991,9 @@ outer:  for (Effect effect : effects) {
             cs.addMessage(this,
                 new ModelMessage(ModelMessage.MessageType.FOREIGN_DIPLOMACY,
                                  messageId, this)
-                    .addName("%colony%", colony.getName())
-                    .addAmount("%amount%", amount)
-                    .addNamed("%goods%", goodsType));
+                    .<ModelMessage>addName("%colony%", colony.getName())
+                    .<ModelMessage>addAmount("%amount%", amount)
+                    .<ModelMessage>addNamed("%goods%", goodsType));
             cs.addAttribute(See.only(this), "flush", Boolean.TRUE.toString());
             logger.info("Goods party at " + colony.getName()
                 + " with: " + goods + " arrears: " + arrears);
@@ -4017,7 +4017,7 @@ outer:  for (Effect effect : effects) {
         cs.addMessage(this,
             new ModelMessage(ModelMessage.MessageType.FOREIGN_DIPLOMACY,
                              "model.player.ignoredTax", this)
-                .addAmount("%amount%", tax));
+                .<ModelMessage>addAmount("%amount%", tax));
     }
 
     /**
@@ -4102,7 +4102,7 @@ outer:  for (Effect effect : effects) {
             cs.addMessage(this,
                 new ModelMessage(ModelMessage.MessageType.FOREIGN_DIPLOMACY,
                                  "model.player.mercenariesArrived", this)
-                    .addStringTemplate("%location%",
+                    .<ModelMessage>addStringTemplate("%location%",
                         dst.up().getLocationLabelFor(this)));
             modifyGold(-price);
             cs.addPartial(See.only(this), this, "gold");
@@ -4134,12 +4134,12 @@ outer:  for (Effect effect : effects) {
             } else {
                 cs.addHistory(other, new HistoryEvent(turn,
                         HistoryEvent.HistoryEventType.MEET_NATION, other)
-                    .addStringTemplate("%nation%", getNationLabel()));
+                    .<HistoryEvent>addStringTemplate("%nation%", getNationLabel()));
             }
         } else { // (serverPlayer.isEuropean)
             cs.addHistory(this, new HistoryEvent(turn,
                     HistoryEvent.HistoryEventType.MEET_NATION, other)
-                .addStringTemplate("%nation%", other.getNationLabel()));
+                .<HistoryEvent>addStringTemplate("%nation%", other.getNationLabel()));
         }
 
         logger.finest("First contact between " + this.getId()
@@ -4393,8 +4393,8 @@ outer:  for (Effect effect : effects) {
                     : "model.player.soLDecrease";
                 cs.addMessage(this,
                     new ModelMessage(MessageType.SONS_OF_LIBERTY, key, this)
-                        .addAmount("%oldSoL%", oldSoL)
-                        .addAmount("%newSoL%", newSoL));
+                        .<ModelMessage>addAmount("%oldSoL%", oldSoL)
+                        .<ModelMessage>addAmount("%newSoL%", newSoL));
             }
             oldSoL = newSoL; // Remember SoL for check changes at next turn.
         }
@@ -4500,8 +4500,8 @@ outer:  for (Effect effect : effects) {
                     cs.addMessage(sp,
                         new ModelMessage(MessageType.FOREIGN_DIPLOMACY,
                                          sta.getOtherStanceChangeKey(), this)
-                            .addStringTemplate("%attacker%", getNationLabel())
-                            .addStringTemplate("%defender%", s.getNationLabel()));
+                            .<ModelMessage>addStringTemplate("%attacker%", getNationLabel())
+                            .<ModelMessage>addStringTemplate("%defender%", s.getNationLabel()));
                 }
             }
         }

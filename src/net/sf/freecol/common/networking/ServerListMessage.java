@@ -102,7 +102,7 @@ public class ServerListMessage extends DOMMessage {
     @Override
     public Element toXMLElement() {
         return new DOMMessage(TAG)
-            .addMessages(transform(this.servers, alwaysTrue(),
+            .<DOMMessage>addMessages(transform(this.servers, alwaysTrue(),
                                    si -> new RegisterServerMessage(si)))
             .toXMLElement();
     }
