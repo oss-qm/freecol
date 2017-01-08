@@ -284,8 +284,8 @@ public class ServerUnit extends Unit implements ServerModelObject {
             cs.addMessage(owner,
                 new ModelMessage(ModelMessage.MessageType.WARNING,
                                  messageId, this)
-                    .addStringTemplate("%unit%", getLabel())
-                    .addStringTemplate("%location%", locName));
+                    .<ModelMessage>addStringTemplate("%unit%", getLabel())
+                    .<ModelMessage>addStringTemplate("%location%", locName));
         }
 
         // Cancel other co-located improvements of the same type
@@ -345,8 +345,8 @@ public class ServerUnit extends Unit implements ServerModelObject {
                 new ModelMessage(ModelMessage.MessageType.UNIT_REPAIRED,
                                  "model.unit.unitRepaired",
                                  this, (FreeColGameObject)loc)
-                    .addStringTemplate("%unit%", getLabel())
-                    .addStringTemplate("%repairLocation%",
+                    .<ModelMessage>addStringTemplate("%unit%", getLabel())
+                    .<ModelMessage>addStringTemplate("%repairLocation%",
                         loc.getLocationLabelFor(owner)));
             setState(UnitState.ACTIVE);
         }
@@ -425,7 +425,7 @@ public class ServerUnit extends Unit implements ServerModelObject {
             new ModelMessage(ModelMessage.MessageType.LOST_CITY_RUMOUR,
                              RumourType.BURIAL_GROUND.getDescriptionKey(),
                              serverPlayer, this)
-                .addStringTemplate("%nation%", indianPlayer.getNationLabel()));
+                .<ModelMessage>addStringTemplate("%nation%", indianPlayer.getNationLabel()));
     }
 
     /**
@@ -534,8 +534,8 @@ public class ServerUnit extends Unit implements ServerModelObject {
             cs.addMessage(serverPlayer,
                 new ModelMessage(ModelMessage.MessageType.LOST_CITY_RUMOUR,
                                  key, serverPlayer, this)
-                    .addStringTemplate("%unit%", oldName)
-                    .addNamed("%type%", getType()));
+                    .<ModelMessage>addStringTemplate("%unit%", oldName)
+                    .<ModelMessage>addNamed("%type%", getType()));
             break;
         case TRIBAL_CHIEF:
             int chiefAmount = randomInt(logger, "Chief base amount",
@@ -547,7 +547,7 @@ public class ServerUnit extends Unit implements ServerModelObject {
             cs.addMessage(serverPlayer,
                 new ModelMessage(ModelMessage.MessageType.LOST_CITY_RUMOUR,
                                  key, serverPlayer, this)
-                    .addAmount("%money%", chiefAmount));
+                    .<ModelMessage>addAmount("%money%", chiefAmount));
             serverPlayer.invalidateCanSeeTiles();//+vis(serverPlayer)
             break;
         case COLONIST:
@@ -574,14 +574,14 @@ public class ServerUnit extends Unit implements ServerModelObject {
                 cs.addMessage(serverPlayer,
                     new ModelMessage(ModelMessage.MessageType.LOST_CITY_RUMOUR,
                                      key, serverPlayer, newUnit)
-                        .addName("%city%", cityName)
-                        .addAmount("%money%", treasureAmount));
+                        .<ModelMessage>addName("%city%", cityName)
+                        .<ModelMessage>addAmount("%money%", treasureAmount));
                 cs.addGlobalHistory(game,
                     new HistoryEvent(game.getTurn(),
                         HistoryEvent.HistoryEventType.CITY_OF_GOLD, serverPlayer)
-                    .addStringTemplate("%nation%", serverPlayer.getNationLabel())
-                    .addName("%city%", cityName)
-                    .addAmount("%treasure%", treasureAmount));
+                    .<HistoryEvent>addStringTemplate("%nation%", serverPlayer.getNationLabel())
+                    .<HistoryEvent>addName("%city%", cityName)
+                    .<HistoryEvent>addAmount("%treasure%", treasureAmount));
                 break;
             }
             // Fall through, found all the cities of gold.
@@ -604,7 +604,7 @@ public class ServerUnit extends Unit implements ServerModelObject {
                 new ModelMessage(ModelMessage.MessageType.LOST_CITY_RUMOUR,
                                  key, serverPlayer,
                                  ((newUnit != null) ? newUnit : this))
-                    .addAmount("%money%", ruinsAmount));
+                    .<ModelMessage>addAmount("%money%", ruinsAmount));
             break;
         case FOUNTAIN_OF_YOUTH:
             ServerEurope europe = (ServerEurope)serverPlayer.getEurope();
@@ -834,8 +834,8 @@ logger.finest("Debug first contact " + this + " to " + ((settlement == null) ? "
                             new ModelMessage(ModelMessage.MessageType.FOREIGN_DIPLOMACY,
                                              "model.unit.nativeSettlementContact",
                                              this, is)
-                                .addStringTemplate("%nation%", nation)
-                                .addName("%settlement%", is.getName()));
+                                .<ModelMessage>addStringTemplate("%nation%", nation)
+                                .<ModelMessage>addName("%settlement%", is.getName()));
                         logger.finest("First contact between "
                             + contactPlayer.getId()
                             + " and " + is + " at " + newTile);
@@ -868,11 +868,11 @@ logger.finest("Debug first contact " + this + " to " + ((settlement == null) ? "
             cs.addMessage(serverPlayer,
                 new ModelMessage(ModelMessage.MessageType.FOREIGN_DIPLOMACY,
                                  "model.unit.slowed", this, slowedBy)
-                    .addStringTemplate("%unit%",
+                    .<ModelMessage>addStringTemplate("%unit%",
                         getLabel(UnitLabelType.NATIONAL))
-                    .addStringTemplate("%enemyUnit%",
+                    .<ModelMessage>addStringTemplate("%enemyUnit%",
                         slowedBy.getLabel(UnitLabelType.PLAIN))
-                    .addStringTemplate("%enemyNation%", enemy));
+                    .<ModelMessage>addStringTemplate("%enemyNation%", enemy));
         }
 
         // Check for region discovery
@@ -914,8 +914,8 @@ logger.finest("Debug first contact " + this + " to " + ((settlement == null) ? "
                 cs.addMessage(owner,
                     new ModelMessage(ModelMessage.MessageType.UNIT_LOST,
                                      "model.unit.attrition", this)
-                        .addStringTemplate("%unit%", getLabel())
-                        .addStringTemplate("%location%",
+                        .<ModelMessage>addStringTemplate("%unit%", getLabel())
+                        .<ModelMessage>addStringTemplate("%location%",
                             loc.getLocationLabelFor(owner)));
                 cs.add(See.perhaps(), (Tile)loc);
                 cs.addRemove(See.perhaps().always(owner), loc,
@@ -948,9 +948,9 @@ logger.finest("Debug first contact " + this + " to " + ((settlement == null) ? "
                 cs.addMessage(owner,
                     new ModelMessage(ModelMessage.MessageType.UNIT_IMPROVED,
                                      "model.unit.experience", getColony(), this)
-                        .addStringTemplate("%oldName%", oldName)
-                        .addStringTemplate("%unit%", getLabel())
-                        .addName("%colony%", getColony().getName()));
+                        .<ModelMessage>addStringTemplate("%oldName%", oldName)
+                        .<ModelMessage>addStringTemplate("%unit%", getLabel())
+                        .<ModelMessage>addName("%colony%", getColony().getName()));
                 lb.add(" experience upgrade to ", getType());
                 unitDirty = true;
             }
@@ -1023,7 +1023,7 @@ logger.finest("Debug first contact " + this + " to " + ((settlement == null) ? "
                             new ModelMessage(ModelMessage.MessageType.DEFAULT,
                                              "model.unit.arriveInEurope",
                                              europe, this)
-                                .addNamed("%europe%", europe));
+                                .<ModelMessage>addNamed("%europe%", europe));
                     }
                     setState(UnitState.ACTIVE);
                     setLocation(europe);//-vis: safe/Europe

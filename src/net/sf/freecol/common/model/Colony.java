@@ -1615,8 +1615,8 @@ public class Colony extends Settlement implements Nameable, TradeLocation {
         GoodsType bells = getSpecification().getGoodsType("model.goods.bells");
         return (msgId == null) ? null
                 : new ModelMessage(msgType, msgId, this, bells)
-                .addName("%colony%", getName())
-                .addAmount("%number%", number);
+                .<ModelMessage>addName("%colony%", getName())
+                .<ModelMessage>addAmount("%number%", number);
     }
 
     /**

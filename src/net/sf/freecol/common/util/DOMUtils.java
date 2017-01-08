@@ -404,7 +404,7 @@ public class DOMUtils {
     public static <T extends FreeColObject> T getChild(Game game,
         Element element, int index) {
         Element e = getChildElement(element, index);
-        return (e == null) ? null : readElement(game, e, true);
+        return (e == null) ? null : DOMUtils.<T>readElement(game, e, true);
     }
 
     /**

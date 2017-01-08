@@ -3876,9 +3876,9 @@ public final class InGameController extends FreeColClientHolder {
                 .getAccelerator());
         player.addModelMessage(new ModelMessage(ModelMessage.MessageType.TUTORIAL,
                                "buildColony.tutorial", player)
-            .addName("%colonyKey%", key)
-            .add("%colonyMenuItem%", "buildColonyAction.name")
-            .add("%ordersMenuItem%", "menuBar.orders"));
+            .<ModelMessage>addName("%colonyKey%", key)
+            .<ModelMessage>add("%colonyMenuItem%", "buildColonyAction.name")
+            .<ModelMessage>add("%ordersMenuItem%", "menuBar.orders"));
         displayModelMessages(false);
         return true;
     }
@@ -4139,8 +4139,8 @@ public final class InGameController extends FreeColClientHolder {
         if (turn == Turn.FIRST_TURN) {
             player.addModelMessage(new ModelMessage(MessageType.WARNING,
                                                     "twoTurnsPerYear", player)
-                .addStringTemplate("%year%", Turn.getLabel(turn))
-                .addAmount("%amount%", Turn.getSeasonNumber()));
+                .<ModelMessage>addStringTemplate("%year%", Turn.getLabel(turn))
+                .<ModelMessage>addAmount("%amount%", Turn.getSeasonNumber()));
         }
         player.clearNationCache();
         return true;
