@@ -2719,7 +2719,7 @@ public class Player extends FreeColGameObject implements Nameable {
             : "west";
         addModelMessage(new ModelMessage(ModelMessage.MessageType.TUTORIAL,
                                          "model.player.startGame", this)
-            .addTagged("%direction%", sailTag));
+            .<ModelMessage>addTagged("%direction%", sailTag));
     }
 
     /**
