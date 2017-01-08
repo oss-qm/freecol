@@ -101,10 +101,17 @@ public class Occupation {
         for (ProductionType pt : transform(productionTypes, isNotNull())) {
             lb.add("\n      try=", pt);
 
-            for (GoodsType gt : transform(workTypes, isNotNull(g -> pt.getOutput(g)))) {
-                int minInput = min(pt.getInputList(),
-                    ag -> Math.max(colony.getNetProductionOf(ag.getType()),
-                                   colony.getGoodsCount(ag.getType())));
+            for (GoodsType gt : workTypes) {
+                if (pt.getOutput(gt) == null)
+                    continue;
+
+                int minInput = Integer.MAX_VALUE;
+                for (AbstractGoods ag : pt.getInputList()) {
+                    minInput = Math.min(minInput,
+                        Math.max(colony.getNetProductionOf(ag.getType()),
+                                 colony.getGoodsCount(ag.getType())));
+                }
+
                 int potential = wl.getPotentialProduction(gt, unitType);
                 int amount = Math.min(minInput, potential);
                 lb.add(" ", gt.getSuffix(), "=", amount, "/", minInput,
