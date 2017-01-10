@@ -35,7 +35,6 @@ import java.util.Map.Entry;
 import java.util.Set;
 import java.util.function.Function;
 import java.util.function.Predicate;
-import java.util.function.Supplier;
 import java.util.function.ToDoubleFunction;
 import java.util.function.ToIntFunction;
 import java.util.stream.Collectors;
@@ -1248,124 +1247,6 @@ public class CollectionUtils {
     private static <T> List<T> sort_internal(Stream<T> stream,
                                              Comparator<? super T> comparator) {
         return stream.sorted(comparator).collect(Collectors.<T>toList());
-    }
-
-    /**
-     * Take the sum of the members of an array.
-     *
-     * @param <T> The collection member type.
-     * @param array The array to sum.
-     * @param tdf A {@code ToDoubleFunction} to convert members
-     *     to a double.
-     * @return The sum of the values found.
-     */
-    public static <T> double sumDouble(T[] array, ToDoubleFunction<T> tdf) {
-        return sumDouble_internal(Arrays.stream(array), tdf);
-    }
-
-    /**
-     * Take the sum of the members of an array.
-     *
-     * @param <T> The collection member type.
-     * @param array The array to sum.
-     * @param predicate A {@code Predicate} to match with.
-     * @param tdf A {@code ToDoubleFunction} to map the stream to
-     *     double with.
-     * @return The sum of the values found.
-     */
-    public static <T> double sumDouble(T[] array,
-                                       Predicate<? super T> predicate,
-                                       ToDoubleFunction<T> tdf) {
-        return sumDouble_internal(Arrays.stream(array), predicate, tdf);
-    }
-
-    /**
-     * Take the sum of the members of a collection.
-     *
-     * @param <T> The collection member type.
-     * @param c The {@code Collection} to sum.
-     * @param tdf A {@code ToDoubleFunction} to convert members
-     *     to a double.
-     * @return The sum of the values found.
-     */
-    public static <T> double sumDouble(Collection<T> c,
-                                       ToDoubleFunction<T> tdf) {
-        return sumDouble_internal(c.stream(), tdf);
-    }
-
-    /**
-     * Take the sum of the members of a collection.
-     *
-     * @param <T> The collection member type.
-     * @param c The {@code Collection} to sum.
-     * @param predicate A {@code Predicate} to match with.
-     * @param tdf A {@code ToDoubleFunction} to map the stream to
-     *     double with.
-     * @return The sum of the values found.
-     */
-    public static <T> double sumDouble(Collection<T> c,
-                                       Predicate<? super T> predicate,
-                                       ToDoubleFunction<T> tdf) {
-        return sumDouble_internal(c.stream(), predicate, tdf);
-    }
-
-    /**
-     * Take the sum of the members of a stream.
-     *
-     * @param <T> The stream member type.
-     * @param stream The {@code Stream} to sum.
-     * @param tdf A {@code ToDoubleFunction} to convert members
-     *     to a double.
-     * @return The sum of the values found.
-     */
-    public static <T> double sumDouble(Stream<T> stream,
-                                       ToDoubleFunction<T> tdf) {
-        return (stream == null) ? SUM_DOUBLE_DEFAULT
-            : sumDouble_internal(stream, tdf);
-    }
-
-    /**
-     * Take the sum of the members of a stream.
-     *
-     * @param <T> The stream member type.
-     * @param stream The {@code Stream} to sum.
-     * @param predicate A {@code Predicate} to select members.
-     * @param tdf A {@code ToIntFunction} to convert members to a double.
-     * @return The sum of the values found.
-     */
-    public static <T> double sumDouble(Stream<T> stream,
-                                       Predicate<? super T> predicate,
-                                       ToDoubleFunction<T> tdf) {
-        return (stream == null) ? SUM_DOUBLE_DEFAULT
-            : sumDouble_internal(stream, predicate, tdf);
-    }
-
-    /**
-     * Take the sum of the members of a stream.
-     *
-     * @param <T> The stream member type.
-     * @param stream The {@code Stream} to sum.
-     * @param predicate A {@code Predicate} to select members.
-     * @param tdf A {@code ToIntFunction} to convert members to a double.
-     * @return The sum of the values found.
-     */
-    private static <T> double sumDouble_internal(Stream<T> stream,
-        Predicate<? super T> predicate,
-        ToDoubleFunction<T> tdf) {
-        return stream.filter(predicate).mapToDouble(tdf).sum();
-    }
-
-    /**
-     * Take the sum of the members of a stream.
-     *
-     * @param <T> The stream member type.
-     * @param stream The {@code Stream} to sum.
-     * @param tdf A {@code ToIntFunction} to convert members to a double.
-     * @return The sum of the values found.
-     */
-    private static <T> double sumDouble_internal(Stream<T> stream,
-        ToDoubleFunction<T> tdf) {
-        return stream.mapToDouble(tdf).sum();
     }
 
     /**
