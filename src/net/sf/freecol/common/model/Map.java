@@ -35,7 +35,6 @@ import java.util.function.Consumer;
 import java.util.function.Predicate;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import java.util.stream.Stream;
 
 import javax.swing.ImageIcon;
 import javax.xml.stream.XMLStreamException;
@@ -1949,13 +1948,17 @@ public class Map extends FreeColGameObject implements Location {
     }
 
     /**
-     * Get a stream of all the tiles in the map using an underlying
-     * WholeMapIterator.
+     * Get a list of all the tiles in the map
      *
-     * @return A {@code Stream} of all tiles of the map.
+     * @return A {@code List} of all tiles of the map.
      */
-    public Stream<Tile> getAllTiles() {
-        return toStream(new WholeMapIterator());
+    public List<Tile> getAllTiles() {
+        List<Tile> result = new ArrayList<>();
+        for (Tile[] tl : tiles)
+            for (Tile t : tl)
+                if (t != null)
+                    result.add(t);
+        return result;
     }
 
     /**
