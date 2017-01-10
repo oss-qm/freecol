@@ -137,7 +137,11 @@ public abstract class ListOption<T> extends AbstractOption<List<AbstractOption<T
      * @return True if the option can be added.
      */
     public boolean canAdd(AbstractOption<T> ao) {
-        return (allowDuplicates) ? true : none(value, matchKey(ao));
+        if (!allowDuplicates)
+            for (AbstractOption<T> walk : value)
+                if (walk == ao)
+                    return false;
+        return true;
     }
 
 
