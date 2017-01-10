@@ -98,14 +98,6 @@ public class Unit extends GoodsLocation
     public static final Comparator<Unit> decreasingSkillComparator
         = increasingSkillComparator.reversed();
 
-    /**
-     * Comparator to rank settlements by accessibility by sea to Europe.
-     */
-    private static final Comparator<Settlement> settlementStartComparator
-        = cachingIntComparator(s ->
-            (s == null || !s.getTile().isHighSeasConnected()) ? INFINITY
-                : s.getTile().getHighSeasCount());
-
     /** A state a Unit can have. */
     public static enum UnitState {
         ACTIVE,
@@ -2646,8 +2638,19 @@ public class Unit extends GoodsLocation
         // Must be a land unit not on the map.  May have a carrier.
         // Get our nearest settlement to Europe, fallback to any other.
         final Player owner = getOwner();
-        Settlement sett = minimize(owner.getSettlements(),
-                                   settlementStartComparator);
+        Settlement sett = null;
+        int sett_dist = INFINITY;
+        for (Settlement s : owner.getSettlementList()) {
+            int hsc = s.getTile().getHighSeasCount();
+            int dist = (hsc < 0 ? INFINITY : hsc);
+
+            if ((sett == null) || (dist < sett_dist)) {
+                sett = s;
+                sett_dist = dist;
+                continue;
+            }
+        }
+
         if (sett == null) sett = owner.getFirstSettlement();
         if (sett != null) return sett;
 
