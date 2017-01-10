@@ -175,6 +175,13 @@ public class BuildingTest extends FreeColTestCase {
         assertEquals(0, b.getUnitCount());
     }
 
+    private static boolean anyUnitIsType(List<Unit> units, UnitType unitType) {
+        for (Unit u : units)
+            if (u.getType() == unitType)
+                return true;
+        return false;
+    }
+
     private void productionTest(BuildingType[] buildings, int[][][]values) {
         Game game = getGame();
         game.setMap(getTestMap(true));
@@ -201,11 +208,15 @@ public class BuildingTest extends FreeColTestCase {
             indianConvertType, pettyCriminalType, indenturedServantType,
             freeColonistType, building.getExpertUnitType() };
         Tile tile = colony.getTile();
+
+        List<Unit> colonyUnits = colony.getUnitList();
         for (UnitType ut : unitTypes) {
-            if (none(colony.getUnitList(), matchKey(ut, Unit::getType))) {
-                Unit u = find(colony.getUnitList(),
-                              matchKey(freeColonistType, Unit::getType));
-                u.changeType(ut);
+            if (anyUnitIsType(units, ut)) continue;
+            for (Unit u : colonyUnits) {
+                if (u.getType() == freeColonistType) {
+                    u.changeType(ut);
+                    break;
+                }
             }
         }
 
@@ -224,8 +235,14 @@ public class BuildingTest extends FreeColTestCase {
                     assertEquals(building.getType(), bt);
                     clearBuilding(building);
                     colony.setProductionBonus(level);
-                    Unit worker = find(colony.getUnitList(),
-                                       matchKey(ut, Unit::getType));
+                    Unit worker = null;
+                    for (Unit u : colony.getUnitList()) {
+                        if (u.getType() == ut) {
+                            worker = u;
+                            break;
+                        }
+                    }
+
                     assertNotNull(worker);
                     worker.setWorkType(outputType);
                     worker.setLocation(building);
