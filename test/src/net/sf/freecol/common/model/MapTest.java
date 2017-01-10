@@ -189,7 +189,7 @@ public class MapTest extends FreeColTestCase {
         }
 
         int i = 0;
-        for (Tile t : toList(map.getAllTiles())) {
+        for (Tile t : map.getAllTiles()) {
             i++;
             assertTrue(allTiles.remove(t));
         }
