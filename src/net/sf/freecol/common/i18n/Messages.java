@@ -32,7 +32,6 @@ import java.util.Locale;
 import java.util.List;
 import java.util.Map;
 import java.util.StringTokenizer;
-import java.util.function.Predicate;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -466,17 +465,6 @@ public class Messages {
         }
         return new String[] { name, desc };
     }
-
-    /**
-     * A predicate maker to match named types.
-     *
-     * @param key The name of the type.
-     * @return A suitable {@code Predicate}.
-     */
-    public static final Predicate<Named> matchesNamed(String key) {
-        return matchKeyEquals(key, (Named k) -> Messages.getName(k));
-    }
-
 
     // Special purpose unit labelling
 
