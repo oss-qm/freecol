@@ -57,6 +57,7 @@ import net.sf.freecol.common.option.OptionGroup;
 import static net.sf.freecol.common.util.CollectionUtils.*;
 import net.sf.freecol.common.util.LogBuilder;
 import net.sf.freecol.common.util.StrCat;
+import net.sf.freecol.common.util.Utils;
 import net.sf.freecol.server.FreeColServer;
 
 import org.apache.commons.cli.CommandLine;
@@ -980,9 +981,13 @@ public final class FreeCol {
      * @return The type of advantages set, or null if none.
      */
     private static Advantages selectAdvantages(String as) {
-        Advantages a = find(Advantages.values(), Messages.matchesNamed(as));
-        if (a != null) setAdvantages(a);
-        return a;
+        for (Advantages a : Advantages.values()) {
+            if (Utils.equals(Messages.getName(a), as)) {
+                setAdvantages(a);
+                return a;
+            }
+        }
+        return null;
     }
 
     /**
