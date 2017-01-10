@@ -30,7 +30,6 @@ import java.util.Map.Entry;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Set;
-import java.util.function.BinaryOperator;
 import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
@@ -99,18 +98,28 @@ public final class ReportCompactColonyPanel extends ReportPanel
             CONSUMPTION, // Positive production but could consume more
         };
 
-        public static BinaryOperator<GoodsProduction> goodsProductionAccumulator
-            = (g1, g2) -> {
-                g1.amount += g2.amount;
-                g1.status = (g1.status == ProductionStatus.NONE
-                        && g2.status == ProductionStatus.NONE)
+        public static void accumulateGoodsProduction(Map<GoodsType,GoodsProduction> map, GoodsType key, GoodsProduction value) {
+            if (!map.containsKey(key)) {
+                map.put(key, value);
+                return;
+            }
+
+            GoodsProduction old = map.get(key);
+            old.amount += value.amount;
+            old.status = (old.status == ProductionStatus.NONE
+                        && value.status == ProductionStatus.NONE)
                     ? ProductionStatus.NONE
-                    : (g1.amount < 0) ? ProductionStatus.BAD
-                    : (g1.amount > 0) ? ProductionStatus.GOOD
+                    : (old.amount < 0) ? ProductionStatus.BAD
+                    : (old.amount > 0) ? ProductionStatus.GOOD
                     : ProductionStatus.ZERO;
-                g1.extra = 0;
-                return g1;
-            };
+            old.extra = 0;
+            map.put(key, old);
+        }
+
+        public static void accumulateGoodsProduction(Map<GoodsType,GoodsProduction> map, Map<GoodsType,GoodsProduction> src) {
+            for (Map.Entry<GoodsType,GoodsProduction> e : src.entrySet())
+                accumulateGoodsProduction(map, e.getKey(), e.getValue());
+        }
 
         /** Container class for goods production. */
         public static class GoodsProduction {
