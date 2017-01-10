@@ -38,7 +38,6 @@ import java.util.function.Predicate;
 import java.util.function.ToDoubleFunction;
 import java.util.function.ToIntFunction;
 import java.util.stream.Stream;
-import java.util.stream.StreamSupport;
 
 import net.sf.freecol.common.util.CachingFunction;
 
@@ -1246,27 +1245,5 @@ public class CollectionUtils {
     private static <T> List<T> sort_internal(Stream<T> stream,
                                              Comparator<? super T> comparator) {
         return stream.sorted(comparator).collect(Collectors.<T>toList());
-    }
-
-    /**
-     * Convert an iterator to a stream.
-     *
-     * @param <T> A {@link Stream}
-     * @param iterator The {@code Iterator} to convert.
-     * @return The resulting {@code Stream}.
-     */
-    public static <T> Stream<T> toStream(Iterator<T> iterator) {
-        return toStream(() -> iterator);
-    }
-
-    /**
-     * Convert an iterable to a stream.
-     *
-     * @param <T> A {@link Stream}
-     * @param iterable The {@code Iterable} to convert.
-     * @return The resulting {@code Stream}.
-     */
-    public static <T> Stream<T> toStream(Iterable<T> iterable) {
-        return StreamSupport.stream(iterable.spliterator(), false);
     }
 }
