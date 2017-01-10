@@ -944,32 +944,6 @@ public class CollectionUtils {
     }
 
     /**
-     * Create a predicate for a type that returns true if it equals a key.
-     *
-     * @param <T> The input type.
-     * @param key The key to match.
-     * @return A suitable {@code Predicate}.
-     */
-    public static <T> Predicate<T> matchKey(final T key) {
-        return t -> t == key;
-    }
-
-    /**
-     * Create a predicate for a type that returns true if a mapper applied
-     * to it causes it to equal a key.
-     *
-     * @param <T> The input type.
-     * @param <K> The key type.
-     * @param key The key to match.
-     * @param mapper The mapper {@code Function} to apply.
-     * @return A suitable {@code Predicate}.
-     */
-    public static <T, K> Predicate<T> matchKey(final K key,
-                                               Function<T, K> mapper) {
-        return t -> mapper.apply(t) == key;
-    }
-
-    /**
      * Is an array null or empty?
      *
      * @param <T> The array member type.
