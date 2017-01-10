@@ -313,10 +313,17 @@ public class PioneeringMission extends Mission {
      * @return The colony with the most outstanding tile improvement plans.
      */
     private static Colony getBestPioneeringColony(AIUnit aiUnit) {
-        final Comparator<AIColony> comp = Comparator.comparingInt(c ->
-            c.getTileImprovementPlans().size());
         final EuropeanAIPlayer owner = (EuropeanAIPlayer)aiUnit.getAIOwner();
-        AIColony bestColony = maximize(owner.getAIColonies(), comp);
+
+        AIColony bestColony = null;
+        int best_sz = 0;
+        for (AIColony aic : owner.getAIColonies()) {
+            int sz = aic.getTileImprovementPlans().size();
+            if ((bestColony == null) || (sz > best_sz)) {
+                bestColony = aic;
+                best_sz = sz;
+            }
+        }
 
         PathNode path;
         Colony colony;
