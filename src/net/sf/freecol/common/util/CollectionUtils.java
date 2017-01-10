@@ -151,21 +151,6 @@ public class CollectionUtils {
         }
     }
 
-    public static <K,V> void accumulateToMap(Map<K,V> map, K key, V value,
-                                             BinaryOperator<V> accumulator) {
-        if (map.containsKey(key)) {
-            map.put(key, accumulator.apply(map.get(key), value));
-        } else {
-            map.put(key, value);
-        }
-    }
-
-    public static <K,V> void accumulateMap(Map<K,V> map1, Map<K,V> map2,
-                                           BinaryOperator<V> accumulator) {
-        forEachMapEntry(map2,
-            e -> accumulateToMap(map1, e.getKey(), e.getValue(), accumulator));
-    }
-
     /**
      * Increment the count in an integer valued map for a given key.
      *
