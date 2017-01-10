@@ -43,6 +43,7 @@ import net.sf.freecol.common.model.Colony;
 import net.sf.freecol.common.model.Direction;
 import static net.sf.freecol.common.util.CollectionUtils.*;
 import net.sf.freecol.common.util.RandomChoice;
+import net.sf.freecol.common.util.Utils;
 import static net.sf.freecol.common.util.RandomUtils.*;
 
 
@@ -1184,8 +1185,11 @@ public final class Tile extends UnitLocation implements Named, Ownable {
      *     {@code Tile}.
      */
     public boolean isAdjacent(Tile tile) {
-        return (tile == null) ? false
-            : any(getSurroundingTiles(1, 1), matchKey(tile));
+        if (tile != null)
+            for (Tile t : getSurroundingTiles(1, 1))
+                if (tile == t)
+                    return true;
+        return false;
     }
 
     /**
