@@ -33,13 +33,11 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
-import java.util.function.BinaryOperator;
 import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.function.Supplier;
 import java.util.function.ToDoubleFunction;
 import java.util.function.ToIntFunction;
-import java.util.stream.Collector;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
@@ -1586,77 +1584,6 @@ public class CollectionUtils {
     private static <T> double sumDouble_internal(Stream<T> stream,
         ToDoubleFunction<T> tdf) {
         return stream.mapToDouble(tdf).sum();
-    }
-
-    /**
-     * Make a collector that takes lists and appends them.
-     *
-     * @param <T> The list member type.
-     * @return A list appending collector.
-     */
-    public static <T> Collector<List<T>,?,List<T>> toAppendedList() {
-        final BinaryOperator<List<T>> squash = (l1, l2) ->
-            (l1.isEmpty()) ? l2 : (l1.addAll(l2)) ? l1 : l1;
-        return Collectors.reducing(Collections.<T>emptyList(), squash);
-    }
-
-    /**
-     * Convenience function to convert an array to a list.
-     *
-     * @param <T> The array member type.
-     * @param array The array to convert.
-     * @return A map of the stream contents.
-     */
-    public static <T> List<T> toList(T[] array) {
-        return toList_internal(Arrays.stream(array));
-    }
-
-    /**
-     * Convenience function to convert a collection to a list.
-     *
-     * @param <T> The collection member type.
-     * @param c The {@code Collection} to convert.
-     * @return A map of the stream contents.
-     */
-    public static <T> List<T> toList(Collection<T> c) {
-        return toList_internal(c.stream());
-    }
-
-    /**
-     * Convenience function to collect a stream to a list.
-     *
-     * @param <T> The stream member type.
-     * @param stream The {@code Stream} to collect.
-     * @return A list of the stream contents.
-     */
-    public static <T> List<T> toList(Stream<T> stream) {
-        return (stream == null) ? Collections.<T>emptyList()
-            : toList_internal(stream);
-    }
-
-    /**
-     * Implement toList.
-     *
-     * @param <T> The stream member type.
-     * @param stream The {@code Stream} to collect.
-     * @return A list of the stream contents.
-     */
-    private static <T> List<T> toList_internal(Stream<T> stream) {
-        return stream.collect(Collectors.<T>toList());
-    }
-
-    /**
-     * Create a new collector that accumulates to a list but excludes
-     * null members.
-     *
-     * @param <T> The stream member type.
-     * @return A list collectors.
-     */
-    public static <T> Collector<T,?,List<T>> toListNoNulls() {
-        return Collector.<T,List<T>>of((Supplier<List<T>>)ArrayList::new,
-            (left, right) -> { if (right != null) left.add(right); },
-            (left, right) -> { left.addAll(right); return left; },
-            Collector.Characteristics.IDENTITY_FINISH);
     }
 
     /**
