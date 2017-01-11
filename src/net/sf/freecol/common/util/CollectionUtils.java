@@ -35,10 +35,7 @@ import java.util.Map.Entry;
 import java.util.Set;
 import java.util.function.Function;
 import java.util.function.Predicate;
-import java.util.function.ToIntFunction;
 import java.util.stream.Stream;
-
-import net.sf.freecol.common.util.CachingFunction;
 
 
 /**
@@ -538,17 +535,6 @@ public class CollectionUtils {
     private static <T> boolean any_internal(Stream<T> stream,
                                             Predicate<? super T> predicate) {
         return stream.anyMatch(predicate);
-    }
-
-    /**
-     * Helper to create a caching ToIntFunction.
-     *
-     * @param <T> The argument type to be converted to int.
-     * @param f The integer valued function to cache.
-     * @return A caching {@code ToIntFunction}.
-     */
-    public static <T> ToIntFunction<T> cacheInt(Function<T, Integer> f) {
-        return t -> new CachingFunction<T, Integer>(f).apply(t);
     }
 
     /**
