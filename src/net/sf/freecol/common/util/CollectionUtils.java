@@ -553,17 +553,6 @@ public class CollectionUtils {
     }
 
     /**
-     * Helper to create a caching comparator.
-     *
-     * @param <T> The argument type to be converted to int.
-     * @param f The integer valued function to use in comparison.
-     * @return A caching {@code Comparator}.
-     */
-    public static <T> Comparator<T> cachingIntComparator(Function<T, Integer> f) {
-        return Comparator.comparingInt(cacheInt(f));
-    }
-
-    /**
      * Helper to create a caching ToDoubleFunction.
      *
      * @param <T> The argument type to be converted to double.
