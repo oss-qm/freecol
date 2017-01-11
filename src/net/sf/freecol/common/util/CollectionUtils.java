@@ -436,22 +436,6 @@ public class CollectionUtils {
         return stream.allMatch(predicate);
     }
 
-    public static final Predicate alwaysTruePred
-        = new Predicate() {
-            public boolean test(Object o) {
-                return true;
-            }};
-
-    /**
-     * Helper to create a predicate which is always true.
-     *
-     * @param <T> The stream member type.
-     * @return The always valid predicate for the stream type.
-     */
-    public static <T> Predicate<T> alwaysTrue() {
-        return alwaysTruePred;
-    }
-
     /**
      * Is an array non-empty?
      *
