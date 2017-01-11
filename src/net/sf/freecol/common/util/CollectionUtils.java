@@ -385,51 +385,6 @@ public class CollectionUtils {
     // Stream-based routines from here on
 
     /**
-     * Do all members of an array match a predicate?
-     * If the array is null, also return true.
-     *
-     * @param <T> The array member type.
-     * @param array The array to test.
-     * @param predicate The {@code Predicate} to test with.
-     * @return True if all members pass the predicate test.
-     */
-    public static <T> boolean all(T[] array, Predicate<? super T> predicate) {
-        if (array != null && array.length > 0)
-            for (int x=0; x<array.length; x++)
-                if (!predicate.test(array[x])) return false;
-        return true;
-    }
-
-    /**
-     * Do all members of an collection match a predicate?
-     *
-     * @param <T> The collection member type.
-     * @param c The {@code Collection} to test.
-     * @param predicate The {@code Predicate} to test with.
-     * @return True if all members pass the predicate test.
-     */
-    public static <T> boolean all(Collection<T> c,
-                                  Predicate<? super T> predicate) {
-        if (c != null)
-            for (T e : c)
-                if (!predicate.test(e)) return false;
-        return true;
-    }
-
-    /**
-     * Do all members of an stream match a predicate?
-     *
-     * @param <T> The stream member type.
-     * @param stream The {@code Stream} to test.
-     * @param predicate The {@code Predicate} to test with.
-     * @return True if all members pass the predicate test.
-     */
-    public static <T> boolean all(Stream<T> stream,
-                                  Predicate<? super T> predicate) {
-        return (stream == null) ? true : stream.allMatch(predicate);
-    }
-
-    /**
      * Is an array non-empty?
      *
      * @param <T> The array member type.
