@@ -575,17 +575,6 @@ public class CollectionUtils {
     }
 
     /**
-     * Helper to create a caching comparator.
-     *
-     * @param <T> The argument type to be converted to double.
-     * @param f The double valued function to use in comparison.
-     * @return A caching {@code Comparator}.
-     */
-    public static <T> Comparator<T> cachingDoubleComparator(Function<T, Double> f) {
-        return Comparator.comparingDouble(cacheDouble(f));
-    }
-
-    /**
      * Implement dump().
      *
      * @param header Optional informational string to print first.
