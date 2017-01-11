@@ -840,8 +840,12 @@ public class FreeColDirectories {
      */
     public static List<String> getLanguageIdList() {
         File[] files = getI18nDirectory().listFiles();
-        return (files == null) ? Collections.<String>emptyList()
-            : transform(files, f -> f.canRead(), f -> getLanguageId(f));
+        if (files == null) return Collections.<String>emptyList();
+        List<String> result = new ArrayList<>();
+        for (File f : files)
+            if (f.canRead())
+                result.add(getLanguageId(f));
+        return result;
     }
 
     /**
