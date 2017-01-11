@@ -33,7 +33,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
-import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.stream.Stream;
 
@@ -710,128 +709,6 @@ public class CollectionUtils {
      */
     private static <T> T first_internal(Stream<T> stream, T fail) {
         return stream.findFirst().orElse(fail);
-    }
-
-    /**
-     * Flatten an array into a stream derived from its component streams.
-     *
-     * @param <T> The array member type.
-     * @param <R> The resulting stream member type.
-     * @param array The array to flatten.
-     * @param mapper A mapping {@code Function} to apply.
-     * @return A stream of the mapped collection.
-     */
-    public static <T, R> Stream<R> flatten(T[] array,
-        Function<? super T, ? extends Stream<? extends R>> mapper) {
-        return flatten_internal(Arrays.stream(array), mapper);
-    }
-
-    /**
-     * Flatten an array into a stream derived from its component streams.
-     *
-     * @param <T> The array member type.
-     * @param <R> The resulting stream member type.
-     * @param array The array to flatten.
-     * @param predicate A {@code Predicate} to filter the collection with.
-     * @param mapper A mapping {@code Function} to apply.
-     * @return A stream of the mapped collection.
-     */
-    public static <T, R> Stream<R> flatten(T[] array,
-        Predicate<? super T> predicate,
-        Function<? super T, ? extends Stream<? extends R>> mapper) {
-        return flatten_internal(Arrays.stream(array), predicate, mapper);
-    }
-
-    /**
-     * Flatten a collection into a stream derived from its component streams.
-     *
-     * @param <T> The collection member type.
-     * @param <R> The resulting stream member type.
-     * @param c The {@code Collection} to flatten.
-     * @param mapper A mapping {@code Function} to apply.
-     * @return A stream of the mapped collection.
-     */
-    public static <T, R> Stream<R> flatten(Collection<T> c,
-        Function<? super T, ? extends Stream<? extends R>> mapper) {
-        return flatten_internal(c.stream(), mapper);
-    }
-
-    /**
-     * Flatten a collection into a stream derived from its component streams.
-     *
-     * @param <T> The collection member type.
-     * @param <R> The resulting stream member type.
-     * @param c The {@code Collection} to flatten.
-     * @param predicate A {@code Predicate} to filter the collection with.
-     * @param mapper A mapping {@code Function} to apply.
-     * @return A stream of the mapped collection.
-     */
-    public static <T, R> Stream<R> flatten(Collection<T> c,
-        Predicate<? super T> predicate,
-        Function<? super T, ? extends Stream<? extends R>> mapper) {
-        return flatten_internal(c.stream(), predicate, mapper);
-    }
-
-    /**
-     * Flatten the members of a stream.
-     *
-     * @param <T> The stream member type.
-     * @param <R> The resulting stream member type.
-     * @param stream The {@code Stream} to flatten.
-     * @param mapper A mapping {@code Function} to apply.
-     * @return A stream of the mapped stream.
-     */
-    public static <T, R> Stream<R> flatten(Stream<T> stream,
-        Function<? super T, ? extends Stream<? extends R>> mapper) {
-        return (stream == null) ? Stream.<R>empty()
-            : flatten_internal(stream, mapper);
-    }
-
-    /**
-     * Flatten the members of a stream.
-     *
-     * @param <T> The stream member type.
-     * @param <R> The resulting stream member type.
-     * @param stream The {@code Stream} to flatten.
-     * @param predicate A {@code Predicate} to filter the collection with.
-     * @param mapper A mapping {@code Function} to apply.
-     * @return A stream of the mapped stream.
-     */
-    public static <T, R> Stream<R> flatten(Stream<T> stream,
-        Predicate<? super T> predicate,
-        Function<? super T, ? extends Stream<? extends R>> mapper) {
-        return (stream == null) ? Stream.<R>empty()
-            : flatten_internal(stream, predicate, mapper);
-    }
-
-    /**
-     * Flatten the members of a stream.
-     *
-     * @param <T> The stream member type.
-     * @param <R> The resulting stream member type.
-     * @param stream The {@code Stream} to flatten.
-     * @param predicate A {@code Predicate} to filter the collection with.
-     * @param mapper A mapping {@code Function} to apply.
-     * @return A stream of the mapped stream.
-     */
-    private static <T, R> Stream<R> flatten_internal(Stream<T> stream,
-        Predicate<? super T> predicate,
-        Function<? super T, ? extends Stream<? extends R>> mapper) {
-        return stream.filter(predicate).flatMap(mapper);
-    }
-
-    /**
-     * Flatten the members of a stream.
-     *
-     * @param <T> The stream member type.
-     * @param <R> The resulting stream member type.
-     * @param stream The {@code Stream} to flatten.
-     * @param mapper A mapping {@code Function} to apply.
-     * @return A stream of the mapped stream.
-     */
-    private static <T, R> Stream<R> flatten_internal(Stream<T> stream,
-        Function<? super T, ? extends Stream<? extends R>> mapper) {
-        return stream.filter(predicate).flatMap(mapper);
     }
 
     /**
