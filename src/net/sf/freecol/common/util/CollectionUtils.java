@@ -35,7 +35,6 @@ import java.util.Map.Entry;
 import java.util.Set;
 import java.util.function.Function;
 import java.util.function.Predicate;
-import java.util.function.ToDoubleFunction;
 import java.util.function.ToIntFunction;
 import java.util.stream.Stream;
 
@@ -550,17 +549,6 @@ public class CollectionUtils {
      */
     public static <T> ToIntFunction<T> cacheInt(Function<T, Integer> f) {
         return t -> new CachingFunction<T, Integer>(f).apply(t);
-    }
-
-    /**
-     * Helper to create a caching ToDoubleFunction.
-     *
-     * @param <T> The argument type to be converted to double.
-     * @param f The double valued function to cache.
-     * @return A caching {@code ToDoubleFunction}.
-     */
-    public static <T> ToDoubleFunction<T> cacheDouble(Function<T, Double> f) {
-        return t -> new CachingFunction<T, Double>(f).apply(t);
     }
 
     /**
