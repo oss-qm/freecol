@@ -385,58 +385,6 @@ public class CollectionUtils {
     // Stream-based routines from here on
 
     /**
-     * Do all members of an array match a predicate?
-     *
-     * @param <T> The array member type.
-     * @param array The array to test.
-     * @param predicate The {@code Predicate} to test with.
-     * @return True if all members pass the predicate test.
-     */
-    public static <T> boolean all(T[] array, Predicate<? super T> predicate) {
-        return (array == null) ? true
-            : all_internal(Arrays.stream(array), predicate);
-    }
-
-    /**
-     * Do all members of an collection match a predicate?
-     *
-     * @param <T> The collection member type.
-     * @param c The {@code Collection} to test.
-     * @param predicate The {@code Predicate} to test with.
-     * @return True if all members pass the predicate test.
-     */
-    public static <T> boolean all(Collection<T> c,
-                                  Predicate<? super T> predicate) {
-        return (c == null) ? true : all_internal(c.stream(), predicate);
-    }
-
-    /**
-     * Do all members of an stream match a predicate?
-     *
-     * @param <T> The stream member type.
-     * @param stream The {@code Stream} to test.
-     * @param predicate The {@code Predicate} to test with.
-     * @return True if all members pass the predicate test.
-     */
-    public static <T> boolean all(Stream<T> stream,
-                                  Predicate<? super T> predicate) {
-        return (stream == null) ? true : all_internal(stream, predicate);
-    }
-
-    /**
-     * Implementation of all().
-     *
-     * @param <T> The stream member type.
-     * @param stream The {@code Stream} to test.
-     * @param predicate The {@code Predicate} to test with.
-     * @return True if all members pass the predicate test.
-     */
-    private static <T> boolean all_internal(Stream<T> stream,
-                                            Predicate<? super T> predicate) {
-        return stream.allMatch(predicate);
-    }
-
-    /**
      * Is an array non-empty?
      *
      * @param <T> The array member type.
