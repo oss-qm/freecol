@@ -2976,8 +2976,7 @@ public final class InGameController extends Controller {
                 return serverPlayer.clientError("Null purchase: " + nt);
             } else if (!nt.canBuy()) {
                 return serverPlayer.clientError("Can not buy: " + nt);
-            } else if (find(nt.getSettlementToUnit(),
-                            item.goodsMatcher()) == null) {
+            } else if (nt.findSettlementToUnit(item) == null) {
                 return serverPlayer.clientError("Item missing for "
                     + action + ": " + nt);
             }
@@ -2993,8 +2992,7 @@ public final class InGameController extends Controller {
                 return serverPlayer.clientError("Null sale: " + nt);
             } else if (!nt.canSell()) {
                 return serverPlayer.clientError("Can not sell: " + nt);
-            } else if (find(nt.getUnitToSettlement(),
-                            item.goodsMatcher()) == null) {
+            } else if (nt.findUnitToSettlement(item) == null) {
                 return serverPlayer.clientError("Item missing for "
                     + action + ": " + nt);
             }
@@ -3010,8 +3008,7 @@ public final class InGameController extends Controller {
                 return serverPlayer.clientError("Null gift: " + nt);
             } else if (!nt.canGift()) {
                 return serverPlayer.clientError("Can not gift: " + nt);
-            } else if (find(nt.getUnitToSettlement(),
-                            item.goodsMatcher()) == null) {
+            } else if (nt.findUnitToSettlement(item) == null) {
                 return serverPlayer.clientError("Item missing for "
                     + action + ": " + nt);
             }

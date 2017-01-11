@@ -360,6 +360,13 @@ public class NativeTrade extends FreeColGameObject {
         this.item = nti;
     }
 
+    private static NativeTradeItem findMatchingItem(List<NativeTradeItem> items, NativeTradeItem i) {
+        for (NativeTradeItem nt : items)
+            if (nt.getGoods().equals(i.getGoods()))
+                return nt;
+        return null;
+    }
+
     /**
      * Get the list of items the unit is able to offer the settlement.
      *
@@ -372,6 +379,17 @@ public class NativeTrade extends FreeColGameObject {
     }
 
     /**
+     * Find a item the unit is able to offer the settlement.
+     *
+     * Note: some of these items might be currently invalid.
+     *
+     * @return A {@code NativeTradeItem} the unit might sell.
+     */
+    public NativeTradeItem findUnitToSettlement(NativeTradeItem i) {
+        return findMatchingItem(this.unitToSettlement, i);
+    }
+
+    /**
      * Get the list of items the settlement is able to offer the unit.
      *
      * Note: some of these items might be currently invalid.
@@ -380,6 +398,17 @@ public class NativeTrade extends FreeColGameObject {
      */
     public List<NativeTradeItem> getSettlementToUnit() {
         return this.settlementToUnit;
+    }
+
+    /**
+     * Find an item the settlement is able to offer the unit.
+     *
+     * Note: some of these items might be currently invalid.
+     *
+     * @return A {@code NativeTradeItem} the unit might buy.
+     */
+    public NativeTradeItem findSettlementToUnit(NativeTradeItem i) {
+        return findMatchingItem(this.settlementToUnit, i);
     }
 
     /**
