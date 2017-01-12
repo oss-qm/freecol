@@ -394,7 +394,7 @@ public final class SelectDestinationDialog extends FreeColDialog<Location>
         this.comparatorBox.addItemListener(new ItemListener() {
             public void itemStateChanged(ItemEvent event) {
                 updateDestinationComparator();
-                SelectDestinationDialog.this.destinations.sort(SelectDestinationDialog.this.destinationComparator);
+                Collections.sort(SelectDestinationDialog.this.destinations, SelectDestinationDialog.this.destinationComparator);
                 updateDestinationList();
             }});
         this.comparatorBox.setSelectedIndex(
