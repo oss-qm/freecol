@@ -465,19 +465,6 @@ public class CollectionUtils {
     }
 
     /**
-     * Convenience function to convert a stream to an iterable.
-     *
-     * @param <T> The stream member type.
-     * @param stream The {@code Stream} to convert.
-     * @return The suitable {@code Iterable}.
-     */
-    public static <T> Iterable<T> iterable(final Stream<T> stream) {
-        return new Iterable<T>() {
-            public Iterator<T> iterator() { return stream.iterator(); }
-        };
-    }
-
-    /**
      * Convenience function to convert an array to a sorted list.
      *
      * @param <T> The array member type.
