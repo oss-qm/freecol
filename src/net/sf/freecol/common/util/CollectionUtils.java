@@ -33,7 +33,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
-import java.util.stream.Stream;
 
 
 /**
@@ -426,7 +425,7 @@ public class CollectionUtils {
      */
     public static <T> T first(T[] array) {
         return (array == null || array.length == 0) ? null
-            : first_internal(Arrays.stream(array), null);
+            : array[0];
     }
 
     /**
@@ -437,31 +436,21 @@ public class CollectionUtils {
      * @return The first item, or null on failure.
      */
     public static <T> T first(Collection<T> c) {
-        return (c == null || c.isEmpty()) ? null
-            : first_internal(c.stream(), null);
+        if (c == null || c.isEmpty()) return null;
+        for (T t : c)
+            return t;
+        return null;
     }
 
     /**
-     * Get the first item of a stream.
+     * Get the first item of a list.
      *
      * @param <T> Generic type T
-     * @param stream The {@code Stream} to search.
+     * @param stream The {@code List} to search.
      * @return The first item, or null on failure.
      */
-    public static <T> T first(Stream<T> stream) {
-        return (stream == null) ? null : first_internal(stream, null);
-    }
-
-    /**
-     * Implement first().
-     *
-     * @param <T> Generic type T
-     * @param stream The {@code Stream} to search.
-     * @param fail The value to return on failure.
-     * @return The first item, or fail on failure.
-     */
-    private static <T> T first_internal(Stream<T> stream, T fail) {
-        return stream.findFirst().orElse(fail);
+    public static <T> T first(List<T> list) {
+        return (list == null || list.size() == 0) ? null : list.get(0);
     }
 
     /**
