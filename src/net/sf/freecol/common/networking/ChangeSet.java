@@ -1543,8 +1543,8 @@ public class ChangeSet {
                 onto.add(m);
             }
         }
-        messages.sort(Message.messagePriorityComparator);
-        diverted.sort(Message.messagePriorityComparator);
+        Collections.sort(messages, Message.messagePriorityComparator);
+        Collections.sort(diverted, Message.messagePriorityComparator);
 
         // Merge the messages where possible
         if (messages.size() > 1) {

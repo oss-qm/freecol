@@ -682,7 +682,7 @@ public class AIColony extends AIObject implements PropertyChangeListener {
      */
     private void sortExportGoods() {
         synchronized (exportGoods) {
-            exportGoods.sort(ValuedAIObject.descendingValueComparator);
+            Collections.sort(exportGoods,ValuedAIObject.descendingValueComparator);
         }
     }
 
@@ -1026,7 +1026,7 @@ public class AIColony extends AIObject implements PropertyChangeListener {
     private void updateWishes(LogBuilder lb) {
         updateWorkerWishes(lb);
         updateGoodsWishes(lb);
-        wishes.sort(ValuedAIObject.descendingValueComparator);
+        Collections.sort(wishes, ValuedAIObject.descendingValueComparator);
     }
 
     /**
@@ -1317,7 +1317,7 @@ public class AIColony extends AIObject implements PropertyChangeListener {
         }
         tileImprovementPlans.clear();
         tileImprovementPlans.addAll(newPlans);
-        tileImprovementPlans.sort(ValuedAIObject.descendingValueComparator);
+        Collections.sort(tileImprovementPlans, ValuedAIObject.descendingValueComparator);
         if (!tileImprovementPlans.isEmpty()) {
             lb.add(", improve:");
             for (TileImprovementPlan tip : tileImprovementPlans) {
