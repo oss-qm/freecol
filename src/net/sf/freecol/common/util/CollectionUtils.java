@@ -33,7 +33,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
-import java.util.stream.Stream;
 
 
 /**
@@ -450,17 +449,6 @@ public class CollectionUtils {
         if (c == null || c.isEmpty()) return null;
         Iterator<T> it = c.iterator();
         return it.hasNext() ? it.next() : null;
-    }
-
-    /**
-     * Get the first item of a stream.
-     *
-     * @param <T> Generic type T
-     * @param stream The {@code Stream} to search.
-     * @return The first item, or null on failure.
-     */
-    public static <T> T first(Stream<T> stream) {
-        return (stream == null) ? null : stream.findFirst().orElse(fail);
     }
 
     /**
