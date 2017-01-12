@@ -25,6 +25,7 @@ import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.logging.Logger;
 
@@ -201,7 +202,7 @@ public final class NegotiationDialog extends FreeColDialog<DiplomaticTrade> {
                     allColonies.add(c); // did not know about this!
                 }
             }
-            available.sort(NegotiationDialog.this.freeColClient.getClientOptions().getColonyComparator());
+            Collections.sort(available, NegotiationDialog.this.freeColClient.getClientOptions().getColonyComparator());
 
             this.colonyBox.removeAllItems();
             for (Colony c : available) this.colonyBox.addItem(c);

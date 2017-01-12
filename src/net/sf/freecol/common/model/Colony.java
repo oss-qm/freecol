@@ -2019,7 +2019,7 @@ public class Colony extends Settlement implements Nameable, TradeLocation {
         result.addAll(getBuildings());
         result.add(buildQueue);
         result.add(populationQueue);
-        result.sort(Consumer.COMPARATOR);
+        Collections.sort(result, Consumer.COMPARATOR);
         return result;
     }
 
@@ -2286,7 +2286,7 @@ loop:   for (WorkLocation wl : getWorkLocationsForProducing(goodsType)) {
                             result.add(new TileImprovementSuggestion(ct.getWorkTile(), ti, improved));
                     }
 
-        result.sort(TileImprovementSuggestion.descendingAmountComparator);
+        Collections.sort(result, TileImprovementSuggestion.descendingAmountComparator);
         return result;
     }
 

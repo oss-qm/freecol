@@ -2157,7 +2157,7 @@ public final class InGameController extends FreeColClientHolder {
         }
 
         if (enhancedTradeRoutes) { // Prioritize by goods amount
-            toLoad.sort(AbstractGoods.descendingAmountComparator);
+            Collections.sort(toLoad,AbstractGoods.descendingAmountComparator);
         }
 
         // Load the goods.

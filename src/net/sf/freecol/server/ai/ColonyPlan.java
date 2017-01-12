@@ -834,7 +834,7 @@ public class ColonyPlan {
             bp.difficulty = Math.max(1.0f, Math.sqrt((double)difficulty));
         }
 
-        buildPlans.sort(buildPlanComparator);
+        Collections.sort(buildPlans, buildPlanComparator);
     }
 
     /**
@@ -905,7 +905,7 @@ public class ColonyPlan {
                 }
             };
 
-        workPlans.sort(comp);
+        Collections.sort(workPlans, comp);
     }
 
     /**
@@ -943,7 +943,7 @@ public class ColonyPlan {
         }
 
         // Always add raw/building materials first.
-        rawBuildingGoodsTypes.sort(productionComparator);
+        Collections.sort(rawBuildingGoodsTypes, productionComparator);
         Comparator<GoodsType> indexComparator = new Comparator<GoodsType>() {
             public int compare(GoodsType a, GoodsType b) {
                 return rawBuildingGoodsTypes.indexOf(b.getInputType())
