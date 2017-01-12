@@ -95,7 +95,7 @@ public class MetaServerUtils {
      * @return The {@code Timer} that was started, so that it can be cancelled
      *     if no longer needed.
      */
-    public static Timer startUpdateTimer(FreeColServer freeColServer) {
+    public static Timer startUpdateTimer(final FreeColServer freeColServer) {
         // This update is really a "Hi! I am still here!"-message,
         // since an additional update should be sent when a new
         // player is added to/removed from this server etc.
