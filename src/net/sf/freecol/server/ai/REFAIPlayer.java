@@ -443,7 +443,7 @@ public class REFAIPlayer extends EuropeanAIPlayer {
         // Attack naval targets.
         final Comparator<Unit> militaryStrengthComparator
             = getGame().getCombatModel().getMilitaryStrengthComparator();
-        rebelNavy.sort(militaryStrengthComparator);
+        Collections.sort(rebelNavy, militaryStrengthComparator);
         Iterator<Unit> ui = rebelNavy.iterator();
         List<Tile> entries = new ArrayList<>();
         entries.add(rebel.getEntryLocation().getTile());
@@ -824,7 +824,7 @@ public class REFAIPlayer extends EuropeanAIPlayer {
                             return (la == null ? 0 : la.size())
                                   -(lb == null ? 0 : lb.size());
                         }};
-                idlePorts.sort(portUnitComparator);
+                Collections.sort(idlePorts, portUnitComparator);
                 boolean bad = false;
                 while (!bad && !todo.isEmpty()) {
                     for (Location l : idlePorts) {

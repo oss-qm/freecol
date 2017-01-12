@@ -23,6 +23,7 @@ import java.awt.Component;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
@@ -283,7 +284,7 @@ public final class TradeRoutePanel extends FreeColPanel {
                 logger.warning("Dropped trade route: " + Messages.message(st));
             }
         }
-        routes.sort(TradeRoute.nameComparator);
+        Collections.sort(routes, TradeRoute.nameComparator);
 
         // Update the counts
         this.counts.clear();

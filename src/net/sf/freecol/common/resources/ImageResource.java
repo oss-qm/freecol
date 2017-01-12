@@ -29,6 +29,7 @@ import java.io.IOException;
 import java.net.URI;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
@@ -102,7 +103,7 @@ public class ImageResource extends Resource
                 }
 
                 if (baseImage != null) loadedImages.add(baseImage);
-                loadedImages.sort(biComp);
+                Collections.sort(loadedImages, biComp);
                 image = (baseImage != null) ? baseImage : first(loadedImages);
             }
         }
