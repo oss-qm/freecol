@@ -28,6 +28,7 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
@@ -338,7 +339,7 @@ public class HighScore extends FreeColObject {
         if (scores.size() > NUMBER_OF_HIGH_SCORES) {
             scores = scores.subList(0, NUMBER_OF_HIGH_SCORES - 1);
         }
-        scores.sort(descendingScoreComparator);
+        Collections.sort(scores, descendingScoreComparator);
     }
 
     /**
