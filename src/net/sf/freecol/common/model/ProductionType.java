@@ -309,12 +309,17 @@ public class ProductionType extends FreeColSpecObject {
      * @return The {@code GoodsType} of the most productive output.
      */
     public GoodsType getBestOutputType() {
-        AbstractGoods goods;
-        return (outputs == null
-            || (goods = maximize(outputs,
-                    AbstractGoods.ascendingAmountComparator)) == null)
-            ? null
-            : goods.getType();
+        if (outputs == null) return null;
+        GoodsType best_type = null;
+        int best_amount = 0;
+        for (AbstractGoods ag : outputs) {
+            int amount = ag.getAmount();
+            if ((best_type == null) || (amount > best_amount)) {
+                best_amount = amount;
+                best_type = ag.getType();
+            }
+        }
+        return best_type;
     }
 
     /**
