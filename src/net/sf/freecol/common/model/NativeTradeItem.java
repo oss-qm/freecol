@@ -20,7 +20,6 @@
 package net.sf.freecol.common.model;
 
 import java.util.Comparator;
-import java.util.function.Predicate;
 
 import javax.xml.stream.XMLStreamException;
 
@@ -162,20 +161,6 @@ public class NativeTradeItem extends GoodsTradeItem {
     public void setHaggleCount(int haggleCount) {
         this.haggleCount = haggleCount;
     }
-
-    /**
-     * Get a predicate to match this native trade item by its goods.
-     *
-     * @return A suitable {@code Predicate}.
-     */
-    public Predicate<NativeTradeItem> goodsMatcher() {
-        return new Predicate<NativeTradeItem>() {
-            public boolean test(NativeTradeItem i) {
-                return NativeTradeItem.this.getGoods().equals(i.getGoods());
-            }
-        };
-    }
-
 
     // Interface TradeItem
     // All provided by superclass
