@@ -33,7 +33,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
-import java.util.function.Predicate;
 import java.util.stream.Stream;
 
 
@@ -475,83 +474,6 @@ public class CollectionUtils {
         return new Iterable<T>() {
             public Iterator<T> iterator() { return stream.iterator(); }
         };
-    }
-
-    /**
-     * Is an array null or empty?
-     *
-     * @param <T> The array member type.
-     * @param array The array to test.
-     * @return True if an array is null or empty.
-     */
-    public static <T> boolean none(T[] array) {
-        return array == null || array.length == 0;
-    }
-
-    /**
-     * Do none of the members of an array match a predicate?
-     *
-     * @param <T> The array member type.
-     * @param array The array to test.
-     * @param predicate The {@code Predicate} to test with.
-     * @return True if no member passes the predicate test.
-     */
-    public static <T> boolean none(T[] array, Predicate<? super T> predicate) {
-        if (array != null && array.length > 0)
-            for (int x=0; x<array.length; x++)
-                if (predicate.test(array[x])) return false;
-        return true;
-    }
-
-    /**
-     * Is a collection empty?
-     *
-     * @param <T> The collection member type.
-     * @param c The {@code Collection} to test.
-     * @return True if the collection is null or empty.
-     */
-    public static <T> boolean none(Collection<T> c) {
-        return c == null || c.isEmpty();
-    }
-
-    /**
-     * Do none of the members of a collection match a predicate?
-     *
-     * @param <T> The collection member type.
-     * @param c The {@code Collection} to test.
-     * @param predicate The {@code Predicate} to test with.
-     * @return True if no member passes the predicate test.
-     */
-    public static <T> boolean none(Collection<T> c,
-                                   Predicate<? super T> predicate) {
-        if (c != null && !c.isEmpty())
-            for (T e : c)
-                if (predicate.test(e)) return false;
-        return true;
-    }
-
-    /**
-     * Is a stream null or empty?
-     *
-     * @param <T> The stream member type.
-     * @param stream The {@code Stream} to test.
-     * @return True if the stream is null or empty.
-     */
-    public static <T> boolean none(Stream<T> stream) {
-        return stream == null || !stream.findFirst().isPresent();
-    }
-
-    /**
-     * Do none of the members of a stream match a predicate?
-     *
-     * @param <T> The stream member type.
-     * @param stream The {@code Stream} to test.
-     * @param predicate The {@code Predicate} to test with.
-     * @return True if no member passes the predicate test.
-     */
-    public static <T> boolean none(Stream<T> stream,
-                                   Predicate<? super T> predicate) {
-        return (stream == null) ? true : stream.noneMatch(predicate);
     }
 
     /**
