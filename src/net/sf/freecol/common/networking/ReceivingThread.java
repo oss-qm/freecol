@@ -272,7 +272,7 @@ final class ReceivingThread extends Thread {
         }
     }
 
-    private Thread query(DOMMessage msg, final int replyId) {
+    private Thread query(final DOMMessage msg, final int replyId) {
         return new Thread(this.connection.getName() + "-query-" + replyId + "-"
                           + msg.getType()) {
             @Override
@@ -291,7 +291,7 @@ final class ReceivingThread extends Thread {
         };
     }
 
-    private Thread update(DOMMessage msg) {
+    private Thread update(final DOMMessage msg) {
         return new Thread(this.connection.getName() + "-update-"
                           + msg.getType()) {
             @Override
