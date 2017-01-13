@@ -182,8 +182,8 @@ public abstract class Message {
      * @param attributes The map of key,value pairs to set.
      */
     public void setStringAttributes(Map<String, String> attributes) {
-        forEachMapEntry(attributes,
-                        e -> setStringAttribute(e.getKey(), e.getValue()));
+        for (Map.Entry<String, String> e : attributes.entrySet())
+            setStringAttribute(e.getKey(), e.getValue());
     }
 
     /**
