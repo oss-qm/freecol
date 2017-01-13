@@ -61,7 +61,7 @@ public class ModOption extends AbstractOption<FreeColModFile> {
      * @return A list of {@code FreeColModFile}s.
      */
     public final List<FreeColModFile> getChoices() {
-        return new ArrayList<>(FreeColModFile.getModsList());
+        return FreeColModFile.getModsList();
     }
 
 
