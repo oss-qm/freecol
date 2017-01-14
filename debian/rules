@@ -22,7 +22,7 @@ ANT_HOME             := /usr/share/ant
 DEB_JARS             := ant-launcher ant-nodeps \
 	miglayout commons-cli cortado
 DEB_ANT_COMPILER     := modern
-DEB_ANT_BUILD_TARGET := package online-manual print-manual
+DEB_ANT_BUILD_TARGET := package
 DEB_BUILDDIR         := .
 DEB_ANT_BUILDFILE    := build.xml
 DEB_ANT_CLEAN_TARGET := clean
