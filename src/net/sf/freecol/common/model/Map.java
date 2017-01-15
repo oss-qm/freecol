@@ -403,6 +403,21 @@ public class Map extends FreeColGameObject implements Location {
         return this.tiles.length;
     }
 
+    public String dumpMap() {
+        StringBuffer sb = new StringBuffer();
+        int w = getWidth();
+        int h = getHeight();
+        for (int y=0; y<h; y++) {
+            for (int x=0; x<w; x++) {
+                Tile t = this.tiles[x][y];
+                sb.append(t.isLand() ?
+                    (t.getType().canSettle() ? "S" : "o") : " ");
+            }
+            sb.append("\n");
+        }
+        return sb.toString();
+    }
+
     /**
      * Gets the height of this map.
      *
