@@ -135,11 +135,6 @@ public class FreeColDirectories {
 
     public static final String MOD_DESCRIPTOR_FILE_NAME = "mod.xml";
 
-    /** Predicate to filter suitable candidates to be made into mods. */
-    private static final Predicate<File> modFileFilter = f ->
-        Utils.fileAnySuffix(f, MOD_FILE_SUFFIX, ZIP_FILE_SUFFIX)
-            || Utils.directoryAllPresent(f, MOD_DESCRIPTOR_FILE_NAME);
-
     /** Predicate to filter suitable candidates to be made into TCs. */
     private static final Predicate<File> tcFileFilter = f ->
         Utils.fileAnySuffix(f, TC_FILE_SUFFIX, ZIP_FILE_SUFFIX)
@@ -1023,6 +1018,11 @@ public class FreeColDirectories {
                                   locale);
     }
 
+    private static boolean checkModFile(File f) {
+        return (Utils.fileAnySuffix(f, MOD_FILE_SUFFIX, ZIP_FILE_SUFFIX)
+             || Utils.directoryAllPresent(f, MOD_DESCRIPTOR_FILE_NAME));
+    }
+
     /**
      * Get a list of the standard and current user mod files.
      *
@@ -1030,8 +1030,12 @@ public class FreeColDirectories {
      */
     public static List<File> getModFileList() {
         List<File> ret = new ArrayList<>();
-        ret.addAll(collectFiles(getStandardModsDirectory(), modFileFilter));
-        ret.addAll(collectFiles(getUserModsDirectory(), modFileFilter));
+        for (File f : getStandardModsDirectory().listFiles())
+            if (checkModFile(f)) ret.add(f);
+
+        for (File f : getUserModsDirectory().listFiles())
+            if (checkModFile(f)) ret.add(f);
+
         return ret;
     }
 
