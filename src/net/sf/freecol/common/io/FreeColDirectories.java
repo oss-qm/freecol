@@ -135,12 +135,6 @@ public class FreeColDirectories {
 
     public static final String MOD_DESCRIPTOR_FILE_NAME = "mod.xml";
 
-    /** Predicate to filter suitable candidates to be made into TCs. */
-    private static final Predicate<File> tcFileFilter = f ->
-        Utils.fileAnySuffix(f, TC_FILE_SUFFIX, ZIP_FILE_SUFFIX)
-            || Utils.directoryAllPresent(f, MOD_DESCRIPTOR_FILE_NAME,
-                                         SPECIFICATION_FILE_NAME);
-
     /**
      * The directory containing automatically created save games.  At
      * program start, the path of this directory is based on the path
@@ -1210,7 +1204,13 @@ public class FreeColDirectories {
      * @return A list of {@code File}s containing rulesets.
      */
     public static List<File> getTcFileList() {
-        return collectFiles(getRulesDirectory(), tcFileFilter);
+        List<File> result = new ArrayList<File>();
+        for (File f : getRulesDirectory().listFiles())
+            if (Utils.fileAnySuffix(f, TC_FILE_SUFFIX, ZIP_FILE_SUFFIX)
+             || Utils.directoryAllPresent(f, MOD_DESCRIPTOR_FILE_NAME, SPECIFICATION_FILE_NAME))
+                result.add(f);
+        Collections.sort(result);
+        return result;
     }
 
     /**
