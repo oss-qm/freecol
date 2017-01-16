@@ -27,12 +27,8 @@ import java.nio.file.StandardCopyOption;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
-import java.util.function.Function;
-import java.util.function.Predicate;
 import java.util.List;
 import java.util.Locale;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 import javax.swing.filechooser.FileSystemView;
 
 import net.sf.freecol.FreeCol;
@@ -51,10 +47,6 @@ public class FreeColDirectories {
 
     // No logger!  Many of these routines are called before logging is
     // initialized.
-
-    private static final Comparator<File> fileNameComparator
-        = Comparator.comparing(File::getName);
-
 
     private static final String AUTOSAVE_DIRECTORY = "autosave";
 
@@ -534,19 +526,6 @@ public class FreeColDirectories {
             autosaveDirectory = dir;
         }
     }
-
-    /**
-     * Collect files from a directory that match a predicate.
-     *
-     * @param dir The directory to load from.
-     * @param pred A {@code Predicate} to match files with.
-     * @return A list of {@code File}s.
-     */
-    private static List<File> collectFiles(File dir, Predicate<File> pred) {
-        return transform(fileStream(dir), pred, Function.<File>identity(),
-                         fileNameComparator);
-    }
-
 
     // Main initialization/bootstrap routines.
     // These need to be called early before the subsidiary directory
