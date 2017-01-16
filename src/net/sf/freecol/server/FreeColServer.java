@@ -771,12 +771,17 @@ public final class FreeColServer {
      */
     private ServerInfo getServerInfo(Connection mc) {
         if (getName() == null) setName(mc.getSocketName());
-        int slots = count(getGame().getLiveEuropeanPlayers(),
-            p -> !p.isREF() && ((ServerPlayer)p).isAI()
-                && !((ServerPlayer)p).isConnected());
-        int players = count(getGame().getLivePlayers(),
-            p -> !((ServerPlayer)p).isAI()
-                && ((ServerPlayer)p).isConnected());
+
+        int slots = 0;
+        for (Player p : getGame().getLiveEuropeanPlayers())
+            if (!p.isREF() && ((ServerPlayer)p).isAI() && !((ServerPlayer)p).isConnected())
+                slots++;
+
+        int players = 0;
+        for (Player p : getGame().getLivePlayers())
+            if (!((ServerPlayer)p).isAI() && ((ServerPlayer)p).isConnected())
+                players++;
+
         return new ServerInfo(getName(), mc.getHostAddress(), mc.getPort(),
                               slots, players,
                               this.serverState == ServerState.IN_GAME,
