@@ -441,6 +441,9 @@ public abstract class FreeColObject
      */
     public final boolean hasAbility(String id, FreeColSpecObjectType fcgot,
                                     int turn) {
+
+        System.out.println("FreeColObject::hasAbility() id="+id+" fcgot="+fcgot);
+        new Exception().printStackTrace();
         return FeatureContainer.hasAbility(getAbilities(id, fcgot, turn));
     }
 

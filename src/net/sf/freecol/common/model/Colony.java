@@ -589,6 +589,7 @@ public class Colony extends Settlement implements Nameable, TradeLocation {
                 if (walk.isAvailable())
                     result++;
         }
+        System.out.println("colony "+getName()+" counted "+result+" available worklocations");
         return result;
     }
 
@@ -609,6 +610,7 @@ public class Colony extends Settlement implements Nameable, TradeLocation {
                 if (walk.isAvailable())
                     result.add(walk);
         }
+        System.out.println("colony "+getName()+" "+result.size()+" available worklocations");
         return result;
     }
 
@@ -640,6 +642,7 @@ public class Colony extends Settlement implements Nameable, TradeLocation {
      *
      * @return The list of current {@code WorkLocation}s.
      */
+    // FIXME: hotpath - called by colonypanel once a second
     public List<WorkLocation> getCurrentWorkLocations() {
         List<WorkLocation> result = new ArrayList<>();
         synchronized (this.colonyTiles) {
@@ -652,6 +655,7 @@ public class Colony extends Settlement implements Nameable, TradeLocation {
                 if (walk.isCurrent())
                     result.add(walk);
         }
+//        System.out.println("colony "+getName()+" "+result.size()+" current worklocations");
         return result;
     }
 
@@ -2572,6 +2576,7 @@ loop:   for (WorkLocation wl : getWorkLocationsForProducing(goodsType)) {
     /**
      * {@inheritDoc}
      */
+    // here
     @Override
     public List<Ability> getAbilities(String id, FreeColSpecObjectType type,
                                         int turn) {

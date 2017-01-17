@@ -107,12 +107,15 @@ public final class FeatureContainer {
      * @return True if the abilities are `satisfied'.
      */
     public static boolean hasAbility(List<Ability> abilities) {
-        boolean ret = false;
-        for (Ability ability : abilities) {
+        System.out.println("FeatureContainer:hasAbility() list size: "+abilities.size());
+
+        if ((abilities == null) || (abilities.size() == 0))
+            return false;
+
+        for (Ability ability : abilities)
             if (!ability.getValue()) return false;
-            ret = true;
-        }
-        return ret;
+
+        return true;
     }
 
     /**
@@ -168,6 +171,7 @@ public final class FeatureContainer {
      * @param turn An optional applicable {@code Turn}.
      * @return A list of abilities.
      */
+    // here
     public final List<Ability> getAbilities(String id, FreeColSpecObjectType fcgot,
                                         int turn) {
         if (!abilitiesPresent())

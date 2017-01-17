@@ -742,9 +742,14 @@ public class BuildQueuePanel extends FreeColPanel implements ItemListener {
         final Specification spec = getSpecification();
         final int oldSize = lockReason.size();
 
+        System.out.println("checkAbilities() bt="+bt);
+        for (String s : lockReason)
+            System.out.println("  locked: "+s);
+
         for (Map.Entry<String,Boolean> e : bt.getRequiredAbilities().entrySet()) {
                 final String id = e.getKey();
                 final boolean value = e.getValue();
+                System.out.println("-"+bt+" needs "+value);
                 if (this.featureContainer.hasAbility(id, null, Turn.UNDEFINED) != value
                     && this.colony.hasAbility(id) != value) {
                     FreeColSpecObjectType source
