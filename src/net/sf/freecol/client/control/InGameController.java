@@ -1144,20 +1144,22 @@ public final class InGameController extends FreeColClientHolder {
      */
     private boolean movePath(Unit unit, PathNode path) {
         for (; path != null; path = path.next) {
-            if (unit.isAtLocation(path.getLocation())) continue;
+            Location location = path.getLocation();
+            if (unit.isAtLocation(location)) continue;
 
-            if (path.getLocation() instanceof Europe) {
+            if (location instanceof Europe) {
                 if (unit.hasTile()
                     && unit.getTile().isDirectlyHighSeasConnected()) {
-                    moveTo(unit, path.getLocation());
+                    moveTo(unit, location);
                 } else {
                     logger.warning("Can not move to Europe from "
                         + unit.getLocation()
                         + " on path: " + path.fullPathToString());
                 }
                 return false;
-            } else if (path.getLocation() instanceof Tile) {
-                if (path.getDirection() == null) {
+            } else if (location instanceof Tile) {
+                Direction direction = path.getDirection();
+                if (direction == null) {
                     if (unit.isInEurope()) {
                         moveTo(unit, unit.getGame().getMap());
                     } else {
@@ -1166,7 +1168,7 @@ public final class InGameController extends FreeColClientHolder {
                     }
                     return false;
                 } else {
-                    if (!moveDirection(unit, path.getDirection(), false)) {
+                    if (!moveDirection(unit, direction, false)) {
                         return false;
                     }
                     if (unit.hasTile()
@@ -1176,7 +1178,7 @@ public final class InGameController extends FreeColClientHolder {
                         return false;
                     }
                 }
-            } else if (path.getLocation() instanceof Unit) {
+            } else if (location instanceof Unit) {
                 return moveEmbark(unit, path.getDirection());
 
             } else {
