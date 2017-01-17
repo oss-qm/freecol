@@ -500,7 +500,7 @@ public final class ReportCompactColonyPanel extends ReportPanel
         if (!s.colony.getTile().isCoastland()) {
             key = "annotation.inland";
             t.add(Messages.message("report.colony.annotation.inland"));
-        } else if ((building = s.colony.getWorkLocationWithAbility(Ability.PRODUCE_IN_WATER, Building.class)) == null) {
+        } else if ((building = s.colony.getBuildingWithAbility(Ability.PRODUCE_IN_WATER)) == null) {
             key = "annotation.coastal";
             t.add(Messages.message("report.colony.annotation.coastal"));
         } else {
@@ -510,7 +510,7 @@ public final class ReportCompactColonyPanel extends ReportPanel
         if (ResourceManager.hasResource(key))
             annotations += ResourceManager.getString(key);
 
-        if ((building = s.colony.getWorkLocationWithAbility(Ability.EXPORT, Building.class)) != null) {
+        if ((building = s.colony.getBuildingWithAbility(Ability.EXPORT)) != null) {
             annotations += "*";
             t.add(Messages.message(building.getLabel()));
         }
@@ -753,8 +753,7 @@ public final class ReportCompactColonyPanel extends ReportPanel
         // places.
         // Colour: cAlarm if completion is blocked, otherwise cPlain.
         int empty = 0;
-        Building school = s.colony.getWorkLocationWithAbility(Ability.TEACH,
-                                                              Building.class);
+        Building school = s.colony.getBuildingWithAbility(Ability.TEACH);
         if (school != null) empty = school.getType().getWorkPlaces();
         for (Entry<Unit, Integer> e
                  : mapEntriesByValue(s.teachers, descendingIntegerComparator)) {
