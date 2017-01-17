@@ -1,0 +1,2 @@
+* optimize direction handling w/o creating point instances
+* FreeColObject::hasAbility()

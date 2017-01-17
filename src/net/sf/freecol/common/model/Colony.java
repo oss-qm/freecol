@@ -598,6 +598,7 @@ public class Colony extends Settlement implements Nameable, TradeLocation {
      *
      * @return The list of current {@code WorkLocation}s.
      */
+    // FIXME: hotpath - called by colonypanel once a second
     public List<WorkLocation> getCurrentWorkLocationsList() {
         List<WorkLocation> result = new ArrayList<>();
         synchronized (this.colonyTiles) {
@@ -2569,6 +2570,7 @@ loop:   for (WorkLocation wl : getWorkLocationsForProducing(goodsType)) {
     /**
      * {@inheritDoc}
      */
+    // here
     @Override
     public List<Ability> getAbilities(String id, FreeColSpecObjectType type,
                                         int turn) {
