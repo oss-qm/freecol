@@ -57,6 +57,7 @@ public final class UserConnectionHandler extends ServerInputHandler {
     public Element handleElement(Connection c, Element e)
             throws UnknownServiceException {
         String tag = e.getTagName();
+        System.out.println("UserConnectionHandler: "+tag);
         switch (tag) {
             case GameStateMessage.TAG:
                 return handler(false, c, new GameStateMessage(getGame(), e));

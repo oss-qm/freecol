@@ -228,6 +228,7 @@ public final class FreeColServer {
      * @param port The TCP port to use for the public socket.
      */
     private FreeColServer(String name, int port) throws IOException {
+        System.out.println("FreeColServer: name="+name+" port="+port);
         this.name = name;
         this.server = serverStart(port); // Throws IOException
         this.userConnectionHandler = new UserConnectionHandler(this);
@@ -294,6 +295,7 @@ public final class FreeColServer {
                          Specification specification, int port, String name)
         throws IOException {
         this(name, port);
+        System.out.println("FreeColServer: w/ specification A name="+name+" port="+port);
 
         this.publicServer = publicServer;
         this.singlePlayer = singlePlayer;
@@ -325,6 +327,7 @@ public final class FreeColServer {
                          Specification specification, int port, String name)
         throws FreeColException, IOException, XMLStreamException {
         this(name, port);
+        System.out.println("FreeColServer: w/ specification B name="+name+" port="+port);
 
         this.serverGame = loadGame(savegame, specification);
         // NationOptions will be read from the saved game.
@@ -496,6 +499,7 @@ public final class FreeColServer {
      */
     private ServerState changeServerState(ServerState serverState) {
         ServerState ret = this.serverState;
+        System.out.println("switch server state from "+ret+" to "+serverState);
         switch (this.serverState = serverState) {
         case PRE_GAME: case LOAD_GAME:
             getServer().setMessageHandlerToAllConnections(this.preGameInputHandler);
@@ -639,6 +643,7 @@ public final class FreeColServer {
      * @param connection The new {@code Connection}.
      */
     public void addPlayerConnection(Connection connection) {
+        System.out.println("addPlayerConnection in state "+this.serverState);
         switch (this.serverState) {
         case PRE_GAME: case LOAD_GAME:
             connection.setMessageHandler(this.preGameInputHandler);
@@ -700,12 +705,14 @@ public final class FreeColServer {
      */
     public void startGame() throws FreeColException {
         logger.info("Starting game.");
+        System.out.println("starting game ...");
         final Game game = buildGame();
 
         switch (this.serverState) {
         case PRE_GAME: // Send the updated game to the clients.
             for (Player player : game.getLivePlayers()) {
                 if (player.isAI()) continue;
+                System.out.println("sending out to player: "+player);
                 ServerPlayer serverPlayer = (ServerPlayer)player;
                 serverPlayer.invalidateCanSeeTiles();
                 ChangeSet cs = new ChangeSet();
@@ -717,6 +724,8 @@ public final class FreeColServer {
             break;
         default:
             logger.warning("Invalid startGame when server state = "
+                + this.serverState);
+            System.out.println("Invalid startGame when server state = "
                 + this.serverState);
             return;
         }

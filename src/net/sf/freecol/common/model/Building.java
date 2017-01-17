@@ -662,6 +662,7 @@ public class Building extends WorkLocation
     /**
      * {@inheritDoc}
      */
+    // here
     @Override
     public List<Ability> getAbilities(String id, FreeColSpecObjectType type,
                                         int turn) {

@@ -57,6 +57,7 @@ public final class PreGameInputHandler extends ServerInputHandler {
     public Element handleElement(Connection c, Element e)
             throws UnknownServiceException {
         String tag = e.getTagName().intern();
+        System.out.println("PreGameInputHandler: tag="+tag);
         switch (tag) {
             case ReadyMessage.TAG:
                 return handler(false, c, new ReadyMessage(getGame(), e));

@@ -206,6 +206,7 @@ public class Map extends FreeColGameObject implements Location {
          * @param other The adjacent {@code Position}.
          * @return The {@code Direction}, or null if not adjacent.
          */
+        // FIXME: optimize
         public Direction getDirection(Position other) {
             for (Direction d : Direction.values())
                 if (Utils.equals(other, new Position(this, d)))
@@ -891,6 +892,8 @@ public class Map extends FreeColGameObject implements Location {
         final GoalDecider gd = GoalDeciders.getLocationGoalDecider(end);
         final SearchHeuristic sh = getManhattenHeuristic(end);
         Unit embarkTo;
+
+	System.out.println("findMapPath: "+unit+" start "+start+" end "+end);
 
         PathNode path;
         if (start.getContiguity() == end.getContiguity()) {

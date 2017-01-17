@@ -113,6 +113,7 @@ public final class InGameInputHandler extends ServerInputHandler {
     public Element handleElement(Connection c, Element e)
             throws UnknownServiceException {
         String tag = e.getTagName().intern();
+        System.out.println("InGameInputHandler: "+tag);
         switch (tag) {
             case AbandonColonyMessage.TAG:
                 return handler(true, c, new AbandonColonyMessage(getGame(), e));

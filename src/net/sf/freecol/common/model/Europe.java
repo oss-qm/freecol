@@ -501,12 +501,12 @@ public class Europe extends UnitLocation
         super.disposeResources();
     }
 
-
     // Override FreeColObject
 
     /**
      * {@inheritDoc}
      */
+    // here
     @Override
     public List<Ability> getAbilities(String id, FreeColSpecObjectType fcgot,
                                         int turn) {

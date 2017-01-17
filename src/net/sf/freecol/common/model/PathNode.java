@@ -200,6 +200,17 @@ public class PathNode {
      *     this or the previous node location is not on the map.
      */
     public Direction getDirection() {
+	if (previous == null)
+            System.out.println("getDirection() previous=null");
+        else {
+	    if (previous.getTile() == null)
+		System.out.println("getDirection() previous.getTile()=null");
+	    else {
+		if (getTile() == null)
+		    System.out.println("getDirection() getTile()==null");
+	    }
+	}
+
         if (previous == null
             || previous.getTile() == null
             || getTile() == null) return null;

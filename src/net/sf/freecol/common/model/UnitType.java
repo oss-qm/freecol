@@ -408,6 +408,7 @@ public final class UnitType extends BuildableType implements Consumer {
      * @return a list of expert roles
      */
     public List<Role> getExpertRoles() {
+        System.out.println("UnitType::getExpertRoles(): "+this);
         List<Role> result = new ArrayList<>();
         for (Role r : getSpecification().getRoles())
             if (this == r.getExpertUnit())
@@ -421,6 +422,7 @@ public final class UnitType extends BuildableType implements Consumer {
      * @return A suitable role identifier for display purposes.
      */
     public String getDisplayRoleId() {
+        System.out.println("UnitType::getDisplayRoleId(): "+this);
         Role r = first(getExpertRoles());
         return (r != null) ? r.getId() : Specification.DEFAULT_ROLE_ID;
     }
