@@ -732,20 +732,18 @@ public class Colony extends Settlement implements Nameable, TradeLocation {
     }
 
     /**
-     * Gets a work location of a specific class with a given ability.
+     * Gets a buildingg with a given ability.
      *
-     * @param <T> The actual return type.
      * @param ability An ability key.
-     * @param returnClass The expected subclass.
-     * @return A {@code WorkLocation} with the required
+     * @return A {@code Building} with the required
      *     {@code Ability}, or null if not found.
      */
-    public <T extends WorkLocation> T getWorkLocationWithAbility(String ability,
-                                                                 Class<T> returnClass) {
-        WorkLocation wl = getWorkLocationWithAbility(ability);
-        try {
-            if (wl != null) return returnClass.cast(wl);
-        } catch (ClassCastException cce) {};
+    public Building getBuildingWithAbility(String ability) {
+        synchronized (this.buildingMap) {
+            for (Building b : this.buildingMap.values())
+                if (b.isCurrent() && b.hasAbility(ability))
+                    return b;
+        }
         return null;
     }
 
