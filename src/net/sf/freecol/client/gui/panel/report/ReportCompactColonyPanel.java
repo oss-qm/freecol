@@ -71,6 +71,8 @@ import net.sf.freecol.common.model.UnitType;
 import net.sf.freecol.common.model.WorkLocation;
 import net.sf.freecol.common.model.WorkLocation.Suggestion;
 import net.sf.freecol.common.resources.ResourceManager;
+import net.sf.freecol.common.util.IntAccMap;
+import net.sf.freecol.common.util.DoubleAccMap;
 import static net.sf.freecol.common.util.CollectionUtils.*;
 
 
@@ -860,46 +862,35 @@ public final class ReportCompactColonyPanel extends ReportPanel
                         "newline, span, growx");
 
         // Accumulate all the summaries
-        Map<Region, Integer> rRegionMap = new HashMap<>();
+        IntAccMap<Region> rRegionMap = new IntAccMap<>();
         List<TileImprovementSuggestion> rTileSuggestions = new ArrayList<>();
         int rFamine = 0, rBonus = 0, rSizeChange = 0,
             teacherLen = 0, improveLen = 0;
         double rNewColonist = 0.0;
         Map<GoodsType, ColonySummary.GoodsProduction> rProduction
             = new HashMap<>();
-        Map<UnitType, Integer> rTeachers = new HashMap<>();
+        IntAccMap<UnitType> rTeachers = new IntAccMap<>();
         List<Unit> rNotWorking = new ArrayList<>();
         List<UnitType> rCouldWork = new ArrayList<>();
-        Map<UnitType, Integer> rImprove = new HashMap<>();
-        Map<GoodsType, Double> rNeeded = new HashMap<>();
+        IntAccMap<UnitType> rImprove = new IntAccMap<>();
+        DoubleAccMap<GoodsType> rNeeded = new DoubleAccMap<>();
         for (ColonySummary s : summaries) {
-            accumulateToMap(rRegionMap, s.colony.getTile().getRegion(), 1,
-                            integerAccumulator);
+            rRegionMap.inc(s.colony.getTile().getRegion());
             rTileSuggestions.addAll(s.tileSuggestions);
             if (s.famine) rFamine++;
             if (s.newColonist > 0) rNewColonist += s.newColonist;
             rBonus += s.bonus;
             rSizeChange += s.sizeChange;
-            accumulateMap(rProduction, s.production,
-                          ColonySummary.goodsProductionAccumulator);
+            ColonySummary.accumulateGoodsProduction(rProduction, s.production);
             teacherLen = Math.max(teacherLen, s.teachers.size());
-            for (Unit u : s.teachers.keySet()) {
-                accumulateToMap(rTeachers, u.getType(), 1, integerAccumulator);
-            }
+            for (Unit u : s.teachers.keySet()) rTeachers.inc(u.getType());
             rNotWorking.addAll(s.notWorking);
             rCouldWork.addAll(s.couldWork);
             improveLen = Math.max(improveLen, s.improve.size() + s.want.size());
-            for (UnitType ut : s.improve.keySet()) {
-                accumulateToMap(rImprove, ut, 1, integerAccumulator);
-            }
-            for (UnitType ut : s.want.keySet()) {
-                accumulateToMap(rImprove, ut, 1, integerAccumulator);
-            }
-            if (s.needed != null && s.needed.getType().isStorable()) {
-                accumulateToMap(rNeeded, s.needed.getType(),
-                    (double)s.needed.getAmount() / s.completeTurns,
-                    doubleAccumulator);
-            }
+            for (UnitType ut : s.improve.keySet()) rImprove.inc(ut);
+            for (UnitType ut : s.want.keySet()) rImprove.inc(ut);
+            if (s.needed != null && s.needed.getType().isStorable())
+                rNeeded.addDouble(s.needed.getType(), (double)s.needed.getAmount() / s.completeTurns);
         }
         rNewColonist = Math.round(rNewColonist / summaries.size());
 

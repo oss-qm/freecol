@@ -58,14 +58,6 @@ public class CollectionUtils {
     private static final double SUM_DOUBLE_DEFAULT = 0.0;
     private static final double PRODUCT_DEFAULT = 1.0;
 
-    /** Trivial integer accumulator. */
-    public static final BinaryOperator<Integer> integerAccumulator
-        = (i1, i2) -> i1 + i2;
-
-    /** Trivial double accumulator. */
-    public static final BinaryOperator<Double> doubleAccumulator
-        = (d1, d2) -> d1 + d2;
-
     public static final BinaryOperator<Double> doubleMultiplicator
         = new BinaryOperator<Double>() {
             public Double apply(Double d1, Double d2) {
