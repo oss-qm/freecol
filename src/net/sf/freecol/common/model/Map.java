@@ -206,6 +206,7 @@ public class Map extends FreeColGameObject implements Location {
          * @param other The adjacent {@code Position}.
          * @return The {@code Direction}, or null if not adjacent.
          */
+        // FIXME: optimize
         public Direction getDirection(Position other) {
             for (Direction d : Direction.values())
                 if (Utils.equals(other, new Position(this, d)))

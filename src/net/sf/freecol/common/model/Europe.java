@@ -507,6 +507,7 @@ public class Europe extends UnitLocation
     /**
      * {@inheritDoc}
      */
+    // here
     @Override
     public List<Ability> getAbilities(String id, FreeColSpecObjectType fcgot,
                                         int turn) {
