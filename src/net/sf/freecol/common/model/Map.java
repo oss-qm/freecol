@@ -1971,33 +1971,6 @@ public class Map extends FreeColGameObject implements Location {
     }
 
     /**
-     * Perform an action on each tile.
-     *
-     * @param consumer The {@code Consumer} action to perform.
-     */
-    public void forEachTile(Consumer<Tile> consumer) {
-        forEachTile(alwaysTrue(), consumer);
-    }
-
-    /**
-     * Perform an action on each tile that matches a predicate.
-     *
-     * @param predicate The {@code Predicate} to match.
-     * @param consumer The {@code Consumer} action to perform.
-     */
-    public void forEachTile(Predicate<Tile> predicate,
-                            Consumer<Tile> consumer) {
-        final int hgt = getHeight(), wid = getWidth();
-        for (int y = 0; y < hgt; y++) {
-            for (int x = 0; x < wid; x++) {
-                if (predicate.test(this.tiles[x][y])) {
-                    consumer.accept(this.tiles[x][y]);
-                }
-            }
-        }
-    }
-
-    /**
      * Iterates through a rectangular subpart of the Map.
      * Intentionally avoids calling methods doing redundant checks,
      * which would slow down map display.
