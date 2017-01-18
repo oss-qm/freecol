@@ -28,7 +28,6 @@ import java.util.List;
 import java.util.Random;
 import java.util.Set;
 import java.util.function.Function;
-import java.util.function.Predicate;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
@@ -69,6 +68,7 @@ import net.sf.freecol.common.option.MapGeneratorOptions;
 import net.sf.freecol.common.option.OptionGroup;
 import net.sf.freecol.common.util.LogBuilder;
 import net.sf.freecol.common.util.RandomChoice;
+import net.sf.freecol.common.util.Utils;
 import static net.sf.freecol.common.util.CollectionUtils.*;
 import static net.sf.freecol.common.util.RandomUtils.*;
 import net.sf.freecol.server.FreeColServer;
@@ -539,11 +539,13 @@ public class SimpleMapGenerator implements MapGenerator {
                 IndianNationType nation
                     = (IndianNationType) is.getOwner().getNationType();
                 int cm = (is.isCapital()) ? 2 : 1;
-                RandomChoice<UnitType> rc
-                    = find(nation.generateSkillsForTile(is.getTile()),
-                        matchKeyEquals(neededSkill, RandomChoice::getObject));
-                choices.add(new RandomChoice<>(is,
-                        (rc == null) ? 1 : rc.getProbability() * cm));
+                for (RandomChoice<UnitType> rc : nation.generateSkillsForTile(is.getTile())) {
+                    if (Utils.equals(neededSkill, rc.getObject())) {
+                        choices.add(new RandomChoice<>(is,
+                            (rc == null) ? 1 : rc.getProbability() * cm));
+                        break;
+                    }
+                }
             }
             if (!choices.isEmpty()) {
                 // ...and pick one that could do the missing job.
@@ -607,15 +609,16 @@ public class SimpleMapGenerator implements MapGenerator {
     private Tile findFreeNeighbouringTile(IndianSettlement is,
                                           List<Tile> tiles) {
         final Player owner = is.getOwner();
-        final Predicate<Tile> freeTilePred = t -> t != null
-            && t.getOwningSettlement() == null
-            && owner.canClaimForSettlement(t);
         final Direction[] dirns = Direction.getRandomDirections("freeTile",
                                                                 logger, random);
         for (Tile t : tiles) {
-            Tile ret = find(map(dirns, d -> t.getNeighbourOrNull(d)),
-                            freeTilePred);
-            if (ret != null) return ret;
+            for (Direction d : dirns) {
+                Tile n = t.getNeighbourOrNull(d);
+                if (n != null
+                        && t.getOwningSettlement() == null
+                        && owner.canClaimForSettlement(t))
+                    return n;
+            }
         }
         return null;
     }
@@ -934,7 +937,13 @@ public class SimpleMapGenerator implements MapGenerator {
             lb.add("Could not find a debug colony site.\n");
             return;
         }
-        colonyTile.setType(find(spec.getTileTypeList(), t -> !t.isWater()));
+
+        for (TileType tt : spec.getTileTypeList())
+            if (!tt.isWater()) {
+                colonyTile.setType(tt);
+                break;
+            }
+
         unitType = spec.getUnitType("model.unit.expertFarmer");
         Unit buildColonyUnit = new ServerUnit(game, colonyTile,
                                               player, unitType);
@@ -977,8 +986,12 @@ public class SimpleMapGenerator implements MapGenerator {
         Unit lumberjack = new ServerUnit(game, colony, player, unitType);
         Tile lt = lumberjack.getWorkTile();
         if (lt != null) {
-            TileType tt = find(spec.getTileTypeList(), TileType::isForested);
-            if (tt != null) lt.setType(tt);
+            for (TileType tt : spec.getTileTypeList()) {
+                if (tt.isForested()) {
+                    lt.setType(tt);
+                    break;
+                }
+            }
             lumberjack.changeWorkType(lumberjack.getType()
                 .getExpertProduction());
         }
