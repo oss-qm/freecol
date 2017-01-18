@@ -1523,11 +1523,12 @@ public class Player extends FreeColGameObject implements Nameable {
             return StringTemplate.template("model.player.colonialIndependence");
         final Event event = getSpecification()
             .getEvent("model.event.declareIndependence");
-        Limit limit = find(event.getLimits(), l -> !l.evaluate(this));
-        return (limit == null) ? null
-            : StringTemplate.template(limit.getDescriptionKey())
+        for (Limit limit : event.getLimits())
+            if (!limit.evaluate(this))
+                return StringTemplate.template(limit.getDescriptionKey())
                 .addAmount("%limit%", limit.getRightHandSide()
                     .getValue(getGame()));
+        return null;
     }
 
     /**
@@ -1968,7 +1969,10 @@ public class Player extends FreeColGameObject implements Nameable {
      */
     public Unit getUnitByName(String name) {
         synchronized (this.units) {
-            return find(this.units, matchKeyEquals(name, Unit::getName));
+            for (Unit u : this.units)
+                if (Utils.equals(name, u.getName()))
+                    return u;
+            return null;
         }
     }
 
@@ -2177,9 +2181,11 @@ public class Player extends FreeColGameObject implements Nameable {
     public final TradeRoute getTradeRouteByName(final String name,
         final TradeRoute exclude) {
         synchronized (this.tradeRoutes) {
-            return find(this.tradeRoutes,
-                        t -> t.getName().equals(name) && t != exclude);
+            for (TradeRoute t : this.tradeRoutes)
+                if (t.getName().equals(name) && t != exclude)
+                    return t;
         }
+        return null;
     }
 
     /**
