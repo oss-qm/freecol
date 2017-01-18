@@ -145,8 +145,10 @@ public class Tension implements Named {
      * @return The current level.
      */
     public final Level getLevel() {
-        return find(Level.values(), level -> value <= level.getLimit(),
-                    Level.HATEFUL);
+        for (Level level : Level.values())
+            if (value <= level.getLimit())
+                return level;
+        return Level.HATEFUL;
     }
 
     /**
