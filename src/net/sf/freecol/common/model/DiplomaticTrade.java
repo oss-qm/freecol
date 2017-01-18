@@ -323,8 +323,10 @@ public class DiplomaticTrade extends FreeColGameObject {
      * @return The {@code Stance} offered in this trade, or null if none.
      */
     public Stance getStance() {
-        TradeItem ti = find(this.items, i -> i instanceof StanceTradeItem);
-        return (ti == null) ? null : ti.getStance();
+        for (TradeItem ti : this.items)
+            if (ti instanceof StanceTradeItem)
+                return ti.getStance();
+        return null;
     }
 
     /**
@@ -349,9 +351,10 @@ public class DiplomaticTrade extends FreeColGameObject {
      * @return The gold offered in this trade.
      */
     public int getGoldGivenBy(Player player) {
-        TradeItem ti = find(this.items, i -> i instanceof GoldTradeItem
-            && player == i.getSource());
-        return (ti == null) ? -1 : ti.getGold();
+        for (TradeItem ti : this.items)
+            if ((ti instanceof GoldTradeItem) && (player == ti.getSource()))
+                return ti.getGold();
+        return -1;
     }
 
     /**
@@ -373,8 +376,10 @@ public class DiplomaticTrade extends FreeColGameObject {
      * @return The {@code Player} to be incited against.
      */
     public Player getVictim() {
-        TradeItem ti = find(this.items, i -> i instanceof InciteTradeItem);
-        return (ti == null) ? null : ti.getVictim();
+        for (TradeItem ti : this.items)
+            if (ti instanceof InciteTradeItem)
+                return ti.getVictim();
+        return null;
     }
 
     /**
