@@ -255,19 +255,33 @@ public class ServerGame extends Game implements ServerModelObject {
     public Player checkForWinner() {
         final Specification spec = getSpecification();
         if (spec.getBoolean(GameOptions.VICTORY_DEFEAT_REF)) {
-            Player winner = find(getLiveEuropeanPlayers(),
-                p -> p.getPlayerType() == Player.PlayerType.INDEPENDENT);
-            if (winner != null) return winner;
+            for (Player winner : getLiveEuropeanPlayers())
+                if (winner.getPlayerType() == Player.PlayerType.INDEPENDENT)
+                    return winner;
         }
+
         if (spec.getBoolean(GameOptions.VICTORY_DEFEAT_EUROPEANS)) {
-            List<Player> winners = transform(getLiveEuropeanPlayers(),
-                                             p -> !p.isREF());
-            if (winners.size() == 1) return winners.get(0);
+            Player winner = null;
+            int count = 0;
+            for (Player p : getLiveEuropeanPlayers()) {
+                if (!p.isREF()) {
+                    if (winner == null) winner = p;
+                    count++;
+                }
+            }
+            if (count == 1) return winner;
         }
+
         if (spec.getBoolean(GameOptions.VICTORY_DEFEAT_HUMANS)) {
-            List<Player> winners = transform(getLiveEuropeanPlayers(),
-                                             p -> !p.isAI());
-            if (winners.size() == 1) return winners.get(0);
+            Player winner = null;
+            int count = 0;
+            for (Player p : getLiveEuropeanPlayers()) {
+                if (!p.isAI()) {
+                    if (winner == null) winner = p;
+                    count++;
+                }
+            }
+            if (count == 1) return winner;
         }
         return null;
     }
