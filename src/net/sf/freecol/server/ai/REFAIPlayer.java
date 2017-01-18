@@ -269,8 +269,13 @@ public class REFAIPlayer extends EuropeanAIPlayer {
         final Random aiRandom = getAIRandom();
         // Find a representative offensive land unit to use to search
         // for the initial target.
-        AIUnit aiUnit = find(getAIUnits(), aiu -> !aiu.getUnit().isNaval()
-            && aiu.getUnit().isOffensiveUnit());
+        AIUnit aiUnit = null;
+        for (AIUnit aiu : getAIUnits())
+            if (!aiu.getUnit().isNaval() && aiu.getUnit().isOffensiveUnit()) {
+                aiUnit = aiu;
+                break;
+            }
+
         if (aiUnit == null) {
             logger.warning("REF has no army?!?");
             return false;
@@ -746,10 +751,13 @@ public class REFAIPlayer extends EuropeanAIPlayer {
                 AIUnit found = null;
                 Colony target = null;
                 for (AIUnit aiCarrier : aiCarriers) {
-                    found = first(transform(aiCarrier.getUnit().getUnits(),
-                                            u -> u.hasAbility(Ability.REF_UNIT),
-                                            u -> getAIUnit(u),
-                                            toListNoNulls()));
+                    for (Unit u : aiCarrier.getUnit().getUnits()) {
+                        if (u.hasAbility(Ability.REF_UNIT))
+                            found = getAIUnit(u);
+                        if (found != null)
+                            break;
+                    }
+
                     if (found != null
                         && (m = found.getMission()) != null
                         && m.isValid()
