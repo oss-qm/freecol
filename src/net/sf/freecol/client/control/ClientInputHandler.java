@@ -87,18 +87,6 @@ public abstract class ClientInputHandler extends FreeColClientHolder
         this.handlerMap.put(name, handler);
     }
 
-    /**
-     * Unregister a network request handler.
-     *
-     * @param name The handler name.
-     * @param handler The {@code ClienNetworkRequestHandler} to unregister.
-     * @return True if the supplied handler was actually removed.
-     */
-    protected final boolean unregister(String name, DOMClientNetworkRequestHandler handler) {
-        return this.handlerMap.remove(name, handler);
-    }
-
-
     // Useful handlers
 
     /**
