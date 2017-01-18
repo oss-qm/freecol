@@ -451,8 +451,11 @@ public abstract class Settlement extends GoodsLocation
 
         // To succeed, there must exist an available role for the unit
         // where the extra equipment for the role is present.
-        return find(unit.getAvailableRoles(military),
-                    r -> canProvideGoods(unit.getGoodsDifference(r, 1)));
+        for (Role r : unit.getAvailableRoles(military))
+            if (canProvideGoods(unit.getGoodsDifference(r, 1)))
+                return r;
+
+        return null;
     }
 
     /**
