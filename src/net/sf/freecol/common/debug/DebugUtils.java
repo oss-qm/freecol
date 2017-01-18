@@ -23,6 +23,7 @@ import java.awt.event.ActionEvent;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.function.Function;
 import java.util.function.Predicate;
@@ -588,8 +589,14 @@ public class DebugUtils {
         LogBuilder lb = new LogBuilder(256);
         lb.add("Desynchronization detected\n");
         lb.mark();
-        sMap.forEachTile(t -> sPlayer.canSee(t),
-                         t -> checkDesyncTile(cGame, sPlayer, t, lb));
+
+        Iterator<Tile> iterator = cGame.getMap().getWholeMapIterator();
+        while (iterator.hasNext()) {
+            Tile t = iterator.next();
+            if (sPlayer.canSee(t))
+                checkDesyncTile(cGame, sPlayer, t, lb);
+        }
+
         boolean problemDetected = lb.grew();
         // Do not check goods amount, the server only sends changes to
         // the client when the *price* changes.
