@@ -944,8 +944,13 @@ public class AIColony extends AIObject implements PropertyChangeListener {
      */
     public void requireGoodsWish(GoodsType type, int amount, int value,
                                  LogBuilder lb) {
-        GoodsWish gw = (GoodsWish)find(wishes, w -> w instanceof GoodsWish
-            && ((GoodsWish)w).getGoodsType() == type);
+        GoodsWish gw = null;
+        for (Wish w : wishes)
+            if (w instanceof GoodsWish && ((GoodsWish)w).getGoodsType() == type) {
+                gw = (GoodsWish)w;
+                break;
+            }
+
         if (gw != null) {
             gw.update(type, amount, gw.getValue() + 1);
             lb.add(", update ", gw);
@@ -968,8 +973,13 @@ public class AIColony extends AIObject implements PropertyChangeListener {
      */
     public void requireWorkerWish(UnitType type, boolean expertNeeded,
                                   int value, LogBuilder lb) {
-        WorkerWish ww = (WorkerWish)find(wishes, w -> w instanceof WorkerWish
-            && ((WorkerWish)w).getUnitType() == type);
+        WorkerWish ww = null;
+        for (Wish w : wishes)
+            if (w instanceof WorkerWish && ((WorkerWish)w).getUnitType() == type) {
+                ww = (WorkerWish)w;
+                break;
+            }
+
         if (ww != null) {
             ww.update(type, expertNeeded, ww.getValue() + 1);
             lb.add(", update ", ww);
@@ -1202,7 +1212,10 @@ public class AIColony extends AIObject implements PropertyChangeListener {
      */
     private TileImprovementPlan getPlanFor(Tile tile,
                                            List<TileImprovementPlan> plans) {
-        return find(plans, tip -> tip.getTarget() == tile);
+        for (TileImprovementPlan tip : plans)
+            if (tip.getTarget() == tile)
+                return tip;
+        return null;
     }
 
     /**
@@ -1224,11 +1237,13 @@ public class AIColony extends AIObject implements PropertyChangeListener {
             // Require food for the center tile, but otherwise insist
             // the tile is being used, and try to improve the
             // production that is underway.
-            GoodsType goodsType;
+            GoodsType goodsType = null;
             if (colonyTile.isColonyCenterTile()) {
-                AbstractGoods food = find(wl.getProduction(),
-                                          AbstractGoods::isFoodType);
-                goodsType = (food == null) ? null : food.getType();
+                for (AbstractGoods food : wl.getProduction())
+                    if (food.isFoodType()) {
+                        goodsType = food.getType();
+                        break;
+                    }
             } else {
                 goodsType = (wl.isEmpty()) ? null : wl.getCurrentWorkType();
             }
