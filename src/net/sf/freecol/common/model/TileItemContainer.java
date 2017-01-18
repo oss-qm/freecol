@@ -21,7 +21,6 @@ package net.sf.freecol.common.model;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.function.Predicate;
 import java.util.logging.Logger;
 import java.util.stream.Stream;
 
@@ -250,10 +249,13 @@ public class TileItemContainer extends FreeColGameObject {
      */
     public TileImprovement getImprovement(TileImprovementType type) {
         synchronized (tileItems) {
-            return (TileImprovement)find(tileItems,
-                ti -> (ti instanceof TileImprovement
-                    && ((TileImprovement)ti).getType() == type));
+            for (TileItem ti : tileItems) {
+                if (ti instanceof TileImprovement
+                        && ((TileImprovement)ti).getType() == type)
+                    return (TileImprovement)ti;
+            }
         }
+        return null;
     }
 
     /**
@@ -293,25 +295,18 @@ public class TileItemContainer extends FreeColGameObject {
     }
 
     /**
-     * Find a tile item matching a predicate.
-     *
-     * @param pred The {@code Predicate} to match.
-     * @return The {@code TileItem} found, or null if none present.
-     */
-    private TileItem findTileItem(Predicate<TileItem> pred) {
-        synchronized (tileItems) {
-            return find(tileItems, pred);
-        }
-    }
-
-    /**
      * Gets any lost city rumour in this container.
      *
      * @return A {@code LostCityRumour} item if any, or null if
      *     not found.
      */
     public final LostCityRumour getLostCityRumour() {
-        return (LostCityRumour)findTileItem(ti -> ti instanceof LostCityRumour);
+        synchronized (tileItems) {
+            for (TileItem ti : tileItems)
+                if (ti instanceof LostCityRumour)
+                    return (LostCityRumour)ti;
+        }
+        return null;
     }
 
     /**
@@ -320,7 +315,12 @@ public class TileItemContainer extends FreeColGameObject {
      * @return A {@code Resource} item, or null is none found.
      */
     public final Resource getResource() {
-        return (Resource)findTileItem(ti -> ti instanceof Resource);
+        synchronized (tileItems) {
+            for (TileItem ti : tileItems)
+                if (ti instanceof Resource)
+                    return (Resource)ti;
+        }
+        return null;
     }
 
     /**
@@ -330,8 +330,12 @@ public class TileItemContainer extends FreeColGameObject {
      *     not found.
      */
     public TileImprovement getRoad() {
-        return (TileImprovement)findTileItem(ti ->
-            ti instanceof TileImprovement && ((TileImprovement)ti).isRoad());
+        synchronized (tileItems) {
+            for (TileItem ti : tileItems)
+                if (ti instanceof TileImprovement && ((TileImprovement)ti).isRoad())
+                    return (TileImprovement)ti;
+        }
+        return null;
     }
 
     /**
@@ -341,8 +345,12 @@ public class TileItemContainer extends FreeColGameObject {
      *     not found.
      */
     public TileImprovement getRiver() {
-        return (TileImprovement)findTileItem(ti ->
-            ti instanceof TileImprovement && ((TileImprovement)ti).isRiver());
+        synchronized (tileItems) {
+            for (TileItem ti : tileItems)
+                if (ti instanceof TileImprovement && ((TileImprovement)ti).isRiver())
+                    return (TileImprovement)ti;
+        }
+        return null;
     }
 
     /**
