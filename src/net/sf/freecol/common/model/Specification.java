@@ -45,6 +45,7 @@ import net.sf.freecol.common.io.FreeColXMLReader;
 import net.sf.freecol.common.io.FreeColXMLWriter;
 import net.sf.freecol.common.model.NationOptions.Advantages;
 import net.sf.freecol.common.model.UnitChangeType.UnitChange;
+import net.sf.freecol.common.util.Utils;
 import net.sf.freecol.common.option.AbstractOption;
 import net.sf.freecol.common.option.AbstractUnitOption;
 import net.sf.freecol.common.option.BooleanOption;
@@ -1285,8 +1286,10 @@ public final class Specification {
      * @return The {@code UnitChangeType} found, or null if none present.
      */
     public UnitChangeType getUnitChangeType(String id) {
-        return find(unitChangeTypeList,
-                    matchKeyEquals(id, UnitChangeType::getId));
+        for (UnitChangeType uct : unitChangeTypeList)
+            if (Utils.equals(id, uct.getId()))
+                return uct;
+        return null;
     }
 
     /**
@@ -1410,18 +1413,21 @@ public final class Specification {
      * @return The free colonist unit type.
      */
     public UnitType getDefaultUnitType(NationType nationType) {
-        final Predicate<UnitType> p = (nationType == null)
-            ? ut -> !ut.hasAbility(Ability.BORN_IN_INDIAN_SETTLEMENT)
-                && !ut.hasAbility(Ability.REF_UNIT)
-            : (nationType.isIndian())
-            ? ut -> ut.hasAbility(Ability.BORN_IN_INDIAN_SETTLEMENT)
-                && !ut.hasAbility(Ability.REF_UNIT)
-            : (nationType.isREF())
-            ? ut -> !ut.hasAbility(Ability.BORN_IN_INDIAN_SETTLEMENT)
-                && ut.hasAbility(Ability.REF_UNIT)
-            : ut -> !ut.hasAbility(Ability.BORN_IN_INDIAN_SETTLEMENT)
-                && !ut.hasAbility(Ability.REF_UNIT);
-        return find(defaultUnitTypes, p, getDefaultUnitType());
+        for (UnitType ut : defaultUnitTypes)
+            if ((nationType == null)
+                    ? !ut.hasAbility(Ability.BORN_IN_INDIAN_SETTLEMENT)
+                        && !ut.hasAbility(Ability.REF_UNIT)
+                    : (nationType.isIndian())
+                    ? ut.hasAbility(Ability.BORN_IN_INDIAN_SETTLEMENT)
+                        && !ut.hasAbility(Ability.REF_UNIT)
+                    : (nationType.isREF())
+                    ? !ut.hasAbility(Ability.BORN_IN_INDIAN_SETTLEMENT)
+                        && ut.hasAbility(Ability.REF_UNIT)
+                    : !ut.hasAbility(Ability.BORN_IN_INDIAN_SETTLEMENT)
+                        && !ut.hasAbility(Ability.REF_UNIT))
+                return ut;
+
+        return getDefaultUnitType();
     }
 
     /**
@@ -1758,8 +1764,10 @@ public final class Specification {
      *     if any.
      */
     public OptionGroup getDifficultyOptionGroup(String id) {
-        return find(getDifficultyLevels(),
-                    matchKeyEquals(id, FreeColObject::getId));
+        for (OptionGroup dl : getDifficultyLevels())
+            if (Utils.equals(id, dl.getId()))
+                return dl;
+        return null;
     }
 
     /**
@@ -2336,9 +2344,14 @@ public final class Specification {
             for (SettlementType st : nt.getSettlementTypes()) {
                 for (PlunderType pt : st.getPlunderTypes()) {
                     if (pt.getId() == null) {
-                        Scope scope = find(pt.getScopes(),
-                            matchKey("model.ability.plunderNatives",
-                                     Scope::getAbilityId));
+                        Scope scope = null;
+                        for (Scope sc : pt.getScopes()) {
+                            if (Utils.equals("model.ability.plunderNatives", sc.getAbilityId())) {
+                                scope = sc;
+                                break;
+                            }
+                        }
+
                         String id = "plunder." + nt.getSuffix()
                             + ((st.isCapital()) ? ".capital" : "")
                             + ((scope == null) ? "" : ".extra");
