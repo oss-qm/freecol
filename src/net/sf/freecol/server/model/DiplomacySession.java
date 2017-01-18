@@ -19,7 +19,6 @@
 
 package net.sf.freecol.server.model;
 
-import java.util.function.Predicate;
 import java.util.logging.Logger;
 
 import net.sf.freecol.common.model.DiplomaticTrade;
@@ -258,15 +257,22 @@ public class DiplomacySession extends TimedSession {
     private static DiplomacySession findContactSession(Player p1, Player p2) {
         final ServerPlayer s1 = (ServerPlayer)p1;
         final ServerPlayer s2 = (ServerPlayer)p2;
-        final Predicate<Session> pred = s -> (s instanceof DiplomacySession)
-            && ((DiplomacySession)s).getAgreement() != null
-            && (((DiplomacySession)s).getAgreement().getContext()
-                == DiplomaticTrade.TradeContext.CONTACT)
-            && ((((DiplomacySession)s).getOwner() == s1
-                    && ((DiplomacySession)s).getOtherPlayer() == s2)
-                || (((DiplomacySession)s).getOwner() == s2
-                    && ((DiplomacySession)s).getOtherPlayer() == s1));
-        return (DiplomacySession)findSession(pred);
+
+        synchronized (allSessions) {
+            for (Session s : allSessions.values()) {
+                if ((s instanceof DiplomacySession)
+                    && ((DiplomacySession)s).getAgreement() != null
+                    && (((DiplomacySession)s).getAgreement().getContext()
+                            == DiplomaticTrade.TradeContext.CONTACT)
+                    && ((((DiplomacySession)s).getOwner() == s1
+                        && ((DiplomacySession)s).getOtherPlayer() == s2)
+                        || (((DiplomacySession)s).getOwner() == s2
+                        && ((DiplomacySession)s).getOtherPlayer() == s1)))
+                return (DiplomacySession)s;
+            }
+        }
+
+        return null;
     }
 
     /**

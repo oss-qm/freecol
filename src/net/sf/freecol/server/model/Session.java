@@ -23,7 +23,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.function.Predicate;
 import java.util.logging.Logger;
 
 import net.sf.freecol.common.model.FreeColGameObject;
@@ -39,7 +38,7 @@ public abstract class Session {
     private static final Logger logger = Logger.getLogger(Session.class.getName());
 
     /** A map of all active sessions. */
-    private static final Map<String, Session> allSessions = new HashMap<>();
+    protected static final Map<String, Session> allSessions = new HashMap<>();
 
     /** The key to this session. */
     private String key;
@@ -185,18 +184,6 @@ public abstract class Session {
     public static void clearAll() {
         synchronized (allSessions) {
             allSessions.clear();
-        }
-    }
-
-    /**
-     * Find a session matching a predicate.
-     *
-     * @param pred The {@code Predicate} to match.
-     * @return The {@code Session} found if any.
-     */
-    public static Session findSession(Predicate<Session> pred) {
-        synchronized (allSessions) {
-            return find(allSessions.values(), pred);
         }
     }
 
