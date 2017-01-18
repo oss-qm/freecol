@@ -23,6 +23,7 @@ import java.util.Arrays;
 import java.util.ArrayList;
 import java.util.EnumMap;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Random;
 import java.util.logging.Logger;
@@ -983,10 +984,12 @@ public class TerrainGenerator {
         // Add the bonuses only after the map is completed.
         // Otherwise we risk creating resources on fields where they
         // do not belong (like sugar in large rivers or tobacco on hills).
-        map.forEachTile(t -> {
-                perhapsAddBonus(t, !importBonuses);
-                if (!t.isLand()) encodeStyle(t);
-            });
+        Iterator<Tile> iterator = game.getMap().getWholeMapIterator();
+        while (iterator.hasNext()) {
+            Tile t = iterator.next();
+            perhapsAddBonus(t, !importBonuses);
+            if (!t.isLand()) encodeStyle(t);
+        }
 
         // Final cleanups
         map.resetContiguity();
