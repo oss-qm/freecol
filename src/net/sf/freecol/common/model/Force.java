@@ -22,7 +22,6 @@ package net.sf.freecol.common.model;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
-import java.util.function.Predicate;
 
 import javax.xml.stream.XMLStreamException;
 
@@ -183,12 +182,16 @@ public class Force extends FreeColSpecObject {
         final Specification spec = getSpecification();
         final UnitType unitType = au.getType(spec);
         final int n = au.getNumber();
-        final Predicate<AbstractUnit> matchPred = a ->
-            spec.getUnitType(a.getId()) == unitType
-                && a.getRoleId().equals(au.getRoleId());
 
         if (unitType.hasAbility(Ability.NAVAL_UNIT)) {
-            AbstractUnit refUnit = find(this.navalUnits, matchPred);
+            AbstractUnit refUnit = null;
+            for (AbstractUnit a : this.navalUnits) {
+                if (spec.getUnitType(a.getId()) == unitType
+                        && a.getRoleId().equals(au.getRoleId())) {
+                    refUnit = a;
+                    break;
+                }
+            }
             if (refUnit != null) {
                 refUnit.setNumber(refUnit.getNumber() + n);
                 if (unitType.canCarryUnits()) {
@@ -198,7 +201,14 @@ public class Force extends FreeColSpecObject {
                 this.navalUnits.add(au);
             }
         } else {
-            AbstractUnit refUnit = find(this.landUnits, matchPred);
+            AbstractUnit refUnit = null;
+            for (AbstractUnit a : this.landUnits) {
+                if (spec.getUnitType(a.getId()) == unitType
+                        && a.getRoleId().equals(au.getRoleId())) {
+                    refUnit = a;
+                    break;
+                }
+            }
             if (refUnit != null) {
                 refUnit.setNumber(refUnit.getNumber() + n);
                 this.spaceRequired += unitType.getSpaceTaken() * n;
