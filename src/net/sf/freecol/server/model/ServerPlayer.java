@@ -25,6 +25,7 @@ import java.util.Collections;
 import java.util.EnumMap;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map.Entry;
 import java.util.Random;
@@ -655,8 +656,14 @@ public class ServerPlayer extends Player implements ServerModelObject {
         }
 
         // Clean up remaining tile ownerships
-        for (Tile t : transform(getGame().getMap().getAllTiles(),
-                                matchKeyEquals(this, Tile::getOwner))) {
+        Iterator<Tile> iterator = getGame().getMap().getWholeMapIterator();
+        while (iterator.hasNext()) {
+            Tile t = iterator.next();
+
+            // skip out tiles that dont belong to the currently killed player
+            if ((t == null) || !equals(t.getOwner()))
+                continue;
+
             t.cacheUnseen();//+til
             t.changeOwnership(null, null);//-til
             cs.add(See.perhaps().always(this), t);
@@ -947,8 +954,10 @@ public class ServerPlayer extends Player implements ServerModelObject {
      */
     public Set<Tile> exploreMap(boolean reveal) {
         Set<Tile> result = new HashSet<>();
-        for (Tile t : transform(getGame().getMap().getAllTiles(),
-                                t -> hasExplored(t) != reveal)) {
+        Iterator<Tile> iterator = getGame().getMap().getWholeMapIterator();
+        while (iterator.hasNext()) {
+            Tile t = iterator.next();
+            if (hasExplored(t) == reveal) continue;
             t.setExplored(this, reveal);//-vis(this)
             result.add(t);
         }
