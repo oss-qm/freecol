@@ -109,17 +109,6 @@ public abstract class ServerInputHandler extends FreeColServerHolder
     }
 
     /**
-     * Unregister a network request handler.
-     *
-     * @param name The handler name.
-     * @param handler The {@code NetworkRequestHandler} to unregister.
-     * @return True if the supplied handler was actually removed.
-     */
-    protected final boolean unregister(String name, NetworkRequestHandler handler) {
-        return this.handlerMap.remove(name, handler);
-    }
-
-    /**
      * Wrapper for new message handling.
      *
      * @param current If true, insist the message is from the current player
