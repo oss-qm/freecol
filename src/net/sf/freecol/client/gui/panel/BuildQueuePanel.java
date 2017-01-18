@@ -871,11 +871,16 @@ public class BuildQueuePanel extends FreeColPanel implements ItemListener {
             // Missing unit build ability?
             if (!this.featureContainer.ableToBuild(ut)
                 && !this.colony.ableToBuild(ut, turn)) {
-                Ability buildAbility = find(spec.getAbilities(Ability.BUILD),
-                    a -> (a.appliesTo(ut)
-                        && a.getValue()
-                        && a.getSource() != null
-                        && !unbuildableTypes.contains(a.getSource())));
+
+                Ability buildAbility = null;
+                for (Ability a : spec.getAbilities(Ability.BUILD)) {
+                    if (a.appliesTo(ut) && a.getValue() && a.getSource() != null
+                                        && !unbuildableTypes.contains(a.getSource())) {
+                        buildAbility = a;
+                        break;
+                    }
+                }
+
                 reasons.add((buildAbility != null)
                     ? ((buildAbility.getSource() instanceof Named)
                         ? Messages.getName((Named)buildAbility.getSource())
