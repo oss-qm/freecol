@@ -537,10 +537,17 @@ public abstract class WorkLocation extends UnitLocation
     public UnitType getExpertUnitType() {
         final Specification spec = getSpecification();
         ProductionType pt = getBestProductionType(false, null);
-        return (pt == null) ? null
-            : find(map(pt.getOutputList(),
-                       ag -> spec.getExpertForProducing(ag.getType())),
-                   isNotNull());
+
+        if (pt == null)
+            return null;
+
+        for (AbstractGoods ag : pt.getOutputList()) {
+            UnitType ut = spec.getExpertForProducing(ag.getType());
+            if (ut != null)
+                return ut;
+        }
+
+        return null;
     }
 
     /**
