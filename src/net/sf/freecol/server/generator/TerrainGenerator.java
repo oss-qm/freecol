@@ -969,11 +969,13 @@ public class TerrainGenerator {
         List<ServerRegion> geographic
             = transform(fixed, ServerRegion::isGeographic);
         for (ServerRegion sr : newRegions) {
-            ServerRegion gr = find(geographic, g -> g.containsCenter(sr));
-            if (gr != null) {
-                sr.setParent(gr);
-                gr.addChild(sr);
-                gr.setSize(gr.getSize() + sr.getSize());
+            for (ServerRegion gr : geographic) {
+                if (gr.containsCenter(sr)) {
+                    sr.setParent(gr);
+                    gr.addChild(sr);
+                    gr.setSize(gr.getSize() + sr.getSize());
+                    break;
+                }
             }
             map.addRegion(sr);
         }
