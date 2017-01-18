@@ -1405,8 +1405,10 @@ public final class Tile extends UnitLocation implements Named, Ownable {
      * @return The most defensible adjacent land {@code Tile}.
      */
     public Tile getBestDisembarkTile(Player player) {
-        return find(getSafestSurroundingLandTiles(player),
-            Tile::isHighSeasConnected);
+        for (Tile t : getSafestSurroundingLandTiles(player))
+            if (t.isHighSeasConnected())
+                return t;
+        return null;
     }
 
     /**
@@ -1806,10 +1808,12 @@ public final class Tile extends UnitLocation implements Named, Ownable {
      * Update production after a change to this tile.
      */
     private void updateColonyTiles() {
-        WorkLocation wl = find(flatten(getGame().getAllColonies(null),
-                                       Colony::getAvailableWorkLocations),
-                               matchKey(this, WorkLocation::getWorkTile));
-        if (wl != null) wl.updateProductionType();
+        for (Colony c : getGame().getAllColonies(null))
+            for (WorkLocation wl : c.getAvailableWorkLocationsList())
+                if (wl.getWorkTile() == this) {
+                    wl.updateProductionType();
+                    break;
+                }
     }
 
     /**
@@ -2093,10 +2097,13 @@ public final class Tile extends UnitLocation implements Named, Ownable {
         if (getOwningSettlement() != null) {
             owner = getOwningSettlement().getOwner();
         }
-        return (owner != null && unit != null && unit.getOwner() != owner
-            && unit.getOwner().atWarWith(owner))
-            ? find(getUnitList(), Unit::isOffensiveUnit)
-            : null;
+
+        if (owner != null && unit != null && unit.getOwner() != owner
+                && unit.getOwner().atWarWith(owner))
+            for (Unit u : getUnitList())
+                if (u.isOffensiveUnit()) return u;
+
+        return null;
     }
 
     /**
