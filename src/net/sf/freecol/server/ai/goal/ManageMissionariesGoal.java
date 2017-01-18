@@ -161,16 +161,18 @@ public class ManageMissionariesGoal extends Goal {
 
 
     private IndianSettlement findSettlement(Tile tile) {
-        return (tile == null)
             // FIXME: We're in europe - let's deal with it.
-            ? null
+        if (tile == null) return null;
             // Possible FIXME: Slightly randomize findings?
             // Otherwise, missionaries starting from the same position
             // will find the same settlement.
-            : find(map(tile.getSurroundingTiles(1, MAX_SEARCH_RADIUS),
-                       Tile::getIndianSettlement),
-                   is -> is != null && !is.hasMissionary(player.getPlayer()),
-                null);
+        for (Tile t : tile.getSurroundingTiles(1, MAX_SEARCH_RADIUS)) {
+            IndianSettlement is = t.getIndianSettlement();
+            if (is != null && !is.hasMissionary(player.getPlayer()))
+                return is;
+        }
+
+        return null;
     }
 
 
