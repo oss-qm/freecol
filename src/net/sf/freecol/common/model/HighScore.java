@@ -158,9 +158,14 @@ public class HighScore extends FreeColObject {
         this.date = new Date();
         this.retirementTurn = game.getTurn().getNumber();
         this.score = player.getScore();
-        this.level = find(ScoreLevel.values(),
-                          sl -> sl.getMinimumScore() <= this.score,
-                          ScoreLevel.PARASITIC_WORM);
+
+        this.level = ScoreLevel.PARASITIC_WORM;
+        for (ScoreLevel sl : ScoreLevel.values())
+            if (sl.getMinimumScore() <= this.score) {
+                this.level = sl;
+                break;
+            }
+
         this.playerName = player.getName();
         this.nationId = player.getNationId();
         this.nationTypeId = player.getNationType().getId();
