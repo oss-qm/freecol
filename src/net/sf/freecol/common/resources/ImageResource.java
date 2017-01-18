@@ -32,7 +32,6 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
-import java.util.function.Predicate;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -182,9 +181,14 @@ public class ImageResource extends Resource
         if (cached != null) return cached;
 
         final int fwNew = wNew, fhNew = hNew;
-        final Predicate<BufferedImage> sizePred = img ->
-            img.getWidth() >= fwNew && img.getHeight() >= fhNew;
-        BufferedImage oim = find(loadedImages, sizePred);
+
+        BufferedImage oim = null;
+        for (BufferedImage img : loadedImages)
+            if (img.getWidth() >= fwNew && img.getHeight() >= fhNew) {
+                oim = img;
+                break;
+            }
+
         im = (oim != null) ? oim : loadedImages.get(loadedImages.size() - 1);
         w = im.getWidth();
         h = im.getHeight();
