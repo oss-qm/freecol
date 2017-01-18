@@ -1400,8 +1400,11 @@ public final class FreeColServer {
      * @return The player.
      */
     public ServerPlayer getPlayer(Connection connection) {
-        return (ServerPlayer)find(getGame().getPlayers(),
-            p -> ((ServerPlayer)p).getConnection() == connection);
+        for (Player p : getGame().getPlayers())
+            if (((ServerPlayer)p).getConnection() == connection)
+                return (ServerPlayer)p;
+
+        return null;
     }
 
     /**
