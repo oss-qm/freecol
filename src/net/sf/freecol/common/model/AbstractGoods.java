@@ -249,25 +249,21 @@ public class AbstractGoods extends FreeColObject implements Named {
     }
 
     /**
-     * find any in list by type
+     * find any in list with positive amount
      */
-    public static AbstractGoods findByType(List<AbstractGoods> l, GoodsType gt) {
+    public static AbstractGoods findPositive(List<AbstractGoods> l) {
         if (l != null)
             for (AbstractGoods ag : l)
-                if (ag.getType() == gt)
+                if (ag.amount > 0)
                     return ag;
 
-        return false;
-    }
-
-    public static AbstractGoods findByType(List<AbstractGoods> l, AbstractGoods ag) {
-        return findByType(l, ag.getType());
+        return null;
     }
 
     /**
      * find any in list by type
      */
-    public static AbstractGoods findByType(List<AbstractGoods> l, GoodsType gt) {
+    public static AbstractGoods findByType(List<? extends AbstractGoods> l, GoodsType gt) {
         if (l != null)
             for (AbstractGoods ag : l)
                 if (ag.getType() == gt)
