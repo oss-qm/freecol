@@ -1894,9 +1894,11 @@ public class Colony extends Settlement implements Nameable, TradeLocation {
      * @return {@code true} if this unit type could be added.
      */
     public boolean canTrain(UnitType unitType) {
-        return hasAbility(Ability.TEACH)
-                && any(getBuildings(),
-                b -> b.canTeach() && b.canAddType(unitType));
+        if (hasAbility(Ability.TEACH))
+            for (Building b : getBuildings())
+                if (b.canTeach() && b.canAddType(unitType))
+                    return true;
+        return false;
     }
 
     /**
@@ -1922,11 +1924,13 @@ public class Colony extends Settlement implements Nameable, TradeLocation {
      * @return A potential teacher, or null of none found.
      */
     public Unit findTeacher(Unit student) {
-        return (getSpecification().getBoolean(GameOptions.ALLOW_STUDENT_SELECTION))
-                ? null // No automatic assignment
-                : find(flatten(getBuildings(), Building::canTeach,
-                Building::getUnits),
-                u -> u.getStudent() == null);
+        if (!getSpecification().getBoolean(GameOptions.ALLOW_STUDENT_SELECTION))
+            for (Building b : getBuildings())
+                if (b.canTeach())
+                    for (Unit u : b.getUnits())
+                        if (u.getStudent() == null)
+                            return u;
+        return null;
     }
 
     /**
@@ -2523,16 +2527,27 @@ loop:   for (WorkLocation wl : getWorkLocationsForProducing(goodsType)) {
     @SuppressWarnings("unchecked")
     public <T extends FreeColObject> T getCorresponding(T fco) {
         final String id = fco.getId();
-        return (fco instanceof WorkLocation)
-                ? (T)findWorkLocationById(id)
-                : (fco instanceof Tile)
-                ? (T)((getTile().getId().equals(id)) ? getTile()
-                : find(map(getColonyTiles(), ColonyTile::getWorkTile),
-                matchKeyEquals(id, Tile::getId)))
-                : (fco instanceof Unit)
-                ? (T)find(getAllUnits(),
-                matchKeyEquals(id, Unit::getId))
-                : null;
+
+        if (fco instanceof WorkLocation)
+            return (T)findWorkLocationById(id);
+        else if (fco instanceof Tile) {
+            Tile t = getTile();
+            if (t.getId().equals(id))
+                return (T)t;
+
+            for (ColonyTile ct : getColonyTiles()) {
+                t = ct.getWorkTile();
+                if (Utils.equals(id, t.getId()))
+                    return (T)t;
+            }
+        }
+        else if (fco instanceof Unit) {
+            for (Unit u : getAllUnits())
+                if (Utils.equals(id, u.getId()))
+                    return (T)u;
+        }
+
+        return null;
     }
 
 
