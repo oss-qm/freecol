@@ -160,7 +160,11 @@ public class AudioMixerOption extends AbstractOption<AudioMixerOption.MixerWrapp
      * @return The mixer wrapper with the name given, or null if none.
      */
     private MixerWrapper getMixerWrapperByName(String name) {
-        return find(audioMixers, mw -> mw.getKey().equals(name));
+        for (MixerWrapper mw : audioMixers)
+            if (mw.getKey().equals(name))
+                return mw;
+
+        return null;
     }
 
     /**
