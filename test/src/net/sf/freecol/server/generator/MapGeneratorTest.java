@@ -20,6 +20,7 @@
 package net.sf.freecol.server.generator;
 
 import java.io.File;
+import java.util.Iterator;
 import java.util.Random;
 import java.util.Vector;
 
@@ -132,7 +133,13 @@ public class MapGeneratorTest extends FreeColTestCase {
 
         // Sufficient land?
         int total = m.getWidth() * m.getHeight();
-        int land = count(m.getAllTiles(), Tile::isLand);
+        int land = 0;
+        Iterator<Tile> iterator = m.getWholeMapIterator();
+        while (iterator.hasNext()) {
+            Tile t = iterator.next();
+            if (t.isLand()) land++;
+        }
+
         // Land Mass requirement fulfilled?
         assertTrue(100 * land / total >= g.getMapGeneratorOptions()
                    .getInteger(MapGeneratorOptions.LAND_MASS));
