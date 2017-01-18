@@ -24,6 +24,7 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map.Entry;
 import java.util.Random;
@@ -331,6 +332,17 @@ public final class InGameController extends Controller {
         return messages.size();
     }
 
+    private Set<Tile> getExploredTiles(ServerPlayer serverPlayer) {
+        Set<Tile> explore = new HashSet<>();
+        Iterator<Tile> iterator = getGame().getMap().getWholeMapIterator();
+        while (iterator.hasNext()) {
+            Tile t = iterator.next();
+            if ((!t.isLand() || t.isCoastland() || t.getOwner() == serverPlayer)
+                    && t.isExploredBy(serverPlayer))
+                explore.add(t);
+        }
+        return explore;
+    }
 
     // Internal utilities
 
@@ -350,13 +362,11 @@ public final class InGameController extends Controller {
         final Monarch monarch = serverPlayer.getMonarch();
         final ServerPlayer refPlayer = getFreeColServer().makeAIPlayer(refNation);
         final Europe europe = refPlayer.getEurope();
-        final Predicate<Tile> exploredPred = t ->
-            ((!t.isLand() || t.isCoastland() || t.getOwner() == serverPlayer)
-                && t.isExploredBy(serverPlayer));
+
         // Inherit rebel player knowledge of the seas, coasts, claimed
         // land but not full detailed scouting knowledge.
-        Set<Tile> explore = new HashSet<>();
-        getGame().getMap().forEachTile(exploredPred, t -> explore.add(t));
+        Set<Tile> explore = getExploredTiles(serverPlayer);
+
         refPlayer.exploreTiles(explore);
 
         // Trigger initial placement routine
