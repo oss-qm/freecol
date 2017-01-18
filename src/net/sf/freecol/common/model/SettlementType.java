@@ -216,9 +216,12 @@ public class SettlementType extends FreeColSpecObjectType {
      * @return The plunder range, or null if none applicable.
      */
     public final RandomRange getPlunderRange(Unit unit) {
-        if (this.plunder == null) return null;
-        PlunderType pt = find(plunder, p -> p.appliesTo(unit));
-        return (pt == null) ? null : pt.getPlunder();
+        if (this.plunder != null)
+            for (PlunderType p : this.plunder)
+                if ((p != null) && p.appliesTo(unit))
+                    return p.getPlunder();
+
+        return null;
     }
 
     /**
