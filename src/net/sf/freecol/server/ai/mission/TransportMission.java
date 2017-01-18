@@ -241,8 +241,11 @@ public class TransportMission extends Mission {
      */
     private Cargo tFind(TransportableAIObject t) {
         synchronized (cargoes) {
-            return find(cargoes, c -> c.getTransportable() == t);
+            for (Cargo c : cargoes)
+                if (c.getTransportable() == t)
+                    return c;
         }
+        return null;
     }
 
     /**
@@ -252,8 +255,11 @@ public class TransportMission extends Mission {
      */
     private Cargo tFirst() {
         synchronized (cargoes) {
-            return find(cargoes, Cargo::isValid);
+            for (Cargo c : cargoes)
+                if (c.isValid())
+                    return c;
         }
+        return null;
     }
 
     /**
@@ -323,9 +329,11 @@ public class TransportMission extends Mission {
      * Reset the carrier target after a change to the first cargo.
      */
     private void tRetarget() {
-        Cargo c;
+        Cargo c = null;
         synchronized (cargoes) {
-            c = find(cargoes, Cargo::isValid);
+            for (Cargo c1 : cargoes)
+                if (c1.isValid())
+                    c = c1;
         }
         setTarget(Location.upLoc((c == null) ? getAIUnit().getTrivialTarget()
                 : c.getCarrierTarget()));
