@@ -250,7 +250,10 @@ public abstract class UnitLocation extends FreeColGameObject implements Location
      * @return A suitable carrier or null if none found.
      */
     public Unit getCarrierForUnit(Unit unit) {
-        return find(getUnitList(), u -> u.couldCarry(unit));
+        for (Unit u : getUnitList())
+            if (u.couldCarry(unit))
+                return u;
+        return null;
     }
 
 
