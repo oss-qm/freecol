@@ -22,7 +22,9 @@ package net.sf.freecol.util.test;
 import java.lang.reflect.Field;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
 
@@ -458,13 +460,17 @@ public class FreeColTestCase extends TestCase {
 
             map.resetContiguity();
             map.resetHighSeasCount();
+
             if (exploredByAll) {
-                map.forEachTile(t -> {
-                        for (Player p : game.getLiveEuropeanPlayers()) {
-                            t.setExplored(p, true);
-                        }
-                    });
+                Collection<Player> players = game.getLiveEuropeanPlayers();
+                Iterator<Tile> iterator = getGame().getMap().getWholeMapIterator();
+                while (iterator.hasNext()) {
+                    Tile t = iterator.next();
+                    for (Player p : players)
+                        t.setExplored(p, true);
+                }
             }
+
             return map;
         }
 
