@@ -47,6 +47,7 @@ import net.sf.freecol.common.option.GameOptions;
 import net.sf.freecol.common.networking.DOMMessage;
 import static net.sf.freecol.common.util.CollectionUtils.*;
 import static net.sf.freecol.common.util.StringUtils.*;
+import net.sf.freecol.common.model.Role.RoleChange;
 
 
 /**
@@ -887,8 +888,10 @@ public class Unit extends GoodsLocation
      * @return A military {@code Role}, or null if none found.
      */
     public Role getMilitaryRole() {
-        return first(transform(getSpecification().getMilitaryRoles(),
-                               r -> roleIsAvailable(r)));
+        for (Role r : getSpecification().getMilitaryRoles())
+            if (roleIsAvailable(r))
+                return r;
+        return null;
     }
 
     /**
@@ -1743,11 +1746,14 @@ public class Unit extends GoodsLocation
         if (settlement == null) return null;
 
         final Specification spec = getSpecification();
-        return find(transform(flatten(getAbilities(Ability.AUTOMATIC_EQUIPMENT),
-                                      Ability::getScopes),
-                              alwaysTrue(), s -> spec.getRole(s.getType())),
-                    r -> r != null
-                        && settlement.containsGoods(getGoodsDifference(r, 1)));
+        for (Ability a : getAbilities(Ability.AUTOMATIC_EQUIPMENT))
+            for (Scope s : a.getScopes()) {
+                Role r = spec.getRole(s.getType());
+                if (r != null && settlement.containsGoods(getGoodsDifference(r, 1)))
+                    return r;
+            }
+
+        return null;
     }
 
     /**
@@ -1762,9 +1768,13 @@ public class Unit extends GoodsLocation
         if (!hasAbility(Ability.CAPTURE_EQUIPMENT)) return null;
         final Specification spec = getSpecification();
         final Role oldRole = getRole();
-        return find(getAvailableRoles(spec.getMilitaryRoles()),
-            r -> any(r.getRoleChanges(), rc ->
-                rc.getFrom(spec) == oldRole && rc.getCapture(spec) == role));
+
+        for (Role r : getAvailableRoles(spec.getMilitaryRoles()))
+            for (RoleChange rc : r.getRoleChanges())
+                if (rc.getFrom(spec) == oldRole && rc.getCapture(spec) == role)
+                    return r;
+
+        return null;
     }
 
     /**
@@ -2663,9 +2673,15 @@ public class Unit extends GoodsLocation
 
         // Desperately find the nearest land to the entry location.
         Location loc = getFullEntryLocation();
-        return (loc == null || loc.getTile() == null) ? null
-            : find(loc.getTile().getSurroundingTiles(1, INFINITY),
-                   Tile::isLand);
+
+        if (loc != null && loc.getTile() != null)
+            return null;
+
+        for (Tile t : loc.getTile().getSurroundingTiles(1, INFINITY))
+            if (t.isLand())
+                return t;
+
+        return null;
     }
 
     /**
@@ -3280,6 +3296,15 @@ public class Unit extends GoodsLocation
      */
     public boolean canCarryGoods() {
         return hasAbility(Ability.CARRY_GOODS);
+    }
+
+    /**
+     * Can this unit take more goods
+     *
+     * @return True if the unit can carry goods and has space
+     */
+    public final boolean canTakeGoods() {
+        return hasAbility(Ability.CARRY_GOODS) && hasSpaceLeft();
     }
 
     /**
