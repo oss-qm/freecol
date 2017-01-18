@@ -2192,8 +2192,9 @@ public class Map extends FreeColGameObject implements Location {
         }
 
         // Reset all highSeas tiles to the default ocean type.
-        forEachTile(matchKeyEquals(highSeas, Tile::getType),
-            t -> t.setType(ocean));
+        for (Tile[] ts : this.tiles)
+            for (Tile t : ts)
+                if (t.getType() == highSeas) t.setType(ocean);
 
         final int width = getWidth(), height = getHeight();
         Tile t, seaL = null, seaR = null;
@@ -2268,7 +2269,8 @@ public class Map extends FreeColGameObject implements Location {
         List<Tile> curr = new ArrayList<>();
         List<Tile> next = new ArrayList<>();
         int hsc = 0;
-        forEachTile(t -> {
+        for (Tile[] ts : this.tiles) {
+            for (Tile t : ts) {
                 t.setHighSeasCount(-1);
                 if (!t.isLand()) {
                     if ((t.getX() == 0 || t.getX() == getWidth()-1)
@@ -2283,7 +2285,9 @@ public class Map extends FreeColGameObject implements Location {
                         next.add(t);
                     }
                 }
-            });
+            }
+        }
+
         while (!next.isEmpty()) {
             hsc++;
             curr.addAll(next);
@@ -2649,10 +2653,12 @@ public class Map extends FreeColGameObject implements Location {
 
         // Fix up settlement tile ownership in one hit here, avoiding
         // complications with cached tiles within the Tile serialization.
-        forEachTile(t -> {
+        for (Tile[] ts : this.tiles) {
+            for (Tile t : ts) {
                 Settlement s = t.getOwningSettlement();
                 if (s != null) s.addTile(t);
-            });
+            }
+        }
 
         // @compat 0.11.3
         // Maps with incorrect parent/child chains were occurring.
