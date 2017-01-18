@@ -1152,7 +1152,10 @@ public class ServerPlayer extends Player implements ServerModelObject {
         LogBuilder lb = new LogBuilder(256);
         lb.mark();
         for (Unit unit : landUnits) {
-            Unit carrier = find(navalUnits, u -> u.canAdd(unit));
+            Unit carrier = null;
+            for (Unit u : navalUnits)
+                if (u.canAdd(unit))
+                    carrier = u;
             if (carrier != null) {
                 unit.setLocation(carrier);//-vis(owner)
                 lb.add(unit, " -> ", carrier, ", ");
