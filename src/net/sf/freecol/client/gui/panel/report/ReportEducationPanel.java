@@ -75,7 +75,14 @@ public final class ReportEducationPanel extends ReportPanel {
                     reportPanel.add(teacherPanel, "split 2, flowy, grow");
                     JPanel studentPanel = getPanel("report.education.students");
                     for (Unit unit : colony.getUnits()) {
-                        Unit teacher = find(teachers, u -> unit.canBeStudent(u));
+                        Unit teacher = null;
+                        for (Unit u : teachers) {
+                            if (unit.canBeStudent(u)) {
+                                teacher = u;
+                                break;
+                            }
+                        }
+
                         if (teacher != null) {
                             UnitLabel ul = new UnitLabel(freeColClient, unit,
                                                          true, true);
