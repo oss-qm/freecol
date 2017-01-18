@@ -241,8 +241,10 @@ public class ColonyPlan {
      * @return The best current {@code BuildableType}.
      */
     public BuildableType getBestBuildableType() {
-        BuildPlan bp = find(buildPlans, p -> colony.canBuild(p.type));
-        return (bp == null) ? null : bp.type;
+        for (BuildPlan bp : buildPlans)
+            if (colony.canBuild(bp.type))
+                return bp.type;
+        return null;
     }
 
     /**
@@ -583,7 +585,10 @@ public class ColonyPlan {
      * @return A {@code BuildPlan} with this type, or null if not found.
      */
     private BuildPlan findBuildPlan(BuildableType type) {
-        return find(buildPlans, bp -> bp.type == type);
+        for (BuildPlan bp : buildPlans)
+            if (bp.type == type)
+                return bp;
+        return null;
     }
 
     /**
@@ -723,8 +728,12 @@ public class ColonyPlan {
 
             if (type.hasAbility(Ability.BUILD)) {
                 double factor = ("building".equals(advantage)) ? 1.1 : 1.0;
-                double support = (any(type.getAbilities(Ability.BUILD),
-                                      Ability::hasScope)) ? 0.1 : 1.0;
+                double support = 1.0;
+                for (Ability a : type.getAbilities(Ability.BUILD))
+                    if (a.hasScope()) {
+                        support = 0.1;
+                        break;
+                    }
                 prioritize(type, BUILDING_WEIGHT * factor,
                     support/*FIXME: need for the thing now buildable*/);
             }
@@ -948,9 +957,14 @@ public class ColonyPlan {
         final int oldRoleCount = expert.getRoleCount();
         final GoodsType work = expert.getType().getExpertProduction();
         final GoodsType oldWork = expert.getWorkType();
-        final Unit other = find(others, u ->
-            (u.isPerson() && u.getWorkType() == work
-                && u.getType().getExpertProduction() != work));
+        Unit other = null;
+        for (Unit u : others)
+            if ((u.isPerson() && u.getWorkType() == work
+                    && u.getType().getExpertProduction() != work)) {
+                other = u;
+                break;
+            }
+
         if (other != null) {
             Location l1 = expert.getLocation();
             Location l2 = other.getLocation();
@@ -977,7 +991,10 @@ public class ColonyPlan {
      */
     private WorkLocationPlan findPlan(GoodsType goodsType,
                                       List<WorkLocationPlan> plans) {
-        return find(plans, wlp -> wlp.getGoodsType() == goodsType);
+        for (WorkLocationPlan wlp : plans)
+            if (wlp.getGoodsType() == goodsType)
+                return wlp;
+        return null;
     }
 
     /**
