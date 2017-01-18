@@ -621,7 +621,7 @@ public final class QuickActionMenu extends JPopupMenu {
             change = need.get(0);
             break;
         default:
-            change = find(need, AbstractGoods::isPositive);
+            change = AbstractGoods.findPositive(need);
             break;
         }
         Icon icon = (change == null) ? null : new ImageIcon(
