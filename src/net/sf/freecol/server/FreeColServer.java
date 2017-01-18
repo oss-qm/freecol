@@ -26,6 +26,7 @@ import java.io.IOException;
 import java.net.BindException;
 import java.net.InetAddress;
 import java.net.Socket;
+import java.util.Iterator;
 import java.util.Map.Entry;
 import java.util.Properties;
 import java.util.Random;
@@ -59,6 +60,7 @@ import net.sf.freecol.common.model.Player;
 import net.sf.freecol.common.model.Stance;
 import net.sf.freecol.common.model.Specification;
 import net.sf.freecol.common.model.Tension;
+import net.sf.freecol.common.model.Tile;
 import net.sf.freecol.common.model.Unit;
 import net.sf.freecol.common.networking.ChangeSet;
 import net.sf.freecol.common.networking.ChangeSet.See;
@@ -1188,8 +1190,9 @@ public final class FreeColServer {
                 }
             }
 
-            serverGame.getMap()
-                .forEachTile(t -> TerrainGenerator.encodeStyle(t));
+            Iterator<Tile> iterator = serverGame.getMap().getWholeMapIterator();
+            while (iterator.hasNext())
+                TerrainGenerator.encodeStyle(iterator.next());
         }
         // end @compat 0.10.x
 
