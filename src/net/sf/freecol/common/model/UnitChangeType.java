@@ -223,8 +223,11 @@ public class UnitChangeType extends FreeColSpecObjectType {
      *     change is impossible.
      */
     public UnitChange getUnitChange(UnitType fromType, final UnitType toType) {
-        return find(getUnitChanges(fromType),
-            ((toType == null) ? alwaysTrue() : uc -> uc.to == toType));
+        for (UnitChange uc : getUnitChanges(fromType))
+            if (toType == null || uc.to == toType)
+                return uc;
+
+        return null;
     }
 
     // @compat 0.11.6
