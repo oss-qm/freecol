@@ -22,7 +22,6 @@ package net.sf.freecol.common.model;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import java.util.function.Predicate;
 
 import javax.xml.stream.XMLStreamException;
 
@@ -277,9 +276,12 @@ public class EquipmentType extends BuildableType {
 
         super.readChildren(xr);
 
-        final Predicate<Modifier> militaryPred = m ->
-            Modifier.OFFENCE.equals(m.getId()) || Modifier.DEFENCE.equals(m.getId());
-        militaryEquipment = any(getModifiers(), militaryPred);
+        for (Modifier m : getModifiers()) {
+            if (Modifier.OFFENCE.equals(m.getId()) || Modifier.DEFENCE.equals(m.getId())) {
+                militaryEquipment = true;
+                break;
+            }
+        }
     }
 
     /**
