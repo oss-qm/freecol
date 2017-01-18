@@ -48,6 +48,7 @@ import net.sf.freecol.common.model.pathfinding.CostDeciders;
 import net.sf.freecol.common.model.pathfinding.GoalDecider;
 import net.sf.freecol.common.model.pathfinding.GoalDeciders;
 import net.sf.freecol.common.util.LogBuilder;
+import net.sf.freecol.common.util.Utils;
 import static net.sf.freecol.common.util.CollectionUtils.*;
 import static net.sf.freecol.common.util.RandomUtils.*;
 // @compat 0.10.x
@@ -208,8 +209,10 @@ public class Map extends FreeColGameObject implements Location {
          * @return The {@code Direction}, or null if not adjacent.
          */
         public Direction getDirection(Position other) {
-            return find(Direction.values(),
-                        matchKeyEquals(other, d -> new Position(this, d)));
+            for (Direction d : Direction.values())
+                if (Utils.equals(other, new Position(this, d)))
+                    return d;
+            return null;
         }
 
         // Override Object
@@ -512,8 +515,11 @@ public class Map extends FreeColGameObject implements Location {
      *     null if none found.
      */
     public Region getRegionByKey(final String key) {
-        return (key == null) ? null
-            : find(getRegions(), matchKeyEquals(key, Region::getKey));
+        if (key == null) return null;
+        for (Region r : this.regions)
+            if (Utils.equals(key, r.getKey()))
+                return r;
+        return null;
     }
 
     /**
@@ -524,8 +530,11 @@ public class Map extends FreeColGameObject implements Location {
      *     not found.
      */
     public Region getRegionByName(final String name) {
-        return (name == null) ? null
-            : find(getRegions(), matchKeyEquals(name, Region::getName));
+        if (name == null) return null;
+        for (Region r : this.regions)
+            if (Utils.equals(name, r.getName()))
+                return r;
+        return null;
     }
 
     /**
