@@ -77,8 +77,9 @@ public class DefaultNumberRule extends Number {
      */
     @Override
     public Category getCategory(double input) {
-        return find(Category.values(),
-            category -> rules.containsKey(category)
-                && rules.get(category).matches(input), Category.other);
+        for (Category c : Category.values())
+            if (rules.containsKey(c) && rules.get(c).matches(input))
+                return c;
+        return Category.other;
     }
 }
