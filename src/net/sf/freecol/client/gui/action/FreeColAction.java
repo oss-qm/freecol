@@ -131,16 +131,6 @@ public abstract class FreeColAction extends AbstractAction
         }
     }
 
-
-    /**
-     * Gets the main controller object for the client.
-     *
-     * @return The main controller object for the client.
-     */
-    protected FreeColClient getFreeColClient() {
-        return freeColClient;
-    }
-
     /**
      * Gets the game.
      *
