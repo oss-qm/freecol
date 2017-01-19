@@ -93,7 +93,7 @@ public class WorkProductionPanel extends FreeColPanel {
 
         add(new JLabel(longName), "span, align center, wrap 30");
         add(new JLabel(new ImageIcon(image)));
-        add(new UnitLabel(getFreeColClient(), unit, false, false), "wrap");
+        add(new UnitLabel(this.freeColClient, unit, false, false), "wrap");
         add(new JLabel(shortName));
         add(new JLabel(ModifierFormat.format(result)));
 

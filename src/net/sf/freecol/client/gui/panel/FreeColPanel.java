@@ -62,7 +62,7 @@ public abstract class FreeColPanel extends MigPanel implements ActionListener {
     // The margin to use.
     protected static final int MARGIN = 3;
 
-    private final FreeColClient freeColClient;
+    public final FreeColClient freeColClient;
 
     protected boolean editable = true;
 
@@ -94,16 +94,6 @@ public abstract class FreeColPanel extends MigPanel implements ActionListener {
         okButton.setActionCommand(OK);
         okButton.addActionListener(this);
         setCancelComponent(okButton);
-    }
-
-
-    /**
-     * Get the FreeColClient.
-     *
-     * @return The current {@code FreeColClient}.
-     */
-    protected FreeColClient getFreeColClient() {
-        return freeColClient;
     }
 
     /**

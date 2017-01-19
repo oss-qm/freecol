@@ -99,7 +99,7 @@ public final class InfoPanel extends FreeColPanel {
                 add(label);
             }
 
-            JButton button = new JButton(getFreeColClient().getActionManager()
+            JButton button = new JButton(InfoPanel.this.freeColClient.getActionManager()
                 .getFreeColAction(EndTurnAction.id));
             button.setFont(font);
             add(button);
@@ -443,13 +443,13 @@ public final class InfoPanel extends FreeColPanel {
      * @return The panel mode.
      */
     private InfoPanelMode getMode() {
-        return (getFreeColClient().isMapEditor())
+        return (this.freeColClient.isMapEditor())
             ? InfoPanelMode.MAP
             : (getGUI().getViewMode() == GUI.VIEW_TERRAIN_MODE)
             ? InfoPanelMode.TILE
             : (unitInfoPanel.hasUnit())
             ? InfoPanelMode.UNIT
-            : (getFreeColClient().getMyPlayer() == null)
+            : (this.freeColClient.getMyPlayer() == null)
             ? InfoPanelMode.NONE
             : InfoPanelMode.END;
     }
@@ -503,7 +503,7 @@ public final class InfoPanel extends FreeColPanel {
      */
     public void update() {
         InfoPanelMode newMode = getMode();
-        Player player = getFreeColClient().getMyPlayer();
+        Player player = this.freeColClient.getMyPlayer();
         boolean fail = newMode == InfoPanelMode.END && player != null
             && player.hasNextActiveUnit();
         logger.info("InfoPanel " + mode + " -> " + newMode
