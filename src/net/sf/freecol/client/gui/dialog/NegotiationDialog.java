@@ -163,7 +163,7 @@ public final class NegotiationDialog extends FreeColDialog<DiplomaticTrade> {
             this.addButton.addActionListener(this);
             this.addButton.setActionCommand(ADD);
             this.label = Utility.localizedLabel(Messages.getName("model.tradeItem.colony"));
-            this.allColonies = getFreeColClient().getClientOptions()
+            this.allColonies = NegotiationDialog.this.freeColClient.getClientOptions()
                                                  .getSortedColonies(source);
 
             setLayout(new MigLayout("wrap 1", "", ""));
@@ -201,7 +201,7 @@ public final class NegotiationDialog extends FreeColDialog<DiplomaticTrade> {
                     allColonies.add(c); // did not know about this!
                 }
             }
-            available.sort(getFreeColClient().getClientOptions().getColonyComparator());
+            available.sort(NegotiationDialog.this.freeColClient.getClientOptions().getColonyComparator());
 
             this.colonyBox.removeAllItems();
             for (Colony c : available) this.colonyBox.addItem(c);

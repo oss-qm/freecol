@@ -73,7 +73,7 @@ public class FreeColDialog<T> extends JDialog implements PropertyChangeListener 
     };
 
     /** The enclosing client. */
-    protected final FreeColClient freeColClient;
+    public final FreeColClient freeColClient;
 
     /** Is this dialog modal? */
     protected boolean modal;
@@ -286,15 +286,6 @@ public class FreeColDialog<T> extends JDialog implements PropertyChangeListener 
             }
             iterateOverOpaqueLayersComponents(panel);
         }
-    }
-
-    /**
-     * Get the FreeColClient.
-     *
-     * @return The {@code FreeColClient}.
-     */
-    protected FreeColClient getFreeColClient() {
-        return freeColClient;
     }
 
     /**
