@@ -174,7 +174,7 @@ public final class MapEditorTransformPanel extends FreeColPanel {
         group.add(button);
         button.addActionListener((ActionEvent ae) -> {
                 MapEditorController ctlr
-                    = getFreeColClient().getMapEditorController();
+                    = MapEditorTransformPanel.this.freeColClient.getMapEditorController();
                 MapTransform newMapTransform = null;
                 if (ctlr.getMapTransform() != mt) {
                     if(mt instanceof RiverStyleTransform) {

@@ -107,7 +107,7 @@ public final class ReportTurnPanel extends ReportPanel {
     }
 
     private void displayMessages() {
-        final Game game = getFreeColClient().getGame();
+        final Game game = this.freeColClient.getGame();
         final ClientOptions options = getClientOptions();
         final int groupBy = options.getInteger(ClientOptions.MESSAGES_GROUP_BY);
 
