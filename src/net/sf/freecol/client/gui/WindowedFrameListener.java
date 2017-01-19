@@ -67,10 +67,10 @@ public final class WindowedFrameListener extends FreeColClientHolder
      */
     @Override
     public void windowClosing(WindowEvent event) {
-        if (getFreeColClient().isInGame()) {
-            getFreeColClient().askToQuit();
+        if (this.freeColClient.isInGame()) {
+            this.freeColClient.askToQuit();
         } else {
-            getFreeColClient().quit();
+            this.freeColClient.quit();
         }
     }
 

@@ -415,10 +415,10 @@ public class SwingGUI extends GUI {
                 logger.info("Set " + pmoffscreen + " to: " + newValue);
             });
 
-        this.mapViewer = new MapViewer(getFreeColClient());
-        this.canvas = new Canvas(getFreeColClient(), graphicsDevice, this,
+        this.mapViewer = new MapViewer(this.freeColClient);
+        this.canvas = new Canvas(this.freeColClient, graphicsDevice, this,
                                  desiredWindowSize, mapViewer);
-        this.tileViewer = new TileViewer(getFreeColClient());
+        this.tileViewer = new TileViewer(this.freeColClient);
 
         // Now that there is a canvas, prepare for language changes.
         LanguageOption o = (LanguageOption)getClientOptions()
@@ -535,7 +535,7 @@ public class SwingGUI extends GUI {
      */
     @Override
     public void resetMenuBar() {
-        getFreeColClient().updateActions();
+        this.freeColClient.updateActions();
         canvas.resetMenuBar();
     }
 
@@ -604,7 +604,7 @@ public class SwingGUI extends GUI {
      */
     @Override
     public void updateMenuBar() {
-        getFreeColClient().updateActions();
+        this.freeColClient.updateActions();
         canvas.updateMenuBar();
     }
 
@@ -635,7 +635,7 @@ public class SwingGUI extends GUI {
                                   Tile attackerTile, Tile defenderTile,
                                   boolean success) {
         requireFocus(attackerTile);
-        Animations.unitAttack(getFreeColClient(), attacker, defender,
+        Animations.unitAttack(this.freeColClient, attacker, defender,
                               attackerTile, defenderTile, success);
     }
 
@@ -645,7 +645,7 @@ public class SwingGUI extends GUI {
     @Override
     public void animateUnitMove(Unit unit, Tile srcTile, Tile dstTile) {
         requireFocus(srcTile);
-        Animations.unitMove(getFreeColClient(), unit, srcTile, dstTile);
+        Animations.unitMove(this.freeColClient, unit, srcTile, dstTile);
     }
 
 
@@ -665,12 +665,12 @@ public class SwingGUI extends GUI {
                 Class<?> controls = Class.forName(panelName);
                 mapControls = (MapControls)controls
                     .getConstructor(FreeColClient.class)
-                    .newInstance(getFreeColClient());
+                    .newInstance(this.freeColClient);
                 logger.info("Instantiated " + panelName);
             } catch (Exception e) {
                 logger.log(Level.INFO, "Fallback to CornerMapControls from "
                     + className, e);
-                mapControls = new CornerMapControls(getFreeColClient());
+                mapControls = new CornerMapControls(this.freeColClient);
             }
             if (mapControls != null) {
                 mapControls.addToComponent(canvas);
@@ -1120,7 +1120,7 @@ public class SwingGUI extends GUI {
                 updateMapControls();
             }
         }
-        if (!getFreeColClient().isInGame()) showMainPanel(null);
+        if (!this.freeColClient.isInGame()) showMainPanel(null);
     }
 
     /**
