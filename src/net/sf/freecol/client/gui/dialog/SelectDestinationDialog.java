@@ -27,7 +27,6 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Map.Entry;
-import java.util.function.Function;
 import java.util.logging.Logger;
 
 import javax.swing.DefaultListModel;
@@ -426,6 +425,11 @@ public final class SelectDestinationDialog extends FreeColDialog<Location>
                 : Map.isSameContiguity(unit.getLocation(), s.getTile());
     }
 
+    private void addDestination(Location l, int t, Unit u, List<GoodsType> g) {
+        if (t < Unit.MANY_TURNS)
+            this.destinations.add(new Destination(l, t, u, g));
+    }
+
     /**
      * Load destinations for a given unit and carried goods types.
      *
@@ -447,25 +451,20 @@ public final class SelectDestinationDialog extends FreeColDialog<Location>
         if (this.destinationComparator == null) {
             this.destinationComparator = new DestinationComparator(player);
         }
-        List<Destination> td = new ArrayList<>();
 
         // Add Europe or "New World" (the map) depending where the unit is
         if (unit.isInEurope()) {
-            td.add(new Destination(map, unit.getSailTurns(), unit, goodsTypes));
+            addDestination(map, unit.getSailTurns(), unit, goodsTypes);
         } else if (europe != null
             && player.canMoveToEurope()
             && unit.getType().canMoveToHighSeas()) {
-            int turns = unit.getTurnsToReach(europe);
-            if (turns < Unit.MANY_TURNS) {
-                td.add(new Destination(europe, turns, unit, goodsTypes));
-            }
+            addDestination(europe, unit.getTurnsToReach(europe), unit, goodsTypes);
         }
 
         // Find all the player accessible settlements except the current one.
-        td.addAll(transform(player.getSettlements(),
-                            s -> s != inSettlement && unitCanReach(unit, s),
-                            s -> new Destination(s, unit.getTurnsToReach(s),
-                                                 unit, goodsTypes)));
+        for (Settlement s : player.getSettlements())
+            if (s != inSettlement && unitCanReach(unit, s))
+                addDestination(s, unit.getTurnsToReach(s), unit, goodsTypes);
 
         // Find all other player accessible settlements.  Build a list
         // of accessible settlement locations and do a bulk path search
@@ -481,20 +480,17 @@ public final class SelectDestinationDialog extends FreeColDialog<Location>
         MultipleAdjacentDecider md = new MultipleAdjacentDecider(locs);
         unit.search(unit.getLocation(), md.getGoalDecider(), null,
                     FreeColObject.INFINITY, null);
-        final Function<Entry<Location, PathNode>, Destination> dmapper = e -> {
+
+        for (Entry<Location, PathNode> e : md.getResults().entrySet()) {
             Settlement s = e.getKey().getTile().getSettlement();
             PathNode p = e.getValue();
             int turns = p.getTotalTurns();
             if (unit.isInEurope()) turns += unit.getSailTurns();
             if (p.getMovesLeft() < unit.getInitialMovesLeft()) turns++;
-            return new Destination(s, turns, unit, goodsTypes);
-        };
-        td.addAll(transform(md.getResults().entrySet(), alwaysTrue(), dmapper));
+            addDestination(s, turns, unit, goodsTypes);
+        }
 
-        // Drop inaccessible destinations and sort as specified.
-        this.destinations.addAll(transform(td, d -> d.turns < Unit.MANY_TURNS,
-                                           Function.identity(),
-                                           this.destinationComparator));
+        Collections.sort(this.destinations, this.destinationComparator);
     }
 
     /**
