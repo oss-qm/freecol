@@ -237,7 +237,11 @@ public class TileItemContainer extends FreeColGameObject {
      * @return A list of complete {@code TileItem}s.
      */
     public List<TileItem> getCompleteItems() {
-        return transform(getTileItems(), TileItem::isComplete);
+        List<TileItem> result = new ArrayList<>();
+        for (TileItem ti : getTileItems())
+            if (ti.isComplete())
+                result.add(ti);
+        return result;
     }
 
     /**
