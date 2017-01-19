@@ -29,7 +29,6 @@ import java.util.List;
 import java.util.Map.Entry;
 import java.util.Set;
 import java.util.function.Function;
-import java.util.function.Predicate;
 import java.util.function.ToIntFunction;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -2264,15 +2263,15 @@ loop:   for (WorkLocation wl : getWorkLocationsForProducing(goodsType)) {
                 t -> new TileImprovementSuggestion(t, null, INFINITY));
 
         // Consider improvements for all available colony tiles.
-        for (final ColonyTile ct : transform(getColonyTiles(),
-                WorkLocation::isAvailable)) {
-            final ToIntFunction<TileImprovementType> improve = cacheInt(ti ->
-                    ct.improvedBy(ti));
-            result.addAll(transform(spec.getTileImprovementTypeList(),
-                    ti -> !ti.isNatural() && improve.applyAsInt(ti) > 0,
-                    ti -> new TileImprovementSuggestion(ct.getWorkTile(),
-                            ti, improve.applyAsInt(ti))));
-        }
+        for (final ColonyTile ct : getColonyTiles())
+            if (ct.isAvailable())
+                for (TileImprovementType ti : spec.getTileImprovementTypeList())
+                    if (!ti.isNatural()) {
+                        int improved = ct.improvedBy(ti);
+                        if (improved > 0)
+                            result.add(new TileImprovementSuggestion(ct.getWorkTile(), ti, improved));
+                    }
+
         result.sort(TileImprovementSuggestion.descendingAmountComparator);
         return result;
     }
@@ -2385,42 +2384,35 @@ loop:   for (WorkLocation wl : getWorkLocationsForProducing(goodsType)) {
         // Add a message for goods required for the current building if any.
         BuildableType currentlyBuilding = getCurrentlyBuilding();
         if (currentlyBuilding != null) {
-            final Function<AbstractGoods, StringTemplate> bMapper = ag ->
-                    StringTemplate.template("model.colony.buildableNeedsGoods")
+            for (AbstractGoods ag : currentlyBuilding.getRequiredGoods())
+                if (ag.getType() == goodsType && amount < ag.getAmount())
+                    result.add(StringTemplate.template("model.colony.buildableNeedsGoods")
                             .addName("%colony%", getName())
                             .addNamed("%buildable%", currentlyBuilding)
                             .addAmount("%amount%", ag.getAmount() - amount)
-                            .addNamed("%goodsType%", goodsType);
-            result.addAll(transform(currentlyBuilding.getRequiredGoods(),
-                    ag -> ag.getType() == goodsType
-                            && amount < ag.getAmount(),
-                    bMapper));
+                            .addNamed("%goodsType%", goodsType));
         }
 
         // Add insufficient production messages for each production location
         // that has a deficit in producing the goods type.
-        final Function<WorkLocation, ProductionInfo> piMapper = wl ->
-                getProductionInfo(wl);
-        final Predicate<WorkLocation> prodPred = isNotNull(piMapper);
-        final Function<WorkLocation, StringTemplate> pMapper = wl ->
-                getInsufficientProductionMessage(getProductionInfo(wl),
-                        wl.getProductionDeficit(goodsType));
-        result.addAll(transform(getWorkLocationsForProducing(goodsType),
-                prodPred, pMapper, toListNoNulls()));
+        for (WorkLocation wl : getWorkLocationsForProducing(goodsType)) {
+            ProductionInfo pi = getProductionInfo(wl);
+            if (pi != null)
+                result.add(getInsufficientProductionMessage(
+                    pi, wl.getProductionDeficit(goodsType)));
+        }
 
         // Add insufficient production messages for each consumption
         // location for the goods type where there is a consequent
         // deficit in production of a dependent goods.
-        final Function<WorkLocation, List<StringTemplate>> cMapper = wl -> {
-            final ProductionInfo info = getProductionInfo(wl);
-            final Function<AbstractGoods, StringTemplate> gMapper = ag ->
-                    getInsufficientProductionMessage(info,
-                            wl.getProductionDeficit(ag.getType()));
-            return transform(wl.getOutputs(), AbstractGoods::isStorable,
-                    gMapper, toListNoNulls());
-        };
-        result.addAll(transform(getWorkLocationsForConsuming(goodsType),
-                prodPred, cMapper, toAppendedList()));
+        for (WorkLocation wl : getWorkLocationsForConsuming(goodsType)) {
+            ProductionInfo pi = getProductionInfo(wl);
+            if (pi != null)
+                for (AbstractGoods ag : wl.getOutputs())
+                    if (ag.isStorable())
+                        result.add(getInsufficientProductionMessage(pi,
+                            wl.getProductionDeficit(ag.getType())));
+        }
 
         return result;
     }
