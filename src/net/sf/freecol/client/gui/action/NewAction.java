@@ -49,6 +49,6 @@ public class NewAction extends FreeColAction {
      */
     @Override
     public void actionPerformed(ActionEvent ae) {
-        getFreeColClient().getConnectController().newGame();
+        this.freeColClient.getConnectController().newGame();
     }
 }
