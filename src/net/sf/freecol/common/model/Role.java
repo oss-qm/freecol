@@ -353,9 +353,11 @@ public class Role extends BuildableType {
                     result.add(new AbstractGoods(ag.getType(), amount));
                 }
             }
-            result.addAll(transform(fromGoods,
-                          ag -> !AbstractGoods.anyIsType(toGoods, ag.getType()),
-                          ag -> new AbstractGoods(ag.getType(), -ag.getAmount())));
+            for (AbstractGoods ag : fromGoods) {
+                GoodsType gt = ag.getType();
+                if (!AbstractGoods.anyIsType(toGoods, gt))
+                    result.add(new AbstractGoods(gt, -ag.getAmount()));
+            }
         }
         return result;
     }
