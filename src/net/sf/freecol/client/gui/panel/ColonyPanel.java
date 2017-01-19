@@ -237,7 +237,7 @@ public final class ColonyPanel extends PortPanel
         ae -> generateColonyUnitsMenu();
 
     private final ActionListener setGoodsCmd = ae -> {
-        DebugUtils.setColonyGoods(getFreeColClient(), colony);
+        DebugUtils.setColonyGoods(ColonyPanel.this.freeColClient, colony);
         updateWarehousePanel();
         updateProduction();
     };
@@ -674,7 +674,7 @@ public final class ColonyPanel extends PortPanel
      * from the Colony Panel allowing keyboard access to said units.
      */
     private void generateColonyUnitsMenu() {
-        final FreeColClient freeColClient = getFreeColClient();
+        final FreeColClient freeColClient = this.freeColClient;
         ImageLibrary lib = getImageLibrary();
         final Colony colony = getColony();
         JPopupMenu colonyUnitsMenu
@@ -906,7 +906,7 @@ public final class ColonyPanel extends PortPanel
         for (GoodsType goodsType : spec.getGoodsTypeList()) {
             int amount = colony.getAdjustedNetProductionOf(goodsType);
             if (amount != 0) {
-                netProductionPanel.add(new ProductionLabel(getFreeColClient(),
+                netProductionPanel.add(new ProductionLabel(this.freeColClient,
                         new AbstractGoods(goodsType, amount)));
             }
         }
@@ -963,7 +963,7 @@ public final class ColonyPanel extends PortPanel
 
         // Talk to the controller last, allow all the cleanup to happen first.
         if (abandon) igc().abandonColony(colony);
-        if (getFreeColClient().currentPlayerIsMyPlayer()) {
+        if (this.freeColClient.currentPlayerIsMyPlayer()) {
             igc().nextModelMessage();
             Unit activeUnit = getGUI().getActiveUnit();
             if (activeUnit == null || !activeUnit.hasTile()
@@ -1263,7 +1263,7 @@ public final class ColonyPanel extends PortPanel
          */
         @Override
         public JToolTip createToolTip() {
-            JToolTip toolTip = new RebelToolTip(getFreeColClient(), getColony());
+            JToolTip toolTip = new RebelToolTip(ColonyPanel.this.freeColClient, getColony());
             toolTip.setPreferredSize(new Dimension(400, 185));
             return toolTip;
         }
@@ -1790,7 +1790,7 @@ public final class ColonyPanel extends PortPanel
              *     information from.
              */
             public ASingleBuildingPanel(Building building) {
-                super(getFreeColClient(), building);
+                super(ColonyPanel.this.freeColClient, building);
 
                 setOpaque(false);
             }
@@ -2104,7 +2104,7 @@ public final class ColonyPanel extends PortPanel
                     return;
                 }
 
-                final FreeColClient fcc = getFreeColClient();
+                final FreeColClient fcc = ColonyPanel.this.freeColClient;
                 UnitLabel label = null;
                 for (Unit unit : this.colonyTile.getUnits()) {
                     label = new UnitLabel(fcc, unit, false, false, true);

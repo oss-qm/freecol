@@ -125,7 +125,7 @@ public final class ColopediaPanel extends FreeColPanel
         DefaultMutableTreeNode root
             = new DefaultMutableTreeNode(new ColopediaTreeItem(null, null, name, null));
 
-        FreeColClient fcc = getFreeColClient();
+        FreeColClient fcc = this.freeColClient;
         new TerrainDetailPanel(fcc, this).addSubTrees(root);
         new ResourcesDetailPanel(fcc, this).addSubTrees(root);
         new GoodsDetailPanel(fcc, this).addSubTrees(root);
@@ -212,7 +212,7 @@ public final class ColopediaPanel extends FreeColPanel
                     select(path[2]);
                     break;
                 case "action":
-                    getFreeColClient().getActionManager()
+                    this.freeColClient.getActionManager()
                         .getFreeColAction(path[2]).actionPerformed(null);
                     break;
                 default:

@@ -72,7 +72,7 @@ public final class ReportReligiousPanel extends ReportPanel {
                 if (wl instanceof Building) {
                     reportPanel.add(createColonyButton(colony),
                         "split 2, flowy");
-                    BuildingPanel bp = new BuildingPanel(getFreeColClient(),
+                    BuildingPanel bp = new BuildingPanel(this.freeColClient,
                                                          (Building)wl);
                     bp.initialize();
                     reportPanel.add(bp);

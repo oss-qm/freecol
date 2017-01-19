@@ -519,7 +519,7 @@ public final class NewPanel extends FreeColPanel implements ItemListener {
      */
     @Override
     public void actionPerformed(ActionEvent ae) {
-        final ConnectController cc = getFreeColClient().getConnectController();
+        final ConnectController cc = this.freeColClient.getConnectController();
         final SwingGUI gui = getGUI();
         final String command = ae.getActionCommand();
 

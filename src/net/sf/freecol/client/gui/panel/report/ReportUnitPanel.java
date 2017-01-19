@@ -192,7 +192,7 @@ public abstract class ReportUnitPanel extends ReportPanel {
                     }
                     for (Unit unitLoaded : u.getUnits()) {
                         UnitLabel unitLoadedLabel
-                            = new UnitLabel(getFreeColClient(), unitLoaded, true);
+                            = new UnitLabel(this.freeColClient, unitLoaded, true);
                         reportPanel.add(unitLoadedLabel);
                     }
                 } else {
