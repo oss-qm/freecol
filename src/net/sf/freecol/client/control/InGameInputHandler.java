@@ -554,7 +554,7 @@ public final class InGameInputHandler extends ClientInputHandler {
             logger.warning("Invalid player for gameEnded");
             return;
         }
-        FreeColDebugger.finishDebugRun(getFreeColClient(), true);
+        FreeColDebugger.finishDebugRun(this.freeColClient, true);
         if (winner != getMyPlayer()) return;
 
         invokeLater(() ->

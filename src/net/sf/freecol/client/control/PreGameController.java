@@ -149,7 +149,7 @@ public final class PreGameController extends FreeColClientHolder {
      *     a debug run and should be skipping turns.
      */
     public boolean startGame() {
-        final FreeColClient fcc = getFreeColClient();
+        final FreeColClient fcc = this.freeColClient;
         final Player player = getMyPlayer();
         final GUI gui = getGUI();
 

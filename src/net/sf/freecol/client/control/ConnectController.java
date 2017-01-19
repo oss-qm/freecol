@@ -95,7 +95,7 @@ public final class ConnectController extends FreeColClientHolder {
         try {
             if (askServer().connect(FreeCol.CLIENT_THREAD + user,
                                     host, port) != null) {
-                getFreeColClient().changeClientState(false);
+                this.freeColClient.changeClientState(false);
                 logger.info("Connected to " + host + ":" + port
                     + " as " + user);
             } else {
@@ -115,7 +115,7 @@ public final class ConnectController extends FreeColClientHolder {
      *     or a logout request was sent.
      */
     public boolean requestLogout(LogoutReason reason) {
-        final FreeColClient fcc = getFreeColClient();
+        final FreeColClient fcc = this.freeColClient;
         final Player player = fcc.getMyPlayer();
         if (!fcc.isLoggedIn()) return true;
 
@@ -142,7 +142,7 @@ public final class ConnectController extends FreeColClientHolder {
      * @return True if the logout completes.
      */
     public boolean logout(LogoutReason reason) {
-        final FreeColClient fcc = getFreeColClient();
+        final FreeColClient fcc = this.freeColClient;
         final Player player = fcc.getMyPlayer();
         logger.info("Logout end for client " + player.getName()
             + ": " + reason.toString());
@@ -199,7 +199,7 @@ public final class ConnectController extends FreeColClientHolder {
      *     message was sent.
      */
     public boolean requestLogin(String user, String host, int port) {
-        final FreeColClient fcc = getFreeColClient();
+        final FreeColClient fcc = this.freeColClient;
         if (fcc.isLoggedIn()) return true;
         fcc.setMapEditor(false);
 
@@ -253,7 +253,7 @@ public final class ConnectController extends FreeColClientHolder {
      */
     public void login(ServerState state, Game game, String user,
                       boolean single, boolean current) {
-        final FreeColClient fcc = getFreeColClient();
+        final FreeColClient fcc = this.freeColClient;
 
         Player player = game.getPlayerByName(user);
         if (player == null) {
@@ -306,7 +306,7 @@ public final class ConnectController extends FreeColClientHolder {
      * @return True if the game starts successfully.
      */
     public boolean startSinglePlayerGame(Specification spec) {
-        final FreeColClient fcc = getFreeColClient();
+        final FreeColClient fcc = this.freeColClient;
         fcc.setMapEditor(false);
 
         if (!fcc.unblockServer(FreeCol.getServerPort())) return false;
@@ -338,7 +338,7 @@ public final class ConnectController extends FreeColClientHolder {
      * @return True if the game starts successully.
      */
     public boolean startSavedGame(File file) {
-        final FreeColClient fcc = getFreeColClient();
+        final FreeColClient fcc = this.freeColClient;
         final GUI gui = getGUI();
         fcc.setMapEditor(false);
 
@@ -435,7 +435,7 @@ public final class ConnectController extends FreeColClientHolder {
      */
     public boolean startMultiplayerGame(Specification specification,
                                         boolean publicServer, int port) {
-        final FreeColClient fcc = getFreeColClient();
+        final FreeColClient fcc = this.freeColClient;
         fcc.setMapEditor(false);
 
         if (!fcc.unblockServer(port)) return false;
@@ -461,7 +461,7 @@ public final class ConnectController extends FreeColClientHolder {
      * @return True if the game starts successfully.
      */
     public boolean joinMultiplayerGame(String host, int port) {
-        final FreeColClient fcc = getFreeColClient();
+        final FreeColClient fcc = this.freeColClient;
         fcc.setMapEditor(false);
 
         if (fcc.isLoggedIn()) { // Should not happen, warn and suppress
@@ -514,7 +514,7 @@ public final class ConnectController extends FreeColClientHolder {
      * Called from ShowMainAction.
      */
     public void mainTitle() {
-        final FreeColClient fcc = getFreeColClient();
+        final FreeColClient fcc = this.freeColClient;
 
         if (fcc.isMapEditor()) fcc.setMapEditor(false);
 
@@ -534,7 +534,7 @@ public final class ConnectController extends FreeColClientHolder {
      * Reset to the NewPanel (except in the map editor).
      */
     public void newGame() {
-        final FreeColClient fcc = getFreeColClient();
+        final FreeColClient fcc = this.freeColClient;
 
         if (fcc.isMapEditor()) {
             fcc.getMapEditorController().newMap();

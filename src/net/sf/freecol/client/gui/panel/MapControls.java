@@ -83,9 +83,9 @@ public abstract class MapControls extends FreeColClientHolder {
     protected MapControls(final FreeColClient freeColClient, boolean useSkin) {
         super(freeColClient);
 
-        infoPanel = new InfoPanel(getFreeColClient(), useSkin);
-        miniMap = new MiniMap(getFreeColClient());
-        final ActionManager am = getFreeColClient().getActionManager();
+        infoPanel = new InfoPanel(this.freeColClient, useSkin);
+        miniMap = new MiniMap(this.freeColClient);
+        final ActionManager am = this.freeColClient.getActionManager();
         unitButtons = new ArrayList<>();
 
         final Game game = getGame();

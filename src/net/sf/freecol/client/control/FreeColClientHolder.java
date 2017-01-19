@@ -38,7 +38,7 @@ import net.sf.freecol.server.FreeColServer;
 public class FreeColClientHolder {
 
     /** The main client object. */
-    private final FreeColClient freeColClient;
+    public final FreeColClient freeColClient;
 
 
     /**
@@ -85,15 +85,6 @@ public class FreeColClientHolder {
      */
     protected ConnectController getConnectController() {
         return this.freeColClient.getConnectController();
-    }
-
-    /**
-     * Get the main client object.
-     *
-     * @return The {@code FreeColClient} held by this object.
-     */
-    protected FreeColClient getFreeColClient() {
-        return this.freeColClient;
     }
 
     /**

@@ -71,7 +71,7 @@ final class UnitMoveAnimation extends FreeColClientHolder {
      */
     public void animate() {
         final int movementSpeed
-            = getFreeColClient().getAnimationSpeed(unit.getOwner());
+            = this.freeColClient.getAnimationSpeed(unit.getOwner());
         final SwingGUI gui = (SwingGUI)getGUI();
         final Point srcP = gui.getTilePosition(sourceTile);
         final Point dstP = gui.getTilePosition(destinationTile);
