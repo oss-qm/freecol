@@ -200,6 +200,6 @@ public class InformationPanel extends FreeColPanel {
 
     @Override
     public void paintComponent(Graphics g) {
-        g.drawImage(getSkin(getFreeColClient()), 0, 0, this);
+        g.drawImage(getSkin(this.freeColClient), 0, 0, this);
     }
 }

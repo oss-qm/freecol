@@ -117,14 +117,14 @@ public final class ReportClassicColonyPanel extends ReportPanel
                 = new JPanel(new GridLayout(0, COLONISTS_PER_ROW));
             colonistsPanel.setOpaque(false);
             for (Unit u : sort(colony.getUnits(), Unit.typeRoleComparator)) {
-                colonistsPanel.add(new UnitLabel(getFreeColClient(), u,
+                colonistsPanel.add(new UnitLabel(this.freeColClient, u,
                                                  true, true));
             }
             JPanel unitsPanel = new JPanel(new GridLayout(0, UNITS_PER_ROW));
             unitsPanel.setOpaque(false);
             for (Unit u : sort(colony.getTile().getUnits(),
                                Unit.typeRoleComparator)) {
-                unitsPanel.add(new UnitLabel(getFreeColClient(), u,
+                unitsPanel.add(new UnitLabel(this.freeColClient, u,
                                              true, true));
             }
             if (buildableLabel != null
@@ -145,7 +145,7 @@ public final class ReportClassicColonyPanel extends ReportPanel
                         = sum(colony.getWorkLocationsForProducing(gt),
                               wl -> wl.getMaximumProductionOf(gt));
                     ProductionLabel productionLabel
-                        = new ProductionLabel(getFreeColClient(),
+                        = new ProductionLabel(this.freeColClient,
                             new AbstractGoods(gt, newValue),
                             maxProduction, stockValue);
                     if (count % GOODS_PER_ROW == 0) {

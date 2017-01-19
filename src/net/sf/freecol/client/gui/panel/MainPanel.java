@@ -63,7 +63,7 @@ public final class MainPanel extends FreeColPanel {
         boolean canContinue = FreeColDirectories
             .getLastSaveGameFile() != null;
 
-        ActionManager am = getFreeColClient().getActionManager();
+        ActionManager am = this.freeColClient.getActionManager();
         JButton newButton = new JButton(am.getFreeColAction(NewAction.id));
         JButton openButton = new JButton(am.getFreeColAction(OpenAction.id));
         JButton mapEditorButton = new JButton(am.getFreeColAction(MapEditorAction.id));

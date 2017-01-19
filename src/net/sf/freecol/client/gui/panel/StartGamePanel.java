@@ -78,31 +78,31 @@ public final class StartGamePanel extends FreeColPanel {
         // mode in order to allow the player to change
         // whatever he wants.
         if (singlePlayerGame) getMyPlayer().setReady(true);
-        getFreeColClient().getPreGameController().requestLaunch();
+        StartGamePanel.this.freeColClient.getPreGameController().requestLaunch();
     };
 
     private final ActionListener cancelCmd = ae -> {
         final SwingGUI gui = getGUI();
-        getFreeColClient().getConnectController().newGame();
+        StartGamePanel.this.freeColClient.getConnectController().newGame();
         gui.removeFromCanvas(this);
         gui.showNewPanel();
     };
 
     private final ActionListener readyBoxCmd = ae -> {
-        getFreeColClient().getPreGameController().setReady(readyBox.isSelected());
+        StartGamePanel.this.freeColClient.getPreGameController().setReady(readyBox.isSelected());
         refreshPlayersTable();
     };
 
     private final ActionListener chatCmd = ae -> {
         if (!chat.getText().isEmpty()) {
-            getFreeColClient().getPreGameController().chat(chat.getText());
+            StartGamePanel.this.freeColClient.getPreGameController().chat(chat.getText());
             displayChat(getMyPlayer().getName(), chat.getText(), false);
             chat.setText("");
         }
     };
 
     private final ActionListener gameOptionsCmd = ae -> {
-        final FreeColClient fcc = getFreeColClient();
+        final FreeColClient fcc = StartGamePanel.this.freeColClient;
         OptionGroup go = getGUI().showGameOptionsDialog(fcc.isAdmin(), true);
         if (go != null) {
             fcc.getGame().setGameOptions(go);
@@ -111,7 +111,7 @@ public final class StartGamePanel extends FreeColPanel {
     };
 
     private final ActionListener mapGeneratorOptionsCmd = ae -> {
-        final FreeColClient fcc = getFreeColClient();
+        final FreeColClient fcc = StartGamePanel.this.freeColClient;
         OptionGroup mgo = getGUI().showMapGeneratorOptionsDialog(fcc.isAdmin());
         if (mgo != null) {
             fcc.getGame().setMapGeneratorOptions(mgo);
@@ -162,7 +162,7 @@ public final class StartGamePanel extends FreeColPanel {
 
         JScrollPane chatScroll = null, tableScroll;
 
-        table = new PlayersTable(getFreeColClient(), nationOptions,
+        table = new PlayersTable(this.freeColClient, nationOptions,
                                  getMyPlayer());
 
         start = Utility.localizedButton("startGame");
@@ -318,7 +318,7 @@ public final class StartGamePanel extends FreeColPanel {
         }
 
         if (enabled) {
-            start.setEnabled(getFreeColClient().isAdmin());
+            start.setEnabled(this.freeColClient.isAdmin());
         }
 
         gameOptions.setEnabled(enabled);
