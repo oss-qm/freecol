@@ -21,6 +21,7 @@ package net.sf.freecol.client.gui.action;
 
 import java.awt.event.ActionEvent;
 
+import net.sf.freecol.common.model.Player;
 import net.sf.freecol.client.FreeColClient;
 
 
@@ -50,9 +51,10 @@ public class EuropeAction extends MapboardAction {
      */
     @Override
     protected boolean shouldBeEnabled() {
+        Player player;
         return super.shouldBeEnabled()
-            && getFreeColClient().getMyPlayer() != null
-            && getFreeColClient().getMyPlayer().getEurope() != null;
+            && (player = this.freeColClient.getMyPlayer()) != null
+            && player.getEurope() != null;
     }
 
 

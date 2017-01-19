@@ -53,7 +53,7 @@ public class ShowMainAction extends FreeColAction {
     @Override
     public void actionPerformed(ActionEvent ae) {
         if (getGUI().confirmStopGame()) {
-            getFreeColClient().getConnectController().mainTitle();
+            this.freeColClient.getConnectController().mainTitle();
         }
     }
 }
