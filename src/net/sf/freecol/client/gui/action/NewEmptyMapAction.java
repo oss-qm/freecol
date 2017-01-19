@@ -67,7 +67,7 @@ public class NewEmptyMapAction extends MapboardAction {
         Dimension size = getGUI().showMapSizeDialog();
         if (size == null) return;
         final Game game = getGame();
-        Map map = getFreeColClient().getFreeColServer()
+        Map map = this.freeColClient.getFreeColServer()
             .createEmptyMap(game, size.width, size.height);
         game.setMap(map);
         Tile tile = map.getTile(size.width/2, size.height/2);
