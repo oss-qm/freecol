@@ -74,7 +74,7 @@ public final class CanvasMouseListener extends FreeColClientHolder
             PathNode path = canvas.getGotoPath();
             canvas.stopGoto();
             if (path != null) { // Move the unit
-                getFreeColClient().getInGameController()
+                this.freeColClient.getInGameController()
                         .goToTile(canvas.getActiveUnit(),
                                 path.getLastNode().getTile());
             }
@@ -109,7 +109,7 @@ public final class CanvasMouseListener extends FreeColClientHolder
 
     private void immediateSettlement(Tile tile) {
         if (tile.hasSettlement()) {
-            getFreeColClient().getGUI().showSettlement(tile.getSettlement());
+            this.freeColClient.getGUI().showSettlement(tile.getSettlement());
         }
     }
 

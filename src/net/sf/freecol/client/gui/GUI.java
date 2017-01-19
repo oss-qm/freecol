@@ -312,7 +312,7 @@ public class GUI extends FreeColClientHolder {
      * @return The created {@code BufferedImage}.
      */
     public BufferedImage createMiniMapThumbNail() {
-        MiniMap miniMap = new MiniMap(getFreeColClient());
+        MiniMap miniMap = new MiniMap(this.freeColClient);
         miniMap.setTileSize(MiniMap.MAX_TILE_SIZE);
         Game game = getGame();
         int width = game.getMap().getWidth() * MiniMap.MAX_TILE_SIZE
