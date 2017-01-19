@@ -124,7 +124,7 @@ public final class EuropePanel extends PortPanel {
                     }
                     if (belongs) {
                         UnitLabel unitLabel
-                            = new UnitLabel(getFreeColClient(), unit);
+                            = new UnitLabel(EuropePanel.this.freeColClient, unit);
                         unitLabel.setTransferHandler(defaultTransferHandler);
                         unitLabel.addMouseListener(pressListener);
                         add(unitLabel);

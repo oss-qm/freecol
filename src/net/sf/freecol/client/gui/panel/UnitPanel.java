@@ -103,7 +103,7 @@ public abstract class UnitPanel extends MigPanel
             for (Unit unit : transform(portPanel.getUnits(),
                                        u -> accepts(u))) {
                 UnitLabel unitLabel
-                    = new UnitLabel(portPanel.getFreeColClient(), unit);
+                    = new UnitLabel(portPanel.freeColClient, unit);
                 TradeRoute tradeRoute = unit.getTradeRoute();
                 if (tradeRoute != null) {
                     unitLabel.setDescriptionLabel(unit

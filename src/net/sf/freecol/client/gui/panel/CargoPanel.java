@@ -64,7 +64,7 @@ public class CargoPanel extends FreeColPanel
 
         this.carrier = null;
         this.defaultTransferHandler
-            = new DefaultTransferHandler(getFreeColClient(), this);
+            = new DefaultTransferHandler(this.freeColClient, this);
 
         if (withTitle) setBorder(Utility.localizedBorder("cargoOnCarrier"));
     }
@@ -106,9 +106,9 @@ public class CargoPanel extends FreeColPanel
         removeAll();
 
         if (carrier != null) {
-            DragListener dl = new DragListener(getFreeColClient(), this);
+            DragListener dl = new DragListener(this.freeColClient, this);
             for (Unit unit : carrier.getUnits()) {
-                UnitLabel label = new UnitLabel(getFreeColClient(), unit);
+                UnitLabel label = new UnitLabel(this.freeColClient, unit);
                 if (isEditable()) {
                     label.setTransferHandler(defaultTransferHandler);
                     label.addMouseListener(dl);
