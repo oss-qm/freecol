@@ -117,7 +117,7 @@ public final class MapEditorController extends FreeColClientHolder {
      * command line, but we should do better.
      */
     public void startMapEditor() {
-        final FreeColClient fcc = getFreeColClient();
+        final FreeColClient fcc = this.freeColClient;
         try {
             Specification specification = getDefaultSpecification();
             fcc.setMapEditor(true);
@@ -266,7 +266,7 @@ public final class MapEditorController extends FreeColClientHolder {
      * @param file The {@code File}.
      */
     public void loadGame(File file) {
-        final FreeColClient fcc = getFreeColClient();
+        final FreeColClient fcc = this.freeColClient;
         final GUI gui = getGUI();
 
         fcc.setMapEditor(true);

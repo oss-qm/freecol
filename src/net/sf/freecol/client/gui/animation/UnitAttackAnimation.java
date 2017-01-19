@@ -137,7 +137,7 @@ final class UnitAttackAnimation extends FreeColClientHolder {
         Direction direction = attackerTile.getDirection(defenderTile);
         SimpleZippedAnimation sza;
 
-        if (getFreeColClient().getAnimationSpeed(attacker.getOwner()) > 0) {
+        if (this.freeColClient.getAnimationSpeed(attacker.getOwner()) > 0) {
             if ((sza = getAnimation(attacker, direction)) != null) {
                 new UnitImageAnimation(gui, attacker, attackerTile, sza, mirror)
                     .animate();
@@ -145,7 +145,7 @@ final class UnitAttackAnimation extends FreeColClientHolder {
         }
 
         if (!success
-            && getFreeColClient().getAnimationSpeed(defender.getOwner()) > 0) {
+            && this.freeColClient.getAnimationSpeed(defender.getOwner()) > 0) {
             direction = direction.getReverseDirection();
             if ((sza = getAnimation(defender, direction)) != null) {
                 new UnitImageAnimation(gui, defender, defenderTile, sza, mirror)

@@ -201,7 +201,7 @@ public final class PreGameInputHandler extends ClientInputHandler {
         final ServerState state = message.getState();
         final Game game = message.getGame(); // This is the real game!
 
-        getFreeColClient().getConnectController()
+        this.freeColClient.getConnectController()
             .login(state, game, user, single, current);
     }
 
@@ -220,7 +220,7 @@ public final class PreGameInputHandler extends ClientInputHandler {
         game.removePlayer(player);
         getGUI().refreshPlayersTable();
         if (player == getMyPlayer()) {
-            getFreeColClient().getConnectController()
+            this.freeColClient.getConnectController()
                 .logout(reason);
         }
     }
@@ -375,7 +375,7 @@ public final class PreGameInputHandler extends ClientInputHandler {
 
         for (FreeColGameObject fcgo : message.getObjects()) {
             if (fcgo instanceof Game) {
-                getFreeColClient()
+                this.freeColClient
                     .addSpecificationActions(((Game)fcgo).getSpecification());
             } else {
                 logger.warning("Game node expected: " + fcgo.getId());
