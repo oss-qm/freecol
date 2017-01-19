@@ -188,7 +188,7 @@ public final class InGameController extends FreeColClientHolder {
      */
     private boolean requireOurTurn() {
         if (currentPlayerIsMyPlayer()) return true;
-        if (getFreeColClient().isInGame()) {
+        if (this.freeColClient.isInGame()) {
             getGUI().showInformationMessage("info.notYourTurn");
         }
         return false;
@@ -807,8 +807,8 @@ public final class InGameController extends FreeColClientHolder {
 
         // Check for desync as last thing!
         if (FreeColDebugger.isInDebugMode(FreeColDebugger.DebugMode.DESYNC)
-            && DebugUtils.checkDesyncAction(getFreeColClient())) {
-            getFreeColClient().getConnectController()
+            && DebugUtils.checkDesyncAction(this.freeColClient)) {
+            this.freeColClient.getConnectController()
                 .requestLogout(LogoutReason.RECONNECT);
             return false;
         }
@@ -2376,7 +2376,7 @@ public final class InGameController extends FreeColClientHolder {
         // was set.  However IR#115 requested that if animation is off
         // that we display nothing so as to speed up the other player
         // moves as much as possible.
-        if (getFreeColClient().getAnimationSpeed(attacker.getOwner()) > 0) {
+        if (this.freeColClient.getAnimationSpeed(attacker.getOwner()) > 0) {
             getGUI().animateUnitAttack(attacker, defender,
                                   attackerTile, defenderTile, success);
         }
@@ -2398,7 +2398,7 @@ public final class InGameController extends FreeColClientHolder {
         // was set.  However IR#115 requested that if animation is off
         // that we display nothing so as to speed up the other player
         // moves as much as possible.
-        if (getFreeColClient().getAnimationSpeed(unit.getOwner()) > 0) {
+        if (this.freeColClient.getAnimationSpeed(unit.getOwner()) > 0) {
             getGUI().animateUnitMove(unit, oldTile, newTile);
         } else if (getMyPlayer().owns(unit)) {
             getGUI().requireFocus(newTile);
@@ -3587,7 +3587,7 @@ public final class InGameController extends FreeColClientHolder {
     public void loadGame() {
         File file = getGUI().showLoadSaveFileDialog();
         if (file == null) return;
-        if (getFreeColClient().isInGame()
+        if (this.freeColClient.isInGame()
             && !getGUI().confirmStopGame()) return;
 
         turnReportMessages.clear();
@@ -3613,7 +3613,7 @@ public final class InGameController extends FreeColClientHolder {
             game.setCurrentPlayer(game.getNextPlayer());
         }
         if (getMyPlayer() == player) {
-            getFreeColClient().getConnectController().logout(reason);
+            this.freeColClient.getConnectController().logout(reason);
         }
     }
 
@@ -3834,7 +3834,7 @@ public final class InGameController extends FreeColClientHolder {
 
         // Add tutorial message.
         final String key = FreeColActionUI
-            .getHumanKeyStrokeText(getFreeColClient()
+            .getHumanKeyStrokeText(this.freeColClient
                 .getActionManager().getFreeColAction("buildColonyAction")
                 .getAccelerator());
         player.addModelMessage(new ModelMessage(ModelMessage.MessageType.TUTORIAL,
@@ -4251,7 +4251,7 @@ public final class InGameController extends FreeColClientHolder {
      * Returns no status, this game is going away.
      */
     public void reconnect() {
-        final FreeColClient fcc = getFreeColClient();
+        final FreeColClient fcc = this.freeColClient;
         final Player player = getMyPlayer();
         if (getGUI().confirm("reconnect.text", "reconnect.no", "reconnect.yes")) {
             logger.finest("Reconnect quit.");
@@ -4399,7 +4399,7 @@ public final class InGameController extends FreeColClientHolder {
      */
     public boolean saveAndQuit() {
         if (!saveGame()) return false;
-        getFreeColClient().quit();
+        this.freeColClient.quit();
         return true;
     }
 
@@ -4412,7 +4412,7 @@ public final class InGameController extends FreeColClientHolder {
      * @return True if the game was saved.
      */
     public boolean saveGame() {
-        if (!getFreeColClient().canSaveCurrentGame()) return false;
+        if (!this.freeColClient.canSaveCurrentGame()) return false;
 
         final Game game = getGame();
         if (game == null) return false; // Keyboard handling can race init
@@ -4593,9 +4593,9 @@ public final class InGameController extends FreeColClientHolder {
         game.setCurrentPlayer(player);
 
         if (getMyPlayer().equals(player)) {
-            FreeColDebugger.finishDebugRun(getFreeColClient(), false);
+            FreeColDebugger.finishDebugRun(this.freeColClient, false);
             if (FreeColDebugger.isInDebugMode(FreeColDebugger.DebugMode.DESYNC)
-                && DebugUtils.checkDesyncAction(getFreeColClient())) {
+                && DebugUtils.checkDesyncAction(this.freeColClient)) {
                 FreeCol.fatal("Exiting on desynchronization");
             }
 
@@ -4621,7 +4621,7 @@ public final class InGameController extends FreeColClientHolder {
             }
 
             // Wake up human!
-            if (!getFreeColClient().getSinglePlayer()) {
+            if (!this.freeColClient.getSinglePlayer()) {
                 sound("sound.anthem." + player.getNationId());
             }
 
@@ -4644,7 +4644,7 @@ public final class InGameController extends FreeColClientHolder {
 
         final Player player = getMyPlayer();
         if (player == dead) {
-            final FreeColClient fcc = getFreeColClient();
+            final FreeColClient fcc = this.freeColClient;
             FreeColDebugger.finishDebugRun(fcc, true);
             if (fcc.getSinglePlayer()) {
                 if (player.getPlayerType() == Player.PlayerType.RETIRED) {
@@ -4710,7 +4710,7 @@ public final class InGameController extends FreeColClientHolder {
      */
     public boolean setInDebugMode() {
         FreeColDebugger.enableDebugMode(FreeColDebugger.DebugMode.MENUS);
-        getFreeColClient().getConnectController()
+        this.freeColClient.getConnectController()
             .requestLogout(LogoutReason.RECONNECT);
         return true;
     }
@@ -4902,7 +4902,7 @@ public final class InGameController extends FreeColClientHolder {
      */
     public boolean victory(Boolean quit) {
         if (quit) {
-            getFreeColClient().getConnectController().newGame();
+            this.freeColClient.getConnectController().newGame();
         } else {
             askServer().continuePlaying();
         }

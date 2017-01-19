@@ -117,7 +117,7 @@ public abstract class ClientInputHandler extends FreeColClientHolder
      * @param element The {@code Element} to process.
      */
     private void gameState(Element element) {
-        final FreeColClient fcc = getFreeColClient();
+        final FreeColClient fcc = this.freeColClient;
         final GameStateMessage message
             = new GameStateMessage(fcc.getGame(), element);
 
@@ -130,7 +130,7 @@ public abstract class ClientInputHandler extends FreeColClientHolder
      * @param element The {@code Element} to process.
      */
     private void vacantPlayers(Element element) {
-        final FreeColClient fcc = getFreeColClient();
+        final FreeColClient fcc = this.freeColClient;
         final VacantPlayersMessage message
             = new VacantPlayersMessage(fcc.getGame(), element);
 

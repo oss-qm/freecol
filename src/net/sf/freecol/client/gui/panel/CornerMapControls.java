@@ -214,7 +214,7 @@ public final class CornerMapControls extends MapControls {
         addToCanvas(canvas, infoPanel);
         addToCanvas(canvas, miniMapPanel);
         if (rose) addToCanvas(canvas, compassRose);
-        if (!getFreeColClient().isMapEditor()) {
+        if (!this.freeColClient.isMapEditor()) {
             for (UnitButton button : unitButtons) {
                 addToCanvas(canvas, button);
                 button.refreshAction();
