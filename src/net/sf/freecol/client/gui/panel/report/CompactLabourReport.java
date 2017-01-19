@@ -90,7 +90,7 @@ public final class CompactLabourReport extends ReportPanel {
     public CompactLabourReport(FreeColClient freeColClient) {
         this(freeColClient, null);
 
-        labourData = new LabourData(getFreeColClient());
+        labourData = new LabourData(this.freeColClient);
     }
 
     /**
@@ -396,7 +396,7 @@ public final class CompactLabourReport extends ReportPanel {
 
         row = addLocationData(unitTotal, null, row);
 
-        for (Colony colony : getFreeColClient().getMySortedColonies()) {
+        for (Colony colony : this.freeColClient.getMySortedColonies()) {
             LabourData.LocationData colonyData
                 = unitData.getDetails().get(colony);
             if (colonyData != null) {

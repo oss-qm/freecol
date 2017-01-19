@@ -68,7 +68,7 @@ public abstract class FreeColPanel extends JPanel implements ActionListener {
     // The margin to use.
     protected static final int MARGIN = 3;
 
-    private final FreeColClient freeColClient;
+    public final FreeColClient freeColClient;
 
     protected boolean editable = true;
 
@@ -100,16 +100,6 @@ public abstract class FreeColPanel extends JPanel implements ActionListener {
         okButton.setActionCommand(OK);
         okButton.addActionListener(this);
         setCancelComponent(okButton);
-    }
-
-
-    /**
-     * Get the FreeColClient.
-     *
-     * @return The current {@code FreeColClient}.
-     */
-    protected final FreeColClient getFreeColClient() {
-        return freeColClient;
     }
 
     /**

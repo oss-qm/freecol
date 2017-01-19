@@ -111,7 +111,7 @@ public final class ReportProductionPanel extends ReportPanel {
 
         if (!selectedTypes.isEmpty()) {
             final Specification spec = getSpecification();
-            final FreeColClient fcc = getFreeColClient();
+            final FreeColClient fcc = this.freeColClient;
             final Function<GoodsType, Set<BuildingType>> mapper = gt ->
                 transform(spec.getBuildingTypeList(),
                           bt -> (gt == bt.getProducedGoodsType()
@@ -138,7 +138,7 @@ public final class ReportProductionPanel extends ReportPanel {
                 }
             }
 
-            for (Colony colony : getFreeColClient().getMySortedColonies()) {
+            for (Colony colony : this.freeColClient.getMySortedColonies()) {
                 // colonyButton
                 JButton colonyButton = Utility.getLinkButton(colony.getName(),
                     null, colony.getId());
