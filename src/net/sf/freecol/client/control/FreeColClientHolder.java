@@ -147,7 +147,7 @@ public class FreeColClientHolder {
      * @return The {@code Specification} held by the game.
      */
     protected Specification getSpecification() {
-        Game game = getGame();
+        Game game = this.freeColClient.getGame();
         return (game == null) ? null : game.getSpecification();
     }
 

@@ -102,21 +102,12 @@ public final class MiniMap extends JPanel implements MouseInputListener {
     }
 
     /**
-     * Internal game accessor.
-     *
-     * @return The {@code Game}.
-     */
-    private Game getGame() {
-        return this.freeColClient.getGame();
-    }
-
-    /**
      * Internal Map accessor.
      *
      * @return The {@code Map}.
      */
     private Map getMap() {
-        Game game = getGame();
+        Game game = this.freeColClient.getGame();
         return (game == null) ? null : game.getMap();
     }
 
@@ -156,8 +147,8 @@ public final class MiniMap extends JPanel implements MouseInputListener {
      * @return a {@code boolean} value
      */
     public boolean canZoomIn() {
-        return (freeColClient.getGame() != null
-                && freeColClient.getGame().getMap() != null
+        Game game = freeColClient.getGame();
+        return (game != null && game.getMap() != null
                 && tileSize < MAX_TILE_SIZE);
     }
 
@@ -167,8 +158,8 @@ public final class MiniMap extends JPanel implements MouseInputListener {
      * @return a {@code boolean} value
      */
     public boolean canZoomOut() {
-        return (freeColClient.getGame() != null
-                && freeColClient.getGame().getMap() != null
+        Game game = freeColClient.getGame();
+        return (game != null && game.getMap() != null
                 && tileSize > MIN_TILE_SIZE);
     }
 
@@ -195,10 +186,10 @@ public final class MiniMap extends JPanel implements MouseInputListener {
      */
     @Override
     public void paintComponent(Graphics graphics) {
-        if (freeColClient.getGame() == null
-            || freeColClient.getGame().getMap() == null) {
+        Game game = freeColClient.getGame();
+        if (game == null || game.getMap() == null)
             return;
-        }
+
         graphics.drawImage(ResourceManager.getImage("image.background.MiniMap"),
             0, 0, null);
         paintMap(graphics);
