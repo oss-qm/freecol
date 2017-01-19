@@ -3451,9 +3451,10 @@ public class Player extends FreeColGameObject implements Nameable {
                 List<Tile> lastLayer = new ArrayList<>(layer);
                 tiles.addAll(layer);
                 layer.clear();
-                layer.addAll(transform(flatten(lastLayer,
-                                               ll -> ll.getSurroundingTiles(1, 1).stream()),
-                                       t -> !tiles.contains(t) && canClaimForSettlement(t)));
+                for (Tile ll : lastLayer)
+                    for (Tile t : ll.getSurroundingTiles(1, 1))
+                        if (!tiles.contains(t) && canClaimForSettlement(t))
+                            layer.add(t);
             }
             tiles.addAll(layer);
         }
