@@ -129,16 +129,6 @@ public final class FeatureContainer {
     }
 
     /**
-     * Checks if this container contains a given ability key.
-     *
-     * @param key The key to check.
-     * @return True if the key is present.
-     */
-    public boolean containsAbilityKey(String key) {
-        return first(getAbilities(key, null, null)) != null;
-    }
-
-    /**
      * Gets the set of abilities with the given identifier from a
      * container.
      *
