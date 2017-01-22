@@ -430,16 +430,6 @@ public abstract class FreeColObject
     }
 
     /**
-     * Checks if this object contains a given ability key.
-     *
-     * @param key The key to check.
-     * @return True if the key is present.
-     */
-    public boolean containsAbilityKey(String key) {
-        return first(getAbilities(key, null, null)) != null;
-    }
-
-    /**
      * Gets a sorted copy of the abilities of this object.
      *
      * @return A list of abilities.
