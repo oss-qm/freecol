@@ -2388,8 +2388,7 @@ public class Unit extends GoodsLocation
      */
     @Override
     public int getInitialMovesLeft() {
-        Turn turn = getGame().getTurn();
-        return (int)applyModifiers(unitType.getMovement(), turn,
+        return (int)applyModifiers(unitType.getMovement(), getGame().getTurn(),
                                    Modifier.MOVEMENT_BONUS, unitType);
     }
 
@@ -3174,7 +3173,7 @@ public class Unit extends GoodsLocation
      * @return The line of sight of this {@code Unit}.
      */
     public int getLineOfSight() {
-        final Turn turn = getGame().getTurn();
+        final int turn = getGame().getTurn();
         return (int)applyModifiers(unitType.getLineOfSight(), turn,
             Stream.concat(this.getModifiers(Modifier.LINE_OF_SIGHT_BONUS,
                                             unitType, turn),
@@ -3628,7 +3627,7 @@ public class Unit extends GoodsLocation
      * @return The set of {@code Modifier}s found.
      */
     public Set<Modifier> getCombatModifiers(String id,
-        FreeColSpecObjectType fcgot, Turn turn) {
+        FreeColSpecObjectType fcgot, int turn) {
         final Player owner = getOwner();
         final UnitType unitType = getType();
         Set<Modifier> result = new HashSet<>();
@@ -4181,7 +4180,7 @@ public class Unit extends GoodsLocation
      */
     @Override
     public Stream <Ability> getAbilities(String id, FreeColSpecObjectType fcgot,
-                                         Turn turn) {
+                                         int turn) {
         final Player owner = getOwner();
         final UnitType unitType = getType();
 
@@ -4214,7 +4213,7 @@ public class Unit extends GoodsLocation
      * @param turn The turn that applies.
      * @return A stream of {@code Ability}s found.
      */
-    private Stream<Ability> getLocationAbilities(String id, Turn turn) {
+    private Stream<Ability> getLocationAbilities(String id, int turn) {
         final UnitType unitType = getType();
         final Settlement settlement = getSettlement();
         if (settlement != null) {
@@ -4242,7 +4241,7 @@ public class Unit extends GoodsLocation
      */
     @Override
     public Stream<Modifier> getModifiers(String id, FreeColSpecObjectType fcgot,
-                                         Turn turn) {
+                                         int turn) {
         final Player owner = getOwner();
         final UnitType unitType = getType();
 

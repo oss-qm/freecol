@@ -194,7 +194,7 @@ public class Operand extends Scope {
             result = game.invokeMethod(methodName, Integer.class, 0);
             break;
         case YEAR:
-            result = game.getTurn().getYear();
+            result = Turn.getYear(game.getTurn());
             break;
         case OPTION:
             result = game.getSpecification().getInteger(getType());

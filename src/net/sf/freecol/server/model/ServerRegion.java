@@ -132,7 +132,7 @@ public class ServerRegion extends Region {
         if (this.parent != null) this.parent.addChild(this);
         this.claimable = false;
         this.discoverable = false;
-        this.discoveredIn = null;
+        this.discoveredIn = Turn.UNDEFINED;
         this.discoveredBy = null;
         this.scoreValue = 0;
     }
@@ -219,7 +219,7 @@ public class ServerRegion extends Region {
      * @param newName The name of the region.
      * @param cs A {@code ChangeSet} to update.
      */
-    public void csDiscover(Player player, Turn turn, String newName,
+    public void csDiscover(Player player, int turn, String newName,
                            ChangeSet cs) {
         if (!getDiscoverable()) return;
         final int score = (getSpecification().getBoolean(GameOptions.EXPLORATION_POINTS)) 

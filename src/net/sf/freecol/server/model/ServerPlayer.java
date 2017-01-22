@@ -400,7 +400,7 @@ public class ServerPlayer extends Player implements ServerModelObject {
 
         // Set initial immigration target
         int i0 = spec.getInteger(GameOptions.INITIAL_IMMIGRATION);
-        immigrationRequired = (int)applyModifiers((float)i0, null,
+        immigrationRequired = (int)applyModifiers((float)i0, Turn.UNDEFINED,
             Modifier.RELIGIOUS_UNREST_BONUS);
 
         // Add initial gold
@@ -525,7 +525,7 @@ public class ServerPlayer extends Player implements ServerModelObject {
         // The player does not have any valid units or settlements on the map.
 
         int mandatory = spec.getInteger(GameOptions.MANDATORY_COLONY_YEAR);
-        if (getGame().getTurn().getYear() >= mandatory) {
+        if (Turn.getYear(getGame().getTurn()) >= mandatory) {
             // After the season cutover year there must be a presence
             // in the New World.
             logger.info(getName() + " dead, no presence >= " + mandatory);
@@ -1699,7 +1699,7 @@ outer:  for (Effect effect : effects) {
                                         gt -> market.hasBeenTraded(gt))) {
             boolean add = market.getAmountInMarket(type)
                 < type.getInitialAmount();
-            int amount = game.getTurn().getNumber() / 10;
+            int amount = game.getTurn() / 10;
             if (type == extraType) amount = 2 * amount + 1;
             if (amount <= 0) continue;
             amount = randomInt(logger, "Market adjust " + type, random, amount);
@@ -1890,7 +1890,7 @@ outer:  for (Effect effect : effects) {
         final Game game = getGame();
         final Specification spec = game.getSpecification();
         final ServerEurope europe = (ServerEurope)getEurope();
-        final Turn turn = game.getTurn();
+        final int turn = game.getTurn();
         boolean europeDirty = false, visibilityChange = false;
 
         addFather(father);
@@ -3917,7 +3917,7 @@ outer:  for (Effect effect : effects) {
      */
     public Modifier makeTeaPartyModifier() {
         final Specification spec = getGame().getSpecification();
-        final Turn turn = getGame().getTurn();
+        final int turn = getGame().getTurn();
         Modifier modifier = first(spec.getModifiers(Modifier.COLONY_GOODS_PARTY));
         if (modifier != null) {
             modifier = Modifier.makeTimedModifier("model.goods.bells",
@@ -4117,7 +4117,7 @@ outer:  for (Effect effect : effects) {
 
         // Must be a first contact!
         final Game game = getGame();
-        Turn turn = game.getTurn();
+        int turn = game.getTurn();
         if (isIndian()) {
             if (other.isIndian()) {
                 return false; // Ignore native-to-native contacts.

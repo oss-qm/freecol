@@ -1367,7 +1367,7 @@ public final class Tile extends UnitLocation implements Named, Ownable {
     public double getDefenceValue() {
         final TileType type = getType();
         return (type == null) ? 0.0
-            : applyModifiers(1.0f, null, type.getDefenceModifiers());
+            : applyModifiers(1.0f, Turn.UNDEFINED, type.getDefenceModifiers());
     }
 
     /**
@@ -2345,7 +2345,7 @@ public final class Tile extends UnitLocation implements Named, Ownable {
     @Override
     public Stream<Ability> getAbilities(String id,
                                         FreeColSpecObjectType fcgot,
-                                        Turn turn) {
+                                        int turn) {
         // Delegate to type
         return getType().getAbilities(id, fcgot, turn);
     }

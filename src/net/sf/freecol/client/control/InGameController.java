@@ -510,10 +510,10 @@ public final class InGameController extends FreeColClientHolder {
     private String getSaveGameString(Game game) {
         final Player player = getMyPlayer();
         final String gid = Integer.toHexString(game.getUUID().hashCode());
-        final Turn turn = game.getTurn();
+        final int turn = game.getTurn();
         return (/* player.getName() + "_" */ gid
             + "_" + Messages.message(player.getNationLabel())
-            + "_" + turn.getSaveGameSuffix()
+            + "_" + Turn.getSaveGameSuffix(turn)
             + "." + FreeCol.FREECOL_SAVE_EXTENSION)
             .replaceAll(" ", "_");
     }
@@ -561,7 +561,7 @@ public final class InGameController extends FreeColClientHolder {
 
         // conditional save after user-set period
         int saveGamePeriod = options.getInteger(ClientOptions.AUTOSAVE_PERIOD);
-        int turnNumber = game.getTurn().getNumber();
+        int turnNumber = game.getTurn();
         if (saveGamePeriod >= 1 && turnNumber % saveGamePeriod == 0) {
             String fileName = prefix + "-" + getSaveGameString(game);
             saveGame(FreeColDirectories.getAutosaveFile(fileName));
@@ -613,8 +613,8 @@ public final class InGameController extends FreeColClientHolder {
      * @param key The key for a message to ignore.
      * @param turn The current {@code Turn}.
      */
-    private synchronized void startIgnoringMessage(String key, Turn turn) {
-        messagesToIgnore.put(key, turn.getNumber());
+    private synchronized void startIgnoringMessage(String key, int turn) {
+        messagesToIgnore.put(key, turn);
         logger.finer("Ignore message start: " + key);
     }
 
@@ -633,8 +633,8 @@ public final class InGameController extends FreeColClientHolder {
      *
      * @param turn The {@code Turn} value to test against.
      */
-    private synchronized void reapIgnoredMessages(Turn turn) {
-        removeInPlace(messagesToIgnore, e -> e.getValue() < turn.getNumber());
+    private synchronized void reapIgnoredMessages(int turn) {
+        removeInPlace(messagesToIgnore, e -> e.getValue() < turn);
     }
 
     /**
@@ -645,11 +645,11 @@ public final class InGameController extends FreeColClientHolder {
      * @param turn The current {@code Turn}.
      * @return True if the message should continue to be ignored.
      */
-    private synchronized boolean continueIgnoreMessage(String key, Turn turn) {
+    private synchronized boolean continueIgnoreMessage(String key, int turn) {
         Integer value;
         if (key != null
             && (value = messagesToIgnore.get(key)) != null
-            && value + 1 == turn.getNumber()) {
+            && value + 1 == turn) {
             messagesToIgnore.put(key, value + 1);
             logger.finer("Ignore message continue: " + key);
             return true;
@@ -674,7 +674,7 @@ public final class InGameController extends FreeColClientHolder {
     public boolean displayModelMessages(final boolean allMessages,
                                         final boolean endOfTurn) {
         final Player player = getMyPlayer();
-        final Turn thisTurn = getGame().getTurn();
+        final int thisTurn = getGame().getTurn();
         final ArrayList<ModelMessage> messages = new ArrayList<>();
 
         for (ModelMessage m : ((allMessages) ? player.getModelMessages()
@@ -3328,7 +3328,7 @@ public final class InGameController extends FreeColClientHolder {
             || (key = message.getIgnoredMessageKey()) == null) return false;
 
         if (flag) {
-            final Turn turn = getGame().getTurn();
+            final int turn = getGame().getTurn();
             if (!continueIgnoreMessage(key, turn)) {
                 startIgnoringMessage(key, turn);
             }
@@ -4094,20 +4094,18 @@ public final class InGameController extends FreeColClientHolder {
             logger.warning("Bad turn in newTurn: " + turn);
             return false;
         }
-        Turn newTurn = new Turn(turn);
-        game.setTurn(newTurn);
-        logger.info("New turn: " + newTurn + "/" + turn);
+        game.setTurn(turn);
+        logger.info("New turn: " + turn);
 
         if (getClientOptions().getBoolean(ClientOptions.AUDIO_ALERTS)) {
             sound("sound.event.alertSound");
         }
 
-        final Turn currTurn = game.getTurn();
-        if (currTurn.isFirstSeasonTurn()) {
+        if (turn == Turn.FIRST_TURN) {
             player.addModelMessage(new ModelMessage(MessageType.WARNING,
                                                     "twoTurnsPerYear", player)
-                .addStringTemplate("%year%", currTurn.getLabel())
-                .addAmount("%amount%", currTurn.getSeasonNumber()));
+                .addStringTemplate("%year%", Turn.getLabel(turn))
+                .addAmount("%amount%", Turn.getSeasonNumber()));
         }
         player.clearNationCache();
         return true;
@@ -4597,7 +4595,7 @@ public final class InGameController extends FreeColClientHolder {
 
             // Save the game (if it isn't newly loaded)
             if (getFreeColServer() != null
-                && game.getTurn().getNumber() > 0) autoSaveGame();
+                && game.getTurn() > 0) autoSaveGame();
 
             // Get turn report out quickly before more message display occurs.
             player.removeDisplayedModelMessages();

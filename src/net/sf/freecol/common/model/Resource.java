@@ -210,7 +210,7 @@ public class Resource extends TileItem {
     @Override
     public int applyBonus(GoodsType goodsType, UnitType unitType,
                           int potential) {
-        int amount = -potential + (int)applyModifiers(potential, null,
+        int amount = -potential + (int)applyModifiers(potential, Turn.UNDEFINED,
             type.getModifiers(goodsType.getId(), unitType));
         return potential
             + ((quantity == UNLIMITED || quantity > amount) ? amount
