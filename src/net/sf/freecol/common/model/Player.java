@@ -1170,7 +1170,7 @@ public class Player extends FreeColGameObject implements Nameable {
         if (!isColonial()) return;
 
         final Specification spec = getSpecification();
-        final Turn turn = getGame().getTurn();
+        final int turn = getGame().getTurn();
         final int current = immigrationRequired;
         int base = spec.getInteger(GameOptions.CROSSES_INCREMENT);
         // If the religious unrest bonus is present, immigrationRequired
@@ -1429,7 +1429,7 @@ public class Player extends FreeColGameObject implements Nameable {
      *
      * @return A map of father id to {@code Turn}s.
      */
-    public java.util.Map<String, Turn> getElectionTurns() {
+    public java.util.Map<String, Integer> getElectionTurns() {
         return transform(getHistory(),
                          matchKey(HistoryEvent.HistoryEventType.FOUNDING_FATHER,
                                   HistoryEvent::getEventType),
@@ -1614,7 +1614,7 @@ public class Player extends FreeColGameObject implements Nameable {
             : StringTemplate.template("model.indianSettlement.lastSale")
                 .addNamed("%goodsType%", what)
                 .addAmount("%price%", data.getPrice())
-                .addStringTemplate("%turn%", data.getWhen().getLabel());
+                .addStringTemplate("%turn%", Turn.getLabel(data.getWhen()));
     }
 
     /**
@@ -3591,7 +3591,7 @@ public class Player extends FreeColGameObject implements Nameable {
      * @param what A description of the cheating.
      */
     public void logCheat(String what) {
-        logger.finest("CHEAT: " + getGame().getTurn().getNumber()
+        logger.finest("CHEAT: " + getGame().getTurn()
             + " " + lastPart(getNationId(), ".")
             + " " + what);
     }
@@ -3810,7 +3810,7 @@ public class Player extends FreeColGameObject implements Nameable {
                 ability.toXML(xw);
             }
 
-            Turn turn = getGame().getTurn();
+            final int turn = getGame().getTurn();
             for (Modifier modifier : transform(getSortedModifiers(), m ->
                     m.isTemporary() && !m.isOutOfDate(turn))) {
                 modifier.toXML(xw);

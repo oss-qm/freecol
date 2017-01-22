@@ -738,7 +738,7 @@ public class BuildQueuePanel extends FreeColPanel implements ItemListener {
         forEachMapEntry(bt.getRequiredAbilities(), e -> {
                 final String id = e.getKey();
                 final boolean value = e.getValue();
-                if (this.featureContainer.hasAbility(id, null, null) != value
+                if (this.featureContainer.hasAbility(id, null, Turn.UNDEFINED) != value
                     && this.colony.hasAbility(id) != value) {
                     FreeColSpecObjectType source
                         = first(spec.getTypesProviding(id, value));
@@ -839,7 +839,7 @@ public class BuildQueuePanel extends FreeColPanel implements ItemListener {
      */
     private void updateUnitList() {
         final Specification spec = getSpecification();
-        final Turn turn = getGame().getTurn();
+        final int turn = getGame().getTurn();
         DefaultListModel<UnitType> units
             = (DefaultListModel<UnitType>)this.unitList.getModel();
         units.clear();
@@ -869,7 +869,7 @@ public class BuildQueuePanel extends FreeColPanel implements ItemListener {
             if (!checkAbilities(ut, reasons)) unbuildableTypes.add(ut);
 
             // Missing unit build ability?
-            if (!this.featureContainer.hasAbility(Ability.BUILD, ut, null)
+            if (!this.featureContainer.hasAbility(Ability.BUILD, ut, Turn.UNDEFINED)
                 && !this.colony.hasAbility(Ability.BUILD, ut, turn)) {
                 Ability buildAbility = find(spec.getAbilities(Ability.BUILD),
                     a -> (a.appliesTo(ut)

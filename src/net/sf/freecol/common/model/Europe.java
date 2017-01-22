@@ -506,7 +506,7 @@ public class Europe extends UnitLocation
      */
     @Override
     public Stream<Ability> getAbilities(String id, FreeColSpecObjectType fcgot,
-                                        Turn turn) {
+                                        int turn) {
         return concat(super.getAbilities(id, fcgot, turn),
             // Always able to dress a missionary.
             ((id == null || Ability.DRESS_MISSIONARY.equals(id))

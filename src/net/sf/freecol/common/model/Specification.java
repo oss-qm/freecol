@@ -1891,8 +1891,7 @@ public final class Specification {
      * @param turn The {@code Turn} to check.
      * @return The age of the given turn.
      */
-    public int getAge(Turn turn) {
-        int n = turn.getNumber();
+    public int getAge(final int n) {
         return (n < ages[0]) ? -1
             : (n < ages[1]) ? 0
             : (n < ages[2]) ? 1

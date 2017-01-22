@@ -34,7 +34,7 @@ public final class LastSale extends FreeColObject {
     public static final String TAG = "lastSale";
 
     /** When a sale was made. */
-    private Turn when;
+    private int when;
 
     /** The price per unit returned from the sale. */
     private int price;
@@ -54,7 +54,7 @@ public final class LastSale extends FreeColObject {
      * @param price The per-unit price of the sale.
      */
     public LastSale(Location where, GoodsType what,
-                    Turn when, int price) {
+                    int when, int price) {
         this(makeKey(where, what), when, price);
     }
 
@@ -65,7 +65,7 @@ public final class LastSale extends FreeColObject {
      * @param when In which {@code Turn} the sale occurred.
      * @param price The per-unit price of the sale.
      */
-    public LastSale(String id, Turn when, int price) {
+    public LastSale(String id, int when, int price) {
         setId(id);
         this.when = when;
         this.price = price;
@@ -87,7 +87,7 @@ public final class LastSale extends FreeColObject {
      *
      * @return The {@code Turn} when the sale was made.
      */
-    public Turn getWhen() {
+    public int getWhen() {
         return when;
     }
 
@@ -126,7 +126,7 @@ public final class LastSale extends FreeColObject {
     protected void writeAttributes(FreeColXMLWriter xw) throws XMLStreamException {
         super.writeAttributes(xw);
 
-        xw.writeAttribute(WHEN_TAG, when.getNumber());
+        xw.writeAttribute(WHEN_TAG, when);
 
         xw.writeAttribute(PRICE_TAG, price);
     }
@@ -138,7 +138,7 @@ public final class LastSale extends FreeColObject {
     public void readAttributes(FreeColXMLReader xr) throws XMLStreamException {
         super.readAttributes(xr);
 
-        when = new Turn(xr.getAttribute(WHEN_TAG, 0));
+        when = xr.getAttribute(WHEN_TAG, 0);
 
         price = xr.getAttribute(PRICE_TAG, 0);
     }

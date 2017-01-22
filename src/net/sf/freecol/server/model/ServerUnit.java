@@ -228,7 +228,7 @@ public class ServerUnit extends Unit implements ServerModelObject {
         AbstractGoods deliver = getWorkImprovement().getType()
             .getProduction(tile.getType());
         if (deliver != null) { // Deliver goods if any
-            final Turn turn = getGame().getTurn();
+            final int turn = getGame().getTurn();
             int amount = deliver.getAmount();
             amount = (int)this.applyModifiers(amount, turn,
                 Modifier.TILE_TYPE_CHANGE_PRODUCTION, deliver.getType());

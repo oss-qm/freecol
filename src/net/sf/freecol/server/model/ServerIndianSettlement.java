@@ -153,7 +153,7 @@ public class ServerIndianSettlement extends IndianSettlement
         if (missionary == null) return;
         final ServerPlayer other = (ServerPlayer)missionary.getOwner();
         final Tile tile = getTile();
-        final Turn turn = getGame().getTurn();
+        final int turn = getGame().getTurn();
 
         // Check for braves converted by missionaries
         float convert = getConvertProgress();
