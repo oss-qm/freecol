@@ -42,6 +42,7 @@ import net.sf.freecol.common.ObjectWithId;
 import net.sf.freecol.common.io.FreeColXMLReader;
 import net.sf.freecol.common.io.FreeColXMLWriter;
 import net.sf.freecol.common.io.FreeColXMLWriter.WriteScope;
+import net.sf.freecol.common.model.Turn;
 import net.sf.freecol.common.util.Introspector;
 import net.sf.freecol.common.util.LogBuilder;
 import static net.sf.freecol.common.util.CollectionUtils.*;
@@ -412,7 +413,7 @@ public abstract class FreeColObject
      * @return True if the ability is present.
      */
     public final boolean hasAbility(String id, FreeColSpecObjectType fcgot) {
-        return hasAbility(id, fcgot, null);
+        return hasAbility(id, fcgot, Turn.UNDEFINED);
     }
 
     /**
@@ -425,7 +426,7 @@ public abstract class FreeColObject
      * @return True if the ability is present.
      */
     public final boolean hasAbility(String id, FreeColSpecObjectType fcgot,
-                                    Turn turn) {
+                                    int turn) {
         return FeatureContainer.hasAbility(getAbilities(id, fcgot, turn));
     }
 
@@ -467,7 +468,7 @@ public abstract class FreeColObject
      */
     public final Stream<Ability> getAbilities(String id,
                                               FreeColSpecObjectType fcgot) {
-        return getAbilities(id, fcgot, null);
+        return getAbilities(id, fcgot, Turn.UNDEFINED);
     }
 
     /**
@@ -483,7 +484,7 @@ public abstract class FreeColObject
      */
     public Stream<Ability> getAbilities(String id,
                                         FreeColSpecObjectType fcgot,
-                                        Turn turn) {
+                                        int turn) {
         FeatureContainer fc = getFeatureContainer();
         return (fc == null) ? Stream.<Ability>empty()
             : fc.getAbilities(id, fcgot, turn);
@@ -541,7 +542,7 @@ public abstract class FreeColObject
      * @return True if the modifier is present.
      */
     public final boolean hasModifier(String id, FreeColSpecObjectType fcgot) {
-        return hasModifier(id, fcgot, null);
+        return hasModifier(id, fcgot, Turn.UNDEFINED);
     }
 
     /**
@@ -554,7 +555,7 @@ public abstract class FreeColObject
      * @return True if the modifier is present.
      */
     public boolean hasModifier(String id, FreeColSpecObjectType fcgot,
-                               Turn turn) {
+                               int turn) {
         return any(getModifiers(id, fcgot, turn));
     }
 
@@ -623,7 +624,7 @@ public abstract class FreeColObject
      */
     public Stream<Modifier> getModifiers(String id,
                                          FreeColSpecObjectType fcgot,
-                                         Turn turn) {
+                                         int turn) {
         FeatureContainer fc = getFeatureContainer();
         return (fc == null) ? Stream.<Modifier>empty()
             : fc.getModifiers(id, fcgot, turn);
@@ -638,7 +639,7 @@ public abstract class FreeColObject
      * @param id The object identifier.
      * @return The modified number.
      */
-    public final float applyModifiers(float number, Turn turn, String id) {
+    public final float applyModifiers(float number, int turn, String id) {
         return applyModifiers(number, turn, id, null);
     }
 
@@ -653,7 +654,7 @@ public abstract class FreeColObject
      *     modifier applies to.
      * @return The modified number.
      */
-    public final float applyModifiers(float number, Turn turn,
+    public final float applyModifiers(float number, int turn,
                                       String id, FreeColSpecObjectType fcgot) {
         return applyModifiers(number, turn, getModifiers(id, fcgot, turn));
     }
@@ -666,7 +667,7 @@ public abstract class FreeColObject
      * @param mods The {@code Modifier}s to apply.
      * @return The modified number.
      */
-    public static final float applyModifiers(float number, Turn turn,
+    public static final float applyModifiers(float number, int turn,
                                              Collection<Modifier> mods) {
         return FeatureContainer.applyModifiers(number, turn, mods);
     }
@@ -679,7 +680,7 @@ public abstract class FreeColObject
      * @param mods The {@code Modifier}s to apply.
      * @return The modified number.
      */
-    public static final float applyModifiers(float number, Turn turn,
+    public static final float applyModifiers(float number, int turn,
                                              Stream<Modifier> mods) {
         return FeatureContainer.applyModifiers(number, turn, mods);
     }

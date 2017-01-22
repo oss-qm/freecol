@@ -517,7 +517,7 @@ public class EuropeanAIPlayer extends MissionAIPlayer {
             }
         }
 
-        if (game.getTurn().getNumber() > 300
+        if (game.getTurn() > 300 // FIXME: put it into a const in class Turn
             && player.isAtWar()
             && randoms[cheatIndex++] < offensiveLandUnitCheatPercent) {
             // - collect enemies, prefer not to antagonize the strong or
@@ -1386,7 +1386,7 @@ public class EuropeanAIPlayer extends MissionAIPlayer {
      */
     @Override
     public int scoutsNeeded() {
-        return 3 - (getGame().getTurn().getNumber() / 100);
+        return 3 - (getGame().getTurn() / 100);
     }
 
     /**
@@ -1492,17 +1492,17 @@ public class EuropeanAIPlayer extends MissionAIPlayer {
      */
     private boolean peaceHolds(Player p) {
         final Player player = getPlayer();
-        final Turn turn = getGame().getTurn();
+        final int turn = getGame().getTurn();
         final double peaceProb = getSpecification()
             .getInteger(GameOptions.PEACE_PROBABILITY) / 100.0;
 
         int peaceTurn = -1;
         for (HistoryEvent h : player.getHistory()) {
             if (p.getId().equals(h.getPlayerId())
-                && h.getTurn().getNumber() > peaceTurn) {
+                && h.getTurn() > peaceTurn) {
                 switch (h.getEventType()) {
                 case MAKE_PEACE: case FORM_ALLIANCE:
-                    peaceTurn = h.getTurn().getNumber();
+                    peaceTurn = h.getTurn();
                     break;
                 case DECLARE_WAR:
                     peaceTurn = -1;
@@ -1514,7 +1514,7 @@ public class EuropeanAIPlayer extends MissionAIPlayer {
         }
         if (peaceTurn < 0) return false;
 
-        int n = turn.getNumber() - peaceTurn;
+        int n = turn - peaceTurn;
         float prob = (float)Math.pow(peaceProb, n);
         // Apply Franklin's modifier
         prob = p.applyModifiers(prob, turn, Modifier.PEACE_TREATY);
@@ -2237,7 +2237,7 @@ public class EuropeanAIPlayer extends MissionAIPlayer {
     @Override
     public void startWorking() {
         final Player player = getPlayer();
-        final Turn turn = getGame().getTurn();
+        final int turn = getGame().getTurn();
         final Specification spec = getSpecification();
         initializeFromSpecification(spec);
 
@@ -2257,13 +2257,13 @@ public class EuropeanAIPlayer extends MissionAIPlayer {
         LogBuilder lb = new LogBuilder(1024);
         int colonyCount = getAIColonies().size();
         lb.add(player.getDebugName(),
-               " in ", turn, "/", turn.getNumber(),
+               " in ", turn,
                " units=", getAIUnits().size(),
                " colonies=", colonyCount,
                " declare=", (player.checkDeclareIndependence() == null),
                " v-land-REF=", player.getRebelStrengthRatio(false),
                " v-naval-REF=", player.getRebelStrengthRatio(true));
-        if (turn.isFirstTurn()) initializeMissions(lb);
+        if (turn == Turn.FIRST_TURN) initializeMissions(lb);
         determineStances(lb);
 
         if (colonyCount > 0) {
@@ -2601,7 +2601,7 @@ public class EuropeanAIPlayer extends MissionAIPlayer {
             || goodsType.isBuildingMaterial()) {
             // By age 3 we should be able to produce enough ourselves.
             // FIXME: check whether we have an armory, at least
-            int turn = getGame().getTurn().getNumber();
+            int turn = getGame().getTurn();
             ret = turn < 300;
             lb.add(((ret) ? "accepted" : "rejected"),
                    ": special-goods-in-turn-", turn, ".");

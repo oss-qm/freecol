@@ -37,20 +37,8 @@ public class Turn {
     /** The number of seasons. */
     private static int seasonNumber = 2;
 
-
-    /** The numerical value of the Turn, never less than one. */
-    private int turn = 1;
-
-
-    /**
-     * Creates a new {@code Turn} instance.
-     *
-     * @param turn The numeric value of the turn.
-     */
-    public Turn(int turn) {
-        this.turn = turn;
-    }
-
+    public static int UNDEFINED = FreeColObject.UNDEFINED;
+    public static int FIRST_TURN = 1;
 
     /**
      * Initialize the fundamental Turn year constants.  Called from
@@ -125,33 +113,6 @@ public class Turn {
     }
 
     /**
-     * Get the next turn, with a turn number one greater.
-     *
-     * @return The new {@code Turn}.
-     */
-    public Turn next() {
-        return new Turn(turn + 1);
-    }
-
-    /**
-     * Gets the turn number.
-     *
-     * @return The number of turns.
-     */
-    public int getNumber() {
-        return turn;
-    }
-
-    /**
-     * Gets the year this turn is in.
-     *
-     * @return The calculated year based on the turn number.
-     */
-    public int getYear() {
-        return getYear(turn);
-    }
-
-    /**
      * Gets the year the given turn is in.
      *
      * @param turn The turn number to get the year for.
@@ -177,25 +138,6 @@ public class Turn {
     }
 
     /**
-     * Gets the season index of this turn.
-     *
-     * @return The season index corresponding to the current turn
-     *     number, or negative if before the season year.
-     */
-    public int getSeason() {
-        return getSeason(turn);
-    }
-
-    /**
-     * Gets a localization template for this turn.
-     *
-     * @return A {@code StringTemplate} describing the turn.
-     */
-    public StringTemplate getLabel() {
-        return getLabel(turn);
-    }
-
-    /**
      * Gets a localization template for a given turn.
      *
      * @param turn The integer value of the turn to describe.
@@ -213,31 +155,22 @@ public class Turn {
     }
 
     /**
-     * Is this turn the first one?
-     *
-     * @return True if this turn is the first turn.
-     */
-    public boolean isFirstTurn() {
-        return turn == 1;
-    }
-
-    /**
      * Is this turn the season year?
      *
      * @return True if this turn is the season year.
      */
-    public boolean isFirstSeasonTurn() {
+    public static boolean isFirstSeasonTurn(final int turn) {
         return turn == yearToTurn(getSeasonYear());
     }
 
     /**
-     * Get the suffix for a save game name for this turn.
+     * Get the suffix for a save game name for given turn.
      *
      * @return The save game suffix.
      */
-    public String getSaveGameSuffix() {
-        final int season = getSeason();
-        String result = String.valueOf(getYear());
+    public static String getSaveGameSuffix(int turn) {
+        final int season = getSeason(turn);
+        String result = String.valueOf(getYear(turn));
         if (season >= 0) {
             final int SeasonNumberDigits = String.valueOf(getSeasonNumber()).length(); // for leading zeroes
             result += "_" + String.format("%0"+String.valueOf(SeasonNumberDigits)+"d", season+1)
@@ -257,35 +190,5 @@ public class Turn {
             ? Messages.message("notApplicable")
             : (turns >= 0) ? Integer.toString(turns)
             : ">" + Integer.toString(-turns - 1);
-    }
-
-
-    // Override Object
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public boolean equals(Object o) {
-        if (o instanceof Turn) {
-            return this.turn == ((Turn)o).turn;
-        }
-        return false;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public int hashCode() {
-        return turn;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public String toString() {
-        return String.valueOf(turn);
     }
 }

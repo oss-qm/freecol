@@ -149,7 +149,7 @@ public class SimpleCombatModel extends CombatModel {
             || combatIsAttack(attacker, defender)
             || combatIsSettlementAttack(attacker, defender)) {
             Set<Modifier> mods = getOffensiveModifiers(attacker, defender);
-            Turn turn = attacker.getGame().getTurn();
+            int turn = attacker.getGame().getTurn();
             result = FeatureContainer.applyModifiers(0.0f, turn, mods);
             if (lb != null) {
                 logModifiers(lb, mods);
@@ -202,7 +202,7 @@ public class SimpleCombatModel extends CombatModel {
             || combatIsSettlementAttack(attacker, defender)
             || combatIsBombard(attacker, defender)) {
             Set<Modifier> mods = getDefensiveModifiers(attacker, defender);
-            Turn turn = defender.getGame().getTurn();
+            int turn = defender.getGame().getTurn();
             result = FeatureContainer.applyModifiers(0.0f, turn, mods);
             if (lb != null) {
                 logModifiers(lb, mods);
@@ -232,7 +232,7 @@ public class SimpleCombatModel extends CombatModel {
             || combatIsAttack(attacker, defender)
             || combatIsSettlementAttack(attacker, defender)) {
             final Unit attackerUnit = (Unit)attacker;
-            final Turn turn = attackerUnit.getGame().getTurn();
+            final int turn = attackerUnit.getGame().getTurn();
 
             // Base offense
             result.add(new Modifier(Modifier.OFFENCE,
@@ -423,7 +423,7 @@ public class SimpleCombatModel extends CombatModel {
             || combatIsAttack(attacker, defender)
             || combatIsBombard(attacker, defender)) {
             final Unit defenderUnit = (Unit)defender;
-            final Turn turn = defenderUnit.getGame().getTurn();
+            final int turn = defenderUnit.getGame().getTurn();
 
             // Base defence
             result.add(new Modifier(Modifier.DEFENCE,

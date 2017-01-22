@@ -109,12 +109,12 @@ public final class ReportContinentalCongressPanel extends ReportPanel {
                         imageScrollPane, null);
         }
         final int age = getGame().getAge();
-        Map<String, Turn> electionTurns = getMyPlayer().getElectionTurns();
+        Map<String, Integer> electionTurns = getMyPlayer().getElectionTurns();
         for (FoundingFather father : getSpecification().getFoundingFathers()) {
             String name = Messages.getName(father);
             JPanel panel = panels.get(father.getType());
             Image image;
-            Turn turn = null;
+            int turn = Turn.UNDEFINED;
             if (player.hasFather(father)) {
                 image = ImageLibrary.getFoundingFatherImage(father, false);
                 turn = electionTurns.get(Messages.nameKey(father));
@@ -126,10 +126,10 @@ public final class ReportContinentalCongressPanel extends ReportPanel {
                                                    null, father.getId());
             button.addActionListener(this);
             panel.add(button);
-            panel.add((turn != null)
+            panel.add((turn != Turn.UNDEFINED)
                 ? Utility.localizedLabel(StringTemplate
                     .template("report.continentalCongress.elected")
-                    .addStringTemplate("%turn%", turn.getLabel()))
+                    .addStringTemplate("%turn%", Turn.getLabel(turn)))
                 : (father == currentFather)
                 ? Utility.localizedLabel("report.continentalCongress.recruiting")
                 : Utility.localizedLabel("report.continentalCongress.available"));

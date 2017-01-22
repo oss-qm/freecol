@@ -153,13 +153,13 @@ public class FatherDetailPanel
             .add(father.getId() + ".birthAndDeath")
             .addName("] ")
             .add(father.getId() + ".text");
-        final Turn turn = getMyPlayer().getElectionTurns().get(name);
-        if (turn != null) {
+        final int turn = getMyPlayer().getElectionTurns().get(name);
+        if (turn != Turn.UNDEFINED) {
             template
                 .addName("\n\n")
                 .add("report.continentalCongress.elected")
                 .addName(" ")
-                .addStringTemplate(turn.getLabel());
+                .addStringTemplate(Turn.getLabel(turn));
         }
 
         panel.add(header, "span, align center, wrap 40");

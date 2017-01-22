@@ -459,7 +459,7 @@ public class ColonyTile extends WorkLocation {
         final String id = goodsType.getId();
         final Colony colony = getColony();
         final Player owner = colony.getOwner();
-        final Turn turn = getGame().getTurn();
+        final int turn = getGame().getTurn();
         return (unitType != null)
             // Unit modifiers apply
             ? concat(workTile.getProductionModifiers(goodsType, unitType),

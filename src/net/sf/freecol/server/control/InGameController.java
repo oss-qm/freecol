@@ -551,7 +551,7 @@ public final class InGameController extends Controller {
         serverPlayer.csChangeStance(Stance.PEACE, independent, true, cs);
         independent.changePlayerType(PlayerType.INDEPENDENT);
         Game game = getGame();
-        Turn turn = game.getTurn();
+        int turn = game.getTurn();
         independent.setTax(0);
         independent.reinitialiseMarket();
         HistoryEvent h = new HistoryEvent(turn,
@@ -1350,11 +1350,11 @@ public final class InGameController extends Controller {
 
         // Do not add history event to cs as we are going to update the
         // entire player.  Likewise clear model messages.
-        Turn turn = game.getTurn();
+        int turn = game.getTurn();
         HistoryEvent h = new HistoryEvent(turn,
             HistoryEvent.HistoryEventType.DECLARE_INDEPENDENCE, serverPlayer);
         final int independenceTurn = spec.getInteger(GameOptions.INDEPENDENCE_TURN);
-        h.setScore(Math.max(0, independenceTurn - turn.getNumber()));
+        h.setScore(Math.max(0, independenceTurn - turn));
         cs.addGlobalHistory(game, h);
         serverPlayer.clearModelMessages();
         cs.addMessage(serverPlayer,
@@ -1659,7 +1659,7 @@ public final class InGameController extends Controller {
 
         Player indianPlayer = is.getOwner();
         int gold = 0;
-        int year = getGame().getTurn().getNumber();
+        int year = getGame().getTurn();
         RandomRange gifts = is.getType().getGifts(unit);
         if (is.getLastTribute() + TURNS_PER_TRIBUTE < year
             && gifts != null) {
@@ -3598,7 +3598,7 @@ public final class InGameController extends Controller {
 
         // Update the name and note the history.
         cs.addPartial(See.only(serverPlayer), serverPlayer, "newLandName");
-        Turn turn = serverPlayer.getGame().getTurn();
+        final int turn = serverPlayer.getGame().getTurn();
         HistoryEvent h = new HistoryEvent(turn,
             HistoryEvent.HistoryEventType.DISCOVER_NEW_WORLD, serverPlayer)
                 .addName("%name%", name);

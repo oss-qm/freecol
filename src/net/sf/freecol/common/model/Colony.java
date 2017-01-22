@@ -134,7 +134,7 @@ public class Colony extends Settlement implements Nameable, TradeLocation {
     protected int immigration;
 
     /** The turn in which this colony was established. */
-    protected Turn established = new Turn(0);
+    protected int established = 0;
 
     /** A list of items to be built. */
     protected final BuildQueue<BuildableType> buildQueue
@@ -316,7 +316,7 @@ public class Colony extends Settlement implements Nameable, TradeLocation {
      *
      * @return The establishment {@code Turn}.
      */
-    public Turn getEstablished() {
+    public int getEstablished() {
         return established;
     }
 
@@ -325,7 +325,7 @@ public class Colony extends Settlement implements Nameable, TradeLocation {
      *
      * @param newEstablished The new {@code Turn} of establishment.
      */
-    public void setEstablished(final Turn newEstablished) {
+    public void setEstablished(final int newEstablished) {
         this.established = newEstablished;
     }
 
@@ -2317,7 +2317,7 @@ public class Colony extends Settlement implements Nameable, TradeLocation {
      * @param amount The amount of modification.
      */
     private void modifySpecialGoods(GoodsType goodsType, int amount) {
-        final Turn turn = getGame().getTurn();
+        final int turn = getGame().getTurn();
         List<Modifier> mods;
 
         mods = toList(goodsType.getModifiers(Modifier.LIBERTY));
@@ -2399,8 +2399,8 @@ public class Colony extends Settlement implements Nameable, TradeLocation {
      */
     @Override
     public Stream<Ability> getAbilities(String id, FreeColSpecObjectType type,
-                                        Turn turn) {
-        if (turn == null) turn = getGame().getTurn();
+                                        int turn) {
+        if (turn == Turn.UNDEFINED) turn = getGame().getTurn();
         return concat(super.getAbilities(id, type, turn),
                 ((owner == null) ? Stream.<Ability>empty()
                         : owner.getAbilities(id, type, turn)));
@@ -2902,7 +2902,7 @@ public class Colony extends Settlement implements Nameable, TradeLocation {
         // Delegated from Settlement
         xw.writeAttribute(NAME_TAG, getName());
 
-        xw.writeAttribute(ESTABLISHED_TAG, established.getNumber());
+        xw.writeAttribute(ESTABLISHED_TAG, established);
 
         // SoL has to be visible for the popular support bonus to be
         // visible to an attacking rebel player.
@@ -2987,7 +2987,7 @@ public class Colony extends Settlement implements Nameable, TradeLocation {
     public void readAttributes(FreeColXMLReader xr) throws XMLStreamException {
         super.readAttributes(xr);
 
-        established = new Turn(xr.getAttribute(ESTABLISHED_TAG, 0));
+        established = xr.getAttribute(ESTABLISHED_TAG, 0);
 
         sonsOfLiberty = xr.getAttribute(SONS_OF_LIBERTY_TAG, 0);
 

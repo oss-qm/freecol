@@ -34,6 +34,7 @@ import net.sf.freecol.client.FreeColClient;
 import net.sf.freecol.client.gui.panel.InfoPanel;
 import net.sf.freecol.common.i18n.Messages;
 import net.sf.freecol.common.model.Player;
+import net.sf.freecol.common.model.Turn;
 
 
 /**
@@ -101,8 +102,7 @@ public class GrayLayer extends Component {
         Color colour = null;
 
         if (player == null) {
-            message = Messages.message(freeColClient.getGame().getTurn()
-                .getLabel());
+            message = Messages.message(Turn.getLabel(freeColClient.getGame().getTurn()));
             colour = Color.WHITE;
 
         } else {

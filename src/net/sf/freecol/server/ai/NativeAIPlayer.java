@@ -725,18 +725,18 @@ public class NativeAIPlayer extends MissionAIPlayer {
     @Override
     public void startWorking() {
         final Player player = getPlayer();
-        final Turn turn = getGame().getTurn();
+        final int turn = getGame().getTurn();
         final int nSettlements = player.getSettlementCount();
         final Random air = getAIRandom();
 
         LogBuilder lb = new LogBuilder(1024);
-        lb.add(player.getDebugName(), " in ", turn, "/", turn.getNumber());
+        lb.add(player.getDebugName(), " in ", turn);
 
         clearAIUnits();
 
         determineStances(lb);
         List<AIUnit> more;
-        if (turn.isFirstTurn()) {
+        if (turn == Turn.FIRST_TURN) {
             initializeMissions(lb);
             more = getAIUnits();
         } else {
@@ -800,7 +800,7 @@ public class NativeAIPlayer extends MissionAIPlayer {
      */
     public void updateTrade(NativeTrade nt, int anger) {
         final Specification spec = getSpecification();
-        final Turn turn = getGame().getTurn();
+        final int turn = getGame().getTurn();
         final IndianSettlement is = nt.getIndianSettlement();
         final Unit unit = nt.getUnit();
         Set<Modifier> modifiers = new HashSet<>();
@@ -862,7 +862,7 @@ public class NativeAIPlayer extends MissionAIPlayer {
         final IndianSettlement is = nt.getIndianSettlement();
         final Unit unit = nt.getUnit();
         final Player other = unit.getOwner();
-        final Turn turn = getGame().getTurn();
+        final int turn = getGame().getTurn();
         NativeTradeItem ours;
         int anger, haggle;
 

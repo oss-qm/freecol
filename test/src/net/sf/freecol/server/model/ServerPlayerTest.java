@@ -119,7 +119,7 @@ public class ServerPlayerTest extends FreeColTestCase {
 
         // Pretend time is passing.
         // Have to advance time as yearly goods removal is initially low.
-        game.setTurn(new Turn(200));
+        game.setTurn(200);
         List<Integer> setValues = new ArrayList<>();
         setValues.add(20);
         MockPseudoRandom mockRandom = new MockPseudoRandom(setValues, true);
@@ -306,7 +306,7 @@ public class ServerPlayerTest extends FreeColTestCase {
                      ServerPlayer.IS_ALIVE,
                      dutch.checkForDeath());
 
-        game.setTurn(new Turn(1600));
+        game.setTurn(1600);
         assertEquals("Should be game over, no new world presence >= 1600",
                      ServerPlayer.IS_DEAD,
                      dutch.checkForDeath());
@@ -331,7 +331,7 @@ public class ServerPlayerTest extends FreeColTestCase {
         assertEquals("Should not be game over, units between new world and europe", 0,
                      dutch.checkForDeath());
 
-        game.setTurn(new Turn(1600));
+        game.setTurn(1600);
         assertEquals("Should be game over, no new world presence >= 1600", -1,
                      dutch.checkForDeath());
     }
@@ -355,7 +355,7 @@ public class ServerPlayerTest extends FreeColTestCase {
         assertEquals("Should not be game over, units between new world and europe", 0,
                      dutch.checkForDeath());
 
-        game.setTurn(new Turn(1600));
+        game.setTurn(1600);
         assertEquals("Should be game over, no new world presence >= 1600", -1,
                      dutch.checkForDeath());
     }

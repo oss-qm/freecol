@@ -370,7 +370,7 @@ public final class TileImprovementType extends FreeColSpecObjectType {
             if (tt == null) { // simple bonus
                 int production = tile.getPotentialProduction(goodsType, colonistType);
                 if (production > 0) {
-                    float chg = applyModifiers(production, null,
+                    float chg = applyModifiers(production, Turn.UNDEFINED,
                                                goodsType.getId());
                     value = (int)(chg - production);
                 }
