@@ -304,7 +304,7 @@ public class ServerGame extends Game implements TurnTaker {
         lastTime = now;
 
         Session.completeAll(cs);
-        setTurn(getTurn().next());
+        setTurn(getTurn()+1);
         logger.finest("Turn is now " + getTurn() + duration);
         cs.add(See.all(), new NewTurnMessage(getTurn()));
     }

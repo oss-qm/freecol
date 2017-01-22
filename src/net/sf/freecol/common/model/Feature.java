@@ -29,6 +29,7 @@ import javax.xml.stream.XMLStreamException;
 import net.sf.freecol.common.i18n.Messages;
 import net.sf.freecol.common.io.FreeColXMLReader;
 import net.sf.freecol.common.io.FreeColXMLWriter;
+import net.sf.freecol.common.model.Turn;
 import static net.sf.freecol.common.util.CollectionUtils.*;
 import net.sf.freecol.common.util.Utils;
 
@@ -45,10 +46,10 @@ public abstract class Feature extends FreeColSpecObject
     private FreeColObject source;
 
     /** The first Turn in which this Feature applies. */
-    private Turn firstTurn;
+    private int firstTurn = Turn.UNDEFINED;
 
     /** The last Turn in which this Feature applies. */
-    private Turn lastTurn;
+    private int lastTurn = Turn.UNDEFINED;
 
     /** The duration of this Feature. By default, the duration is unlimited. */
     private int duration = 0;
@@ -99,7 +100,7 @@ public abstract class Feature extends FreeColSpecObject
      * @return True if the feature is time limited.
      */
     public final boolean hasTimeLimit() {
-        return (firstTurn != null || lastTurn != null);
+        return (firstTurn != Turn.UNDEFINED || lastTurn != Turn.UNDEFINED);
     }
 
     /**
@@ -107,7 +108,7 @@ public abstract class Feature extends FreeColSpecObject
      *
      * @return The first turn, or null if none.
      */
-    public final Turn getFirstTurn() {
+    public final int getFirstTurn() {
         return firstTurn;
     }
 
@@ -116,7 +117,7 @@ public abstract class Feature extends FreeColSpecObject
      *
      * @param newFirstTurn The new first turn value.
      */
-    public final void setFirstTurn(final Turn newFirstTurn) {
+    public final void setFirstTurn(final int newFirstTurn) {
         this.firstTurn = newFirstTurn;
     }
 
@@ -125,7 +126,7 @@ public abstract class Feature extends FreeColSpecObject
      *
      * @return The last turn, or null if none.
      */
-    public final Turn getLastTurn() {
+    public final int getLastTurn() {
         return lastTurn;
     }
 
@@ -134,7 +135,7 @@ public abstract class Feature extends FreeColSpecObject
      *
      * @param newLastTurn The new last turn value.
      */
-    public final void setLastTurn(final Turn newLastTurn) {
+    public final void setLastTurn(final int newLastTurn) {
         this.lastTurn = newLastTurn;
     }
 
@@ -210,10 +211,10 @@ public abstract class Feature extends FreeColSpecObject
      * @param turn The {@code Turn} to test.
      * @return True if the turn is null or not outside a valid time limit.
      */
-    protected boolean appliesTo(final Turn turn) {
-        return !(turn != null
-            && (firstTurn != null && turn.getNumber() < firstTurn.getNumber()
-                || lastTurn != null && turn.getNumber() > lastTurn.getNumber()));
+    protected boolean appliesTo(final int turn) {
+        return !(turn != Turn.UNDEFINED
+            && (firstTurn != Turn.UNDEFINED && turn < firstTurn
+                || lastTurn != Turn.UNDEFINED && turn > lastTurn));
     }
 
     /**
@@ -224,7 +225,7 @@ public abstract class Feature extends FreeColSpecObject
      * @return True if the feature applies.
      */
     protected boolean appliesTo(final FreeColSpecObjectType objectType,
-                                final Turn turn) {
+                                final int turn) {
         return appliesTo(turn) && appliesTo(objectType);
     }
 
@@ -235,9 +236,9 @@ public abstract class Feature extends FreeColSpecObject
      * @return True if the Feature has an lastTurn turn smaller than the
      *     given turn.
      */
-    public boolean isOutOfDate(Turn turn) {
-        return turn != null && lastTurn != null
-            && turn.getNumber() > lastTurn.getNumber();
+    public boolean isOutOfDate(int turn) {
+        return turn != Turn.UNDEFINED && lastTurn != Turn.UNDEFINED
+            && turn > lastTurn;
     }
 
     /**
@@ -332,13 +333,11 @@ public abstract class Feature extends FreeColSpecObject
             xw.writeAttribute(SOURCE_TAG, getSource());
         }
 
-        if (getFirstTurn() != null) {
-            xw.writeAttribute(FIRST_TURN_TAG, getFirstTurn().getNumber());
-        }
+        if (getFirstTurn() != Turn.UNDEFINED)
+            xw.writeAttribute(FIRST_TURN_TAG, getFirstTurn());
 
-        if (getLastTurn() != null) {
-            xw.writeAttribute(LAST_TURN_TAG, getLastTurn().getNumber());
-        }
+        if (getLastTurn() != Turn.UNDEFINED)
+            xw.writeAttribute(LAST_TURN_TAG, getLastTurn());
 
         if (duration != 0) {
             xw.writeAttribute(DURATION_TAG, duration);
@@ -375,11 +374,11 @@ public abstract class Feature extends FreeColSpecObject
             setSource(spec.findType(str));
         }
 
-        int firstTurn = xr.getAttribute(FIRST_TURN_TAG, UNDEFINED);
-        if (firstTurn != UNDEFINED) setFirstTurn(new Turn(firstTurn));
+        int firstTurn = xr.getAttribute(FIRST_TURN_TAG, Turn.UNDEFINED);
+        if (firstTurn != Turn.UNDEFINED) setFirstTurn(firstTurn);
 
-        int lastTurn = xr.getAttribute(LAST_TURN_TAG, UNDEFINED);
-        if (lastTurn != UNDEFINED) setLastTurn(new Turn(lastTurn));
+        int lastTurn = xr.getAttribute(LAST_TURN_TAG, Turn.UNDEFINED);
+        if (lastTurn != Turn.UNDEFINED) setLastTurn(lastTurn);
 
         duration = xr.getAttribute(DURATION_TAG, 0);
 
@@ -431,18 +430,18 @@ public abstract class Feature extends FreeColSpecObject
                 || this.duration != feature.duration
                 || this.temporary != feature.temporary)
                 return false;
-            if (firstTurn == null) {
-                if (feature.firstTurn != null) return false;
-            } else if (feature.firstTurn == null) {
+            if (firstTurn == Turn.UNDEFINED) {
+                if (feature.firstTurn != Turn.UNDEFINED) return false;
+            } else if (feature.firstTurn == Turn.UNDEFINED) {
                 return false;
-            } else if (firstTurn.getNumber() != feature.firstTurn.getNumber()) {
+            } else if (firstTurn != feature.firstTurn) {
                 return false;
             }
-            if (lastTurn == null) {
-                if (feature.lastTurn != null) return false;
-            } else if (feature.lastTurn == null) {
+            if (lastTurn == Turn.UNDEFINED) {
+                if (feature.lastTurn != Turn.UNDEFINED) return false;
+            } else if (feature.lastTurn == Turn.UNDEFINED) {
                 return false;
-            } else if (lastTurn.getNumber() != feature.lastTurn.getNumber()) {
+            } else if (lastTurn != feature.lastTurn) {
                 return false;
             }
             List<Scope> tScopes = getScopeList();
@@ -464,8 +463,8 @@ public abstract class Feature extends FreeColSpecObject
     public int hashCode() {
         int hash = super.hashCode();
         hash += 31 * hash + Utils.hashCode(source);
-        hash += 31 * hash + ((firstTurn == null) ? 0 : firstTurn.getNumber());
-        hash += 31 * hash + ((lastTurn == null) ? 0 : lastTurn.getNumber());
+        hash += 31 * hash + ((firstTurn == Turn.UNDEFINED) ? 0 : firstTurn);
+        hash += 31 * hash + ((lastTurn == Turn.UNDEFINED) ? 0 : lastTurn);
         hash += 31 * hash + duration;
         hash += 31 * ((temporary) ? 1 : 0);
         // FIXME: is this safe?  It is an easy way to ignore

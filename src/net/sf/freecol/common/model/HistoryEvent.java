@@ -86,7 +86,7 @@ public class HistoryEvent extends StringTemplate {
 
 
     /** The turn in which the event took place */
-    private Turn turn;
+    private int turn;
 
     /** The type of event. */
     private HistoryEventType eventType;
@@ -111,7 +111,7 @@ public class HistoryEvent extends StringTemplate {
      * @param player An optional {@code Player} responsible for
      *     this event.
      */
-    public HistoryEvent(Turn turn, HistoryEventType eventType, Player player) {
+    public HistoryEvent(int turn, HistoryEventType eventType, Player player) {
         super(eventType.getDescriptionKey(), null, TemplateType.TEMPLATE);
         this.turn = turn;
         this.eventType = eventType;
@@ -134,7 +134,7 @@ public class HistoryEvent extends StringTemplate {
      *
      * @return The turn.
      */
-    public final Turn getTurn() {
+    public final int getTurn() {
         return turn;
     }
 
@@ -221,7 +221,7 @@ public class HistoryEvent extends StringTemplate {
     protected void writeAttributes(FreeColXMLWriter xw) throws XMLStreamException {
         super.writeAttributes(xw);
 
-        xw.writeAttribute(TURN_TAG, this.turn.getNumber());
+        xw.writeAttribute(TURN_TAG, this.turn);
 
         xw.writeAttribute(EVENT_TYPE_TAG, this.eventType);
 
@@ -237,7 +237,7 @@ public class HistoryEvent extends StringTemplate {
     protected void readAttributes(FreeColXMLReader xr) throws XMLStreamException {
         super.readAttributes(xr);
 
-        turn = new Turn(xr.getAttribute(TURN_TAG, 0));
+        turn = xr.getAttribute(TURN_TAG, 0);
 
         eventType = xr.getAttribute(EVENT_TYPE_TAG,
                                     HistoryEventType.class, (HistoryEventType)null);
@@ -275,7 +275,7 @@ public class HistoryEvent extends StringTemplate {
     @Override
     public int hashCode() {
         int hash = super.hashCode();
-        hash = 31 * hash + this.turn.hashCode();
+        hash = 31 * hash + this.turn;
         hash = 31 * hash + this.eventType.ordinal();
         if (this.playerId != null) hash = 31 * hash + this.playerId.hashCode();
         hash = 31 * hash + this.score;
@@ -290,7 +290,7 @@ public class HistoryEvent extends StringTemplate {
         StringBuilder sb = new StringBuilder(32);
         sb.append('[').append(getId())
             .append(' ').append(eventType)
-            .append(" (").append(turn.getYear()).append(')');
+            .append(" (").append(Turn.getYear(turn)).append(')');
         if (playerId != null) {
             sb.append(" playerId=").append(playerId)
                 .append(" score=").append(score);

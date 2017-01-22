@@ -156,7 +156,7 @@ public class HighScore extends FreeColObject {
     private HighScore(Player player) {
         Game game = player.getGame();
         this.date = new Date();
-        this.retirementTurn = game.getTurn().getNumber();
+        this.retirementTurn = game.getTurn();
         this.score = player.getScore();
         this.level = find(ScoreLevel.values(),
                           sl -> sl.getMinimumScore() <= this.score,
@@ -167,7 +167,7 @@ public class HighScore extends FreeColObject {
         this.nColonies = count(player.getColonies());
         this.nUnits = player.getUnitCount();
         this.independenceTurn = (player.getPlayerType()
-            == Player.PlayerType.INDEPENDENT) ? game.getTurn().getNumber()
+            == Player.PlayerType.INDEPENDENT) ? game.getTurn()
             : -1;
         this.nationName = Messages.message(player.getNationLabel());
         this.difficulty = game.getSpecification().getDifficultyLevel();

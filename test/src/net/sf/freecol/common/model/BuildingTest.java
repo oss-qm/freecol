@@ -688,7 +688,7 @@ public class BuildingTest extends FreeColTestCase {
 
     public void testStockade() {
         final Game game = getGame();
-        final Turn turn = game.getTurn();
+        final int turn = game.getTurn();
         game.setMap(getTestMap(true));
         List<Modifier> modifiers;
 
@@ -834,7 +834,7 @@ public class BuildingTest extends FreeColTestCase {
     public void testTownhallProduction() {
         final Game game = getGame();
         game.setMap(getTestMap(true));
-        final Turn turn = game.getTurn();
+        final int turn = game.getTurn();
 
         Colony colony = getStandardColony(6);
         Player owner = colony.getOwner();

@@ -148,7 +148,7 @@ public class Building extends WorkLocation
      * @return A stream of the applicable modifiers.
      */
     public Stream<Modifier> getCompetenceModifiers(String id,
-        UnitType unitType, Turn turn) {
+        UnitType unitType, int turn) {
         final float competence = getCompetenceFactor();
         return (competence == 1.0f) // Floating comparison OK!
             ? unitType.getModifiers(id, getType(), turn)
@@ -246,7 +246,7 @@ public class Building extends WorkLocation
         ProductionInfo result = new ProductionInfo();
         if (!hasOutputs()) return result;
         final Specification spec = getSpecification();
-        final Turn turn = getGame().getTurn();
+        final int turn = getGame().getTurn();
         final boolean avoidOverflow
             = hasAbility(Ability.AVOID_EXCESS_PRODUCTION);
         final int capacity = getColony().getWarehouseCapacity();
@@ -567,7 +567,7 @@ public class Building extends WorkLocation
         final String id = (goodsType == null) ? null : goodsType.getId();
         final Colony colony = getColony();
         final Player owner = getOwner();
-        final Turn turn = getGame().getTurn();
+        final int turn = getGame().getTurn();
 
         return (unitType != null)
             // With a unit, unit specific bonuses apply
@@ -643,7 +643,7 @@ public class Building extends WorkLocation
      */
     @Override
     public Stream<Ability> getAbilities(String id, FreeColSpecObjectType type,
-                                        Turn turn) {
+                                        int turn) {
         // Buildings have no abilities independent of their type (for now).
         return getType().getAbilities(id, type, turn);
     }
@@ -653,7 +653,7 @@ public class Building extends WorkLocation
      */
     @Override
     public Stream<Modifier> getModifiers(String id, FreeColSpecObjectType fcgot,
-                                         Turn turn) {
+                                         int turn) {
         // Buildings have no modifiers independent of type
         return getType().getModifiers(id, fcgot, turn);
     }

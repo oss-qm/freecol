@@ -189,31 +189,31 @@ public class ModifierTest extends FreeColTestCase {
         Modifier modifier2 = new Modifier("test", 2,
                                           ModifierType.ADDITIVE);
 
-        modifier1.setFirstTurn(new Turn(10));
-        modifier1.setLastTurn(new Turn(30));
-        modifier2.setFirstTurn(new Turn(20));
-        modifier2.setLastTurn(new Turn(40));
+        modifier1.setFirstTurn(10);
+        modifier1.setLastTurn(30);
+        modifier2.setFirstTurn(20);
+        modifier2.setLastTurn(40);
 
         assertTrue(modifier1.hasTimeLimit());
         assertTrue(modifier2.hasTimeLimit());
 
-        assertFalse(modifier1.appliesTo(frigate, new Turn(5)));
-        assertFalse(modifier1.appliesTo(frigate, new Turn(35)));
-        assertFalse(modifier1.isOutOfDate(new Turn(25)));
-        assertTrue(modifier1.appliesTo(frigate, new Turn(25)));
+        assertFalse(modifier1.appliesTo(frigate, 5));
+        assertFalse(modifier1.appliesTo(frigate, 35));
+        assertFalse(modifier1.isOutOfDate(25));
+        assertTrue(modifier1.appliesTo(frigate, 25));
 
-        assertFalse(modifier2.appliesTo(frigate, new Turn(5)));
-        assertFalse(modifier2.appliesTo(frigate, new Turn(5)));
-        assertFalse(modifier2.isOutOfDate(new Turn(25)));
-        assertTrue(modifier2.appliesTo(frigate, new Turn(25)));
+        assertFalse(modifier2.appliesTo(frigate, 5));
+        assertFalse(modifier2.appliesTo(frigate, 5));
+        assertFalse(modifier2.isOutOfDate(25));
+        assertTrue(modifier2.appliesTo(frigate, 25));
 
         FeatureContainer featureContainer = new FeatureContainer();
         featureContainer.addModifier(modifier1);
         featureContainer.addModifier(modifier2);
-        List<Modifier> modifiers = toList(featureContainer.getModifiers("test", frigate, new Turn(15)));
+        List<Modifier> modifiers = toList(featureContainer.getModifiers("test", frigate, 15));
         assertEquals(1, modifiers.size());
         assertEquals(modifier1, first(modifiers));
-        modifiers = toList(featureContainer.getModifiers("test", frigate, new Turn(35)));
+        modifiers = toList(featureContainer.getModifiers("test", frigate, 35));
         assertEquals(1, modifiers.size());
         assertEquals(modifier2, first(modifiers));
     }
@@ -225,28 +225,27 @@ public class ModifierTest extends FreeColTestCase {
                                           ModifierType.ADDITIVE);
 
         modifier1.setIncrement(ModifierType.ADDITIVE, 1,
-                               new Turn(10), new Turn(15));
-        assertFalse(modifier1.appliesTo(frigate, new Turn(9)));
-        assertTrue(modifier1.appliesTo(frigate, new Turn(10)));
+                               10, 15);
+        assertFalse(modifier1.appliesTo(frigate, 9));
+        assertTrue(modifier1.appliesTo(frigate, 10));
         assertTrue(modifier1.hasIncrement());
 
         FeatureContainer featureContainer = new FeatureContainer();
         featureContainer.addModifier(modifier1);
         featureContainer.addModifier(modifier2);
-        Turn turn;
 
         // only modifier2
-        assertEquals(3f, featureContainer.applyModifiers(1, new Turn(9),
+        assertEquals(3f, featureContainer.applyModifiers(1, 9,
                                                          "test", frigate));
         // both modifiers
-        assertEquals(4f, featureContainer.applyModifiers(1, new Turn(10),
+        assertEquals(4f, featureContainer.applyModifiers(1, 10,
                                                          "test", frigate));
-        assertEquals(5f, featureContainer.applyModifiers(1, new Turn(11),
+        assertEquals(5f, featureContainer.applyModifiers(1, 11,
                                                          "test", frigate));
-        assertEquals(9f, featureContainer.applyModifiers(1, new Turn(15),
+        assertEquals(9f, featureContainer.applyModifiers(1, 15,
                                                          "test", frigate));
         // only modifier2
-        assertEquals(3f, featureContainer.applyModifiers(1, new Turn(16),
+        assertEquals(3f, featureContainer.applyModifiers(1, 16,
                                                          "test", frigate));
     }
 
@@ -342,6 +341,6 @@ public class ModifierTest extends FreeColTestCase {
         featureContainer.addModifier(modifier3);
 
         assertEquals(Modifier.UNKNOWN,
-            featureContainer.applyModifiers(1, new Turn(15), "test", null));
+            featureContainer.applyModifiers(1, 15, "test", null));
     }
 }

@@ -294,7 +294,7 @@ public class Modifier extends Feature {
      * @return A new timed modifier.
      */
     public static Modifier makeTimedModifier(String id, Modifier template,
-                                             Turn start) {
+                                             int start) {
         Modifier modifier = new Modifier(id, template);
         float inc = template.getIncrement();
         int duration = template.getDuration();
@@ -304,7 +304,7 @@ public class Modifier extends Feature {
             duration = (int)(template.getValue()/-inc);
         }
         modifier.setIncrement(template.getIncrementType(), inc, start,
-                              new Turn(start.getNumber() + duration));
+                              start + duration);
         return modifier;
     }
 
@@ -343,10 +343,10 @@ public class Modifier extends Feature {
      * @param turn The {@code Turn} to check.
      * @return The turn-dependent modifier value.
      */
-    public final float getValue(Turn turn) {
+    public final float getValue(int turn) {
         if (appliesTo(turn)) {
             if (hasIncrement()) {
-                float f = (turn.getNumber() - getFirstTurn().getNumber())
+                float f = (turn - getFirstTurn())
                     * increment;
                 return apply(value, f, incrementType);
             } else {
@@ -430,8 +430,8 @@ public class Modifier extends Feature {
      */
     public final Modifier setIncrement(final ModifierType incrementType,
                                        final float increment,
-                                       Turn firstTurn, Turn lastTurn) {
-        if (firstTurn == null) {
+                                       int firstTurn, int lastTurn) {
+        if (firstTurn == Turn.UNDEFINED) {
             throw new IllegalArgumentException("Null firstTurn");
         }
         this.incrementType = incrementType;
@@ -514,7 +514,7 @@ public class Modifier extends Feature {
      * @param turn The {@code Turn} to evaluate increments in.
      * @return The modified number.
      */
-    public float applyTo(float number, Turn turn) {
+    public float applyTo(float number, int turn) {
         return (incrementType == null) ? apply(number, value)
             : apply(number, getValue(turn), getType());
     }

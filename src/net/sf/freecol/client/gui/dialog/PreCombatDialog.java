@@ -42,7 +42,6 @@ import net.sf.freecol.common.model.FreeColGameObject;
 import net.sf.freecol.common.model.Game;
 import net.sf.freecol.common.model.Modifier;
 import net.sf.freecol.common.model.Settlement;
-import net.sf.freecol.common.model.Turn;
 import net.sf.freecol.common.model.Unit;
 import static net.sf.freecol.common.util.CollectionUtils.*;
 
@@ -68,7 +67,7 @@ public class PreCombatDialog extends FreeColConfirmDialog {
         final ImageLibrary lib = freeColClient.getGUI().getImageLibrary();
         final Game game = attacker.getGame();
         final CombatModel combatModel = game.getCombatModel();
-        final Turn turn = game.getTurn();
+        final int turn = game.getTurn();
         final Set<Modifier> attackModifiers
             = combatModel.getOffensiveModifiers(attacker, defender);
         final Set<Modifier> defenceModifiers
