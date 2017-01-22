@@ -161,7 +161,7 @@ public class Game extends FreeColGameObject {
     protected Player currentPlayer = null;
 
     /** The current turn. */
-    private Turn turn = new Turn(1);
+    private int turn = 1;
 
     /** Whether the War of Spanish Succession has already taken place. */
     private boolean spanishSuccession = false;
@@ -965,8 +965,12 @@ public class Game extends FreeColGameObject {
      *
      * @return The current {@code Turn}.
      */
-    public Turn getTurn() {
+    public int getTurn() {
         return turn;
+    }
+
+    public int getYear() {
+        return Turn.getYear(turn);
     }
 
     /**
@@ -974,7 +978,7 @@ public class Game extends FreeColGameObject {
      *
      * @param newTurn The new {@code Turn} to set.
      */
-    public void setTurn(Turn newTurn) {
+    public void setTurn(final int newTurn) {
         turn = newTurn;
     }
 
@@ -1378,7 +1382,7 @@ public class Game extends FreeColGameObject {
 
         xw.writeAttribute(UUID_TAG, getUUID());
 
-        xw.writeAttribute(TURN_TAG, getTurn().getNumber());
+        xw.writeAttribute(TURN_TAG, getTurn());
 
         xw.writeAttribute(SPANISH_SUCCESSION_TAG, spanishSuccession);
 
@@ -1451,7 +1455,7 @@ public class Game extends FreeColGameObject {
             }
         }
 
-        turn = new Turn(xr.getAttribute(TURN_TAG, 1));
+        turn = xr.getAttribute(TURN_TAG, 1);
 
         spanishSuccession = xr.getAttribute(SPANISH_SUCCESSION_TAG, false);
 

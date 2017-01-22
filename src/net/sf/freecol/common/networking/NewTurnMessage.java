@@ -20,7 +20,6 @@
 package net.sf.freecol.common.networking;
 
 import net.sf.freecol.common.model.Game;
-import net.sf.freecol.common.model.Turn;
 import net.sf.freecol.server.FreeColServer;
 import net.sf.freecol.server.model.ServerPlayer;
 
@@ -42,8 +41,8 @@ public class NewTurnMessage extends AttributeMessage {
      *
      * @param turn The new {@code Turn}.
      */
-    public NewTurnMessage(Turn turn) {
-        super(TAG, TURN_TAG, String.valueOf(turn.getNumber()));
+    public NewTurnMessage(int turn) {
+        super(TAG, TURN_TAG, String.valueOf(turn));
     }
 
     /**

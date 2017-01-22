@@ -38,7 +38,6 @@ import net.sf.freecol.common.model.GoodsType;
 import net.sf.freecol.common.model.Modifier;
 import net.sf.freecol.common.model.Specification;
 import net.sf.freecol.common.model.StringTemplate;
-import net.sf.freecol.common.model.Turn;
 import net.sf.freecol.common.option.GameOptions;
 
 import static net.sf.freecol.common.util.CollectionUtils.*;
@@ -60,7 +59,7 @@ public class RebelToolTip extends JToolTip {
         final int population = colony.getUnitCount();
         final int solPercent = colony.getSoL();
         final int rebels = Colony.calculateRebels(population, solPercent);
-        final Turn turn = colony.getGame().getTurn();
+        final int turn = colony.getGame().getTurn();
         StringTemplate t;
 
         setLayout(new MigLayout("fill, wrap 3", "[300px][50px, right][50px, right]", ""));

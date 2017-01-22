@@ -26,6 +26,7 @@ import net.miginfocom.swing.MigLayout;
 import net.sf.freecol.client.FreeColClient;
 import net.sf.freecol.client.gui.panel.*;
 import net.sf.freecol.common.model.HistoryEvent;
+import net.sf.freecol.common.model.Turn;
 
 
 /**
@@ -50,7 +51,7 @@ public final class ReportHistoryPanel extends ReportPanel {
         reportPanel.setLayout(new MigLayout("wrap 2", "[]20[fill]", ""));
 
         for (HistoryEvent event : history) {
-            reportPanel.add(Utility.localizedLabel(event.getTurn().getLabel()));
+            reportPanel.add(Utility.localizedLabel(Turn.getLabel(event.getTurn())));
             reportPanel.add(Utility.localizedTextArea(event, 40));
         }
     }

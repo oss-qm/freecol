@@ -410,7 +410,7 @@ public final class Monarch extends FreeColGameObject implements Named {
         final Specification spec = getSpecification();
         List<RandomChoice<MonarchAction>> choices = new ArrayList<>();
         int dx = 1 + spec.getInteger(GameOptions.MONARCH_MEDDLING);
-        int turn = getGame().getTurn().getNumber();
+        int turn = getGame().getTurn();
         int grace = (6 - dx) * 10; // 10-50
 
         // Nothing happens during the first few turns, if there are no
@@ -466,7 +466,7 @@ public final class Monarch extends FreeColGameObject implements Named {
     public int raiseTax(Random random) {
         final Specification spec = getSpecification();
         int taxAdjustment = spec.getInteger(GameOptions.TAX_ADJUSTMENT);
-        int turn = getGame().getTurn().getNumber();
+        int turn = getGame().getTurn();
         int oldTax = player.getTax();
         int adjust = Math.max(1, (6 - taxAdjustment) * 10); // 20-60
         adjust = 1 + randomInt(logger, "Tax rise", random, 5 + turn/adjust);
@@ -547,7 +547,7 @@ public final class Monarch extends FreeColGameObject implements Named {
         int interventionTurns = spec.getInteger(GameOptions.INTERVENTION_TURNS);
         if (interventionTurns > 0) {
             Force ivf = getInterventionForce();
-            int updates = getGame().getTurn().getNumber() / interventionTurns;
+            int updates = getGame().getTurn() / interventionTurns;
             for (AbstractUnit unit : ivf.getLandUnitsList()) {
                 // add units depending on current turn
                 int value = unit.getNumber() + updates;

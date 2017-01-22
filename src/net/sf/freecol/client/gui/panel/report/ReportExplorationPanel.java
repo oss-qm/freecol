@@ -31,6 +31,7 @@ import net.sf.freecol.client.FreeColClient;
 import net.sf.freecol.client.gui.FontLibrary;
 import net.sf.freecol.client.gui.panel.*;
 import net.sf.freecol.common.model.Region;
+import net.sf.freecol.common.model.Turn;
 import net.sf.freecol.common.util.*;
 
 import static net.sf.freecol.common.util.CollectionUtils.*;
@@ -44,7 +45,7 @@ public final class ReportExplorationPanel extends ReportPanel {
     /** Comparator for discovered regions, by descending turn and score. */
     private static final Comparator<Region> regionComparator
         = Comparator.comparingInt((Region r) ->
-            r.getDiscoveredIn().getNumber()).reversed()
+            r.getDiscoveredIn()).reversed()
                 .thenComparingInt(Region::getScoreValue).reversed();
 
 
@@ -86,8 +87,7 @@ public final class ReportExplorationPanel extends ReportPanel {
                                        Function.identity(), regionComparator)) {
             reportPanel.add(new JLabel(region.getName()));
             reportPanel.add(Utility.localizedLabel(region.getType().getNameKey()));
-            reportPanel.add(Utility.localizedLabel(region.getDiscoveredIn()
-                    .getLabel()));
+            reportPanel.add(Utility.localizedLabel(Turn.getLabel(region.getDiscoveredIn())));
             reportPanel.add(Utility.localizedLabel(region.getDiscoveredBy()
                     .getCountryLabel()));
             reportPanel.add(new JLabel(String.valueOf(region.getScoreValue())));

@@ -480,7 +480,7 @@ public class TileTest extends FreeColTestCase {
 
         // Add a sugar resource, there should now be two sugar bonuses
         // on tile1.
-        final Turn turn = getGame().getTurn();
+        final int turn = getGame().getTurn();
         assertTrue(tile1.canProduce(sugar, null));
         int oldBase = tile1.getBaseProduction(null, sugar, null);
         Resource addedSugar = new Resource(game, tile1, sugarResource);

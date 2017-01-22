@@ -825,7 +825,7 @@ public abstract class Settlement extends GoodsLocation
                 if (ability.isIndependent()) ability.toXML(xw);
             }
 
-            final Turn turn = getGame().getTurn();
+            final int turn = getGame().getTurn();
             for (Modifier modifier : getSortedModifiers()) {
                 if (modifier.hasIncrement()
                     && modifier.isOutOfDate(turn)) continue;

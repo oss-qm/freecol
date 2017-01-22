@@ -124,7 +124,7 @@ public final class FeatureContainer {
      * @return True if the ability is present.
      */
     public boolean hasAbility(String id, FreeColSpecObjectType fcgot,
-                              Turn turn) {
+                              int turn) {
         return FeatureContainer.hasAbility(getAbilities(id, fcgot, turn));
     }
 
@@ -139,7 +139,7 @@ public final class FeatureContainer {
      * @return A stream of abilities.
      */
     public Stream<Ability> getAbilities(String id, FreeColSpecObjectType fcgot,
-                                        Turn turn) {
+                                        int turn) {
         Set<Ability> result = new HashSet<>();
         if (abilitiesPresent()) {
             synchronized (abilitiesLock) {
@@ -220,7 +220,7 @@ public final class FeatureContainer {
      */
     public Stream<Modifier> getModifiers(String id,
                                          FreeColSpecObjectType fcgot,
-                                         Turn turn) {
+                                         int turn) {
         if (!modifiersPresent()) return Stream.<Modifier>empty();
         Set<Modifier> mset = new HashSet<>();
         synchronized (modifiersLock) {
@@ -246,7 +246,7 @@ public final class FeatureContainer {
      *     modifier applies to.
      * @return The modified number.
      */
-    public final float applyModifiers(float number, Turn turn,
+    public final float applyModifiers(float number, int turn,
                                       String id, FreeColSpecObjectType fcgot) {
         return applyModifiers(number, turn, getModifiers(id, fcgot, turn));
     }
@@ -259,7 +259,7 @@ public final class FeatureContainer {
      * @param mods The {@code Modifier}s to apply.
      * @return The modified number.
      */
-    public static float applyModifiers(float number, Turn turn,
+    public static float applyModifiers(float number, int turn,
                                        Collection<Modifier> mods) {
         return (mods == null || mods.isEmpty()) ? number
             : applyModifiers_internal(number, turn,
@@ -466,7 +466,7 @@ public final class FeatureContainer {
      */
     public void replaceSource(FreeColSpecObjectType oldSource,
                               FreeColSpecObjectType newSource) {
-        for (Ability ability : transform(getAbilities(null, null, null),
+        for (Ability ability : transform(getAbilities(null, null, Turn.UNDEFINED),
                 a -> oldSource == null || a.getSource() == oldSource)) {
             removeAbility(ability);
             Ability newAbility = new Ability(ability);
@@ -474,7 +474,7 @@ public final class FeatureContainer {
             addAbility(newAbility);
         }
 
-        for (Modifier modifier : transform(getModifiers(null, null, null),
+        for (Modifier modifier : transform(getModifiers(null, null, Turn.UNDEFINED),
                 m -> oldSource == null || m.getSource() == oldSource)) {
             removeModifier(modifier);
             Modifier newModifier = new Modifier(modifier);
@@ -494,7 +494,7 @@ public final class FeatureContainer {
         StringBuilder sb = new StringBuilder(256);
         sb.append("[FeatureContainer");
         int siz = sb.length();
-        for (Ability ability : iterable(getAbilities(null, null, null))) {
+        for (Ability ability : iterable(getAbilities(null, null, Turn.UNDEFINED))) {
             sb.append(' ').append(ability);
         }
         if (sb.length() > siz) {
@@ -502,7 +502,7 @@ public final class FeatureContainer {
             sb.append(']');
         }
         siz = sb.length();
-        for (Modifier modifier : iterable(getModifiers(null, null, null))) {
+        for (Modifier modifier : iterable(getModifiers(null, null, Turn.UNDEFINED))) {
             sb.append(' ').append(modifier);
         }
         if (sb.length() > siz) {

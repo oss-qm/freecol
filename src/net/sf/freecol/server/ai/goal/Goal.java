@@ -79,7 +79,7 @@ public abstract class Goal extends AIObject implements GoalConstants {
         player = p;
         parentGoal = g;
         relativeWeight = w;
-        getGame().getTurn().getNumber();
+        getGame().getTurn();
         needsPlanning = true; //a newly created Goal always needs planning
         isFinished = false; //only plan() should set this to true!
         availableUnitsList = new ArrayList<>();
@@ -333,7 +333,7 @@ public abstract class Goal extends AIObject implements GoalConstants {
     protected void requestWorker(GoodsType gt, int minProduction) {
 
         //FIXME: Uncomment after AIPlayer.addWorkerWish() has been written.
-        //int turnsWithoutUnit = getGame().getTurn().getNumber() - turnLastUnitAdded;
+        //int turnsWithoutUnit = getGame().getTurn() - turnLastUnitAdded;
         //player.addWorkerWish(this, gt, minProduction, getAbsoluteWeight(), turnsWithoutUnit);
     }
 
@@ -351,7 +351,6 @@ public abstract class Goal extends AIObject implements GoalConstants {
      */
     public final void addUnit(AIUnit u) {
         logger.finest("Entering method addUnit() for "+getDebugDescription()+" with unit: "+u.getId());
-        getGame().getTurn().getNumber();
         availableUnitsList.add(u);
         u.setGoal(this);
         needsPlanning = true; //adding a unit to the Goal means it might need planning

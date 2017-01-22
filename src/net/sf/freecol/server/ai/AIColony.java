@@ -103,7 +103,7 @@ public class AIColony extends AIObject implements PropertyChangeListener {
         = new ArrayList<>();
 
     /** When should the workers in this Colony be rearranged? */
-    private Turn rearrangeTurn = new Turn(0);
+    private int rearrangeTurn = 0;
 
     /**
      * Goods that should be completely exported and only exported to
@@ -228,13 +228,13 @@ public class AIColony extends AIObject implements PropertyChangeListener {
         }
 
         // Skip this colony if it does not yet need rearranging.
-        final int turn = getGame().getTurn().getNumber();
-        if (rearrangeTurn.getNumber() > turn) {
+        final int turn = getGame().getTurn();
+        if (rearrangeTurn > turn) {
             if (colony.getCurrentlyBuilding() == null
                 && colonyPlan != null
                 && colonyPlan.getBestBuildableType() != null) {
                 logger.warning(colony.getName() + " could be building but"
-                    + " is asleep until turn: " + rearrangeTurn.getNumber()
+                    + " is asleep until turn: " + rearrangeTurn
                     + "( > " + turn + ")");
             } else {
                 return;
@@ -311,7 +311,7 @@ public class AIColony extends AIObject implements PropertyChangeListener {
                                                   preferScouts, aw);
         if (scratch == null) {
             lb.add(", failed to assign workers.");
-            rearrangeTurn = new Turn(turn + 1);
+            rearrangeTurn = turn + 1;
             return;
         }
         lb.add(", assigned ", workers.size(), " workers");
@@ -403,7 +403,7 @@ public class AIColony extends AIObject implements PropertyChangeListener {
         for (UnitWas uw : was) lb.add("\n  ", uw);
 
         // Set the next rearrangement turn.
-        rearrangeTurn = new Turn(turn + nextRearrange);
+        rearrangeTurn = turn + nextRearrange;
     }
 
     /**
@@ -607,7 +607,7 @@ public class AIColony extends AIObject implements PropertyChangeListener {
             AIMessage.askPutOutsideColony(getAIUnit(u));
         }
         if (colony.getUnitCount() <= 0) avertAutoDestruction();
-        rearrangeTurn = new Turn(getGame().getTurn().getNumber());
+        rearrangeTurn = getGame().getTurn();
     }
 
     /**
@@ -1348,7 +1348,7 @@ public class AIColony extends AIObject implements PropertyChangeListener {
      * run fully next time it is invoked.
      */
     public void requestRearrange() {
-        rearrangeTurn = new Turn(0);
+        rearrangeTurn = 0;
     }
 
 

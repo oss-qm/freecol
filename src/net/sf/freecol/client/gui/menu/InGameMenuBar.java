@@ -97,6 +97,7 @@ import net.sf.freecol.common.debug.FreeColDebugger;
 import net.sf.freecol.common.i18n.Messages;
 import net.sf.freecol.common.model.StringTemplate;
 import net.sf.freecol.common.model.TileImprovementType;
+import net.sf.freecol.common.model.Turn;
 
 
 /**
@@ -333,7 +334,7 @@ public class InGameMenuBar extends FreeColMenuBar {
                     .addAmount("%score%",
                         freeColClient.getMyPlayer().getScore())
                     .addStringTemplate("%year%",
-                        freeColClient.getGame().getTurn().getLabel()));
+                        Turn.getLabel(freeColClient.getGame().getTurn())));
             Rectangle2D displayStringBounds
                 = g2d.getFontMetrics().getStringBounds(displayString, g);
             int y = Math.round(12f*freeColClient.getGUI().getImageLibrary().getScaleFactor())

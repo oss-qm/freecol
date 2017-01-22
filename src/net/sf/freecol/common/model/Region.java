@@ -145,7 +145,7 @@ public class Region extends FreeColGameObject implements Nameable {
     protected boolean discoverable = false;
 
     /** Which Turn the region was discovered in. */
-    protected Turn discoveredIn;
+    protected int discoveredIn;
 
     /** Which Player the Region was discovered by. */
     protected Player discoveredBy;
@@ -366,7 +366,7 @@ public class Region extends FreeColGameObject implements Nameable {
      *
      * @return The discovery turn.
      */
-    public final Turn getDiscoveredIn() {
+    public final int getDiscoveredIn() {
         return this.discoveredIn;
     }
 
@@ -375,7 +375,7 @@ public class Region extends FreeColGameObject implements Nameable {
      *
      * @param newDiscoveredIn The new discoveredy turn.
      */
-    public final void setDiscoveredIn(final Turn newDiscoveredIn) {
+    public final void setDiscoveredIn(final int newDiscoveredIn) {
         this.discoveredIn = newDiscoveredIn;
     }
 
@@ -422,7 +422,7 @@ public class Region extends FreeColGameObject implements Nameable {
      * @param turn The {@code Turn} of discovery.
      * @return A list of discovered {@code Region}s.
      */
-    public List<Region> discover(Player player, Turn turn) {
+    public List<Region> discover(Player player, int turn) {
         List<Region> result = new ArrayList<>();
         this.discoveredBy = player;
         this.discoveredIn = turn;
@@ -519,8 +519,8 @@ public class Region extends FreeColGameObject implements Nameable {
             xw.writeAttribute(PARENT_TAG, parent);
         }
 
-        if (discoveredIn != null) {
-            xw.writeAttribute(DISCOVERED_IN_TAG, discoveredIn.getNumber());
+        if (discoveredIn != Turn.UNDEFINED) {
+            xw.writeAttribute(DISCOVERED_IN_TAG, discoveredIn);
         }
 
         if (discoveredBy != null) {
@@ -574,8 +574,7 @@ public class Region extends FreeColGameObject implements Nameable {
 
         scoreValue = xr.getAttribute(SCORE_VALUE_TAG, 0);
 
-        int turn = xr.getAttribute(DISCOVERED_IN_TAG, UNDEFINED);
-        discoveredIn = (turn == UNDEFINED) ? null : new Turn(turn);
+        discoveredIn = xr.getAttribute(DISCOVERED_IN_TAG, Turn.UNDEFINED);
 
         discoveredBy = xr.findFreeColGameObject(getGame(), DISCOVERED_BY_TAG,
             Player.class, (Player)null, false);

@@ -31,6 +31,7 @@ import javax.xml.stream.XMLStreamException;
 import net.sf.freecol.common.io.FreeColXMLReader;
 import net.sf.freecol.common.io.FreeColXMLWriter;
 import net.sf.freecol.common.model.Colony.NoBuildReason;
+import net.sf.freecol.common.model.Turn;
 import net.sf.freecol.common.model.UnitChangeType.UnitChange;
 import static net.sf.freecol.common.util.CollectionUtils.*;
 
@@ -184,7 +185,7 @@ public final class UnitType extends BuildableType implements Consumer {
      * @return The offence value.
      */
     public double getOffence() {
-        return applyModifiers(offence, null, Modifier.OFFENCE);
+        return applyModifiers(offence, Turn.UNDEFINED, Modifier.OFFENCE);
     }
 
     /**
@@ -211,7 +212,7 @@ public final class UnitType extends BuildableType implements Consumer {
      * @return The defence value.
      */
     public double getDefence() {
-        return applyModifiers(defence, null, Modifier.DEFENCE);
+        return applyModifiers(defence, Turn.UNDEFINED, Modifier.DEFENCE);
     }
 
     /**

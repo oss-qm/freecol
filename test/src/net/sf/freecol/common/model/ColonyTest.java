@@ -198,7 +198,7 @@ public class ColonyTest extends FreeColTestCase {
         colony.addModifier(serverPlayer.makeTeaPartyModifier());
         assertEquals(1, countParties(colony));
         Modifier m = serverPlayer.makeTeaPartyModifier();
-        m.setFirstTurn(new Turn(game.getTurn().getNumber() + 1));
+        m.setFirstTurn(game.getTurn() + 1);
         colony.addModifier(m);
         assertEquals(2, countParties(colony));
     }

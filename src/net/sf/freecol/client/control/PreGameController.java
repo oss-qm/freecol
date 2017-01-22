@@ -37,6 +37,7 @@ import net.sf.freecol.common.model.NationType;
 import net.sf.freecol.common.model.Player;
 import net.sf.freecol.common.model.StringTemplate;
 import net.sf.freecol.common.model.Tile;
+import net.sf.freecol.common.model.Turn;
 import net.sf.freecol.common.model.Unit;
 import net.sf.freecol.common.option.GameOptions;
 import net.sf.freecol.common.option.MapGeneratorOptions;
@@ -186,7 +187,7 @@ public final class PreGameController extends FreeColClientHolder {
         }
 
         // Tutorial message if needed
-        if (game.getTurn().getNumber() == 1) {
+        if (game.getTurn() == Turn.FIRST_TURN) {
             player.addStartGameMessage();
         }
         igc().nextModelMessage();

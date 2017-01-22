@@ -38,7 +38,6 @@ import net.sf.freecol.common.model.GoodsType;
 import net.sf.freecol.common.model.Modifier;
 import net.sf.freecol.common.model.Tile;
 import net.sf.freecol.common.model.TileType;
-import net.sf.freecol.common.model.Turn;
 import net.sf.freecol.common.model.Unit;
 import net.sf.freecol.common.model.UnitType;
 import net.sf.freecol.common.model.WorkLocation;
@@ -50,7 +49,7 @@ import static net.sf.freecol.common.util.CollectionUtils.*;
  */
 public class WorkProductionPanel extends FreeColPanel {
 
-    private final Turn turn = getGame().getTurn();
+    private final int turn = getGame().getTurn();
 
 
     /**

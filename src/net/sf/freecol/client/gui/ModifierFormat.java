@@ -34,7 +34,6 @@ import net.sf.freecol.common.model.Modifier.ModifierType;
 import net.sf.freecol.common.model.Nameable;
 import net.sf.freecol.common.model.Named;
 import net.sf.freecol.common.model.Scope;
-import net.sf.freecol.common.model.Turn;
 import static net.sf.freecol.common.util.CollectionUtils.*;
 
 
@@ -100,7 +99,7 @@ public class ModifierFormat {
 
     public static JLabel[] getModifierLabels(Modifier modifier,
                                              FreeColSpecObjectType fcgot,
-                                             Turn turn) {
+                                             int turn) {
         String sourceName = getSourceName(modifier.getSource());
         if (fcgot != null && modifier.appliesTo(fcgot)) {
             sourceName += " (" + Messages.getName(fcgot) + ")";
