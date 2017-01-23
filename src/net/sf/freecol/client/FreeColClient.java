@@ -141,7 +141,6 @@ public final class FreeColClient {
     /** Cached list of vacant players. */
     private List<String> cachedVacantPlayerNames = new ArrayList<>();
 
-    
     public FreeColClient(final InputStream splashStream,
                          final String fontName) {
         this(splashStream, fontName, FreeCol.GUI_SCALE_DEFAULT, true);
@@ -236,7 +235,7 @@ public final class FreeColClient {
      * The indirection through invokeLater is necessary if this is
      * called in the closing callback of another panel --- if called
      * directly it loops when Canvas.showMainPanel tries to close all
-     * existing panels.     
+     * existing panels.
      *
      * @param userMsg A message to the user.
      * @return A {@code Runnable} for the main panel.
@@ -385,7 +384,6 @@ public final class FreeColClient {
             clop.merge(userOptions);
         }
 
-        //logger.info("Final client options: " + clop.toString());
         return clop;
     }
 
@@ -578,7 +576,7 @@ public final class FreeColClient {
         }
         this.inGame = inGame;
     }
-        
+
     /**
      * Are we using the map editor?
      *
@@ -671,8 +669,7 @@ public final class FreeColClient {
         this.cachedVacantPlayerNames.clear();
         this.cachedVacantPlayerNames.addAll(names);
     }
-    
-    
+
     // Utilities
 
     /**
@@ -812,7 +809,7 @@ public final class FreeColClient {
     private FreeColServer failToMain(Exception ex, String key) {
         return failToMain(ex, StringTemplate.template(key));
     }
-    
+
     /**
      * Shut down an existing server on a given port.
      *
@@ -908,7 +905,6 @@ public final class FreeColClient {
         ResourceManager.setScenarioMapping(fsg.getResourceMapping());
         return fcs;
     }
-    
 
     // Fundamental game start/stop/continue actions
 

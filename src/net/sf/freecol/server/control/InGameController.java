@@ -178,7 +178,7 @@ public final class InGameController extends Controller {
     public void setRandom(Random random) {
         this.random = random;
     }
-    
+
     /**
      * Get the timeout for this game.
      *
@@ -188,7 +188,7 @@ public final class InGameController extends Controller {
         final boolean single = getFreeColServer().getSinglePlayer();
         return FreeCol.getTimeout(single);
     }
-        
+
 
     // Debug support
 
@@ -464,7 +464,7 @@ public final class InGameController extends Controller {
         logger.finest(owner.getSuffix() + " " + unit + " gives " + goods
                       + " at " + sis.getName());
     }
-    
+
     /**
      * Visits a native settlement, possibly scouting it full if it is
      * as a result of a scout actually asking to speak to the chief,
@@ -619,21 +619,6 @@ public final class InGameController extends Controller {
     }
 
     /**
-     * Resolves a tax raise.
-     *
-     * @param serverPlayer The {@code ServerPlayer} whose tax is rising.
-     * @param taxRaise The amount of tax raise.
-     * @param goods The {@code Goods} for a goods party.
-     * @param result Whether the tax was accepted or not.
-    private void raiseTax(ServerPlayer serverPlayer, int taxRaise, Goods goods,
-                          boolean result) {
-        ChangeSet cs = new ChangeSet();
-        serverPlayer.csRaiseTax(taxRaise, goods, result, cs);
-        getGame().sendTo(serverPlayer, cs);
-    }
-     */
-
-    /**
      * Performs a monarch action.
      *
      * Note that CHANGE_LATE is used so that these actions follow
@@ -734,7 +719,7 @@ public final class InGameController extends Controller {
             if (enemies.isEmpty()) break;
             Player enemy = getRandomMember(logger, "Choose enemy",
                                            enemies, random);
-            List<AbstractUnit> warSupport 
+            List<AbstractUnit> warSupport
                 = monarch.getWarSupport(enemy, random);
             int warGold = 0;
             if (!warSupport.isEmpty()) {
@@ -1524,7 +1509,7 @@ public final class InGameController extends Controller {
         // Make the mercenary force offer
         serverPlayer.csMercenaries(monarch.getMercenaryForce().getUnitList(),
             Monarch.MonarchAction.HESSIAN_MERCENARIES, random, cs);
-        
+
         // Pity to have to update such a heavy object as the player,
         // but we do this, at most, once per player.  Other players
         // only need a partial player update and the stance change.
@@ -1813,7 +1798,7 @@ public final class InGameController extends Controller {
         } else {
             logger.info("Continuing diplomacy session: " + session
                         + " from " + ourUnit);
-        }            
+        }
         ServerPlayer otherPlayer = (ServerPlayer)otherColony.getOwner();
         serverPlayer.csDiplomacy(session, agreement, cs);
         getGame().sendToOthers(serverPlayer, cs);
@@ -1841,7 +1826,7 @@ public final class InGameController extends Controller {
         } else {
             logger.info("Continuing diplomacy session: " + session
                         + " from " + ourColony);
-        }            
+        }
         ServerPlayer otherPlayer = (ServerPlayer)otherUnit.getOwner();
         serverPlayer.csDiplomacy(session, agreement, cs);
         getGame().sendToOthers(serverPlayer, cs);
@@ -2274,7 +2259,7 @@ public final class InGameController extends Controller {
 
             // Always show the tile the unit was on
             cs.add(See.perhaps().always(serverPlayer), unit.getTile());
-            
+
             sis.csChangeMissionary(unit, cs);//+vis(serverPlayer)
             break;
         }
@@ -2945,7 +2930,7 @@ public final class InGameController extends Controller {
             return serverPlayer.clientError("Session already open for: " + nt);
         } else if (action != NativeTradeAction.OPEN && session == null) {
             return serverPlayer.clientError("No session found for: " + nt);
-        }            
+        }
 
         ChangeSet cs = new ChangeSet();
         NativeTradeItem item;
@@ -3007,7 +2992,7 @@ public final class InGameController extends Controller {
             cs.add(See.only(otherPlayer), ChangeSet.ChangePriority.CHANGE_LATE,
                    new NativeTradeMessage(action, nt));
             break;
-            
+
         case GIFT: // Check goods, forward
             item = nt.getItem();
             nt.mergeFrom(session.getNativeTrade());
@@ -3041,7 +3026,7 @@ public final class InGameController extends Controller {
             cs.add(See.only(otherPlayer), ChangeSet.ChangePriority.CHANGE_LATE,
                    new NativeTradeMessage(action, nt));
             break;
-            
+
         case ACK_BUY: // Buy succeeded, update goods, inform player
             item = nt.getItem();
             csBuy(unit, item.getGoods(), item.getPrice(),
@@ -3092,9 +3077,9 @@ public final class InGameController extends Controller {
             if (action == NativeTradeAction.NAK_HAGGLE) {
                 unit.setMovesLeft(0); // Clear moves again on hagglers
                 cs.addPartial(See.only(otherPlayer), unit, "movesLeft");
-            }                
+            }
             break;
-            
+
         default:
             return serverPlayer.clientError("Bogus action: " + action);
         }
@@ -3286,7 +3271,7 @@ public final class InGameController extends Controller {
                     + " at " + colony);
             }
         }
-        
+
         // Just update the whole tile, including for other players
         // which might see colony population change.
         return new ChangeSet().add(See.perhaps(), tile);

@@ -210,10 +210,9 @@ public class BuildQueuePanel extends FreeColPanel implements ItemListener {
         }
 
         private JList<? extends BuildableType> source = null;
-        //private int[] indices = null;
         private int numberOfItems = 0; // number of items to be added
 
-        
+
         // Override TransferHandler
 
         /**
@@ -291,14 +290,12 @@ public class BuildQueuePanel extends FreeColPanel implements ItemListener {
             if (isOrderingQueue) {
                 // Suppress dropping the selection onto itself.
                 if (preferredIndex != -1 && prevPos == preferredIndex) {
-                    //indices = null;
                     return false;
                 }
 
                 // Insist drop is within bounds.
                 int maximumIndex = getMaximumIndex(queue.get(0).getBuildable());
                 if (preferredIndex > maximumIndex) {
-                    //indices = null;
                     return false;
                 }
 
@@ -354,9 +351,8 @@ public class BuildQueuePanel extends FreeColPanel implements ItemListener {
          * {@inheritDoc}
          */
         @Override
-        protected void exportDone(JComponent source, Transferable data, 
+        protected void exportDone(JComponent source, Transferable data,
                                   int action) {
-            //this.indices = null;
             this.numberOfItems = 0;
             updateAllLists();
         }
@@ -400,7 +396,7 @@ public class BuildQueuePanel extends FreeColPanel implements ItemListener {
     private class BuildQueueMouseAdapter extends MouseAdapter {
 
         private boolean add = true;
-        
+
         private boolean enabled = false;
 
 
@@ -605,12 +601,12 @@ public class BuildQueuePanel extends FreeColPanel implements ItemListener {
         Font fontSubHead = FontLibrary.createFont(FontLibrary.FontType.NORMAL,
                 FontLibrary.FontSize.SMALLER, Font.BOLD,
                 getImageLibrary().getScaleFactor());
-        
+
         // Create the components
         JLabel header = Utility.localizedHeaderLabel(
             "buildQueuePanel.buildQueue",
             SwingConstants.LEADING, FontLibrary.FontSize.BIG);
-        
+
         // JLabel SubHeads
         JLabel bqpUnits = Utility.localizedLabel("buildQueuePanel.units");
         bqpUnits.setFont(fontSubHead);
@@ -627,7 +623,7 @@ public class BuildQueuePanel extends FreeColPanel implements ItemListener {
                 .MULTIPLE_INTERVAL_SELECTION);
         this.unitList.setDragEnabled(true);
         this.unitList.addMouseListener(adapter);
-        this.unitList.getInputMap().put(KeyStroke.getKeyStroke("ENTER"), 
+        this.unitList.getInputMap().put(KeyStroke.getKeyStroke("ENTER"),
                 "add");
         this.unitList.getActionMap().put("add", addAction);
 
@@ -786,10 +782,10 @@ public class BuildQueuePanel extends FreeColPanel implements ItemListener {
 
             // Ignore pre-built buildings
             if (!bt.needsGoodsToBuild()) continue;
-            
+
             // Only one building of any kind
             if (current.contains(bt) || hasBuildingType(bt)) continue;
-            
+
             List<String> reasons = new ArrayList<>();
 
             // Coastal limit
@@ -848,7 +844,7 @@ public class BuildQueuePanel extends FreeColPanel implements ItemListener {
             = (DefaultListModel<UnitType>)this.unitList.getModel();
         units.clear();
         Set<BuildableType> unbuildableTypes = new HashSet<>();
-        
+
         // For each unit type, find out if it is buildable, and
         // reasons to not build it (and perhaps display a lock icon).
         for (UnitType ut : spec.getBuildableUnitTypes()) {

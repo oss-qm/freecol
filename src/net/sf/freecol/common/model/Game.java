@@ -69,7 +69,7 @@ public class Game extends FreeColGameObject {
         QUIT,       // Player quits and whole game is over
         RECONNECT,  // Implement reconnect
     };
-    
+
     /** State for the FCGO iterator, out here because it has to be static. */
     private static enum FcgoState {
         INVALID,
@@ -168,7 +168,7 @@ public class Game extends FreeColGameObject {
 
     /** Initial active unit identifier. */
     private String initialActiveUnitId = null;
-    
+
     // Serialization not required below.
 
     /** The Specification this game uses. */
@@ -295,7 +295,7 @@ public class Game extends FreeColGameObject {
     public <T extends FreeColObject> T newInstance(Class<T> returnClass) {
         return newInstance(returnClass, false); // Default to non-server
     }
-    
+
     /**
      * Get the difficulty level of this game.
      *
@@ -413,7 +413,6 @@ public class Game extends FreeColGameObject {
                 + " with " + fcgo.getId() + " : " + fcgo.getClass());
         }
 
-        //logger.finest("Added FCGO: " + id);
         final WeakReference<FreeColGameObject> wr
             = new WeakReference<>(fcgo);
         freeColGameObjects.put(id, wr);
@@ -540,7 +539,7 @@ public class Game extends FreeColGameObject {
     }
 
     /**
-     * Gets the unique identifier for this game. 
+     * Gets the unique identifier for this game.
      * A game UUID persists in save game files.
      *
      * @return The game {@code UUID}.
@@ -690,7 +689,7 @@ public class Game extends FreeColGameObject {
     public Stream<Player> getLiveNativePlayers(final Player... exclude) {
         return getLiveNativePlayerList(exclude).stream();
     }
-    
+
     /**
      * Gets the next current player.
      *
@@ -949,7 +948,7 @@ public class Game extends FreeColGameObject {
     public int getAge() {
         return getSpecification().getAge(turn);
     }
-    
+
     /**
      * Get the combat model in this game.
      *
@@ -1004,7 +1003,7 @@ public class Game extends FreeColGameObject {
     public void setInitialActiveUnitId(String initialActiveUnitId) {
         this.initialActiveUnitId = initialActiveUnitId;
     }
-        
+
     /**
      * Sets the {@code FreeColGameObjectListener} attached to this game.
      *
@@ -1093,7 +1092,7 @@ public class Game extends FreeColGameObject {
     public Stream<Colony> getAllColonies(Player player) {
         return flatten(getLiveEuropeanPlayerList(player), Player::getColonies);
     }
-            
+
     /**
      * Get a list of all the colonies in the game.
      *
@@ -1103,7 +1102,7 @@ public class Game extends FreeColGameObject {
     public List<Colony> getAllColoniesList(Player player) {
         return toList(getAllColonies(player));
     }
-            
+
     /**
      * Finds a settlement by name.
      *
@@ -1284,7 +1283,7 @@ public class Game extends FreeColGameObject {
     public void setSpecification(Specification specification) {
         this.specification = specification;
     }
-    
+
     /**
      * {@inheritDoc}
      */
@@ -1302,7 +1301,7 @@ public class Game extends FreeColGameObject {
         // the constructor will try to initialize to null, because we
         // can not yet pass "this" to the FreeColGameObject constructor.
     }
-    
+
 
     // Serialization
     // Note: The order of the children is really sensitive.
