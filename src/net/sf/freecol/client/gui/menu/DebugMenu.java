@@ -119,7 +119,6 @@ public class DebugMenu extends JMenu {
             = Utility.localizedCheckBoxMenuItem("menuBar.debug.hideEntireMap",
                                                 false);
         hide.setOpaque(false);
-        //hide.setMnemonic(KeyEvent.VK_R);
         this.add(hide);
         hide.addActionListener((ActionEvent ae) -> {
                 DebugUtils.revealMap(freeColClient, false);
@@ -160,7 +159,6 @@ public class DebugMenu extends JMenu {
                 = Utility.localizedRadioButtonMenuItem(p.getCountryLabel(),
                     FreeColDebugger.debugDisplayColonyValuePlayer() == p);
             cv2.setOpaque(false);
-            //cv2.setMnemonic(KeyEvent.VK_C);
             cvpMenu.add(cv2);
             bg.add(cv2);
             final Player fp = p;
@@ -318,7 +316,6 @@ public class DebugMenu extends JMenu {
 
         final JMenuItem compareMaps = Utility.localizedMenuItem("menuBar.debug.compareMaps");
         compareMaps.setOpaque(false);
-        //compareMaps.setMnemonic(KeyEvent.VK_C);
         compareMaps.setAccelerator(KeyStroke.getKeyStroke('C',
             Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()
                 | InputEvent.ALT_MASK));
@@ -330,7 +327,6 @@ public class DebugMenu extends JMenu {
 
         final JMenuItem showResourceKeys = Utility.localizedMenuItem("menuBar.debug.showResourceKeys");
         showResourceKeys.setOpaque(false);
-        //showResourceKeys.setMnemonic(KeyEvent.VK_R);
         this.add(showResourceKeys);
         showResourceKeys.addActionListener((ActionEvent ae) -> {
                 StringBuilder builder = new StringBuilder();
@@ -346,7 +342,6 @@ public class DebugMenu extends JMenu {
         // statistics
         final JMenuItem statistics = Utility.localizedMenuItem("statistics");
         statistics.setOpaque(false);
-        //statistics.setMnemonic(KeyEvent.VK_I);
         this.add(statistics);
         statistics.addActionListener((ActionEvent ae) -> {
                 DebugUtils.statistics(freeColClient);
@@ -356,7 +351,6 @@ public class DebugMenu extends JMenu {
         // garbage collector
         final JMenuItem gc = Utility.localizedMenuItem("menuBar.debug.memoryManager.gc");
         gc.setOpaque(false);
-        //gc.setMnemonic(KeyEvent.VK_G);
         this.add(gc);
         gc.addActionListener((ActionEvent ae) -> {
                 System.gc();

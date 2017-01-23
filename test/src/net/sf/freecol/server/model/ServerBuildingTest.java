@@ -21,7 +21,6 @@ package net.sf.freecol.server.model;
 
 import java.util.Iterator;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import net.sf.freecol.common.model.Ability;
 import net.sf.freecol.common.model.Building;
@@ -292,7 +291,7 @@ public class ServerBuildingTest extends FreeColTestCase {
         assertNotNull(lumberjack.getStudent());
         blacksmith.setLocation(college);
         assertNotNull(blacksmith.getStudent());
-        
+
         assertEquals(4, getUnitList(colony, freeColonistType).size());
         assertEquals(1, getUnitList(colony, expertLumberJackType).size());
         assertEquals(1, getUnitList(colony, masterBlacksmithType).size());

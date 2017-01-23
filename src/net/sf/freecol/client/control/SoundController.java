@@ -47,7 +47,7 @@ public class SoundController {
 
     /**
      * Prepare the sound system.
-     * 
+     *
      * @param freeColClient The {@code FreeColClient} for the game.
      * @param sound Enable sound if true.
      */
@@ -65,8 +65,6 @@ public class SoundController {
                 try {
                     logger.log(Level.INFO, "Create sound controller with "
                         + amo + "/" + vo);
-                        //+ " mixer /" + amo.getValue().toString()
-                        //+ "/, volume " + volume.getValue().toString());
                     this.soundPlayer = new SoundPlayer((AudioMixerOption)amo,
                                                        (PercentageOption)vo);
                 } catch (Exception e) {

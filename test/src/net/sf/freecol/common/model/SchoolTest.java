@@ -21,7 +21,6 @@ package net.sf.freecol.common.model;
 
 import java.util.Iterator;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import static net.sf.freecol.common.util.CollectionUtils.*;
 import net.sf.freecol.server.model.ServerBuilding;
@@ -104,7 +103,7 @@ public class SchoolTest extends FreeColTestCase {
             freeColonistType.getTeachingType(masterCarpenterType));
         assertEquals("Servant should upgrade to colonist",
             freeColonistType,
-            indenturedServantType.getTeachingType(masterCarpenterType)); 
+            indenturedServantType.getTeachingType(masterCarpenterType));
         assertEquals("Criminal should upgrade to servant",
             indenturedServantType,
             pettyCriminalType.getTeachingType(masterCarpenterType));
