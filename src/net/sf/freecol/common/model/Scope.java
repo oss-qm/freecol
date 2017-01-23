@@ -198,12 +198,13 @@ public class Scope extends FreeColObject {
                 if (!type.equals(object.getId())) {
                     return matchNegated;
                 }
-            } else {
-                FreeColSpecObjectType fcgot = object.invokeMethod("getType",
-                    FreeColSpecObjectType.class, (FreeColSpecObjectType)null);
+            } else if (object instanceof SpecObjectTypeHolder) {
+                FreeColSpecObjectType fcgot = ((SpecObjectTypeHolder)object).getType();
                 if (fcgot == null || !type.equals(fcgot.getId())) {
                     return matchNegated;
                 }
+            } else {
+                return matchNegated;
             }
         }
         if (abilityId != null && object.hasAbility(abilityId) != abilityValue) {
