@@ -127,7 +127,35 @@ public final class FeatureContainer {
      */
     public boolean hasAbility(String id, FreeColSpecObjectType fcgot,
                               int turn) {
-        return FeatureContainer.hasAbility(getAbilities(id, fcgot, turn));
+        if (!abilitiesPresent()) return false;
+
+        boolean ret = false;
+
+        if (id == null) {
+            synchronized (abilitiesLock) {
+                for (Set<Ability> aset : this.abilities.values()) {
+                    for (Ability a : aset) {
+                        if (a.appliesTo(fcgot, turn)) {
+                            if (a.getValue()) ret = true;
+                            else return false;
+                        }
+                    }
+                }
+            }
+            return ret;
+        }
+
+        synchronized (abilitiesLock) {
+            Set<Ability> aset = this.abilities.get(id);
+            if (aset == null) return false;
+            for (Ability a : aset) {
+                if (a.appliesTo(fcgot, turn)) {
+                    if (a.getValue()) ret = true;
+                    else return false;
+                }
+            }
+        }
+        return ret;
     }
 
     /**
