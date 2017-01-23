@@ -40,7 +40,7 @@ import static net.sf.freecol.common.util.CollectionUtils.*;
  * of goods it produces and consumes.
  */
 public final class BuildingType extends BuildableType
-        implements BaseProduction {
+        implements BaseProduction, SpecObjectTypeHolder {
 
     public static final String TAG = "building-type";
 
