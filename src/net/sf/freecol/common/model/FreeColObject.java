@@ -469,7 +469,7 @@ public abstract class FreeColObject
                                         int turn) {
         FeatureContainer fc = getFeatureContainer();
         return (fc == null) ? Stream.<Ability>empty()
-            : fc.getAbilities(id, fcgot, turn);
+            : fc.getAbilities(id, fcgot, turn).stream();
     }
 
     /**
