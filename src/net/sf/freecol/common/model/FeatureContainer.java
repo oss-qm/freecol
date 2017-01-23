@@ -168,24 +168,38 @@ public final class FeatureContainer {
      * @param turn An optional applicable {@code Turn}.
      * @return A list of abilities.
      */
-    public List<Ability> getAbilities(String id, FreeColSpecObjectType fcgot,
+    public final List<Ability> getAbilities(String id, FreeColSpecObjectType fcgot,
                                         int turn) {
-        Set<Ability> result = new HashSet<>();
-        if (abilitiesPresent()) {
+        if (!abilitiesPresent())
+            return Collections.<Ability>emptyList();
+
+        if (id == null) {
+            Set<Ability> result = new HashSet<>();
             synchronized (abilitiesLock) {
-                if (id == null) {
-                    for (Set<Ability> aset : abilities.values()) {
-                        result.addAll(aset);
-                    }
-                } else {
-                    Set<Ability> aset = abilities.get(id);
-                    if (aset != null) result.addAll(aset);
-                }
+                // FIXME: check whether we really need the intermediate Set,
+                // iow, whether duplicates may happen and could cause a problem
+                for (Set<Ability> aset : abilities.values())
+                    for (Ability a : aset)
+                        if (a.appliesTo(fcgot, turn))
+                            result.add(a);
             }
-            removeInPlace(result, a -> !a.appliesTo(fcgot, turn));
+            if (result.isEmpty())
+                return Collections.<Ability>emptyList();
+            return new ArrayList<>(result);
         }
 
-        return new ArrayList<>(result);
+        synchronized (abilitiesLock) {
+            Set<Ability> aset = abilities.get(id);
+            if ((aset == null) || aset.isEmpty())
+                return Collections.<Ability>emptyList();
+
+            List<Ability> result = new ArrayList<>();
+            for (Ability a : aset)
+                if (a.appliesTo(fcgot, turn))
+                    result.add(a);
+
+            return result;
+        }
     }
 
     /**
