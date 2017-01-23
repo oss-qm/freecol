@@ -160,7 +160,6 @@ public class BuildingDetailPanel
             panel.add(Utility.localizedLabel("colopedia.buildings.requires"), "top");
             panel.add(textPane, "span, growx");
         } catch (BadLocationException e) {
-            //logger.warning(e.toString());
         }
 
         // Costs to build - Hammers & Tools

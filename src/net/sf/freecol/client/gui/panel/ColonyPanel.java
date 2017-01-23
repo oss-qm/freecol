@@ -1095,13 +1095,6 @@ public final class ColonyPanel extends PortPanel
         warehouseScroll = null;
 
         releaseListener = null;
-
-        // Inherited from PortPanel
-        //cargoPanel = null;
-        //inPortPanel = null;
-        //defaultTransferHandler = null;
-        //pressListener = null;
-        //selectedUnitLabel = null;
     }
 
 

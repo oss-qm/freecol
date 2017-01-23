@@ -50,7 +50,6 @@ public class TranslationReport {
     public static void main(String[] args) throws Exception {
         ArrayList<LanguageStatsRecord> statistics = new ArrayList<>();
 
-        //String dirName = "src/net/sf/freecol.common.i18n/";
         String dirName = args[0];
         File directory = new File(dirName);
         if (!directory.isDirectory()) {
@@ -67,7 +66,6 @@ public class TranslationReport {
         File masterFile = new File(directory, "FreeColMessages.properties");
         Properties master = new Properties();
         master.load(new FileInputStream(masterFile));
-        //System.out.println("*** Found master property file with " + master.size() + " properties.\n");
 
         for (String name : languageFiles) {
             LanguageStatsRecord lstat = new LanguageStatsRecord();
@@ -269,4 +267,3 @@ public class TranslationReport {
     }
 
 }
-

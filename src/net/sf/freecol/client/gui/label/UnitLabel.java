@@ -330,8 +330,6 @@ public final class UnitLabel extends FreeColLabel
     public void updateIcon() {
         setDescriptionLabel(unit.getDescription(UnitLabelType.FULL));
         setSmall(isSmall);
-        // repaint(0, 0, getWidth(), getHeight());
-        // uc.refresh();
     }
 
 

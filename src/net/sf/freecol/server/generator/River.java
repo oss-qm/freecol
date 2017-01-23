@@ -420,7 +420,6 @@ public class River {
                     TileType greatRiver = map.getSpecification().getTileType("model.tile.greatRiver");
                     tile.changeType(greatRiver);
                     // changing the type resets the improvements
-                    //container.addRiver(section.getSize(), section.encodeStyle());
                     logger.fine("Added fjord (magnitude: " + section.getSize() +
                                 ") to tile: " + section.getTile());
                 } else if (section.getSize() > TileImprovement.NO_RIVER) {

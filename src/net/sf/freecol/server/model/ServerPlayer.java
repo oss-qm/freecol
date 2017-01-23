@@ -2186,12 +2186,10 @@ outer:  for (Effect effect : effects) {
         Settlement attackerSettlement = null;
         Tile attackerTile = null;
         Unit defenderUnit = null;
-        //ServerPlayer attackerPlayer = null;
         ServerPlayer defenderPlayer = null;
         Tile defenderTile = null;
         if (isAttack) {
             attackerUnit = (Unit)attacker;
-            //attackerPlayer = (ServerPlayer)attackerUnit.getOwner();
             attackerTile = attackerUnit.getTile();
             defenderUnit = (Unit)defender;
             defenderPlayer = (ServerPlayer)defenderUnit.getOwner();
@@ -2217,7 +2215,6 @@ outer:  for (Effect effect : effects) {
             }
         } else if (isBombard) {
             attackerSettlement = (Settlement)attacker;
-            //attackerPlayer = (ServerPlayer)attackerSettlement.getOwner();
             attackerTile = attackerSettlement.getTile();
             defenderUnit = (Unit)defender;
             defenderPlayer = (ServerPlayer)defenderUnit.getOwner();

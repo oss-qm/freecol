@@ -149,16 +149,6 @@ public class FreeColTestUtils {
                 }
             }
 
-            /*
-            if(this.name != null){
-                for(Colony colony : player.getColonies()){
-                    if(colony.getName().equals(this.name)){
-                        throw new IllegalArgumentException("Another colony already has the given name");
-                    }
-                }
-            }
-            */
-
             Colony colony = new ServerColony(game, player, name, colonyTile);
             player.addSettlement(colony);
             colony.placeSettlement(true);//-vis(player)

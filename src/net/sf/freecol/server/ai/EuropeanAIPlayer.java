@@ -673,9 +673,6 @@ public class EuropeanAIPlayer extends MissionAIPlayer {
 
         lb.add("\n  Allocate Transport cargo=", transportables.size(),
                " carriers=", missions.size());
-        //for (TransportableAIObject t : urgent) lb.add(" ", t);
-        //lb.add(" ->");
-        //for (Mission m : missions) lb.add(" ", m);
 
         LogBuilder lb2 = new LogBuilder(0);
         TransportMission best;

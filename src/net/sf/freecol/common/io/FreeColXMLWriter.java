@@ -397,10 +397,6 @@ public class FreeColXMLWriter implements Closeable, XMLStreamWriter {
         return writeScope.getClient();
     }
 
-    //public boolean isValid() {
-    //    return (this == WriteScope.CLIENT) == (player != null);
-    //}
-
     public boolean validForSave() {
         return writeScope.validForSave();
     }

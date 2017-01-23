@@ -133,7 +133,6 @@ public class FreeColMenuTest implements ActionListener, ItemListener {
      */
     private static void createAndShowGUI() {
         //Create and set up the window.
-        //JFrame frame = new JFrame("MenuDemo");
         FreeColClient client = new FreeColClient(null, null);
         client.startClient(null, null, true, true, null, null);
         FreeColFrame frame = new FreeColFrame(client,

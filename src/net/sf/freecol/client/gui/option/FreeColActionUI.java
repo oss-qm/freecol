@@ -110,7 +110,6 @@ public final class FreeColActionUI extends OptionUI<FreeColAction>
     public static ImageIcon getRemoveImage() {
         BufferedImage bi = new BufferedImage(9, 9, BufferedImage.TYPE_INT_ARGB);
         Graphics2D g = bi.createGraphics();
-        /*g.fillRect(0, 0, 9, 9);*/
         g.setColor(Color.BLACK);
         g.drawLine(1, 0, 8, 7);
         g.drawLine(0, 1, 7, 8);
@@ -251,7 +250,6 @@ public final class FreeColActionUI extends OptionUI<FreeColAction>
                 FreeColActionUI.this.optionGroupUI.removeKeyStroke(ks);
             }
             keyStroke = ks;
-            //keyStroke = KeyStroke.getKeyStroke(new Character(e.getKeyChar()), e.getModifiers());
             stopBlinking();
             setText(getHumanKeyStrokeText(keyStroke));
             recordButton.requestFocus();

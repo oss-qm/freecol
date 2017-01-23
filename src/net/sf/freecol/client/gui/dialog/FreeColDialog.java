@@ -236,12 +236,6 @@ public class FreeColDialog<T> extends JDialog implements PropertyChangeListener 
         addMouseListener(new MouseAdapter() {
                 private Point loc;
 
-                //@Override
-                //public void mouseDragged(MouseEvent e) {}
-
-                //@Override
-                //public void mouseMoved(MouseEvent e) {}
-
                 @Override
                 public void mousePressed(MouseEvent e) {
                     loc = SwingUtilities

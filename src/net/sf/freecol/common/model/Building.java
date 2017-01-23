@@ -321,7 +321,6 @@ public class Building extends WorkLocation
             // Scale production by limitations on availability.
             if (available < required) {
                 minimumRatio *= (double)available / required;
-                //maximumRatio = Math.max(maximumRatio, minimumRatio);
             }
         }
 

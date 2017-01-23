@@ -309,24 +309,6 @@ public class SimpleMapGenerator implements MapGenerator {
             newSettlements.add(sis);
         }
 
-        /* This should no longer be needed.
-        if (!newSettlements.isEmpty()) {
-            importGame.getMap().forEachTile(iTile -> {
-                    final Tile tile = map.getTile(iTile.getX(), iTile.getY());
-                    if (tile == null) return;
-
-                    final Player iOwner = iTile.getOwner();
-                    final Player owner = (iOwner == null) ? null
-                        : game.getPlayerByNationId(iOwner.getNationId());
-                    tile.setOwner(owner);
-
-                    final Settlement iSettlement = iTile.getOwningSettlement();
-                    final Settlement settlement = (iSettlement == null) ? null
-                        : game.getSettlementByName(iSettlement.getName());
-                    tile.setOwningSettlement(settlement);
-                });
-        }*/
-
         lb.add("Imported ", newSettlements.size(), " native settlements.\n");
         return !newSettlements.isEmpty();
     }

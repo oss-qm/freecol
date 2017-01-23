@@ -60,7 +60,6 @@ public final class ChatPanel extends FreeColPanel {
         add(label);
         add(field);
 
-        //setFocusable(false);
         label.setFocusable(false);
         field.setFocusable(true);
 

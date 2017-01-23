@@ -622,21 +622,6 @@ public final class InGameController extends Controller {
     }
 
     /**
-     * Resolves a tax raise.
-     *
-     * @param serverPlayer The {@code ServerPlayer} whose tax is rising.
-     * @param taxRaise The amount of tax raise.
-     * @param goods The {@code Goods} for a goods party.
-     * @param result Whether the tax was accepted or not.
-    private void raiseTax(ServerPlayer serverPlayer, int taxRaise, Goods goods,
-                          boolean result) {
-        ChangeSet cs = new ChangeSet();
-        serverPlayer.csRaiseTax(taxRaise, goods, result, cs);
-        getGame().sendTo(serverPlayer, cs);
-    }
-     */
-
-    /**
      * Performs a monarch action.
      *
      * Note that CHANGE_LATE is used so that these actions follow

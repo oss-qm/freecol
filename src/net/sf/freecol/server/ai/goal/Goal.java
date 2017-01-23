@@ -286,32 +286,6 @@ public abstract class Goal extends AIObject implements GoalConstants {
         }
     }
 
-//     /**
-//      * Wrapper method for a unit request sent to the {@link AIPlayer}.
-//      *
-//      * Each Goal can request necessary units from the AIPlayer.
-//      * Here, such a request is wrapped in a private method for convenience.
-//      * Each request contains a weight, which is {@link #getAbsoluteWeight()}
-//      * of this goal, and the number of turns since a unit request has last been granted.
-//      * The latter should be taken into account as a "bonus weight" by the AIPlayer.
-//      *
-//      * FIXME:Should that be role, instead or alternatively?
-//      *
-//      * FIXME: {@link AIPlayer#addUnitWish(Goal,UnitType,float,int)}; should add
-//      * requests to a set-like structure, so that there's only one active request
-//      * per Goal at any time. Since fulfilling a request using {@link #addUnit(AIUnit)}
-//      * means that {@link #plan()} will be called again during the turn,
-//      * the Goal will be able to request again.
-//      *
-//      * @param ut The {@link UnitType} we'd like to request
-//      */
-//     protected void requestUnit(UnitType ut) {
-//         int turnsWithoutUnit = getGame().getTurn().getNumber() - turnLastUnitAdded;
-//
-//         //FIXME: Uncomment after AIPlayer.addUnitWish() has been written.
-//         //player.addUnitWish(this, ut, getAbsoluteWeight(), turnsWithoutUnit);
-//     }
-
     /**
      * Wrapper method for a worker request sent to the {@link AIPlayer}.
      *
@@ -598,26 +572,6 @@ public abstract class Goal extends AIObject implements GoalConstants {
      * </ul>
      */
     protected abstract void plan();
-
-    /**
-     * Writes this object to an XML stream.
-     *
-     * @param xw The {@code FreeColXMLWriter} to write to.
-     * @throws XMLStreamException if there are any problems writing to the
-     *             stream.
-     */
-    //protected abstract void toXML(FreeColXMLWriter xw) throws XMLStreamException;
-
-    /**
-     * Reads information for this object from an XML stream.
-     *
-     * @param xr The input stream with the XML.
-     * @throws XMLStreamException if there are any problems reading from the
-     *             stream.
-     */
-    //protected abstract void readFromXML(FreeColXMLReader xr) throws XMLStreamException;
-
-
 
 /* How this is supposed to work:
  *

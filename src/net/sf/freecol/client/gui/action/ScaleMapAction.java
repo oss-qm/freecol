@@ -91,12 +91,6 @@ public class ScaleMapAction extends FreeColAction {
         }
         game.setMap(map);
 
-        /* Commented because it doesn't appear to do anything valuable
-        // Update river directions
-        for (Tile t : map.getAllTiles()) {
-            t.getTileItemContainer().updateRiver();
-        }*/
-
         getGUI().setSelectedTile(map.getTile(0, 0));
         getGUI().refresh();
     }

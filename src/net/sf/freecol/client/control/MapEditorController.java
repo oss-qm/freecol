@@ -132,7 +132,6 @@ public final class MapEditorController extends FreeColClientHolder {
 
             getGUI().closeMainPanel();
             getGUI().closeMenus();
-            //fcc.changeClientState(true);
             getGUI().changeViewMode(GUI.VIEW_TERRAIN_MODE);
             getGUI().startMapEditorGUI();
         } catch (IOException e) {

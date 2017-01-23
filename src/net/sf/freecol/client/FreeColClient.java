@@ -385,7 +385,6 @@ public final class FreeColClient {
             clop.merge(userOptions);
         }
 
-        //logger.info("Final client options: " + clop.toString());
         return clop;
     }
 
