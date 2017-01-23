@@ -210,7 +210,6 @@ public class BuildQueuePanel extends FreeColPanel implements ItemListener {
         }
 
         private JList<? extends BuildableType> source = null;
-        //private int[] indices = null;
         private int numberOfItems = 0; // number of items to be added
 
 
@@ -291,14 +290,12 @@ public class BuildQueuePanel extends FreeColPanel implements ItemListener {
             if (isOrderingQueue) {
                 // Suppress dropping the selection onto itself.
                 if (preferredIndex != -1 && prevPos == preferredIndex) {
-                    //indices = null;
                     return false;
                 }
 
                 // Insist drop is within bounds.
                 int maximumIndex = getMaximumIndex(queue.get(0).getBuildable());
                 if (preferredIndex > maximumIndex) {
-                    //indices = null;
                     return false;
                 }
 
@@ -356,7 +353,6 @@ public class BuildQueuePanel extends FreeColPanel implements ItemListener {
         @Override
         protected void exportDone(JComponent source, Transferable data,
                                   int action) {
-            //this.indices = null;
             this.numberOfItems = 0;
             updateAllLists();
         }

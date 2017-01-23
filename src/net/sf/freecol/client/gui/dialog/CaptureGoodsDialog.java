@@ -116,8 +116,6 @@ public final class CaptureGoodsDialog extends FreeColDialog<List<Goods>> {
         private Market market;
 
         public CheckBoxRenderer() {
-            //setBackground(UIManager.getColor("List.textBackground"));
-            //setForeground(UIManager.getColor("List.textForeground"));
         }
 
         /**

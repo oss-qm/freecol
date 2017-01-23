@@ -21,7 +21,6 @@ package net.sf.freecol.server.model;
 
 import java.util.Iterator;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import net.sf.freecol.common.model.Ability;
 import net.sf.freecol.common.model.Building;

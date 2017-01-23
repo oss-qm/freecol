@@ -912,7 +912,6 @@ public class ChangeSet {
             return fcgo instanceof Ownable && serverPlayer.owns((Ownable)fcgo);
         }
 
-
         /**
          * {@inheritDoc}
          */
@@ -1678,7 +1677,6 @@ public class ChangeSet {
     public static ChangeSet aiChange(ServerPlayer serverPlayer, boolean ai) {
         return simpleChange(See.all(), new SetAIMessage(serverPlayer, ai));
     }
-
 
     // Override Object
 

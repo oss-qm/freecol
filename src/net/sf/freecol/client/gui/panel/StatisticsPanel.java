@@ -103,14 +103,6 @@ public final class StatisticsPanel extends FreeColPanel {
             return Messages.message(columnNames[column]);
         }
 
-        ///**
-        // * {@inheritDoc}
-        // */
-        //@Override
-        //public boolean isCellEditable(int row, int column) {
-        //    return false;
-        //}
-
 
         // Interface TableModel
 

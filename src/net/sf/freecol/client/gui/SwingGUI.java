@@ -333,7 +333,6 @@ public class SwingGUI extends GUI {
                 canvas.removeKeyListener(this);
                 canvas.removeMouseListener(this);
                 vp.removeMouseListener(this);
-                //vp.removeVideoListener(this);
                 vp.stop();
                 canvas.remove(vp);
                 if (t != null) {
@@ -345,7 +344,6 @@ public class SwingGUI extends GUI {
         }
         AbortListener l = new AbortListener();
         vp.addMouseListener(l);
-        //vp.addVideoListener(l);
         canvas.showVideoComponent(vp, l, l);
         vp.play();
         // Cortado applet is failing to quit when finished, make sure it

@@ -432,7 +432,6 @@ public class Game extends FreeColGameObject {
                 + " with " + fcgo.getId() + " : " + fcgo.getClass());
         }
 
-        //logger.finest("Added FCGO: " + id);
         final WeakReference<FreeColGameObject> wr
             = new WeakReference<>(fcgo);
         synchronized (freeColGameObjects) {

@@ -235,9 +235,6 @@ public class BuildingTest extends FreeColTestCase {
                     colony.invalidateCache();
                     assertEquals(colony.getProductionBonus(), level);
 
-                    //System.err.println("PM " + outputType.getSuffix()+"/"+bt.getSuffix() + "/" + ut.getSuffix() + " PI=" + building.getProductionInfo());
-                    //forEach(building.getProductionModifiers(outputType, ut), m -> System.err.println("M=" + m));
-
                     // At last! The test.
                     sb.setLength(0);
                     sb.append(outputType.getSuffix())

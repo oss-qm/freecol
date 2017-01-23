@@ -119,16 +119,6 @@ public final class CompactLabourReport extends ReportPanel {
     public JButton createColonyButton(final Colony colony) {
         String text = colony.getName();
         if (!unitData.isSummary()) {
-            /*
-            int unitIndex = unitData.getUnitType().getIndex();
-
-            int skillLevel = Unit.getSkillLevel(unitIndex);
-            if (skillLevel <= 0 && skillLevel > -2) {
-            //settlers and servants can be trained anywwhere a farmer can
-            unitIndex = Unit.EXPERT_FARMER;
-            }
-            */
-
             if (colony.canTrain(unitData.getUnitType())) {
                 text += "*";
             }

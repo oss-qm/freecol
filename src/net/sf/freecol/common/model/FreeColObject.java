@@ -1316,6 +1316,5 @@ public abstract class FreeColObject
     @Override
     public String toString() {
         return getClass().getName() + ":" + getId();
-        //+ " (super hashcode: " + Integer.toHexString(super.hashCode()) + ")"
     }
 }

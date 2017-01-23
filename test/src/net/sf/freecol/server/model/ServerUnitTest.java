@@ -157,9 +157,6 @@ public class ServerUnitTest extends FreeColTestCase {
         assertEquals(-1, hardyPioneer.getWorkLeft());
         assertEquals(pioneerRole, hardyPioneer.getRole());
 
-        //TileImprovement plowImprovement
-        //    = new TileImprovement(game, plain, plow);
-        //plain.add(plowImprovement);
         igc.changeWorkImprovementType(dutch, hardyPioneer, plow);
 
         assertFalse(hasImprovement(plain, plow));
@@ -191,8 +188,6 @@ public class ServerUnitTest extends FreeColTestCase {
         map.getTile(6, 8).setExplored(dutch, true);
         Tile plain58 = map.getTile(5, 8);
 
-        //assertEquals(2, dutch.getDifficulty().getIndex());
-        //assertEquals("model.difficulty.medium", dutch.getDifficulty().getId());
         assertEquals(6, spec().getInteger(GameOptions.BAD_GOVERNMENT_LIMIT));
         assertEquals(10, spec().getInteger(GameOptions.VERY_BAD_GOVERNMENT_LIMIT));
 
@@ -228,9 +223,6 @@ public class ServerUnitTest extends FreeColTestCase {
         assertEquals(5 + 5, colony.getFoodProduction());
 
         // Start Plowing
-        //TileImprovement plowImprovement
-        //    = new TileImprovement(game, plain58, plow);
-        //plain58.add(plowImprovement);
         igc.changeWorkImprovementType(dutch, hardyPioneer, plow);
 
         int n = 0;
@@ -311,11 +303,9 @@ public class ServerUnitTest extends FreeColTestCase {
         assertTrue(roadImprovement.isComplete());
         assertEquals(savannahForest, tile.getType());
 
-        //assertEquals(0, hardyPioneer1.getMovesLeft());
         assertEquals(-1, hardyPioneer1.getWorkLeft());
         assertEquals(Unit.UnitState.ACTIVE, hardyPioneer1.getState());
 
-        //assertEquals(0, hardyPioneer2.getMovesLeft());
         assertEquals(-1, hardyPioneer2.getWorkLeft());
         assertEquals(Unit.UnitState.ACTIVE, hardyPioneer2.getState());
 
@@ -438,9 +428,6 @@ public class ServerUnitTest extends FreeColTestCase {
         Role pioneerRole = spec().getRole("model.role.pioneer");
         ServerUnit hardyPioneer = new ServerUnit(game, tile, dutch,
                                                  pioneerType, pioneerRole);
-        //TileImprovement clearImprovement
-        //    = new TileImprovement(game, tile, clear);
-        //tile.add(clearImprovement);
         igc.changeWorkImprovementType(dutch, hardyPioneer, clear);
 
         // Verify initial state

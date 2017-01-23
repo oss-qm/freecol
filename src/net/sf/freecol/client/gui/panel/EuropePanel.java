@@ -618,7 +618,6 @@ public final class EuropePanel extends PortPanel {
 
         SimpleAttributeSet attributes = new SimpleAttributeSet();
         StyleConstants.setAlignment(attributes, StyleConstants.ALIGN_RIGHT);
-        //StyleConstants.setForeground(attributes, Color.WHITE);
         StyleConstants.setBold(attributes, true);
         log.setParagraphAttributes(attributes, true);
 

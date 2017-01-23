@@ -77,9 +77,6 @@ public class IndianSettlement extends Settlement implements TradeLocation {
 
     public static final int GOODS_BASE_PRICE = 12;
 
-    /** The amount of goods a brave can produce a single turn. */
-    //private static final int WORK_AMOUNT = 5;
-
     /**
      * The amount of raw material that should be available before
      * producing manufactured goods.

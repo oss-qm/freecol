@@ -509,30 +509,7 @@ public final class ReportCompactColonyPanel extends ReportPanel
         }
         if (ResourceManager.hasResource(key))
             annotations += ResourceManager.getString(key);
-        /* Omit for now, too much detail.
-        for (GoodsType gt : spec.getLibertyGoodsTypeList()) {
-            if ((building = s.colony.getWorkLocationWithModifier(gt.getId(), Building.class)) != null) {
-                key = "annotation." + building.getType().getSuffix();
-                t.add(Messages.message(building.getLabel()));
-                if (ResourceManager.hasResource(key))
-                    annotations += ResourceManager.getString(key);
-            }
-        }*/
-        /* Omit for now, too much detail.
-        for (GoodsType gt : spec.getImmigrationGoodsTypeList()) {
-            if ((building = s.colony.getWorkLocationWithModifier(gt.getId(), Building.class)) != null) {
-                key = "annotation." + building.getType().getSuffix();
-                t.add(Messages.message(building.getLabel()));
-                if (ResourceManager.hasResource(key))
-                    annotations += ResourceManager.getString(key);
-            }
-        }*/
-        /* Font update needed
-        if ((building = s.colony.getWorkLocationWithAbility(Ability.TEACH, Building.class)) != null) {
-            key = "annotation." + building.getType().getSuffix();
-            t.add(Messages.message(building.getLabel()));
-            if (ResourceManager.hasResource(key)) annotations += ResourceManager.getString(key);
-        }*/
+
         if ((building = s.colony.getWorkLocationWithAbility(Ability.EXPORT, Building.class)) != null) {
             annotations += "*";
             t.add(Messages.message(building.getLabel()));

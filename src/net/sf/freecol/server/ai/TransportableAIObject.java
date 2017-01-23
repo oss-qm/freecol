@@ -225,10 +225,6 @@ public abstract class TransportableAIObject extends ValuedAIObject {
         }
         setTransport(null);
         if (aiCarrier != null) {
-            //TransportMission tm = aiCarrier.getMission(TransportMission.class);
-            //if (tm != null) {
-            //    if (!tm.requeueTransportable(this)) return false;
-            //}
             setTransport(aiCarrier);
         }
         return true;

@@ -652,30 +652,6 @@ public class PioneeringMission extends Mission {
             return lbRetarget(lb);
         }
 
-        // Check for threats.
-        // The code below is very conservative.  When enabled it
-        // reduces the number of completed improvements by a factor of
-        // 4 -- 5, which is unacceptable.  Therefore, disabled for
-        // now.  FIXME: do something better.
-        /*
-        int turnsNeeded = DEFAULT_THREAT_TURNS;
-        if (unit.getWorkImprovement() != null) {
-            turnsNeeded = Math.min(turnsNeeded, unit.getWorkLeft());
-        }
-        if (unit.isInDanger(turnsNeeded, 0.25f)) {
-            if (unit.getTile().getColony() != null) {
-                logger.finest(tag + " avoiding danger: " + this);
-                return lbDrop(lb);
-            }
-            PathNode safe = unit.findOurNearestSettlement(false, 1, false);
-            if (safe != null) {
-                travelToTarget(tag + " (evading)",
-                               safe.getLastNode().getTile(), costDecider);
-                return lbDrop(lb);
-            }
-        }
-        */
-
         // Going to a tile to perform an improvement.
         Tile tile = getTarget().getTile();
         for (;;) {
