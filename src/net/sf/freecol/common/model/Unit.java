@@ -210,6 +210,9 @@ public class Unit extends GoodsLocation
     /** To be used only for type == TREASURE_TRAIN */
     protected int treasureAmount;
 
+    /** wether the unit is of a native ethnicity **/
+    protected boolean isNativeEthnicity = false;
+
     /**
      * The attrition this unit has accumulated.  At the moment, this
      * equals the number of turns it has spent in the open.
@@ -1466,8 +1469,16 @@ public class Unit extends GoodsLocation
      *
      * @param newEthnicity The new ethnicity of this Unit.
      */
-    public void setEthnicity(String newEthnicity) {
+    public final void setEthnicity(String newEthnicity) {
         this.ethnicity = newEthnicity;
+        try {
+            // FIXME: getNation() could fail, but getNationType()
+            // doesn't work as expected
+            isNativeEthnicity = getGame().getSpecification().getNation(ethnicity)
+                .getType().isIndian();
+        } catch (Exception e) {
+            isNativeEthnicity = false;
+        }
     }
 
     /**
@@ -1475,15 +1486,8 @@ public class Unit extends GoodsLocation
      *
      * @return Whether this unit looks native or not.
      */
-    public boolean hasNativeEthnicity() {
-        try {
-            // FIXME: getNation() could fail, but getNationType()
-            // doesn't work as expected
-            return getGame().getSpecification().getNation(ethnicity)
-                .getType().isIndian();
-        } catch (Exception e) {
-            return false;
-        }
+    public final boolean hasNativeEthnicity() {
+        return isNativeEthnicity;
     }
 
     /**
