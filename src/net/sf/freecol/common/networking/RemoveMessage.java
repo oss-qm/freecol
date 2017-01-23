@@ -53,8 +53,10 @@ public class RemoveMessage extends AttributeMessage {
                          List<? extends FreeColGameObject> objects) {
         super(TAG, DIVERT_TAG, divertId);
 
-        setArrayAttributes(transform(objects, alwaysTrue(),
-                           FreeColObject::getId));
+        List<String> attrs = new ArrayList<>();
+        for (FreeColObject o : objects)
+            attrs.add(o.getId());
+        setArrayAttributes(attrs);
     }
 
     /**
