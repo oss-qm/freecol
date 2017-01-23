@@ -109,7 +109,7 @@ public class Player extends FreeColGameObject implements Nameable {
     /** Special return values for showstopper getColonyValue fail. */
     public static enum NoValueType {
         BOGUS(-1), TERRAIN(-2), RUMOUR(-3), SETTLED(-4), FOOD(-5), INLAND(-6), POLAR(-7);
-     
+
         private static final int MAX = values().length;
 
         private final int value;
@@ -721,7 +721,7 @@ public class Player extends FreeColGameObject implements Nameable {
         }
         return false;
     }
-    
+
     /**
      * Is this player currently on bad terms with a given player, and thus
      * a suitable candidate for a random monarch peace declaration?
@@ -1201,7 +1201,7 @@ public class Player extends FreeColGameObject implements Nameable {
      */
     public int getTotalImmigrationProduction() {
         if (!isColonial()) return 0;
-        
+
         final List<GoodsType> immigrationGoodsTypes = getSpecification()
             .getImmigrationGoodsTypeList();
         int production = sum(getColonies(),
@@ -1327,7 +1327,7 @@ public class Player extends FreeColGameObject implements Nameable {
     }
 
     /**
-     * Gets the number of founding fathers in this players congress. 
+     * Gets the number of founding fathers in this players congress.
      * Used to calculate number of liberty needed to recruit new fathers.
      *
      * @return The number of founding fathers in this players congress
@@ -1521,7 +1521,7 @@ public class Player extends FreeColGameObject implements Nameable {
                 units.add(new AbstractUnit(te.getKey(), re.getKey(), re.getValue()))));
         return units;
     }
-    
+
 
     //
     // Taxation and trade
@@ -1944,7 +1944,7 @@ public class Player extends FreeColGameObject implements Nameable {
     public int getUnitCount(boolean naval) {
         return count(getUnits(), u -> u.isNaval() == naval);
     }
-        
+
     /**
      * Gets the number of King's land units.
      *
@@ -2080,7 +2080,7 @@ public class Player extends FreeColGameObject implements Nameable {
             }
         }
     }
-    
+
     /**
      * Get a trade route by name.
      *
@@ -2181,7 +2181,7 @@ public class Player extends FreeColGameObject implements Nameable {
     public Stream<Settlement> getSettlements() {
         return getSettlementList().stream();
     }
-        
+
     /**
      * Does this player have any settlements at present.
      *
@@ -2319,7 +2319,7 @@ public class Player extends FreeColGameObject implements Nameable {
         return transform(getSettlements(), s -> s instanceof Colony,
                          s -> (Colony)s);
     }
-    
+
     /**
      * Get a sorted list of all colonies this player owns.
      *
@@ -2363,8 +2363,8 @@ public class Player extends FreeColGameObject implements Nameable {
             s instanceof IndianSettlement
                 && ((IndianSettlement)s).hasMissionary(p);
         return transform(getSettlements(), isPred, s -> (IndianSettlement)s);
-    }            
-        
+    }
+
     /**
      * Get a stream of all indian settlements owned by this player with
      * a missionary from a given player.
@@ -2375,8 +2375,8 @@ public class Player extends FreeColGameObject implements Nameable {
      */
     public Stream<IndianSettlement> getIndianSettlementsWithMissionary(Player p) {
         return getIndianSettlementsWithMissionaryList(p).stream();
-    }            
-        
+    }
+
     /**
      * Find a {@code Settlement} by name.
      *
@@ -2572,7 +2572,7 @@ public class Player extends FreeColGameObject implements Nameable {
      * there not be any active units.
      *
      * Favour the first settlement, followed by the entry tile.
-     * 
+     *
      * @return A suitable {@code Tile}.
      */
     public Tile getFallbackTile() {
@@ -3072,7 +3072,7 @@ public class Player extends FreeColGameObject implements Nameable {
         public String getDescriptionKey() {
             return Messages.descriptionKey("model." + getKey());
         }
-        
+
         // Implement Named
 
         /**
@@ -3080,7 +3080,7 @@ public class Player extends FreeColGameObject implements Nameable {
          */
         public String getNameKey() {
             return Messages.nameKey("model." + getKey());
-        }        
+        }
     };
 
     /**
@@ -3283,83 +3283,6 @@ public class Player extends FreeColGameObject implements Nameable {
     //
     // AI helpers for evaluation settlement locations
     //
-
-    /**
-     * Not currently in use.  Leave here for now, it might yet be revived.
-     *
-     * Calculates the value of an outpost-type colony at this tile.
-     * An "outpost" is supposed to be a colony containing one worker, exporting
-     * its whole production to europe. The value of such colony is the maximum
-     * amount of money it can make in one turn, assuming sale of its secondary
-     * goods plus farmed goods from one of the surrounding tiles.
-     *
-     * @return The value of a future colony located on this tile. This value is
-     *         used by the AI when deciding where to build a new colony.
-    public int getOutpostValue(Tile t) {
-        Market market = getMarket();
-        if (canClaimToFoundSettlement(t)) {
-            boolean nearbyTileIsOcean = false;
-            float advantages = 1f;
-            int value = 0;
-            for (Tile tile : t.getSurroundingTiles(1)) {
-                if (tile.getColony() != null) {
-                    // can't build next to colony
-                    return 0;
-                } else if (tile.hasSettlement()) {
-                    // can build next to an indian settlement, but shouldn't
-                    SettlementType type = tile.getSettlement().getType();
-                    if (type.getClaimableRadius() > 1) {
-                        // really shouldn't build next to cities
-                        advantages *= 0.25f;
-                    } else {
-                        advantages *= 0.5f;
-                    }
-                } else {
-                    if (tile.isHighSeasConnected()) {
-                        nearbyTileIsOcean = true;
-                    }
-                    if (tile.getType()!=null) {
-                        for (AbstractGoods production : tile.getType().getProduction()) {
-                            GoodsType type = production.getType();
-                            int potential = market.getSalePrice(type, tile.getPotentialProduction(type, null));
-                            if (tile.getOwner() != null &&
-                                !this.owns(tile)) {
-                                // tile is already owned by someone (and not by us!)
-                                if (tile.getOwner().isEuropean()) {
-                                    continue;
-                                } else {
-                                    potential /= 2;
-                                }
-                            }
-                            value = Math.max(value, potential);
-                        }
-                    }
-                }
-            }
-
-            // add good that could be produced by a colony on this tile
-            int bestValue = 0;
-            for (ProductionType productionType : t.getType()
-                     .getAvailableProductionTypes(true)) {
-                if (productionType.getOutputs() != null) {
-                    int newValue = 0;
-                    for (AbstractGoods output: productionType.getOutputs()) {
-                        newValue += market.getSalePrice(output.getType(),
-                                                        t.getPotentialProduction(output.getType(), null));
-                    }
-                    if (newValue > bestValue) {
-                        bestValue = newValue;
-                    }
-                }
-            }
-            value += bestValue;
-            if (nearbyTileIsOcean) {
-                return Math.max(0, (int) (value * advantages));
-            }
-        }
-        return 0;
-    }
-    */
 
     /**
      * Gets a list of values for building a {@code Colony} on the
@@ -3902,7 +3825,7 @@ public class Player extends FreeColGameObject implements Nameable {
 
                 xw.writeEndElement();
             }
-            
+
             if (bannedMissions != null) {
                 for (Player p : sort(bannedMissions)) {
                     xw.writeStartElement(BAN_MISSIONS_TAG);
@@ -3935,7 +3858,7 @@ public class Player extends FreeColGameObject implements Nameable {
             }
 
             if (highSeas != null) highSeas.toXML(xw);
-            
+
             xw.writeToListElement(FOUNDING_FATHERS_TAG, foundingFathers);
 
             xw.writeToListElement(OFFERED_FATHERS_TAG, offeredFathers);
@@ -3976,7 +3899,7 @@ public class Player extends FreeColGameObject implements Nameable {
             Stance s = getStance(player);
             if (s != null && s != Stance.UNCONTACTED) {
                 xw.writeStartElement(STANCE_TAG);
-                
+
                 xw.writeAttribute(PLAYER_TAG, player);
 
                 xw.writeAttribute(VALUE_TAG, s);
@@ -4123,7 +4046,7 @@ public class Player extends FreeColGameObject implements Nameable {
                     addFather(ff); // addFather adds the features
                 }
             }
-        
+
         } else if (OFFERED_FATHERS_TAG.equals(tag)) {
             List<FoundingFather> ofs = xr.readList(spec, OFFERED_FATHERS_TAG,
                                                    FoundingFather.class);
@@ -4141,7 +4064,7 @@ public class Player extends FreeColGameObject implements Nameable {
                                              Player.class, true),
                         new Tension(xr.getAttribute(VALUE_TAG, 0)));
             xr.closeTag(TENSION_TAG);
-        
+
         } else if (Ability.TAG.equals(tag)) {
             Ability ability = new Ability(xr, spec);
             if (ability.isIndependent()) addAbility(ability);
@@ -4186,7 +4109,7 @@ public class Player extends FreeColGameObject implements Nameable {
 
 
     // Override Object
-    
+
     /**
      * {@inheritDoc}
      */

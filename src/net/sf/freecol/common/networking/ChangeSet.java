@@ -308,7 +308,7 @@ public class ChangeSet {
          * @return A specialized {@code DOMMessage}.
          */
         public abstract DOMMessage toMessage(ServerPlayer serverPlayer);
-            
+
         /**
          * Specialize a Change for a particular player.
          *
@@ -1020,8 +1020,7 @@ public class ChangeSet {
         private boolean fullRemoval(ServerPlayer serverPlayer) {
             FreeColGameObject fcgo = getMainObject();
             return fcgo instanceof Ownable && serverPlayer.owns((Ownable)fcgo);
-        }            
-
+        }
 
         /**
          * {@inheritDoc}
@@ -1887,7 +1886,7 @@ public class ChangeSet {
 
 
     // Convenience functions to create change sets
-    
+
     /**
      * Convenience function to create an i18n client error message and
      * wrap it into a change set.
@@ -1977,7 +1976,7 @@ public class ChangeSet {
                message);
         return cs;
     }
-    
+
     /**
      * Get a new ChangeSet that changes a player AI state.
      *
@@ -1987,7 +1986,6 @@ public class ChangeSet {
     public static ChangeSet aiChange(ServerPlayer serverPlayer, boolean ai) {
         return simpleChange(See.all(), new SetAIMessage(serverPlayer, ai));
     }
-
 
     // Override Object
 

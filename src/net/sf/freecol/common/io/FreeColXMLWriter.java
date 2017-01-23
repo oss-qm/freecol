@@ -55,7 +55,7 @@ import net.sf.freecol.common.util.Utils;
  * Unlike FreeColXMLReader, do not try to close the underlying stream.
  * Sometimes items are saved with successive FreeColXMLWriters writing
  * to the same OutputStream.
- * 
+ *
  * Strange, there is no StreamWriterDelegate, so we are stuck with
  * all the delegation functions.
  */
@@ -79,7 +79,7 @@ public class FreeColXMLWriter implements Closeable, XMLStreamWriter {
             WriteScope ret = WriteScope.CLIENT;
             ret.player = player;
             return ret;
-        }            
+        }
 
         public static WriteScope toServer() {
             return WriteScope.SERVER;
@@ -204,7 +204,7 @@ public class FreeColXMLWriter implements Closeable, XMLStreamWriter {
      * Get the write scope prevailing on this stream.
      *
      * @return The write scope.
-     */     
+     */
     public WriteScope getWriteScope() {
         return this.writeScope;
     }
@@ -213,7 +213,7 @@ public class FreeColXMLWriter implements Closeable, XMLStreamWriter {
      * Set the write scope prevailing on this stream.
      *
      * @param writeScope The new {@code WriteScope}.
-     */     
+     */
     public void setWriteScope(WriteScope writeScope) {
         this.writeScope = writeScope;
     }
@@ -358,7 +358,7 @@ public class FreeColXMLWriter implements Closeable, XMLStreamWriter {
     public <T extends FreeColObject> void writeToListElement(String tag,
         Collection<T> members) throws XMLStreamException {
         if (members.isEmpty()) return;
-        
+
         writeStartElement(tag);
 
         writeAttribute(FreeColObject.ARRAY_SIZE_TAG, members.size());
@@ -377,10 +377,6 @@ public class FreeColXMLWriter implements Closeable, XMLStreamWriter {
     public Player getClientPlayer() {
         return writeScope.getClient();
     }
-
-    //public boolean isValid() {
-    //    return (this == WriteScope.CLIENT) == (player != null);
-    //}
 
     public boolean validForSave() {
         return writeScope.validForSave();
