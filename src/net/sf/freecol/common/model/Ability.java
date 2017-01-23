@@ -21,6 +21,7 @@ package net.sf.freecol.common.model;
 
 import java.util.List;
 import java.util.ArrayList;
+import java.util.HashMap;
 import javax.xml.stream.XMLStreamException;
 
 import net.sf.freecol.common.io.FreeColXMLReader;
@@ -415,6 +416,252 @@ public final class Ability extends Feature {
     /** The ability value. */
     private boolean value = true;
 
+    public enum ID {
+        ALWAYS_OFFERED_PEACE,
+        ADD_TAX_TO_BELLS,
+        AMBUSH_BONUS,
+        AMBUSH_PENALTY,
+        AMBUSH_TERRAIN,
+        ARMED,
+        AUTOMATIC_EQUIPMENT,
+        AUTOMATIC_PROMOTION,
+        AUTO_PRODUCTION,
+        AVOID_EXCESS_PRODUCTION,
+        BETTER_FOREIGN_AFFAIRS_REPORT,
+        BOMBARD,
+        BOMBARD_SHIPS,
+        BORN_IN_COLONY,
+        BORN_IN_INDIAN_SETTLEMENT,
+        BUILD,
+        BUILD_CUSTOM_HOUSE,
+        BUILD_FACTORY,
+        CAN_BE_CAPTURED,
+        CAN_BE_EQUIPPED,
+        CAN_RECRUIT_UNIT,
+        CAPTURE_EQUIPMENT,
+        CAPTURE_GOODS,
+        CAPTURE_UNITS,
+        CARRY_GOODS,
+        CARRY_TREASURE,
+        CARRY_UNITS,
+        COASTAL_ONLY,
+        CONSUME_ALL_OR_NOTHING,
+        CUSTOM_HOUSE_TRADES_WITH_FOREIGN_COUNTRIES,
+        DEMAND_TRIBUTE,
+        DEMOTE_ON_ALL_EQUIPMENT_LOST,
+        DENOUNCE_HERESY,
+        DISPOSE_ON_ALL_EQUIPMENT_LOST,
+        DISPOSE_ON_COMBAT_LOSS,
+        DRESS_MISSIONARY,
+        ELECT_FOUNDING_FATHER,
+        ESTABLISH_MISSION,
+        EVADE_ATTACK,
+        EXPERT_MISSIONARY,
+        EXPERT_PIONEER,
+        EXPERT_SCOUT,
+        EXPERT_SOLDIER,
+        EXPERTS_USE_CONNECTIONS,
+        EXPORT,
+        FOUND_COLONY,
+        FOUND_IN_LOST_CITY,
+        FOUNDS_COLONIES,
+        HAS_PORT,
+        IGNORE_EUROPEAN_WARS,
+        IMPROVE_TERRAIN,
+        INCITE_NATIVES,
+        INDEPENDENCE_DECLARED,
+        INDEPENDENT_NATION,
+        MERCENARY_UNIT,
+        MOUNTED,
+        MOVE_TO_EUROPE,
+        MULTIPLE_ATTACKS,
+        NATIVE,
+        NAVAL_UNIT,
+        NEGOTIATE,
+        PERSON,
+        PILLAGE_UNPROTECTED_COLONY,
+        PIRACY,
+        PLUNDER_NATIVES,
+        PRODUCE_IN_WATER,
+        REF_UNIT,
+        REPAIR_UNITS,
+        ROYAL_EXPEDITIONARY_FORCE,
+        RUMOURS_ALWAYS_POSITIVE,
+        SEE_ALL_COLONIES,
+        SELECT_RECRUIT,
+        SPEAK_WITH_CHIEF,
+        SPY_ON_COLONY,
+        SUPPORT_UNIT,
+        TEACH,
+        TRADE_WITH_FOREIGN_COLONIES,
+        UNDEAD,
+        UPGRADE_CONVERT,
+    };
+
+    public static java.util.Map<ID,String> mapIdName = new HashMap<>();
+    public static java.util.Map<String,ID> mapNameId = new HashMap<>();
+
+    static {
+        mapIdName.put(ID.ALWAYS_OFFERED_PEACE,				ALWAYS_OFFERED_PEACE);
+        mapIdName.put(ID.ADD_TAX_TO_BELLS,				ADD_TAX_TO_BELLS);
+        mapIdName.put(ID.AMBUSH_BONUS,					AMBUSH_BONUS);
+        mapIdName.put(ID.AMBUSH_PENALTY,				AMBUSH_PENALTY);
+        mapIdName.put(ID.AMBUSH_TERRAIN,				AMBUSH_TERRAIN);
+        mapIdName.put(ID.ARMED,						ARMED);
+        mapIdName.put(ID.AUTOMATIC_EQUIPMENT,				AUTOMATIC_EQUIPMENT);
+        mapIdName.put(ID.AUTOMATIC_PROMOTION,				AUTOMATIC_PROMOTION);
+        mapIdName.put(ID.AUTO_PRODUCTION,				AUTO_PRODUCTION);
+        mapIdName.put(ID.AVOID_EXCESS_PRODUCTION,			AVOID_EXCESS_PRODUCTION);
+        mapIdName.put(ID.BETTER_FOREIGN_AFFAIRS_REPORT,			BETTER_FOREIGN_AFFAIRS_REPORT);
+        mapIdName.put(ID.BOMBARD,					BOMBARD);
+        mapIdName.put(ID.BOMBARD_SHIPS,					BOMBARD_SHIPS);
+        mapIdName.put(ID.BORN_IN_COLONY,				BORN_IN_COLONY);
+        mapIdName.put(ID.BORN_IN_INDIAN_SETTLEMENT,			BORN_IN_INDIAN_SETTLEMENT);
+        mapIdName.put(ID.BUILD,						BUILD);
+        mapIdName.put(ID.BUILD_CUSTOM_HOUSE,				BUILD_CUSTOM_HOUSE);
+        mapIdName.put(ID.BUILD_FACTORY,					BUILD_FACTORY);
+        mapIdName.put(ID.CAN_BE_CAPTURED,				CAN_BE_CAPTURED);
+        mapIdName.put(ID.CAN_BE_EQUIPPED,				CAN_BE_EQUIPPED);
+        mapIdName.put(ID.CAN_RECRUIT_UNIT,				CAN_RECRUIT_UNIT);
+        mapIdName.put(ID.CAPTURE_EQUIPMENT,				CAPTURE_EQUIPMENT);
+        mapIdName.put(ID.CAPTURE_GOODS,					CAPTURE_GOODS);
+        mapIdName.put(ID.CAPTURE_UNITS,					CAPTURE_UNITS);
+        mapIdName.put(ID.CARRY_GOODS,					CARRY_GOODS);
+        mapIdName.put(ID.CARRY_TREASURE,				CARRY_TREASURE);
+        mapIdName.put(ID.CARRY_UNITS,					CARRY_UNITS);
+        mapIdName.put(ID.COASTAL_ONLY,					COASTAL_ONLY);
+        mapIdName.put(ID.CONSUME_ALL_OR_NOTHING,			CONSUME_ALL_OR_NOTHING);
+        mapIdName.put(ID.CUSTOM_HOUSE_TRADES_WITH_FOREIGN_COUNTRIES,	CUSTOM_HOUSE_TRADES_WITH_FOREIGN_COUNTRIES);
+        mapIdName.put(ID.DEMAND_TRIBUTE,				DEMAND_TRIBUTE);
+        mapIdName.put(ID.DEMOTE_ON_ALL_EQUIPMENT_LOST,			DEMOTE_ON_ALL_EQUIPMENT_LOST);
+        mapIdName.put(ID.DENOUNCE_HERESY,				DENOUNCE_HERESY);
+        mapIdName.put(ID.DISPOSE_ON_ALL_EQUIPMENT_LOST,			DISPOSE_ON_ALL_EQUIPMENT_LOST);
+        mapIdName.put(ID.DISPOSE_ON_COMBAT_LOSS,			DISPOSE_ON_COMBAT_LOSS);
+        mapIdName.put(ID.DRESS_MISSIONARY,				DRESS_MISSIONARY);
+        mapIdName.put(ID.ELECT_FOUNDING_FATHER,				ELECT_FOUNDING_FATHER);
+        mapIdName.put(ID.ESTABLISH_MISSION,				ESTABLISH_MISSION);
+        mapIdName.put(ID.EVADE_ATTACK,					EVADE_ATTACK);
+        mapIdName.put(ID.EXPERT_MISSIONARY,				EXPERT_MISSIONARY);
+        mapIdName.put(ID.EXPERT_PIONEER,				EXPERT_PIONEER);
+        mapIdName.put(ID.EXPERT_SCOUT,					EXPERT_SCOUT);
+        mapIdName.put(ID.EXPERT_SOLDIER,				EXPERT_SOLDIER);
+        mapIdName.put(ID.EXPERTS_USE_CONNECTIONS,			EXPERTS_USE_CONNECTIONS);
+        mapIdName.put(ID.EXPORT,					EXPORT);
+        mapIdName.put(ID.FOUND_COLONY,					FOUND_COLONY);
+        mapIdName.put(ID.FOUND_IN_LOST_CITY,				FOUND_IN_LOST_CITY);
+        mapIdName.put(ID.FOUNDS_COLONIES,				FOUNDS_COLONIES);
+        mapIdName.put(ID.HAS_PORT,					HAS_PORT);
+        mapIdName.put(ID.IGNORE_EUROPEAN_WARS,				IGNORE_EUROPEAN_WARS);
+        mapIdName.put(ID.IMPROVE_TERRAIN,				IMPROVE_TERRAIN);
+        mapIdName.put(ID.INCITE_NATIVES,				INCITE_NATIVES);
+        mapIdName.put(ID.INDEPENDENCE_DECLARED,				INDEPENDENCE_DECLARED);
+        mapIdName.put(ID.INDEPENDENT_NATION,				INDEPENDENT_NATION);
+        mapIdName.put(ID.MERCENARY_UNIT,				MERCENARY_UNIT);
+        mapIdName.put(ID.MOUNTED,					MOUNTED);
+        mapIdName.put(ID.MOVE_TO_EUROPE,				MOVE_TO_EUROPE);
+        mapIdName.put(ID.MULTIPLE_ATTACKS,				MULTIPLE_ATTACKS);
+        mapIdName.put(ID.NATIVE,					NATIVE);
+        mapIdName.put(ID.NAVAL_UNIT,					NAVAL_UNIT);
+        mapIdName.put(ID.NEGOTIATE,					NEGOTIATE);
+        mapIdName.put(ID.PERSON,					PERSON);
+        mapIdName.put(ID.PILLAGE_UNPROTECTED_COLONY,			PILLAGE_UNPROTECTED_COLONY);
+        mapIdName.put(ID.PIRACY,					PIRACY);
+        mapIdName.put(ID.PLUNDER_NATIVES,				PLUNDER_NATIVES);
+        mapIdName.put(ID.PRODUCE_IN_WATER,				PRODUCE_IN_WATER);
+        mapIdName.put(ID.REF_UNIT,					REF_UNIT);
+        mapIdName.put(ID.REPAIR_UNITS,					REPAIR_UNITS);
+        mapIdName.put(ID.ROYAL_EXPEDITIONARY_FORCE,			ROYAL_EXPEDITIONARY_FORCE);
+        mapIdName.put(ID.RUMOURS_ALWAYS_POSITIVE,			RUMOURS_ALWAYS_POSITIVE);
+        mapIdName.put(ID.SEE_ALL_COLONIES,				SEE_ALL_COLONIES);
+        mapIdName.put(ID.SELECT_RECRUIT,				SELECT_RECRUIT);
+        mapIdName.put(ID.SPEAK_WITH_CHIEF,				SPEAK_WITH_CHIEF);
+        mapIdName.put(ID.SPY_ON_COLONY,					SPY_ON_COLONY);
+        mapIdName.put(ID.SUPPORT_UNIT,					SUPPORT_UNIT);
+        mapIdName.put(ID.TEACH,						TEACH);
+        mapIdName.put(ID.TRADE_WITH_FOREIGN_COLONIES,			TRADE_WITH_FOREIGN_COLONIES);
+        mapIdName.put(ID.UNDEAD,					UNDEAD);
+        mapIdName.put(ID.UPGRADE_CONVERT,				UPGRADE_CONVERT);
+
+        mapNameId.put(ALWAYS_OFFERED_PEACE,				ID.ALWAYS_OFFERED_PEACE);
+        mapNameId.put(ADD_TAX_TO_BELLS,					ID.ADD_TAX_TO_BELLS);
+        mapNameId.put(AMBUSH_BONUS,					ID.AMBUSH_BONUS);
+        mapNameId.put(AMBUSH_PENALTY,					ID.AMBUSH_PENALTY);
+        mapNameId.put(AMBUSH_TERRAIN,					ID.AMBUSH_TERRAIN);
+        mapNameId.put(ARMED,						ID.ARMED);
+        mapNameId.put(AUTOMATIC_EQUIPMENT,				ID.AUTOMATIC_EQUIPMENT);
+        mapNameId.put(AUTOMATIC_PROMOTION,				ID.AUTOMATIC_PROMOTION);
+        mapNameId.put(AUTO_PRODUCTION,					ID.AUTO_PRODUCTION);
+        mapNameId.put(AVOID_EXCESS_PRODUCTION,				ID.AVOID_EXCESS_PRODUCTION);
+        mapNameId.put(BETTER_FOREIGN_AFFAIRS_REPORT,			ID.BETTER_FOREIGN_AFFAIRS_REPORT);
+        mapNameId.put(BOMBARD,						ID.BOMBARD);
+        mapNameId.put(BOMBARD_SHIPS,					ID.BOMBARD_SHIPS);
+        mapNameId.put(BORN_IN_COLONY,					ID.BORN_IN_COLONY);
+        mapNameId.put(BORN_IN_INDIAN_SETTLEMENT,			ID.BORN_IN_INDIAN_SETTLEMENT);
+        mapNameId.put(BUILD,						ID.BUILD);
+        mapNameId.put(BUILD_CUSTOM_HOUSE,				ID.BUILD_CUSTOM_HOUSE);
+        mapNameId.put(BUILD_FACTORY,					ID.BUILD_FACTORY);
+        mapNameId.put(CAN_BE_CAPTURED,					ID.CAN_BE_CAPTURED);
+        mapNameId.put(CAN_BE_EQUIPPED,					ID.CAN_BE_EQUIPPED);
+        mapNameId.put(CAN_RECRUIT_UNIT,					ID.CAN_RECRUIT_UNIT);
+        mapNameId.put(CAPTURE_EQUIPMENT,				ID.CAPTURE_EQUIPMENT);
+        mapNameId.put(CAPTURE_GOODS,					ID.CAPTURE_GOODS);
+        mapNameId.put(CAPTURE_UNITS,					ID.CAPTURE_UNITS);
+        mapNameId.put(CARRY_GOODS,					ID.CARRY_GOODS);
+        mapNameId.put(CARRY_TREASURE,					ID.CARRY_TREASURE);
+        mapNameId.put(CARRY_UNITS,					ID.CARRY_UNITS);
+        mapNameId.put(COASTAL_ONLY,					ID.COASTAL_ONLY);
+        mapNameId.put(CONSUME_ALL_OR_NOTHING,				ID.CONSUME_ALL_OR_NOTHING);
+        mapNameId.put(CUSTOM_HOUSE_TRADES_WITH_FOREIGN_COUNTRIES,	ID.CUSTOM_HOUSE_TRADES_WITH_FOREIGN_COUNTRIES);
+        mapNameId.put(DEMAND_TRIBUTE,					ID.DEMAND_TRIBUTE);
+        mapNameId.put(DEMOTE_ON_ALL_EQUIPMENT_LOST,			ID.DEMOTE_ON_ALL_EQUIPMENT_LOST);
+        mapNameId.put(DENOUNCE_HERESY,					ID.DENOUNCE_HERESY);
+        mapNameId.put(DISPOSE_ON_ALL_EQUIPMENT_LOST,			ID.DISPOSE_ON_ALL_EQUIPMENT_LOST);
+        mapNameId.put(DISPOSE_ON_COMBAT_LOSS,				ID.DISPOSE_ON_COMBAT_LOSS);
+        mapNameId.put(DRESS_MISSIONARY,					ID.DRESS_MISSIONARY);
+        mapNameId.put(ELECT_FOUNDING_FATHER,				ID.ELECT_FOUNDING_FATHER);
+        mapNameId.put(ESTABLISH_MISSION,				ID.ESTABLISH_MISSION);
+        mapNameId.put(EVADE_ATTACK,					ID.EVADE_ATTACK);
+        mapNameId.put(EXPERT_MISSIONARY,				ID.EXPERT_MISSIONARY);
+        mapNameId.put(EXPERT_PIONEER,					ID.EXPERT_PIONEER);
+        mapNameId.put(EXPERT_SCOUT,					ID.EXPERT_SCOUT);
+        mapNameId.put(EXPERT_SOLDIER,					ID.EXPERT_SOLDIER);
+        mapNameId.put(EXPERTS_USE_CONNECTIONS,				ID.EXPERTS_USE_CONNECTIONS);
+        mapNameId.put(EXPORT,						ID.EXPORT);
+        mapNameId.put(FOUND_COLONY,					ID.FOUND_COLONY);
+        mapNameId.put(FOUND_IN_LOST_CITY,				ID.FOUND_IN_LOST_CITY);
+        mapNameId.put(FOUNDS_COLONIES,					ID.FOUNDS_COLONIES);
+        mapNameId.put(HAS_PORT,						ID.HAS_PORT);
+        mapNameId.put(IGNORE_EUROPEAN_WARS,				ID.IGNORE_EUROPEAN_WARS);
+        mapNameId.put(IMPROVE_TERRAIN,					ID.IMPROVE_TERRAIN);
+        mapNameId.put(INCITE_NATIVES,					ID.INCITE_NATIVES);
+        mapNameId.put(INDEPENDENCE_DECLARED,				ID.INDEPENDENCE_DECLARED);
+        mapNameId.put(INDEPENDENT_NATION,				ID.INDEPENDENT_NATION);
+        mapNameId.put(MERCENARY_UNIT,					ID.MERCENARY_UNIT);
+        mapNameId.put(MOUNTED,						ID.MOUNTED);
+        mapNameId.put(MOVE_TO_EUROPE,					ID.MOVE_TO_EUROPE);
+        mapNameId.put(MULTIPLE_ATTACKS,					ID.MULTIPLE_ATTACKS);
+        mapNameId.put(NATIVE,						ID.NATIVE);
+        mapNameId.put(NAVAL_UNIT,					ID.NAVAL_UNIT);
+        mapNameId.put(NEGOTIATE,					ID.NEGOTIATE);
+        mapNameId.put(PERSON,						ID.PERSON);
+        mapNameId.put(PILLAGE_UNPROTECTED_COLONY,			ID.PILLAGE_UNPROTECTED_COLONY);
+        mapNameId.put(PIRACY,						ID.PIRACY);
+        mapNameId.put(PLUNDER_NATIVES,					ID.PLUNDER_NATIVES);
+        mapNameId.put(PRODUCE_IN_WATER,					ID.PRODUCE_IN_WATER);
+        mapNameId.put(REF_UNIT,						ID.REF_UNIT);
+        mapNameId.put(REPAIR_UNITS,					ID.REPAIR_UNITS);
+        mapNameId.put(ROYAL_EXPEDITIONARY_FORCE,			ID.ROYAL_EXPEDITIONARY_FORCE);
+        mapNameId.put(RUMOURS_ALWAYS_POSITIVE,				ID.RUMOURS_ALWAYS_POSITIVE);
+        mapNameId.put(SEE_ALL_COLONIES,					ID.SEE_ALL_COLONIES);
+        mapNameId.put(SELECT_RECRUIT,					ID.SELECT_RECRUIT);
+        mapNameId.put(SPEAK_WITH_CHIEF,					ID.SPEAK_WITH_CHIEF);
+        mapNameId.put(SPY_ON_COLONY,					ID.SPY_ON_COLONY);
+        mapNameId.put(SUPPORT_UNIT,					ID.SUPPORT_UNIT);
+        mapNameId.put(TEACH,						ID.TEACH);
+        mapNameId.put(TRADE_WITH_FOREIGN_COLONIES,			ID.TRADE_WITH_FOREIGN_COLONIES);
+        mapNameId.put(UNDEAD,						ID.UNDEAD);
+        mapNameId.put(UPGRADE_CONVERT,					ID.UPGRADE_CONVERT);
+    }
 
     /**
      * Deliberately trivial constructor.
