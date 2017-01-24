@@ -250,6 +250,17 @@ public final class FeatureContainer {
         }
     }
 
+    /**
+     * Returns true if this Object is in general able to build the given
+     * BuildableType. This is different to canBuild() in that it just
+     * checks the general ability, not other factors, eg. available goods etc.
+     *
+     * @param buildableType a {@code BuildableType} value
+     * @return a {@code boolean} value
+     */
+    public final boolean ableToBuild(BuildableType buildableType) {
+        return hasAbility(Ability.BUILD, buildableType, Turn.UNDEFINED);
+    }
 
     /**
      * Gets the set of modifiers with the given identifier from this
