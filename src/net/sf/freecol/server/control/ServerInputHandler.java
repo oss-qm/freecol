@@ -19,6 +19,7 @@
 
 package net.sf.freecol.server.control;
 
+import java.net.UnknownServiceException;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
@@ -53,65 +54,42 @@ public abstract class ServerInputHandler extends FreeColServerHolder
     private static final Logger logger = Logger.getLogger(ServerInputHandler.class.getName());
 
     /**
-     * A network request handler knows how to handle in a given request type.
-     */
-    public interface NetworkRequestHandler {
-
-        /**
-         * Handle a request represented by an {@link Element} and
-         * return another {@link Element} or null as the answer.
-         *
-         * @param connection The message's {@code Connection}.
-         * @param element The root {@code Element} of the message.
-         * @return The reply {@code Element}, which may be null.
-         */
-        Element handle(Connection connection, Element element);
-    };
-
-    /**
-     * The handler map provides named handlers for network
-     * requests.  Each handler deals with a given request type.
-     */
-    private final Map<String, NetworkRequestHandler> handlerMap
-        = Collections.synchronizedMap(new HashMap<String, NetworkRequestHandler>());
-
-
-    /**
      * The constructor to use.
      *
      * @param freeColServer The main server object.
      */
     public ServerInputHandler(final FreeColServer freeColServer) {
         super(freeColServer);
-
-        register(ChatMessage.TAG,
-            new NetworkRequestHandler() {
-                public Element handle(Connection conn, Element e) {
-                    return handler(false, conn, new ChatMessage(getGame(), e));
-                }});
-
-        register(TrivialMessage.DISCONNECT_TAG,
-            new NetworkRequestHandler() {
-                public Element handle(Connection conn, Element e) {
-                    return handler(false, conn, TrivialMessage.DISCONNECT_MESSAGE);
-                }});
-
-        register(LogoutMessage.TAG,
-            new NetworkRequestHandler() {
-                public Element handle(Connection conn, Element e) {
-                    return handler(false, conn, new LogoutMessage(getGame(), e));
-                }});
     }
 
-
     /**
-     * Register a network request handler.
+     * Do the actual message handling.
      *
-     * @param name The handler name.
-     * @param handler The {@code NetworkRequestHandler} to register.
+     * Common messages (applying to all game states) are handled here.
+     * Subclasses for individual game states will override it, but still call this
+     * one (super), in order to get the common messages handled.
+     *
+     * @param connection   The connection, where the messages coming in
+     * @param element      The message Element
+     * @return             Return element
+     * @throws UnknownServiceException if tag isn't handled
      */
-    protected final void register(String name, NetworkRequestHandler handler) {
-        this.handlerMap.put(name, handler);
+    public Element handleElement(Connection connection, Element element)
+            throws UnknownServiceException {
+        String tag = element.getTagName();
+        switch (tag) {
+            case ChatMessage.TAG:
+                return handler(false, connection, new ChatMessage(getGame(), element));
+
+            case TrivialMessage.DISCONNECT_TAG:
+                return handler(false, connection, TrivialMessage.DISCONNECT_MESSAGE);
+
+            case LogoutMessage.TAG:
+                return handler(false, connection, new LogoutMessage(getGame(), element));
+
+            default:
+                throw new UnknownServiceException("ServerInputHandler: unhandled tag: "+tag);
+        }
     }
 
     /**
@@ -144,27 +122,22 @@ public abstract class ServerInputHandler extends FreeColServerHolder
      */
     public final Element handle(Connection connection, Element element) {
         if (element == null) return null;
-        final FreeColServer freeColServer = getFreeColServer();
-        final String tag = element.getTagName();
-        final NetworkRequestHandler handler = handlerMap.get(tag);
-        Element ret = null;
-
-        if (handler == null) {
+        try {
+            Element ret = handleElement(connection, element);
+            logger.log(Level.FINEST, "Handling " + element.getTagName() + " ok = "
+                + ((ret == null) ? "null" : ret.getTagName()));
+            return ret;
+        } catch (UnknownServiceException e) {
             // Should we return an error here? The old handler returned null.
             logger.warning("No "
-                + freeColServer.getServerState().toString().toLowerCase()
-                + " handler for " + tag);
-        } else {
-            try {
-                ret = handler.handle(connection, element);
-                logger.log(Level.FINEST, "Handling " + tag + " ok = "
-                    + ((ret == null) ? "null" : ret.getTagName()));
-            } catch (Exception e) {
-                // FIXME: should we really catch Exception? The old code did.
-                logger.log(Level.WARNING, "Handling " + tag + " failed", e);
-                connection.sendReconnect();
-            }
+                + getFreeColServer().getServerState().toString().toLowerCase()
+                + " handler for " + element.getTagName()+" "+e);
+            return null;
+        } catch (Exception e) {
+            // FIXME: should we really catch Exception? The old code did.
+            logger.log(Level.WARNING, "Handling " + element.getTagName() + " failed", e);
+            connection.sendReconnect();
         }
-        return ret;
+        return null;
     }
 }

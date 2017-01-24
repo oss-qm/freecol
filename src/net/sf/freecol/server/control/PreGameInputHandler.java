@@ -19,6 +19,8 @@
 
 package net.sf.freecol.server.control;
 
+import java.net.UnknownServiceException;
+
 import net.sf.freecol.common.networking.Connection;
 import net.sf.freecol.common.networking.LogoutMessage;
 import net.sf.freecol.common.networking.ReadyMessage;
@@ -49,53 +51,39 @@ public final class PreGameInputHandler extends ServerInputHandler {
      */
     public PreGameInputHandler(FreeColServer freeColServer) {
         super(freeColServer);
+    }
 
-        register(ReadyMessage.TAG,
-            new ServerInputHandler.NetworkRequestHandler() {
-                public Element handle(final Connection conn, final Element e) {
-                    return handler(false, conn, new ReadyMessage(getGame(), e));
-                }});
+    @Override
+    public Element handleElement(Connection c, Element e)
+            throws UnknownServiceException {
+        String tag = e.getTagName().intern();
+        switch (tag) {
+            case ReadyMessage.TAG:
+                return handler(false, c, new ReadyMessage(getGame(), e));
 
-        register(TrivialMessage.REQUEST_LAUNCH_TAG,
-            new ServerInputHandler.NetworkRequestHandler() {
-                public Element handle(final Connection conn, final Element e) {
-                    return handler(false, conn, TrivialMessage.REQUEST_LAUNCH_MESSAGE);
-                }});
+            case TrivialMessage.REQUEST_LAUNCH_TAG:
+                return handler(false, c, TrivialMessage.REQUEST_LAUNCH_MESSAGE);
 
-        register(SetAvailableMessage.TAG,
-            new ServerInputHandler.NetworkRequestHandler() {
-                public Element handle(final Connection conn, final Element e) {
-                    return handler(false, conn, new SetAvailableMessage(getGame(), e));
-                }});
+            case SetAvailableMessage.TAG:
+                return handler(false, c, new SetAvailableMessage(getGame(), e));
 
-        register(SetColorMessage.TAG,
-            new ServerInputHandler.NetworkRequestHandler() {
-                public Element handle(final Connection conn, final Element e) {
-                    return handler(false, conn, new SetColorMessage(getGame(), e));
-                }});
+            case SetColorMessage.TAG:
+                return handler(false, c, new SetColorMessage(getGame(), e));
 
-        register(SetNationMessage.TAG,
-            new ServerInputHandler.NetworkRequestHandler() {
-                public Element handle(final Connection conn, final Element e) {
-                    return handler(false, conn, new SetNationMessage(getGame(), e));
-                }});
+            case SetNationMessage.TAG:
+                return handler(false, c, new SetNationMessage(getGame(), e));
 
-        register(SetNationTypeMessage.TAG,
-            new ServerInputHandler.NetworkRequestHandler() {
-                public Element handle(final Connection conn, final Element e) {
-                    return handler(false, conn, new SetNationTypeMessage(getGame(), e));
-                }});
+            case SetNationTypeMessage.TAG:
+                return handler(false, c, new SetNationTypeMessage(getGame(), e));
 
-        register(UpdateGameOptionsMessage.TAG,
-            new ServerInputHandler.NetworkRequestHandler() {
-                public Element handle(final Connection conn, final Element e) {
-                    return handler(false, conn, new UpdateGameOptionsMessage(getGame(), e));
-                }});
+            case UpdateGameOptionsMessage.TAG:
+                return handler(false, c, new UpdateGameOptionsMessage(getGame(), e));
 
-        register(UpdateMapGeneratorOptionsMessage.TAG,
-            new ServerInputHandler.NetworkRequestHandler() {
-                public Element handle(final Connection conn, final Element e) {
-                    return handler(false, conn, new UpdateMapGeneratorOptionsMessage(getGame(), e));
-                }});
+            case UpdateMapGeneratorOptionsMessage.TAG:
+                return handler(false, c, new UpdateMapGeneratorOptionsMessage(getGame(), e));
+
+            default:
+                return super.handleElement(c, e);
+        }
     }
 }
