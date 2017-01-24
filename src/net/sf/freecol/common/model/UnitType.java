@@ -143,6 +143,7 @@ public final class UnitType extends BuildableType implements Consumer {
     }
 
     private void loadAbilities() {
+        long start = System.nanoTime();
         abilityCarryUnits       = hasAbility(Ability.CARRY_UNITS);
         abilityCarryGoods       = hasAbility(Ability.CARRY_GOODS);
         abilityNavalUnit        = hasAbility(Ability.NAVAL_UNIT);
@@ -150,6 +151,15 @@ public final class UnitType extends BuildableType implements Consumer {
         abilityFoundColony      = hasAbility(Ability.FOUND_COLONY);
         abilityExpertMissionary = hasAbility(Ability.EXPERT_MISSIONARY);
         abilityBornIndian       = hasAbility(Ability.BORN_IN_INDIAN_SETTLEMENT);
+        long end = System.nanoTime();
+        System.out.println("UnitType::loadAbilities(): "+this+" "+(end-start)+" ns "
+                              +(abilityCarryUnits       ? " CU=1" : " CU=0")
+                              +(abilityCarryGoods       ? " CG=1" : " CG=0")
+                              +(abilityNavalUnit        ? " N=1"  : " N=0")
+                              +(abilityPerson           ? " P=1 " : " P=0")
+                              +(abilityFoundColony      ? " F=1 " : " F=0")
+                              +(abilityExpertMissionary ? " E=1 " : " E=0")
+                              +(abilityBornIndian       ? " I=1 " : " I=0"));
     }
 
     /**
