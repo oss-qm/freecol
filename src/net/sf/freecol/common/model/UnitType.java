@@ -536,8 +536,8 @@ public final class UnitType extends BuildableType implements Consumer {
                                             List<BuildableType> assumeBuilt) {
         // Non-person units need a BUILD ability, present or assumed.
         if (!hasAbility(Ability.PERSON)
-            && !colony.hasAbility(Ability.BUILD, this)
-            && none(assumeBuilt, bt -> bt.hasAbility(Ability.BUILD, this))) {
+            && !colony.ableToBuild(this)
+            && none(assumeBuilt, bt -> bt.ableToBuild(this))) {
             return Colony.NoBuildReason.MISSING_BUILD_ABILITY;
         }
         return Colony.NoBuildReason.NONE;
@@ -548,7 +548,7 @@ public final class UnitType extends BuildableType implements Consumer {
         ListModel<BuildableType> buildQueue = buildQueueList.getModel();
         if (colony.canBuild(this)) return 0;
         for (int index = 0; index < buildQueue.getSize(); index++) {
-            if (buildQueue.getElementAt(index).hasAbility(Ability.BUILD, this)) return index + 1;
+            if (buildQueue.getElementAt(index).ableToBuild(this)) return index + 1;
         }
         return UNABLE_TO_BUILD;
     }
@@ -570,7 +570,7 @@ public final class UnitType extends BuildableType implements Consumer {
         for (int index = 0; index < buildQueue.getSize(); index++) {
             BuildableType toBuild = buildQueue.getElementAt(index);
             if (toBuild == this) continue;
-            if (toBuild.hasAbility(Ability.BUILD, this)) {
+            if (toBuild.ableToBuild(this)) {
                 return buildQueueLastPos;
             }
         }
