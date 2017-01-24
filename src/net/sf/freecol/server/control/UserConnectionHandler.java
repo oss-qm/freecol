@@ -19,6 +19,7 @@
 
 package net.sf.freecol.server.control;
 
+import java.net.UnknownServiceException;
 import java.util.logging.Logger;
 
 import net.sf.freecol.common.model.Game;
@@ -50,24 +51,25 @@ public final class UserConnectionHandler extends ServerInputHandler {
      */
     public UserConnectionHandler(final FreeColServer freeColServer) {
         super(freeColServer);
+    }
 
-        register(GameStateMessage.TAG,
-            new ServerInputHandler.NetworkRequestHandler() {
-                public Element handle(Connection conn, Element e) {
-                    return handler(false, conn, new GameStateMessage(getGame(), e));
-                }});
+    @Override
+    public Element handleElement(Connection c, Element e)
+            throws UnknownServiceException {
+        String tag = e.getTagName();
+        switch (tag) {
+            case GameStateMessage.TAG:
+                return handler(false, c, new GameStateMessage(getGame(), e));
 
-        register(LoginMessage.TAG,
-            new ServerInputHandler.NetworkRequestHandler() {
-                public Element handle(Connection conn, Element e) {
-                    return loginHandler(conn, new LoginMessage(getGame(), e));
-                }});
+            case LoginMessage.TAG:
+                return loginHandler(c, new LoginMessage(getGame(), e));
 
-        register(VacantPlayersMessage.TAG,
-            new ServerInputHandler.NetworkRequestHandler() {
-                public Element handle(Connection conn, Element e) {
-                    return handler(false, conn, new VacantPlayersMessage(getGame(), e));
-                }});
+            case VacantPlayersMessage.TAG:
+                return handler(false, c, new VacantPlayersMessage(getGame(), e));
+
+            default:
+                return super.handleElement(c, e);
+        }
     }
 
     /**
