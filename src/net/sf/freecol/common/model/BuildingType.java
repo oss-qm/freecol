@@ -428,7 +428,7 @@ public final class BuildingType extends BuildableType
                     && upgradesTo.equals(toBuild)) return index;
 
             // Don't go past a unit this building can build.
-            if (this.hasAbility(Ability.BUILD, toBuild)) {
+            if (this.ableToBuild(toBuild)) {
                 return index;
             }
         }
