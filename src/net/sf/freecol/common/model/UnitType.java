@@ -120,6 +120,18 @@ public final class UnitType extends BuildableType implements Consumer {
     /** The goods consumed per turn when in a settlement. */
     private TypeCountMap<GoodsType> consumption = null;
 
+    /**
+     * cached abilities -- (re)loaded by loadAbilities()
+     * intentionally public, so they can be directly accessed
+     * w/o the overhead of dumb getters
+     */
+    public boolean abilityCarryUnits       = false;
+    public boolean abilityCarryGoods       = false;
+    public boolean abilityNavalUnit        = false;
+    public boolean abilityPerson           = false;
+    public boolean abilityFoundColony      = false;
+    public boolean abilityExpertMissionary = false;
+    public boolean abilityBornIndian       = false;
 
     /**
      * Creates a new {@code UnitType} instance.
@@ -131,8 +143,18 @@ public final class UnitType extends BuildableType implements Consumer {
         super(id, specification);
 
         this.defaultRole = specification.getDefaultRole();
+        loadAbilities();
     }
 
+    private void loadAbilities() {
+        abilityCarryUnits       = hasAbility(Ability.CARRY_UNITS);
+        abilityCarryGoods       = hasAbility(Ability.CARRY_GOODS);
+        abilityNavalUnit        = hasAbility(Ability.NAVAL_UNIT);
+        abilityPerson           = hasAbility(Ability.PERSON);
+        abilityFoundColony      = hasAbility(Ability.FOUND_COLONY);
+        abilityExpertMissionary = hasAbility(Ability.EXPERT_MISSIONARY);
+        abilityBornIndian       = hasAbility(Ability.BORN_IN_INDIAN_SETTLEMENT);
+    }
 
     /**
      * Get a key for the working as this unit type message.
@@ -149,7 +171,7 @@ public final class UnitType extends BuildableType implements Consumer {
      * @return True if units can be carried.
      */
     public boolean canCarryUnits() {
-        return hasAbility(Ability.CARRY_UNITS);
+        return abilityCarryUnits;
     }
 
     /**
@@ -158,7 +180,7 @@ public final class UnitType extends BuildableType implements Consumer {
      * @return True if goods can be carried.
      */
     public boolean canCarryGoods() {
-        return hasAbility(Ability.CARRY_GOODS);
+        return abilityCarryGoods;
     }
 
     /**
@@ -463,7 +485,7 @@ public final class UnitType extends BuildableType implements Consumer {
      * @return True if this is a naval unit type.
      */
     public boolean isNaval() {
-        return hasAbility(Ability.NAVAL_UNIT);
+        return abilityNavalUnit;
     }
 
     /**
@@ -472,7 +494,7 @@ public final class UnitType extends BuildableType implements Consumer {
      * @return True if this unit type represents a person
      */
     public boolean isPerson() {
-        return hasAbility(Ability.PERSON);
+        return abilityPerson;
     }
 
     /**
@@ -535,7 +557,7 @@ public final class UnitType extends BuildableType implements Consumer {
     public NoBuildReason canBeBuiltInColony(Colony colony,
                                             List<BuildableType> assumeBuilt) {
         // Non-person units need a BUILD ability, present or assumed.
-        if (!hasAbility(Ability.PERSON)
+        if (!abilityPerson
             && !colony.hasAbility(Ability.BUILD, this)
             && none(assumeBuilt, bt -> bt.hasAbility(Ability.BUILD, this))) {
             return Colony.NoBuildReason.MISSING_BUILD_ABILITY;
@@ -611,7 +633,7 @@ public final class UnitType extends BuildableType implements Consumer {
      * @return True if this unit type can build colonies.
      */
     public boolean canBuildColony() {
-        return hasAbility(Ability.FOUND_COLONY);
+        return abilityFoundColony;
     }
 
 
@@ -872,14 +894,14 @@ public final class UnitType extends BuildableType implements Consumer {
         super.readChildren(xr);
 
         // @compat 0.10.6
-        if (hasAbility(Ability.PERSON)) {
+        if (abilityPerson) {
             Modifier m;
             if (!containsModifierKey(Modifier.CONVERSION_SKILL)) {
                 m = new Modifier(Modifier.CONVERSION_SKILL, 8.0f,
                         Modifier.ModifierType.ADDITIVE);
                 addModifier(m);
 
-                if (hasAbility(Ability.EXPERT_MISSIONARY)) {
+                if (abilityExpertMissionary) {
                     m = new Modifier(Modifier.CONVERSION_SKILL, 5.0f,
                             Modifier.ModifierType.ADDITIVE);
                     addModifier(m);

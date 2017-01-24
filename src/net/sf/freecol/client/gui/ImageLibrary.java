@@ -811,7 +811,7 @@ public final class ImageLibrary {
                                              boolean nativeEthnicity,
                                              boolean grayscale, float scale) {
         // units that can only be native don't need the .native key part
-        if (unitType.hasAbility(Ability.BORN_IN_INDIAN_SETTLEMENT)) {
+        if (unitType.abilityBornIndian) {
             nativeEthnicity = false;
         }
 
@@ -846,7 +846,7 @@ public final class ImageLibrary {
                                              boolean nativeEthnicity,
                                              Dimension size) {
         // units that can only be native don't need the .native key part
-        if (unitType.hasAbility(Ability.BORN_IN_INDIAN_SETTLEMENT)) {
+        if (unitType.abilityBornIndian) {
             nativeEthnicity = false;
         }
 
