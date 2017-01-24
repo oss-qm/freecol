@@ -869,8 +869,8 @@ public class BuildQueuePanel extends FreeColPanel implements ItemListener {
             if (!checkAbilities(ut, reasons)) unbuildableTypes.add(ut);
 
             // Missing unit build ability?
-            if (!this.featureContainer.hasAbility(Ability.BUILD, ut, Turn.UNDEFINED)
-                && !this.colony.hasAbility(Ability.BUILD, ut, turn)) {
+            if (!this.featureContainer.ableToBuild(ut)
+                && !this.colony.ableToBuild(ut, turn)) {
                 Ability buildAbility = find(spec.getAbilities(Ability.BUILD),
                     a -> (a.appliesTo(ut)
                         && a.getValue()

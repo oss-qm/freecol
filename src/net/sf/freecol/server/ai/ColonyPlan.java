@@ -721,7 +721,7 @@ public class ColonyPlan {
                 prioritize(type, FISH_WEIGHT, factor);
             }
 
-            if (type.hasAbility(Ability.BUILD)) {
+            if (type.ableToBuild()) {
                 double factor = ("building".equals(advantage)) ? 1.1 : 1.0;
                 double support = (any(type.getAbilities(Ability.BUILD),
                                       Ability::hasScope)) ? 0.1 : 1.0;

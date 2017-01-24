@@ -235,6 +235,26 @@ public abstract class BuildableType extends FreeColSpecObjectType {
     }
 
     /**
+     * Returns true if this Object is in general able to build the given
+     * BuildableType. This is different to canBuild() in that it just
+     * checks the general ability, not other factors, eg. available goods etc.
+     *
+     * @param buildableType a {@code BuildableType} value
+     * @return a {@code boolean} value
+     */
+    public final boolean ableToBuild(BuildableType buildableType) {
+        return hasAbility(Ability.BUILD, buildableType);
+    }
+
+    public final boolean ableToBuild(BuildableType buildableType, int turn) {
+        return hasAbility(Ability.BUILD, buildableType, turn);
+    }
+
+    public final boolean ableToBuild() {
+        return hasAbility(Ability.BUILD);
+    }
+
+    /**
      * Check to see if this buildable type can be built in a colony
      * based on the buildings or units available.
      *

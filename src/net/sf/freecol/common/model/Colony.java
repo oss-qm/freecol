@@ -962,6 +962,26 @@ public class Colony extends Settlement implements Nameable, TradeLocation {
     }
 
     /**
+     * Returns true if this Colony is in general able to build the given
+     * BuildableType. This is different to canBuild() in that it just
+     * checks the general ability, not other factors, eg. available goods etc.
+     *
+     * @param buildableType a {@code BuildableType} value
+     * @return a {@code boolean} value
+     */
+    public final boolean ableToBuild(BuildableType buildableType) {
+        // FIXME: we could add some caching here, but for that we'd have to
+        // work out the actual keys and invalidation criteria. Hopefully,
+        // that should be a global cache, not per Colony. But that really
+        // needs some deeper thoughts
+        return hasAbility(Ability.BUILD, buildableType);
+    }
+
+    public final boolean ableToBuild(BuildableType buildableType, int turn) {
+        return hasAbility(Ability.BUILD, buildableType, turn);
+    }
+
+    /**
      * Return the reason why the give {@code BuildableType} can
      * not be built.
      *
