@@ -1129,6 +1129,7 @@ public final class Canvas extends JDesktopPane {
      * @param resizable Should the panel be resizable?
      */
     private void showPopupPanel(FreeColPopup panel, boolean resizable) {
+        System.out.println("showPopupPanel(panel,resizable)");
         showPopupPanel(panel, PopupPosition.CENTERED, resizable);
     }
 
@@ -1142,6 +1143,7 @@ public final class Canvas extends JDesktopPane {
      */
     private void showPopupPanel(FreeColPopup panel, PopupPosition popupPosition,
                               boolean resizable) {
+        System.out.println("showPopupPanel(panel,popupPosition,resizable)");
         repaint();
 //        addAsFrame(panel, false, popupPosition, resizable);
         System.out.println("making popup visible");
@@ -1869,6 +1871,7 @@ public final class Canvas extends JDesktopPane {
      * @param nodeId The node identifier to display.
      */
     public void showColopediaPanel(String nodeId) {
+        System.out.println("showColopediaPanel()");
         showPopupPanel(new ColopediaPanel(freeColClient, frame, nodeId), true);
     }
 
