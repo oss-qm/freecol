@@ -69,21 +69,6 @@ public abstract class FreeColPanel extends JPanel implements ActionListener {
 
     protected JButton okButton = Utility.localizedButton("ok");
 
-    /** === BEGIN: taken from MigPanal === **/
-    private String uiClassId = null;
-
-    // Override JPanel
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public String getUIClassID() {
-        return (uiClassId != null) ? uiClassId : super.getUIClassID();
-    }
-
-    /** === END: taken from MigPanal === **/
-
     /**
      * Constructor.
      *
