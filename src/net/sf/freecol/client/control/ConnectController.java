@@ -486,14 +486,6 @@ public final class ConnectController extends FreeColClientHolder {
             break;
 
         case IN_GAME:
-            /*
-            // Disable this check if you need to debug a multiplayer client.
-            if (FreeColDebugger.isInDebugMode(FreeColDebugger.DebugMode.MENUS)) {
-                getGUI().showErrorMessage(StringTemplate
-                    .template("client.debugConnect"));
-                return false;
-            }
-            */
             // Find the players, choose one.
             List<String> names = fcc.getVacantPlayerNames();
             if (names.isEmpty()) return false;
