@@ -88,6 +88,7 @@ import net.sf.freecol.client.gui.dialog.FreeColChoiceDialog;
 import net.sf.freecol.client.gui.dialog.FreeColConfirmDialog;
 import net.sf.freecol.client.gui.dialog.FreeColDialog;
 import net.sf.freecol.client.gui.panel.FreeColPanel;
+import net.sf.freecol.client.gui.panel.FreeColPopup;
 import net.sf.freecol.client.gui.dialog.FreeColStringInputDialog;
 import net.sf.freecol.client.gui.dialog.GameOptionsDialog;
 import net.sf.freecol.client.gui.panel.IndianSettlementPanel;
@@ -1119,6 +1120,31 @@ public final class Canvas extends JDesktopPane {
      */
     private void showSubPanel(FreeColPanel panel, boolean resizable) {
         showSubPanel(panel, PopupPosition.CENTERED, resizable);
+    }
+
+    /**
+     * Displays a {@code FreeColPopup}.
+     *
+     * @param panel {@code FreeColPopup}, panel to show
+     * @param resizable Should the panel be resizable?
+     */
+    private void showPopupPanel(FreeColPopup panel, boolean resizable) {
+        showPopupPanel(panel, PopupPosition.CENTERED, resizable);
+    }
+
+    /**
+     * Displays a {@code FreeColPopup} at a generalized position.
+     *
+     * @param panel {@code FreeColPopup}, panel to show
+     * @param popupPosition {@code PopupPosition} The generalized
+     *     position to place the panel.
+     * @param resizable Should the panel be resizable?
+     */
+    private void showPopupPanel(FreeColPopup panel, PopupPosition popupPosition,
+                              boolean resizable) {
+        repaint();
+//        addAsFrame(panel, false, popupPosition, resizable);
+        panel.requestFocus();
     }
 
     /**
