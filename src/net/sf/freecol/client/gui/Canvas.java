@@ -38,6 +38,7 @@ import java.awt.font.TextLayout;
 import java.awt.geom.Rectangle2D;
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
@@ -786,6 +787,7 @@ public final class Canvas extends JDesktopPane {
             if (!(c instanceof GrayLayer) && c.isValid())
                 allComponents.add(c);
 
+        // FIXME: should we also add popup panels here ?
         for (FreeColDialog<?> fcd : dialogs) allComponents.add(fcd);
 
         // Find the position with the least overlap
@@ -854,18 +856,16 @@ public final class Canvas extends JDesktopPane {
      * @param colony The {@code Colony} to check.
      * @return A currently displayed colony panel, or null if not found.
      */
+    // FIXME: need to touch this
+    // if we're using dialogs, they wont be childs of the content pane anymore
+
+    // only very few items, so list instead of hashmap is sufficient here
+    List<ColonyPanel> colonyPanels = new ArrayList<>();
+
     private ColonyPanel getColonyPanel(Colony colony) {
-        for (Component c1 : getComponents()) {
-            if (c1 instanceof JInternalFrame) {
-                for (Component c2 : ((JInternalFrame) c1).getContentPane()
-                         .getComponents()) {
-                    if (c2 instanceof ColonyPanel
-                        && ((ColonyPanel)c2).getColony() == colony) {
-                        return (ColonyPanel)c2;
-                    }
-                }
-            }
-        }
+        for (ColonyPanel cp : colonyPanels)
+            if ((cp != null) && (cp.getColony() == colony))
+                return cp;
         return null;
     }
 
@@ -978,7 +978,7 @@ public final class Canvas extends JDesktopPane {
 
         if (c instanceof FreeColPanel) {
             FreeColPanel fcp = (FreeColPanel)c;
-            fcp.firePropertyChange("closing", false, true);
+//            fcp.firePropertyChange("closing", false, true);
 
             savePosition(fcp, frame.getLocation());
             saveSize(fcp, fcp.getSize());
@@ -1132,8 +1132,18 @@ public final class Canvas extends JDesktopPane {
     private void showSubPanel(FreeColPanel panel, PopupPosition popupPosition,
                               boolean resizable) {
         repaint();
-        addAsFrame(panel, false, popupPosition, resizable);
+//        addAsFrame(panel, false, popupPosition, resizable);
+//        panel.requestFocus();
+
+//        PopupPosition pp = setOffsetFocus(tile);
+
+//        dialogAdd(panel);
         panel.requestFocus();
+        panel.setVisible(true);
+
+//        T response = freeColDialog.getResponse();
+//        remove(freeColDialog);
+//        dialogRemove(freeColDialog);
     }
 
 
@@ -1259,25 +1269,16 @@ public final class Canvas extends JDesktopPane {
      * @return A currently displayed {@code FreeColPanel} of the
      *     requested type, or null if none found.
      */
+    List<FreeColPanel> singletonPanels = new ArrayList<>();
+
+    // FIXME: need to touch this - if we're using dialogs, they
+    // wont be childs of the content pane anymore
+    @SuppressWarnings("unchecked")
     private <T extends FreeColPanel> T getExistingFreeColPanel(Class<T> type) {
-        for (Component c1 : getComponents()) {
-            if (c1 instanceof JInternalFrame) {
-                for (Component c2 : ((JInternalFrame)c1).getContentPane()
-                         .getComponents()) {
-                    try {
-                        T ret = type.cast(c2);
-                        if (ret != null) {
-                            final JInternalFrame jif = (JInternalFrame)c1;
-                            SwingUtilities.invokeLater(new Runnable() {
-                                public void run() {
-                                    jif.toFront();
-                                    jif.repaint();
-                                }});
-                            return ret;
-                        }
-                    } catch (ClassCastException cce) {}
-                }
-            }
+        for (FreeColPanel fcp : singletonPanels) {
+            if (fcp == null) continue;
+            if (fcp.getClass() == type)
+                return (T)fcp;
         }
         return null;
     }
@@ -1388,6 +1389,15 @@ public final class Canvas extends JDesktopPane {
                 logger.log(Level.WARNING, "Java crash", e);
             }
         }
+
+        for (Iterator<ColonyPanel> it = colonyPanels.iterator(); it.hasNext();)
+            if (it.next() == comp)
+                it.remove();
+
+        for (Iterator<FreeColPanel> it = singletonPanels.iterator(); it.hasNext();)
+            if (it.next() == comp)
+                it.remove();
+
         repaint(updateBounds.x, updateBounds.y,
                 updateBounds.width, updateBounds.height);
     }
@@ -1703,6 +1713,7 @@ public final class Canvas extends JDesktopPane {
 
     // Simple front ends to display each panel or dialog.
 
+    // FIXME need to touch this
     public void removeTradeRoutePanel(TradeRoutePanel panel) {
         remove(panel);
         TradeRouteInputPanel trip
@@ -2220,9 +2231,9 @@ public final class Canvas extends JDesktopPane {
      * Display the map editor transform panel.
      */
     public void showMapEditorTransformPanel() {
-        JInternalFrame f = addAsFrame(new MapEditorTransformPanel(freeColClient),
-            true, PopupPosition.CENTERED, false);
-        f.setLocation(f.getX(), 50);
+        FreeColPanel p = new MapEditorTransformPanel(freeColClient);
+        showSubPanel(p, PopupPosition.CENTERED, false);
+        p.setLocation(p.getX(), 50);
         repaint();
     }
 

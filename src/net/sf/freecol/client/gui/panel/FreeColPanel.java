@@ -34,6 +34,7 @@ import javax.swing.Action;
 import javax.swing.InputMap;
 import javax.swing.JButton;
 import javax.swing.JComponent;
+import javax.swing.JDialog;
 import javax.swing.JPanel;
 import javax.swing.KeyStroke;
 
@@ -51,7 +52,7 @@ import net.sf.freecol.common.model.Specification;
 /**
  * Superclass for all panels in FreeCol.
  */
-public abstract class FreeColPanel extends JPanel implements ActionListener {
+public abstract class FreeColPanel extends JDialog implements ActionListener {
 
     private static final Logger logger = Logger.getLogger(FreeColPanel.class.getName());
 
@@ -75,21 +76,9 @@ public abstract class FreeColPanel extends JPanel implements ActionListener {
      * @param freeColClient The {@code FreeColClient} for the game.
      */
     protected FreeColPanel(FreeColClient freeColClient) {
-        this(freeColClient, new FlowLayout());
-    }
-
-    /**
-     * Default constructor.
-     *
-     * @param freeColClient The {@code FreeColClient} for the game.
-     * @param layout The {@code LayoutManager} to be used.
-     */
-    protected FreeColPanel(FreeColClient freeColClient, LayoutManager layout) {
-        super(layout);
-
         this.freeColClient = freeColClient;
 
-        setBorder(FreeColImageBorder.imageBorder);
+//        setBorder(FreeColImageBorder.imageBorder);
 
         okButton.setActionCommand(OK);
         okButton.addActionListener(this);
@@ -190,13 +179,14 @@ public abstract class FreeColPanel extends JPanel implements ActionListener {
     public final void setCancelComponent(AbstractButton cancelButton) {
         if (cancelButton == null) throw new NullPointerException();
 
-        InputMap inputMap
-            = getInputMap(JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
-        inputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0, true),
-                     "release");
-
-        Action cancelAction = cancelButton.getAction();
-        getActionMap().put("release", cancelAction);
+// FIXME: how ot do that w/ on a JDialog ?
+//        InputMap inputMap
+//            = getInputMap(JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
+//        inputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0, true),
+//                     "release");
+//
+//        Action cancelAction = cancelButton.getAction();
+//        getActionMap().put("release", cancelAction);
     }
 
     /**
