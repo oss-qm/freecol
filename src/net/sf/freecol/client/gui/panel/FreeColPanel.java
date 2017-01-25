@@ -228,6 +228,7 @@ public abstract class FreeColPanel extends JPanel implements ActionListener {
     public void actionPerformed(ActionEvent ae) {
         final String command = ae.getActionCommand();
         if (OK.equals(command)) {
+            System.out.println("action OK");
             getGUI().removeFromCanvas(this);
         } else {
             logger.warning("Bad event: " + command);
