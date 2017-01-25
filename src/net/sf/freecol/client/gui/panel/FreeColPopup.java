@@ -124,11 +124,14 @@ public abstract class FreeColPopup extends JDialog implements ActionListener {
 //        setComponentOrientation(this.pane.getComponentOrientation());
 //        Container contentPane = getContentPane();
 //        contentPane.add(this.pane);
-        setSize(getPreferredSize());
-        setResizable(false);
-        setUndecorated(true);
+//        setSize(getPreferredSize());
+//        setResizable(false);
+        setResizable(true);
+//        setUndecorated(true);
+        setUndecorated(false);
         setModal(false);
 
+        setTitle("Please Wait...");
 //        setSubcomponentsNotOpaque(this.pane);
         try { // Layout failures might not get logged.
             pack();

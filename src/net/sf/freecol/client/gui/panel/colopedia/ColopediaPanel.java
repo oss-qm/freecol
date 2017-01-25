@@ -27,6 +27,7 @@ import java.util.Map;
 import java.util.logging.Logger;
 
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTree;
@@ -76,6 +77,13 @@ public final class ColopediaPanel extends FreeColPopup
         add(Utility.localizedHeader("colopedia", false),
             "span, align center");
 
+        add(Utility.localizedHeader("colopedia", false));
+
+        JLabel label = new JLabel("Please wait...");
+        setLocationRelativeTo(null);
+        add(label);
+        pack();
+
         listPanel = new MigPanel("ColopediaPanelUI");
         listPanel.setOpaque(true);
         JScrollPane sl = new JScrollPane(listPanel,
@@ -92,9 +100,11 @@ public final class ColopediaPanel extends FreeColPopup
                                              JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
         detail.getVerticalScrollBar().setUnitIncrement(16);
         detail.getViewport().setOpaque(false);
-        add(detail, "grow");
+//        add(detail, "grow");
+        add(detail);
 
-        add(okButton, "newline 20, span, tag ok");
+//        add(okButton, "newline 20, span, tag ok");
+        add(okButton);
 
         float scale = getImageLibrary().getScaleFactor();
         getGUI().restoreSavedSize(this, 200 + (int)(scale*850), 200 + (int)(scale*525));
