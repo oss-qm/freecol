@@ -34,6 +34,7 @@ import javax.swing.Action;
 import javax.swing.InputMap;
 import javax.swing.JButton;
 import javax.swing.JComponent;
+import javax.swing.JPanel;
 import javax.swing.KeyStroke;
 
 import net.sf.freecol.client.ClientOptions;
@@ -50,7 +51,7 @@ import net.sf.freecol.common.model.Specification;
 /**
  * Superclass for all panels in FreeCol.
  */
-public abstract class FreeColPanel extends MigPanel implements ActionListener {
+public abstract class FreeColPanel extends JPanel implements ActionListener {
 
     private static final Logger logger = Logger.getLogger(FreeColPanel.class.getName());
 
@@ -68,6 +69,20 @@ public abstract class FreeColPanel extends MigPanel implements ActionListener {
 
     protected JButton okButton = Utility.localizedButton("ok");
 
+    /** === BEGIN: taken from MigPanal === **/
+    private String uiClassId = null;
+
+    // Override JPanel
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public String getUIClassID() {
+        return (uiClassId != null) ? uiClassId : super.getUIClassID();
+    }
+
+    /** === END: taken from MigPanal === **/
 
     /**
      * Constructor.
