@@ -19,12 +19,21 @@
 
 package net.sf.freecol.client.gui.panel;
 
+import java.awt.Component;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.ComponentAdapter;
+import java.awt.event.ComponentEvent;
 import java.awt.event.KeyEvent;
+import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
+import java.awt.event.MouseAdapter;
+import java.awt.Point;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import javax.swing.AbstractButton;
@@ -36,6 +45,7 @@ import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.KeyStroke;
+import javax.swing.SwingUtilities;
 
 import net.miginfocom.swing.MigLayout;
 
@@ -79,11 +89,113 @@ public abstract class FreeColPopup extends JDialog implements ActionListener {
     protected FreeColPopup(FreeColClient freeColClient, JFrame frame) {
         super(frame);
 
+        System.out.println("FreeColPopup(): constructor");
+
         this.freeColClient = freeColClient;
 
         okButton.setActionCommand(OK);
         okButton.addActionListener(this);
         setCancelComponent(okButton);
+
+        /* --- */
+
+//        this.options = options;
+//        int paneType = JOptionPane.QUESTION_MESSAGE;
+//        switch (type) {
+//        case PLAIN:    paneType = JOptionPane.PLAIN_MESSAGE; break;
+//        case QUESTION: paneType = JOptionPane.QUESTION_MESSAGE; break;
+//        }
+
+//        int def = selectDefault(options);
+//        ChoiceItem<T> ci = (def >= 0) ? options.get(def) : null;
+//        if (obj instanceof StringTemplate) {
+//            obj = Utility.localizedTextArea((StringTemplate)obj);
+//        } else if(obj instanceof String) {
+//            obj = Utility.getDefaultTextArea((String)obj);
+//        }
+//        this.pane = new JOptionPane(obj, paneType, JOptionPane.DEFAULT_OPTION,
+//                                    icon, selectOptions(), ci);
+//        this.pane.setBorder(Utility.DIALOG_BORDER);
+//        this.pane.setOpaque(false);
+//        this.pane.setName("FreeColPopup");
+//        this.pane.setValue(JOptionPane.UNINITIALIZED_VALUE);
+//        this.pane.addPropertyChangeListener(this);
+//        this.pane.setSize(this.pane.getPreferredSize());
+//        setComponentOrientation(this.pane.getComponentOrientation());
+//        Container contentPane = getContentPane();
+//        contentPane.add(this.pane);
+        setSize(getPreferredSize());
+        setResizable(false);
+        setUndecorated(true);
+        setModal(false);
+
+//        setSubcomponentsNotOpaque(this.pane);
+        try { // Layout failures might not get logged.
+            pack();
+        } catch (Exception e) {
+            logger.log(Level.WARNING, "Packing failure", e);
+        }
+        setLocationRelativeTo(frame);
+
+        WindowAdapter adapter = new WindowAdapter() {
+            private boolean gotFocus = false;
+
+            @Override
+            public void windowClosing(WindowEvent we) {
+                System.out.println("windowClosing");
+//                    if (!FreeColPopup.this.responded()) {
+//                        FreeColPopup.this.setValue(null);
+//                    }
+            }
+
+            @Override
+            public void windowGainedFocus(WindowEvent we) {
+                System.out.println("windowGainedFocus");
+                if (!gotFocus) { // Once window gets focus, initialize.
+//                        FreeColPopup.this.pane.selectInitialValue();
+                    gotFocus = true;
+                }
+            }
+        };
+        addWindowListener(adapter);
+        addWindowFocusListener(adapter);
+
+        addComponentListener(new ComponentAdapter() {
+            @Override
+            public void componentShown(ComponentEvent ce) {
+                System.out.println("componentShown()");
+                // Reset value to ensure closing works properly.
+//                   FreeColPopup.this.pane
+//                       .setValue(JOptionPane.UNINITIALIZED_VALUE);
+            }
+        });
+        addMouseListener(new MouseAdapter() {
+            private Point loc;
+
+            @Override
+            public void mousePressed(MouseEvent e) {
+                System.out.println("mousePressed()");
+                loc = SwingUtilities
+                    .convertPoint((Component)e.getSource(),
+                        e.getX(), e.getY(), null);
+            }
+
+            @Override
+            public void mouseReleased(MouseEvent e) {
+                System.out.println("mouseReleased()");
+                if (loc == null) return;
+                Point now = SwingUtilities
+                    .convertPoint((Component)e.getSource(),
+                        e.getX(), e.getY(), null);
+                int dx = now.x - loc.x;
+                int dy = now.y - loc.y;
+                Point p = FreeColPopup.this.getLocation();
+                FreeColPopup.this.setLocation(p.x + dx, p.y + dy);
+                loc = null;
+            }
+        });
+
+        System.out.println("FreeColPopup(): constructor done");
     }
 
     /**
