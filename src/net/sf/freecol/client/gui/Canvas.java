@@ -46,6 +46,7 @@ import java.util.logging.Logger;
 import javax.swing.ImageIcon;
 import javax.swing.JComponent;
 import javax.swing.JDesktopPane;
+import javax.swing.JDialog;
 import javax.swing.JInternalFrame;
 import javax.swing.JLayeredPane;
 import javax.swing.JMenuBar;
@@ -88,6 +89,7 @@ import net.sf.freecol.client.gui.dialog.FreeColChoiceDialog;
 import net.sf.freecol.client.gui.dialog.FreeColConfirmDialog;
 import net.sf.freecol.client.gui.dialog.FreeColDialog;
 import net.sf.freecol.client.gui.panel.FreeColPanel;
+import net.sf.freecol.client.gui.panel.FreeColPopup;
 import net.sf.freecol.client.gui.dialog.FreeColStringInputDialog;
 import net.sf.freecol.client.gui.dialog.GameOptionsDialog;
 import net.sf.freecol.client.gui.panel.IndianSettlementPanel;
@@ -1122,6 +1124,38 @@ public final class Canvas extends JDesktopPane {
     }
 
     /**
+     * Displays a {@code FreeColPopup}.
+     *
+     * @param panel {@code FreeColPopup}, panel to show
+     * @param resizable Should the panel be resizable?
+     */
+    private void showPopupPanel(FreeColPanel panel, boolean resizable) {
+        showPopupPanel(panel, PopupPosition.CENTERED, resizable);
+    }
+
+    /**
+     * Displays a {@code FreeColPopup} at a generalized position.
+     *
+     * @param panel {@code FreeColPopup}, panel to show
+     * @param popupPosition {@code PopupPosition} The generalized
+     *     position to place the panel.
+     * @param resizable Should the panel be resizable?
+     */
+    private void showPopupPanel(FreeColPanel panel, PopupPosition popupPosition,
+                              boolean resizable) {
+        JDialog popup = new JDialog(this.frame);
+        panel.setVisible(true);
+        panel.requestFocus();
+        popup.requestFocus();
+        popup.setResizable(true);
+        popup.setUndecorated(false);
+        popup.setModal(false);
+        popup.add(panel);
+        popup.pack();
+        popup.setVisible(true);
+    }
+
+    /**
      * Displays a {@code FreeColPanel} at a generalized position.
      *
      * @param panel {@code FreeColPanel}, panel to show
@@ -1841,7 +1875,7 @@ public final class Canvas extends JDesktopPane {
      * @param nodeId The node identifier to display.
      */
     public void showColopediaPanel(String nodeId) {
-        showSubPanel(new ColopediaPanel(freeColClient, nodeId), true);
+        showPopupPanel(new ColopediaPanel(freeColClient, nodeId), true);
     }
 
     /**
