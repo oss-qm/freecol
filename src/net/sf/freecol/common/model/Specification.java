@@ -1907,7 +1907,7 @@ public final class Specification {
         } else { // forward declaration of new type
             try {
                 T result = returnClass.getConstructor(String.class,
-                    Specification.class).newInstance(id, this)
+                    Specification.class).newInstance(id, this);
                 allTypes.put(id, result);
                 return result;
             } catch (Exception e) {
