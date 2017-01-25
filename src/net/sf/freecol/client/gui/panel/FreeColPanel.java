@@ -35,6 +35,7 @@ import javax.swing.ComponentInputMap;
 import javax.swing.InputMap;
 import javax.swing.JButton;
 import javax.swing.JComponent;
+import javax.swing.JPanel;
 import javax.swing.KeyStroke;
 import javax.swing.SwingUtilities;
 import java.awt.FlowLayout;
@@ -51,7 +52,7 @@ import java.util.logging.Logger;
 /**
  * Superclass for all panels in FreeCol.
  */
-public abstract class FreeColPanel extends MigPanel implements ActionListener {
+public abstract class FreeColPanel extends JPanel implements ActionListener {
 
     private static final Logger logger = Logger.getLogger(FreeColPanel.class.getName());
 
