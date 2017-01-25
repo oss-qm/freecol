@@ -26,6 +26,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.logging.Logger;
 
+import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTree;
@@ -48,7 +49,7 @@ import net.sf.freecol.common.model.FreeColObject;
 /**
  * This panel displays the Colopedia.
  */
-public final class ColopediaPanel extends FreeColPanel
+public final class ColopediaPanel extends FreeColPopup
     implements HyperlinkListener, TreeSelectionListener {
 
     private static final Logger logger = Logger.getLogger(ColopediaPanel.class.getName());
@@ -68,8 +69,8 @@ public final class ColopediaPanel extends FreeColPanel
      * @param freeColClient The {@code FreeColClient} for the game.
      * @param id The object identifier of the item to select.
      */
-    public ColopediaPanel(FreeColClient freeColClient, String id) {
-        super(freeColClient, new MigLayout("fill",
+    public ColopediaPanel(FreeColClient freeColClient, JFrame frame, String id) {
+        super(freeColClient, frame, new MigLayout("fill",
                 "[200:]unrelated[550:, grow, fill]", "[][grow, fill][]"));
 
         add(Utility.localizedHeader("colopedia", false),
@@ -110,8 +111,8 @@ public final class ColopediaPanel extends FreeColPanel
      *
      * @param freeColClient The {@code FreeColClient} for the game.
      */
-    public ColopediaPanel(FreeColClient freeColClient) {
-        super(freeColClient);
+    public ColopediaPanel(FreeColClient freeColClient, JFrame frame) {
+        super(freeColClient, frame);
     }
 
 

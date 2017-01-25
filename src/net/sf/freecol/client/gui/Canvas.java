@@ -1867,7 +1867,7 @@ public final class Canvas extends JDesktopPane {
      * @param nodeId The node identifier to display.
      */
     public void showColopediaPanel(String nodeId) {
-        showSubPanel(new ColopediaPanel(freeColClient, nodeId), true);
+        showPopupPanel(new ColopediaPanel(freeColClient, frame, nodeId), true);
     }
 
     /**
