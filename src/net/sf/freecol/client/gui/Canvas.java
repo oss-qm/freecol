@@ -1144,6 +1144,7 @@ public final class Canvas extends JDesktopPane {
                               boolean resizable) {
         repaint();
 //        addAsFrame(panel, false, popupPosition, resizable);
+        System.out.println("making popup visible");
         panel.setVisible(true);
         panel.requestFocus();
     }
