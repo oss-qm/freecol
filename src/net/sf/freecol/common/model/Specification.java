@@ -23,7 +23,6 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.lang.reflect.Constructor;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -1907,9 +1906,8 @@ public final class Specification {
 
         } else { // forward declaration of new type
             try {
-                Constructor<T> c = returnClass.getConstructor(String.class,
-                    Specification.class);
-                T result = c.newInstance(id, this);
+                T result = returnClass.getConstructor(String.class,
+                    Specification.class).newInstance(id, this)
                 allTypes.put(id, result);
                 return result;
             } catch (Exception e) {
