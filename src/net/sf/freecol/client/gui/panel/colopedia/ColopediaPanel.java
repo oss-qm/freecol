@@ -71,10 +71,12 @@ public final class ColopediaPanel extends FreeColPopup
      * @param id The object identifier of the item to select.
      */
     public ColopediaPanel(FreeColClient freeColClient, JFrame frame, String id) {
-        super(freeColClient, frame, new MigLayout("fill",
+        super(freeColClient, frame);
+
+	MigPanel mf = new MigPanel(new MigLayout("fill",
                 "[200:]unrelated[550:, grow, fill]", "[][grow, fill][]"));
 
-        add(Utility.localizedHeader("colopedia", false),
+        mf.add(Utility.localizedHeader("colopedia", false),
             "span, align center");
 
         add(Utility.localizedHeader("colopedia", false));
@@ -82,7 +84,6 @@ public final class ColopediaPanel extends FreeColPopup
         JLabel label = new JLabel("Please wait...");
         setLocationRelativeTo(null);
         add(label);
-        pack();
 
         listPanel = new MigPanel("ColopediaPanelUI");
         listPanel.setOpaque(true);
@@ -91,7 +92,7 @@ public final class ColopediaPanel extends FreeColPopup
                                          JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
         sl.getVerticalScrollBar().setUnitIncrement(16);
         sl.getViewport().setOpaque(false);
-        add(sl);
+        mf.add(sl);
 
         detailPanel = new MigPanel("ColopediaPanelUI");
         detailPanel.setOpaque(true);
@@ -100,17 +101,19 @@ public final class ColopediaPanel extends FreeColPopup
                                              JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
         detail.getVerticalScrollBar().setUnitIncrement(16);
         detail.getViewport().setOpaque(false);
-//        add(detail, "grow");
-        add(detail);
+        mf.add(detail, "grow");
 
-//        add(okButton, "newline 20, span, tag ok");
-        add(okButton);
+        add(okButton, "newline 20, span, tag ok");
+        mf.add(okButton);
 
         float scale = getImageLibrary().getScaleFactor();
         getGUI().restoreSavedSize(this, 200 + (int)(scale*850), 200 + (int)(scale*525));
         tree = buildTree();
 
         select(id);
+
+	frame.pack();
+	mf.add(frame);
     }
 
     /**
