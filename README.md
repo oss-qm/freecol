@@ -1,3 +1,27 @@
+# Optimized and j7-backported version of FreeCol
+
+This is an optimized and cleaned-up branch of FreeCol, which also
+works fine on jre-7, so - in contrast to upstream - also runs on
+stable distros (eg. Debian Jessie or Ubuntu Precise) without
+installing an untrusted blob of jre-8.
+
+Key goals are: (order of the patch stacks)
+
+* optimize-away expensive, resource burning, code - which usally
+  happen to be complicated java8-only things like pseudo-"functional"
+  constructs like "Streams" (which have actually have nothing to do
+  with functional programming at all :o), needlessly complicated
+  chains of callback classes, etc, etc.
+
+* replace (the after #1 few) remaining jre-8 by simpler jre-7-
+  compatible code (eg. abuse of workarounds like "default interface
+  methods", etc)
+
+* drop bundled precompiled binaries
+
+* packaging for Debian (oder -based distros)
+
+
 # freecol
 
 FreeCol is a turn-based strategy game based on the old game
