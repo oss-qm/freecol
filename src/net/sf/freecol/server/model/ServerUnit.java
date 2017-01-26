@@ -656,8 +656,8 @@ public class ServerUnit extends Unit implements TurnTaker {
                                   ChangeSet cs) {
         final ServerPlayer serverPlayer = (ServerPlayer)this.getOwner();
         Set<ServerPlayer> pending = new HashSet<>();
-        for (Tile t : transform(newTile.getSurroundingTiles(1, 1),
-                                nt -> nt != null && nt.isLand())) {
+        for (Tile t : newTile.getSurroundingTiles(1, 1)) {
+            if ((t == null) || (!t.isLand())) continue;
             Settlement settlement = t.getSettlement();
             Unit unit = null;
             ServerPlayer other = (settlement != null)
