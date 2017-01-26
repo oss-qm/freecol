@@ -211,6 +211,7 @@ public abstract class FreeColPanel extends JPanel implements ActionListener {
                 @Override
                 public void propertyChange(PropertyChangeEvent e) {
                     if ("closing".equals(e.getPropertyName())) {
+                        System.out.println("CLOSING");
                         runnable.run();
                         // Lambda unsuitable due to use of "this"
                         FreeColPanel.this.removePropertyChangeListener(this);
