@@ -221,11 +221,11 @@ public class ServerBuilding extends Building implements TurnTaker {
     public void csCheckMissingInput(ProductionInfo pi, ChangeSet cs) {
         if (canAutoProduce()) return;
         List<AbstractGoods> production = pi.getProduction();
-        if (!production.isEmpty()
-            && all(production, ag -> ag.getAmount() == 0)) {
-            for (GoodsType gt : transform(getInputList(),
-                                          ag -> ag.getAmount() > 0,
-                                          AbstractGoods::getType)) {
+        if (production.isEmpty()) return;
+        for (AbstractGoods ag : production) if (ag.getAmount() != 0) return;
+        for (AbstractGoods ag : getInputList()) {
+            if (ag.getAmount() > 0) {
+                GoodsType gt = ag.getType();
                 cs.addMessage(getOwner(),
                     new ModelMessage(ModelMessage.MessageType.MISSING_GOODS,
                                      "model.building.notEnoughInput",
