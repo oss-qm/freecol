@@ -1319,8 +1319,7 @@ public class Colony extends Settlement implements Nameable, TradeLocation {
         if (uc <= 0) return -1;
 
         float membership = (liberty * 100.0f) / (LIBERTY_PER_REBEL * uc);
-        membership = applyModifiers(membership, getGame().getTurn(),
-                getOwner().getModifiers(Modifier.SOL));
+        membership = getOwner().applyModifiers(membership, getGame().getTurn(), Modifier.SOL);
         if (membership < 0.0f) {
             membership = 0.0f;
         } else if (membership > 100.0f) {
@@ -2470,12 +2469,12 @@ loop:   for (WorkLocation wl : getWorkLocationsForProducing(goodsType)) {
 
         mods = toList(goodsType.getModifiers(Modifier.LIBERTY));
         if (!mods.isEmpty()) {
-            modifyLiberty((int)applyModifiers(amount, turn, mods));
+            modifyLiberty((int)FeatureContainer.applyModifiers(amount, turn, mods));
         }
 
         mods = toList(goodsType.getModifiers(Modifier.IMMIGRATION));
         if (!mods.isEmpty()) {
-            int migration = (int)applyModifiers(amount, turn, mods);
+            int migration = (int)FeatureContainer.applyModifiers(amount, turn, mods);
             modifyImmigration(migration);
             getOwner().modifyImmigration(migration);
         }

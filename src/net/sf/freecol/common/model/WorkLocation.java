@@ -576,12 +576,11 @@ public abstract class WorkLocation extends UnitLocation
     public int getUnitProduction(Unit unit, GoodsType goodsType) {
         if (unit == null || unit.getWorkType() != goodsType) return 0;
         final UnitType unitType = unit.getType();
-        final int turn = getGame().getTurn();
         return Math.max(0,
-            (int)applyModifiers(getBaseProduction(this.productionType,
-                                                  goodsType, unitType),
-                                turn,
-                                getProductionModifiers(goodsType, unitType)));
+            (int)FeatureContainer.applyModifiers(
+                    getBaseProduction(this.productionType, goodsType, unitType),
+                    getGame().getTurn(),
+                    getProductionModifiers(goodsType, unitType)));
     }
 
     /**
@@ -642,8 +641,9 @@ public abstract class WorkLocation extends UnitLocation
             }
         }
 
-        int amount = getBaseProduction(null, goodsType, unitType);
-        amount = (int)applyModifiers(amount, getGame().getTurn(),
+        int amount = (int)FeatureContainer.applyModifiers(
+            getBaseProduction(null, goodsType, unitType),
+            getGame().getTurn(),
             getProductionModifiers(goodsType, unitType));
         return (amount < 0) ? 0 : amount;
     }
