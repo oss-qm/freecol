@@ -288,7 +288,7 @@ public class Building extends WorkLocation
                                        u -> getUnitProduction(u, goodsType));
                 // Unattended production always applies for buildings!
                 production += getBaseProduction(null, goodsType, null);
-                production = applyModifiers(production, turn,
+                production = FeatureContainer.applyModifiers(production, turn,
                     getProductionModifiers(goodsType, null));
                 production = (int)Math.floor(production);
                 // Beware!  If we ever unify this code with ColonyTile,

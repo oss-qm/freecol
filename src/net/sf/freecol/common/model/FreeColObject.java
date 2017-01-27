@@ -652,33 +652,7 @@ public abstract class FreeColObject
      */
     public final float applyModifiers(float number, int turn,
                                       String id, FreeColSpecObjectType fcgot) {
-        return applyModifiers(number, turn, getModifiers(id, fcgot, turn));
-    }
-
-    /**
-     * Applies a collection of modifiers to the given number.
-     *
-     * @param number The number to modify.
-     * @param turn An optional applicable {@code Turn}.
-     * @param mods The {@code Modifier}s to apply.
-     * @return The modified number.
-     */
-    public static final float applyModifiers(float number, int turn,
-                                             Collection<Modifier> mods) {
-        return FeatureContainer.applyModifiers(number, turn, mods);
-    }
-
-    /**
-     * Applies a stream of modifiers to the given number.
-     *
-     * @param number The number to modify.
-     * @param turn An optional applicable {@code Turn}.
-     * @param mods The {@code Modifier}s to apply.
-     * @return The modified number.
-     */
-    public static final float applyModifiers(float number, int turn,
-                                             Stream<Modifier> mods) {
-        return FeatureContainer.applyModifiers(number, turn, mods);
+        return FeatureContainer.applyModifiers(number, turn, getModifiers(id, fcgot, turn));
     }
 
     /**
