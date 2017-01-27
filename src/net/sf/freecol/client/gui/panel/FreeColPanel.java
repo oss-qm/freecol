@@ -31,10 +31,12 @@ import net.sf.freecol.common.model.Specification;
 
 import javax.swing.AbstractButton;
 import javax.swing.Action;
+import javax.swing.ComponentInputMap;
 import javax.swing.InputMap;
 import javax.swing.JButton;
 import javax.swing.JComponent;
 import javax.swing.KeyStroke;
+import javax.swing.SwingUtilities;
 import java.awt.FlowLayout;
 import java.awt.LayoutManager;
 import java.awt.event.ActionEvent;
@@ -207,6 +209,16 @@ public abstract class FreeColPanel extends MigPanel implements ActionListener {
             = getInputMap(JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
         inputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0, true),
                      "release");
+
+        // Use ESCAPE for closing the panel
+        InputMap closeIM = new ComponentInputMap(okButton);
+        closeIM.put(KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0, false),
+                    "pressed");
+        closeIM.put(KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0, true),
+                    "released");
+
+        SwingUtilities.replaceUIInputMap(okButton,
+            JComponent.WHEN_IN_FOCUSED_WINDOW, closeIM);
 
         Action cancelAction = cancelButton.getAction();
         getActionMap().put("release", cancelAction);
