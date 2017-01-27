@@ -266,7 +266,7 @@ public final class Tile extends UnitLocation implements Named, Ownable {
      *
      * @return The {@code TileType}.
      */
-    public TileType getType() {
+    public final TileType getType() {
         return type;
     }
 
