@@ -271,14 +271,6 @@ public final class ColonyPanel extends PortPanel
             traceWorkButton = Utility.localizedButton("colonyPanel.traceWork");
         }
 
-        // Use ESCAPE for closing the ColonyPanel:
-        InputMap closeIM = new ComponentInputMap(okButton);
-        closeIM.put(KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0, false),
-                    "pressed");
-        closeIM.put(KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0, true),
-                    "released");
-        SwingUtilities.replaceUIInputMap(okButton,
-            JComponent.WHEN_IN_FOCUSED_WINDOW, closeIM);
         okButton.setText(Messages.message("close"));
 
         InputMap unloadIM = new ComponentInputMap(unloadButton);
