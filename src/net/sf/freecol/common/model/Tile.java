@@ -1362,9 +1362,8 @@ public final class Tile extends UnitLocation implements Named, Ownable {
      * @return The defence value.
      */
     public double getDefenceValue() {
-        final TileType type = getType();
-        return (type == null) ? 0.0
-            : applyModifiers(1.0f, Turn.UNDEFINED, type.getDefenceModifiers());
+        return (type == null ? 0.0
+            : FeatureContainer.applyModifiers(1.0f, Turn.UNDEFINED, type.getDefenceModifiers()));
     }
 
     /**
@@ -1649,8 +1648,9 @@ public final class Tile extends UnitLocation implements Named, Ownable {
                                       UnitType unitType) {
         if (!canProduce(goodsType, unitType)) return 0;
 
-        int amount = getBaseProduction(null, goodsType, unitType);
-        amount = (int)applyModifiers(amount, getGame().getTurn(),
+        int amount = (int)FeatureContainer.applyModifiers(
+            getBaseProduction(null, goodsType, unitType),
+            getGame().getTurn(),
             getProductionModifiers(goodsType, unitType));
         return (amount < 0) ? 0 : amount;
     }

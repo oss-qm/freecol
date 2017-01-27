@@ -3238,7 +3238,7 @@ public class Unit extends GoodsLocation
      */
     public int getLineOfSight() {
         final int turn = getGame().getTurn();
-        return (int)applyModifiers(unitType.getLineOfSight(), turn,
+        return (int)FeatureContainer.applyModifiers(unitType.getLineOfSight(), turn,
             Stream.concat(this.getModifiers(Modifier.LINE_OF_SIGHT_BONUS,
                                             unitType, turn),
                 ((hasTile() && getTile().isExplored())
