@@ -151,7 +151,7 @@ public final class InGameController extends FreeColClientHolder {
 
     /** A map of messages to be ignored. */
     private final java.util.Map<String, Integer> messagesToIgnore
-        = Collections.synchronizedMap(new HashMap<>());
+        = Collections.synchronizedMap(new HashMap<String, Integer>());
 
     /** The messages in the last turn report. */
     private final List<ModelMessage> turnReportMessages = new ArrayList<>();
