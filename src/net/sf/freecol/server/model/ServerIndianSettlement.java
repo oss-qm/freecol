@@ -592,7 +592,7 @@ public class ServerIndianSettlement extends IndianSettlement
             lb.add(" bred ", nHorses, " horses");
         }
 
-        getGoodsContainer().removeAbove(getWarehouseCapacity());
+        getGoodsContainer().removeAbove(getGoodsCapacity());
         updateWantedGoods();
         cs.add(See.only(owner), this);
         lb.add(", ");

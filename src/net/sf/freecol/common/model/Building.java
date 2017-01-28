@@ -1,4 +1,5 @@
 /**
+
  *  Copyright (C) 2002-2017   The FreeCol Team
  *
  *  This file is part of FreeCol.
@@ -262,7 +263,7 @@ public class Building extends WorkLocation
         final int turn = getGame().getTurn();
         final boolean avoidOverflow
             = hasAbility(Ability.AVOID_EXCESS_PRODUCTION);
-        final int capacity = getColony().getWarehouseCapacity();
+        final int capacity = getColony().getGoodsCapacity();
         // Calculate two production ratios, the minimum (and actual)
         // possible multiplier between the nominal input and output
         // goods and the amount actually consumed and produced, and

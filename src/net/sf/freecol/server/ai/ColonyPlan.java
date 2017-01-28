@@ -860,7 +860,7 @@ public class ColonyPlan {
         for (Entry<GoodsType, Map<WorkLocation, Integer>> e : production.entrySet()) {
             GoodsType g = e.getKey();
             if (!g.isStorable() || g.limitIgnored()
-                    || colony.getGoodsCount(g) < colony.getWarehouseCapacity()) {
+                    || colony.getGoodsCount(g) < colony.getGoodsCapacity()) {
                 for (WorkLocation wl : e.getValue().keySet()) {
                     if (!wl.canBeWorked() && !wl.canAutoProduce()) continue;
                     workPlans.add(new WorkLocationPlan(getAIMain(), wl, e.getKey()));
