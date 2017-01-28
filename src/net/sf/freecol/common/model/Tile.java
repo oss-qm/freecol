@@ -622,7 +622,7 @@ public final class Tile extends UnitLocation implements Named, Ownable {
             = getSpecification().getTileType("model.tile.greatRiver");
         final TileType ocean
             = getSpecification().getTileType("model.tile.ocean");
-        boolean ret = getType() == greatRiver;
+        boolean ret = this.type == greatRiver;
         for (Tile t : getSurroundingTiles(1)) {
             if (t.getType() == ocean) return false;
             ret |= t.getType() == greatRiver;
@@ -702,7 +702,7 @@ public final class Tile extends UnitLocation implements Named, Ownable {
      * @return True if there is a completed improvement present.
      */
     public boolean hasTileImprovement(TileImprovementType type) {
-        return (type.isChangeType()) ? type.changeContainsTarget(getType())
+        return (type.isChangeType()) ? type.changeContainsTarget(this.type)
             : (tileItemContainer == null) ? false
             : tileItemContainer.hasImprovement(type);
     }
@@ -965,7 +965,7 @@ public final class Tile extends UnitLocation implements Named, Ownable {
         return (workType == null) ? -1
             : (getTileImprovement(workType) != null) ? -1
             // Return the basic work turns + additional work turns
-            : getType().getBasicWorkTurns() + workType.getAddWorkTurns();
+            : this.type.getBasicWorkTurns() + workType.getAddWorkTurns();
     }
 
     /**
@@ -977,7 +977,7 @@ public final class Tile extends UnitLocation implements Named, Ownable {
     public boolean isImprovementTypeAllowed(TileImprovementType type) {
         TileImprovement ti;
         return type != null
-            && type.isTileTypeAllowed(getType())
+            && type.isTileTypeAllowed(this.type)
             && ((ti = getTileImprovement(type)) == null || !ti.isComplete());
     }
 
@@ -1373,7 +1373,7 @@ public final class Tile extends UnitLocation implements Named, Ownable {
      * @return The percentage defence bonus.
      */
     public int getDefenceBonusPercentage() {
-        return (int)getType().applyModifiers(100f, getGame().getTurn(),
+        return (int)this.type.applyModifiers(100f, getGame().getTurn(),
                                              Modifier.DEFENCE)
             - 100;
     }
@@ -1539,7 +1539,7 @@ public final class Tile extends UnitLocation implements Named, Ownable {
             } else if (!goodsType.isFoodType()) {
                 continue;
             }
-            for (ProductionType productionType : getType()
+            for (ProductionType productionType : this.type
                      .getAvailableProductionTypes(false)) {
                 int potential = (productionType.getOutput(goodsType) == null)
                     ? 0 : getPotentialProduction(goodsType, null);
@@ -1682,7 +1682,7 @@ public final class Tile extends UnitLocation implements Named, Ownable {
     private int getMaximumPotential(GoodsType goodsType, UnitType unitType,
                                     TileType tileType) {
         float potential = tileType.getPotentialProduction(goodsType, unitType);
-        if (tileType == getType()) { // Handle the resource in the noop case
+        if (tileType == this.type) { // Handle the resource in the noop case
             Resource resource = (tileItemContainer == null) ? null
                 : tileItemContainer.getResource();
             if (resource != null) {
@@ -1721,9 +1721,9 @@ public final class Tile extends UnitLocation implements Named, Ownable {
 
         // Collect all the possible tile type changes.
         List<TileType> tileTypes = transform(improvements,
-            ti -> !ti.isNatural() && ti.getChange(getType()) != null,
-            ti -> ti.getChange(getType()));
-        tileTypes.add(0, getType()); //...including the noop case.
+            ti -> !ti.isNatural() && ti.getChange(this.type) != null,
+            ti -> ti.getChange(this.type));
+        tileTypes.add(0, this.type); //...including the noop case.
 
         // Find the maximum production under each tile type change.
         return max(tileTypes, tt ->
@@ -1759,7 +1759,7 @@ public final class Tile extends UnitLocation implements Named, Ownable {
     public List<AbstractGoods> getSortedPotential(UnitType unitType,
                                                   Player owner) {
         // Defend against calls while partially read.
-        if (getType() == null) return Collections.<AbstractGoods>emptyList();
+        if (this.type == null) return Collections.<AbstractGoods>emptyList();
 
         final ToIntFunction<GoodsType> productionMapper = cacheInt(gt ->
             getPotentialProduction(gt, unitType));
@@ -1786,7 +1786,7 @@ public final class Tile extends UnitLocation implements Named, Ownable {
     public AbstractGoods getBestFoodProduction() {
         AbstractGoods best_ag = null;
         int best_pot = 0;
-        for (ProductionType pt : getType().getAvailableProductionTypes(true))
+        for (ProductionType pt : this.type.getAvailableProductionTypes(true))
             for (AbstractGoods ag : pt.getOutputList())
                 if (ag.isFoodType()) {
                     int pot = getPotentialProduction(ag.getType(), null);
@@ -2227,7 +2227,7 @@ public final class Tile extends UnitLocation implements Named, Ownable {
             return ((Unit)locatable).isTileAccessible(this);
         } else if (locatable instanceof TileImprovement) {
             return ((TileImprovement)locatable).getType()
-                .isTileTypeAllowed(getType());
+                .isTileTypeAllowed(this.type);
         } else {
             return false;
         }
@@ -2256,9 +2256,8 @@ public final class Tile extends UnitLocation implements Named, Ownable {
     @Override
     public String toShortString() {
         StringBuilder sb = new StringBuilder(16);
-        TileType type = getType();
         sb.append(getX()).append(',').append(getY())
-            .append('-').append((type == null) ? "?" : type.getSuffix());
+            .append('-').append((type == null) ? "?" : this.type.getSuffix());
         return sb.toString();
     }
 
@@ -2271,12 +2270,12 @@ public final class Tile extends UnitLocation implements Named, Ownable {
     @Override
     public String getNameKey() {
         if (getGame().isInClient()) {
-            return (isExplored()) ? getType().getNameKey() : "unexplored";
+            return (isExplored()) ? this.type.getNameKey() : "unexplored";
         } else {
             Player player = getGame().getCurrentPlayer();
             if (player != null) {
                 return (getCachedTile(player) == null) ? "unexplored"
-                    : getType().getNameKey();
+                    : this.type.getNameKey();
             } else {
                 logger.warning("player == null");
                 return "";
@@ -2359,7 +2358,7 @@ public final class Tile extends UnitLocation implements Named, Ownable {
                                         FreeColSpecObjectType fcgot,
                                         int turn) {
         // Delegate to type
-        return getType().getAbilities(id, fcgot, turn);
+        return this.type.getAbilities(id, fcgot, turn);
     }
 
 
