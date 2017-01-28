@@ -2539,12 +2539,23 @@ public class Colony extends Settlement implements Nameable, TradeLocation {
     }
 
     /**
-     * {@inheritDoc}
+     * Compute the storage capacity of the colony, which is just the sum
+     * of the colony's buildings capacities. Each colony has at least an
+     * simple depot - warehouses and warehouse extensions are separate
+     * buildings that just add their capacity.
+     *
+     * Note: the capacity is counted per goods type - not for all goods
+     * together - but equal for all goods types.
+     *
+     * @return The colony's storage capacity.
      */
     @Override
     public int getGoodsCapacity() {
-        return (int)applyModifiers(0f, getGame().getTurn(),
-                Modifier.WAREHOUSE_STORAGE);
+        int turn = getGame().getTurn();
+        int cap = 0;
+        for (Building b : this.buildingMap.values())
+            cap += b.getStorageCapacity(turn);
+        return cap;
     }
 
     /**

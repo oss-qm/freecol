@@ -376,6 +376,16 @@ public class Building extends WorkLocation
     }
 
     /**
+     * Gets the storage capacity of this building.
+     *
+     * @param turn The current turn
+     * @return The storage capacity for goods
+     */
+    public final int getStorageCapacity(int turn) {
+        return buildingType.getStorageCapacity(turn);
+    }
+
+    /**
      * Evaluate this work location for a given player.
      *
      * @param player The {@code Player} to evaluate for.
