@@ -948,6 +948,16 @@ public final class Specification {
             : new ArrayList<Modifier>(result)); // copy to allow modification
     }
 
+    /**
+     * Fill in all the Modifiers with the given identifier.
+     *
+     * @param id The object identifier to look for.
+     * @return A stream of {@code Modifier}s.
+     */
+    public void fillModifiers(Collection<Modifier> result, String id) {
+        if (result != null)
+            result.addAll(result);
+    }
 
     // Option routines
 

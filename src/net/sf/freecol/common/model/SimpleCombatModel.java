@@ -294,7 +294,7 @@ public class SimpleCombatModel extends CombatModel {
                                             Set<Modifier> result) {
         // Attack bonus
         final Specification spec = attacker.getSpecification();
-        result.addAll(spec.getModifiers(Modifier.ATTACK_BONUS));
+        spec.fillModifiers(result, Modifier.ATTACK_BONUS);
 
         // Goods penalty always applies
         int goodsCount = attacker.getGoodsSpaceTaken();
@@ -337,15 +337,15 @@ public class SimpleCombatModel extends CombatModel {
         final Specification spec = attacker.getSpecification();
 
         // Attack bonus
-        result.addAll(spec.getModifiers(Modifier.ATTACK_BONUS));
+        spec.fillModifiers(result, Modifier.ATTACK_BONUS);
 
         // Movement penalty
         switch (attacker.getMovesLeft()) {
         case 1:
-            result.addAll(spec.getModifiers(Modifier.BIG_MOVEMENT_PENALTY));
+            spec.fillModifiers(result, Modifier.BIG_MOVEMENT_PENALTY);
             break;
         case 2:
-            result.addAll(spec.getModifiers(Modifier.SMALL_MOVEMENT_PENALTY));
+            spec.fillModifiers(result, Modifier.SMALL_MOVEMENT_PENALTY);
             break;
         default:
             break;
@@ -353,7 +353,7 @@ public class SimpleCombatModel extends CombatModel {
 
         // Amphibious attack?
         if (combatIsAmphibious(attacker, defender)) {
-            result.addAll(spec.getModifiers(Modifier.AMPHIBIOUS_ATTACK));
+            spec.fillModifiers(result, Modifier.AMPHIBIOUS_ATTACK);
         }
 
         if (combatIsAttackMeasurement(attacker, defender)) {
@@ -401,7 +401,7 @@ public class SimpleCombatModel extends CombatModel {
                 && attacker.getSettlement() == null
                 && attacker.getState() != Unit.UnitState.FORTIFIED
                 && defenderUnit.getSettlement() == null) {
-                result.addAll(spec.getModifiers(Modifier.ARTILLERY_IN_THE_OPEN));
+                spec.fillModifiers(result, Modifier.ARTILLERY_IN_THE_OPEN);
             }
         } else {
             throw new IllegalStateException("Bogus combat");
@@ -537,7 +537,7 @@ public class SimpleCombatModel extends CombatModel {
                 // Artillery in the Open penalty
                 if (defender.hasAbility(Ability.BOMBARD)
                     && defender.getState() != Unit.UnitState.FORTIFIED) {
-                    result.addAll(spec.getModifiers(Modifier.ARTILLERY_IN_THE_OPEN));
+                    spec.fillModifiers(result, Modifier.ARTILLERY_IN_THE_OPEN);
                 }
 
             } else { // In settlement
@@ -568,7 +568,7 @@ public class SimpleCombatModel extends CombatModel {
             // Fortify bonus
             if (defender.getState() == Unit.UnitState.FORTIFIED
                 && !disableFortified) {
-                result.addAll(spec.getModifiers(Modifier.FORTIFIED));
+                spec.fillModifiers(result, Modifier.FORTIFIED);
             }
         }
     }
