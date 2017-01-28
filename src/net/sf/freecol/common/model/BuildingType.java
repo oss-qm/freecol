@@ -311,6 +311,16 @@ public final class BuildingType extends BuildableType
     }
 
     /**
+     * Gets the storage capacity of this building.
+     *
+     * @param turn the current turn
+     * @return The storage capacity for goods
+     */
+    public final int getStorageCapacity(int turn) {
+        return (int)applyModifiers(0f, turn, Modifier.WAREHOUSE_STORAGE);
+    }
+
+    /**
      * Can a tile of this type produce a given goods type?
      *
      * @param goodsType The {@code GoodsType} to produce.
