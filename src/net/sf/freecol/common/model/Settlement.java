@@ -426,16 +426,6 @@ public abstract class Settlement extends GoodsLocation
     }
 
     /**
-     * Gets the storage capacity of this settlement.
-     *
-     * @return The storage capacity of this settlement.
-     * @see #getGoodsCapacity
-     */
-    public int getWarehouseCapacity() {
-        return getGoodsCapacity();
-    }
-
-    /**
      * Check if colony has the ability to bombard an enemy ship
      * adjacent to it.  Only sea-side colonies can bombard.  Does it
      * have the buildings that give such abilities?

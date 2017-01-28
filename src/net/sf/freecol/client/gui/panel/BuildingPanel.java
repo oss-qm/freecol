@@ -137,7 +137,7 @@ public class BuildingPanel extends MigPanel implements PropertyChangeListener {
         if (output != null && output.getAmount() > 0) {
             if (building.hasAbility(Ability.AVOID_EXCESS_PRODUCTION)) {
                 int stored = colony.getGoodsCount(output.getType());
-                int capacity = colony.getWarehouseCapacity();
+                int capacity = colony.getGoodsCapacity();
                 if (output.getAmount() + stored > capacity) {
                     output = new AbstractGoods(output.getType(),
                                                capacity - stored);

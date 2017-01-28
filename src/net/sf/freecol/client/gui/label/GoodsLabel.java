@@ -143,7 +143,7 @@ public final class GoodsLabel extends AbstractGoodsLabel
                                  Location location) {
         String key = (!goodsType.limitIgnored()
                 && location instanceof Colony
-                && ((Colony) location).getWarehouseCapacity() < amount)
+                && ((Colony) location).getGoodsCapacity() < amount)
                      ? "color.foreground.GoodsLabel.capacityExceeded"
                      : (location instanceof Colony && goodsType.isStorable()
                 && ((Colony) location).getExportData(goodsType).getExported())

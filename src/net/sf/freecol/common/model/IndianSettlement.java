@@ -1420,7 +1420,7 @@ public class IndianSettlement extends Settlement implements TradeLocation {
 
         int present = Math.max(0, getGoodsCount(goodsType)
             - turns * getTotalProductionOf(goodsType));
-        int capacity = getWarehouseCapacity();
+        int capacity = getGoodsCapacity();
         return capacity - present;
     }
 

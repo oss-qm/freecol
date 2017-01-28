@@ -226,7 +226,7 @@ public class ColonyProductionTest extends FreeColTestCase {
         assertEquals(horsesType, outputs.get(0).getType());
 
         assertEquals("Wrong warehouse capacity in colony",
-            GoodsContainer.CARGO_SIZE, colony.getWarehouseCapacity());
+            GoodsContainer.CARGO_SIZE, colony.getGoodsCapacity());
 
         // Still room for more
         colony.addGoods(horsesType, 99);
@@ -246,7 +246,7 @@ public class ColonyProductionTest extends FreeColTestCase {
         colony.invalidateCache();
 
         assertEquals("Wrong number of horses in colony",
-            colony.getWarehouseCapacity(), colony.getGoodsCount(horsesType));
+            colony.getGoodsCapacity(), colony.getGoodsCount(horsesType));
         assertEquals("Wrong horse production", 0,
             pasture.getTotalProductionOf(horsesType));
         assertEquals("Wrong maximum horse production", 0,
