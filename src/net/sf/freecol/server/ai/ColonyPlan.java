@@ -847,7 +847,7 @@ public class ColonyPlan {
         final Predicate<Entry<GoodsType, Map<WorkLocation, Integer>>> fullPred = (e) -> {
             GoodsType g = e.getKey();
             return !g.isStorable() || g.limitIgnored()
-                || colony.getGoodsCount(g) < colony.getWarehouseCapacity();
+                || colony.getGoodsCount(g) < colony.getGoodsCapacity();
         };
         forEachMapEntry(production, fullPred, e -> {
                 for (WorkLocation wl : transform(e.getValue().keySet(),

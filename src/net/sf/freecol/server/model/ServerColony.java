@@ -753,7 +753,7 @@ public class ServerColony extends Colony implements TurnTaker {
 
         // Throw away goods there is no room for, and warn about
         // levels that will be exceeded next turn
-        final int limit = getWarehouseCapacity();
+        final int limit = getGoodsCapacity();
         final int adjustment = limit / GoodsContainer.CARGO_SIZE;
         for (Goods goods : transform(getCompactGoods(),
                                      AbstractGoods::isStorable)) {

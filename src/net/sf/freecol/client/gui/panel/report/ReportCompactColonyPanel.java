@@ -274,7 +274,7 @@ public final class ReportCompactColonyPanel extends ReportPanel
          */
         private void produce(GoodsType goodsType) {
             final ExportData exportData = colony.getExportData(goodsType);
-            final int adjustment = colony.getWarehouseCapacity()
+            final int adjustment = colony.getGoodsCapacity()
                 / GoodsContainer.CARGO_SIZE;
             final int low = exportData.getLowLevel() * adjustment;
             final int high = exportData.getHighLevel() * adjustment;
@@ -309,12 +309,12 @@ public final class ReportCompactColonyPanel extends ReportPanel
                 extra = exportData.getExportLevel();
             } else if (goodsType.limitIgnored()) {
                 status = ProductionStatus.GOOD;
-            } else if (amount + p > colony.getWarehouseCapacity()) {
+            } else if (amount + p > colony.getGoodsCapacity()) {
                 status = ProductionStatus.OVERFLOW;
-                extra = amount + p - colony.getWarehouseCapacity();
+                extra = amount + p - colony.getGoodsCapacity();
             } else if (amount >= high) {
                 status = ProductionStatus.EXCESS;
-                extra = (colony.getWarehouseCapacity() - amount) / p;
+                extra = (colony.getGoodsCapacity() - amount) / p;
             } else {
                 status = ProductionStatus.GOOD;
                 extra = 0;

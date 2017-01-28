@@ -252,7 +252,7 @@ public class Colony extends Settlement implements Nameable, TradeLocation {
     public ExportData getExportData(final GoodsType goodsType) {
         ExportData result = exportData.get(goodsType.getId());
         if (result == null) {
-            result = new ExportData(goodsType, getWarehouseCapacity());
+            result = new ExportData(goodsType, getGoodsCapacity());
             setExportData(result);
         }
         return result;
@@ -2367,7 +2367,7 @@ loop:   for (WorkLocation wl : getWorkLocationsForProducing(goodsType)) {
             } else { // Check for overflow
                 int waste;
                 if (!getExportData(goodsType).getExported()
-                        && (waste = amount + production - getWarehouseCapacity()) > 0) {
+                        && (waste = amount + production - getGoodsCapacity()) > 0) {
                     result.add(StringTemplate
                             .template("model.building.warehouseSoonFull")
                             .addNamed("%goods%", goodsType)
@@ -2995,7 +2995,7 @@ loop:   for (WorkLocation wl : getWorkLocationsForProducing(goodsType)) {
 
         final int present = ReturnPresent(goodsType, turns);
         final ExportData ed = getExportData(goodsType);
-        int capacity = ed.getEffectiveImportLevel(getWarehouseCapacity());
+        int capacity = ed.getEffectiveImportLevel(getGoodsCapacity());
         return Math.max(0, capacity - present);
     }
 

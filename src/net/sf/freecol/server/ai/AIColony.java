@@ -353,7 +353,7 @@ public class AIColony extends AIObject implements PropertyChangeListener {
             int when = colony.getGoodsCount(spec.getPrimaryFoodType()) / -net;
             nextRearrange = Math.max(0, Math.min(nextRearrange, when-1));
         }
-        int warehouse = colony.getWarehouseCapacity();
+        int warehouse = colony.getGoodsCapacity();
         for (GoodsType g : transform(spec.getStorableGoodsTypeList(),
                                      gt -> !gt.isFoodType())) {
             int have = colony.getGoodsCount(g);
@@ -454,7 +454,7 @@ public class AIColony extends AIObject implements PropertyChangeListener {
                 colony.getExportData(g).setExported(false);
             }
         } else {
-            int exportLevel = 4 * colony.getWarehouseCapacity() / 5;
+            int exportLevel = 4 * colony.getGoodsCapacity() / 5;
             for (GoodsType g : spec.getGoodsTypeList()) {
                 if (fullExport.contains(g)) {
                     colony.getExportData(g).setExportLevel(0);
@@ -743,7 +743,7 @@ public class AIColony extends AIObject implements PropertyChangeListener {
 
             // Create a new batch of exported goods.
             final Europe europe = colony.getOwner().getEurope();
-            final int capacity = colony.getWarehouseCapacity();
+            final int capacity = colony.getGoodsCapacity();
             List<AIGoods> newAIGoods = new ArrayList<>();
             outer: for (GoodsType gt : getSpecification().getGoodsTypeList()) {
                 if (colony.getAdjustedNetProductionOf(gt) < 0) continue;
@@ -1171,7 +1171,7 @@ public class AIColony extends AIObject implements PropertyChangeListener {
                 requiredType = requiredType.getInputType();
             }
             if (requiredType == null) continue;
-            int amount = Math.min(colony.getWarehouseCapacity(),
+            int amount = Math.min(colony.getGoodsCapacity(),
                 (required.getCount(type)
                     - colony.getGoodsCount(requiredType)));
             if (amount > 0) {

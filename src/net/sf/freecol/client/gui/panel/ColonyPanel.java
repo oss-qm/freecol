@@ -1630,7 +1630,7 @@ public final class ColonyPanel extends PortPanel
         @Override
         public int suggested(GoodsType type) {
             Colony colony = getColony();
-            return colony.getWarehouseCapacity() - colony.getGoodsCount(type);
+            return colony.getGoodsCapacity() - colony.getGoodsCount(type);
         }
 
 

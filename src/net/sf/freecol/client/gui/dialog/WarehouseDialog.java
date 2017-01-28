@@ -137,7 +137,7 @@ public final class WarehouseDialog extends FreeColConfirmDialog {
                 .getBoolean(GameOptions.ENHANCED_TRADE_ROUTES);
             this.colony = colony;
             this.goodsType = goodsType;
-            final int capacity = colony.getWarehouseCapacity();
+            final int capacity = colony.getGoodsCapacity();
             final int maxCapacity = 300; // TODO: magic number
 
             setLayout(new MigLayout("wrap 2", "", ""));
@@ -218,7 +218,7 @@ public final class WarehouseDialog extends FreeColConfirmDialog {
             int exportLevelValue = ((SpinnerNumberModel)exportLevel.getModel())
                 .getNumber().intValue();
             ExportData exportData = colony.getExportData(goodsType);
-            int importValue = exportData.getEffectiveImportLevel(colony.getWarehouseCapacity());
+            int importValue = exportData.getEffectiveImportLevel(colony.getGoodsCapacity());
             boolean changed = (export.isSelected() != exportData.getExported())
                 || (lowLevelValue != exportData.getLowLevel())
                 || (highLevelValue != exportData.getHighLevel())
