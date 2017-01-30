@@ -1217,9 +1217,16 @@ public abstract class FreeColObject
             readFromXMLPartial(xr);
         } else {
             readAttributes(xr);
-
             readChildren(xr);
+            postRead();
         }
+    }
+
+    /**
+     * do post-processing after the object is fully read
+     */
+    protected void postRead() {
+        // nothing to do here
     }
 
     /**
