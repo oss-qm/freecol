@@ -463,6 +463,7 @@ public final class FeatureContainer {
      *     in.
      */
     public void removeFeatures(FreeColObject fco) {
+        if (fco == null) return;
         FeatureContainer c = fco.getFeatureContainer();
         if (c == null) return;
 
