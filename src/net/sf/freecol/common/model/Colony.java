@@ -943,9 +943,8 @@ public class Colony extends Settlement implements Nameable, TradeLocation {
      * @return True if the building is available at zero cost.
      */
     public boolean isAutomaticBuild(BuildingType buildingType) {
-        float value = owner.applyModifiers(100f, getGame().getTurn(),
-                Modifier.BUILDING_PRICE_BONUS, buildingType);
-        return value == 0f && canBuild(buildingType);
+        return owner.canBuildForFree(buildingType, getGame().getTurn())
+                && canBuild(buildingType);
     }
 
     /**
