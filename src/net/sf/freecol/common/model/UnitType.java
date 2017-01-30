@@ -516,6 +516,18 @@ public final class UnitType extends BuildableType implements Consumer {
     }
 
     /**
+     * apply the volume penalty for trading with the natives
+     *
+     * @param amount The offered amount w/o the penalty
+     * @param turn   The current turn
+     * @return       The offered amount w/ penalty applied
+     */
+    public int applyTradeVolumePenalty(int amount, int turn) {
+        return Math.round(
+            applyModifiers((float)amount, turn, Modifier.TRADE_VOLUME_PENALTY));
+    }
+
+    /**
      * Add consumption.
      *
      * @param type The {@code GoodsType} to consume.
