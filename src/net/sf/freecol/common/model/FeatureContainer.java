@@ -349,15 +349,10 @@ public final class FeatureContainer {
 
         Collections.sort(modifiers, Modifier.ascendingModifierIndexComparator);
 
-        float result = number;
-        for (Modifier m : modifiers) {
-            float value = m.getValue(turn);
-            if (Float.compare(value, Modifier.UNKNOWN) == 0) {
-                return value;
-            }
-            result = m.apply(result, value);
-        }
-        return result;
+        for (Modifier m : modifiers)
+            number = m.calc(number, turn);
+
+        return number;
     }
 
     /**
