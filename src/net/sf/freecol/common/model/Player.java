@@ -3307,6 +3307,20 @@ public class Player extends FreeColGameObject implements Nameable {
     };
 
     /**
+     * Can the player build given BuildingType for free ?
+     *
+     * This is influenced by founding fathers.
+     *
+     * @param buildingType  the type of building
+     * @param turn          the current turn
+     * @return True when given buildingType is free for the player
+     */
+    public boolean canBuildForFree(BuildingType buildingType, int turn) {
+        // FIXME: ask the sources (eg. founding fathers) directly
+        return (applyModifiers(100f, turn, Modifier.BUILDING_PRICE_BONUS, buildingType) == 0f);
+    }
+
+    /**
      * Can a tile be owned by this player?
      *
      * @param tile The {@code Tile} to consider.
