@@ -238,6 +238,26 @@ public final class BuildingType extends BuildableType
     }
 
     /**
+     * Get the breeding divisor of this building type
+     *
+     * @param turn  The current turn
+     * @return breeding divisor
+     */
+    public int getBreedingDivisor(int turn) {
+        return (int)applyModifiers(0f, turn, Modifier.BREEDING_DIVISOR);
+    }
+
+    /**
+     * Get the breeding factor of this building type
+     *
+     * @param turn  The current turn
+     * @return breeding factor
+     */
+    public int getBreedingFactor(int turn) {
+        return (int)applyModifiers(0f, turn, Modifier.BREEDING_FACTOR);
+    }
+
+    /**
      * Add a production type to this building type.
      *
      * @param productionType The {@code ProductionType} to add.

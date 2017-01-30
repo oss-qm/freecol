@@ -280,10 +280,8 @@ public class Building extends WorkLocation
                 if (available >= capacity) {
                     minimumRatio = maximumRatio = 0.0;
                 } else {
-                    int divisor = (int)getType().applyModifiers(0f, turn,
-                        Modifier.BREEDING_DIVISOR);
-                    int factor = (int)getType().applyModifiers(0f, turn,
-                        Modifier.BREEDING_FACTOR);
+                    int divisor = this.buildingType.getBreedingDivisor(turn);
+                    int factor  = this.buildingType.getBreedingFactor(turn);
                     int production = (available < goodsType.getBreedingNumber()
                         || divisor <= 0) ? 0
                         // Deliberate use of integer division
