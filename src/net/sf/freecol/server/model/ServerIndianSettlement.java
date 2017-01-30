@@ -156,8 +156,7 @@ public class ServerIndianSettlement extends IndianSettlement
 
         // Check for braves converted by missionaries
         float convert = getConvertProgress();
-        float cMiss = missionary.applyModifiers(missionary.getType().getSkill(),
-                                                turn, Modifier.CONVERSION_SKILL);
+        float cMiss = missionary.getMissionarySkill(turn);
         // The convert rate increases by a percentage of the current alarm.
         int alarm = Math.min(getAlarm(other).getValue(), Tension.TENSION_MAX);
         float cAlarm = missionary.applyModifiers(alarm, turn,
