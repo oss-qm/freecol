@@ -523,6 +523,29 @@ public class Modifier extends Feature {
             : apply(number, getValue(turn), getType());
     }
 
+    /**
+     * Calculate a value by applying this modifier based on turn.
+     * If it's not applicable on this turn), just return the same value.
+     *
+     * @param number   The number to calculate from
+     * @param turn     The {@code Turn} to check.
+     * @return The turn-dependent modifier value.
+     */
+    public final float calc(float number, int turn) {
+        if (!appliesTo(turn))
+            return number;
+
+        if (!hasIncrement())
+            return apply(number, this.value, this.modifierType);
+
+        // if we have an increment, the actual operand has to be calculated
+        // on the modifier value, turn difference and increment type
+        return apply(
+            number,
+            apply(this.value, (turn-getFirstTurn())*this.increment, this.incrementType),
+            this.modifierType);
+    }
+
     // @compat 0.10.7
     /**
      * Helper for scope fixups.
