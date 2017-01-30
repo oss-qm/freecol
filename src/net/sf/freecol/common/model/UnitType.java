@@ -317,6 +317,16 @@ public final class UnitType extends BuildableType implements Consumer {
     }
 
     /**
+     * Get the missionary skill of this unit
+     *
+     * @param turn The current turn
+     * @return the missionary skill
+     */
+    public float getMissionarySkill(int turn) {
+        return applyModifiers(getSkill(), turn, Modifier.CONVERSION_SKILL);
+    }
+
+    /**
      * Set the skill level associated with this unit type.
      * Required by the test suite.
      *

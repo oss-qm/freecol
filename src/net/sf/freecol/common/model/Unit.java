@@ -2444,6 +2444,16 @@ public class Unit extends GoodsLocation
     }
 
     /**
+     * Get the missionary skill of this unit
+     *
+     * @param turn The current turn
+     * @return the missionary skill
+     */
+    public float getMissionarySkill(int turn) {
+        return unitType.getMissionarySkill(turn);
+    }
+
+    /**
      * apply the volume penalty for trading with the natives
      *
      * @param amount The offered amount w/o the penalty
