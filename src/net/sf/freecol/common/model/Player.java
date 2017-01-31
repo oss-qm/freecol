@@ -1395,6 +1395,20 @@ public class Player extends FreeColGameObject implements Nameable {
     }
 
     /**
+     * Get the turns a given {@code UnitType} needs to sail from/to Europe
+     *
+     * @param unitType The {@code UnitType} of unit to check
+     * @return number of turns to sail from/to Europe
+     */
+    public int getSailEuropeTurns(UnitType unitType) {
+        return (int)applyModifiers(
+            getSpecification().getInteger(GameOptions.TURNS_TO_SAIL),
+            getGame().getTurn(),
+            Modifier.SAIL_HIGH_SEAS,
+            unitType);
+    }
+
+    /**
      * Does this player have a certain Founding father.
      *
      * @param someFather The {@code FoundingFather} to check.

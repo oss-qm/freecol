@@ -2493,10 +2493,7 @@ public class Unit extends GoodsLocation
      * @return The number of turns to sail to/from Europe.
      */
     public int getSailTurns() {
-        float base = getSpecification().getInteger(GameOptions.TURNS_TO_SAIL);
-        return (int)getOwner().applyModifiers(base, getGame().getTurn(),
-                                              Modifier.SAIL_HIGH_SEAS,
-                                              unitType);
+        return getOwner().getSailEuropeTurns(this.unitType);
     }
 
     /**
