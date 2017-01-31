@@ -1317,7 +1317,7 @@ public class Colony extends Settlement implements Nameable, TradeLocation {
         if (uc <= 0) return -1;
 
         float membership = (liberty * 100.0f) / (LIBERTY_PER_REBEL * uc);
-        membership = getOwner().applyModifiers(membership, getGame().getTurn(), Modifier.SOL);
+        membership = getOwner().calcSoLPercentage(membership, getGame().getTurn());
         if (membership < 0.0f) {
             membership = 0.0f;
         } else if (membership > 100.0f) {

@@ -1377,6 +1377,13 @@ public class Player extends FreeColGameObject implements Nameable {
     }
 
     /**
+     * apply SoL modifiers
+     */
+    public final float calcSoLPercentage(float membership, int turn) {
+        return applyModifiers(membership, turn, Modifier.SOL);
+    }
+
+    /**
      * Gets the founding fathers in this player's congress.
      *
      * @return A set of {@code FoundingFather}s in congress.
