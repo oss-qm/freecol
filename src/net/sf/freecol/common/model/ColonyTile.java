@@ -254,7 +254,9 @@ public class ColonyTile extends WorkLocation {
 
         // Units are present, see what the change would do to their work.
         final GoodsType work = getCurrentWorkType();
-        final UnitType unitType = getFirstUnit().getType();
+        final Unit firstUnit = getFirstUnit();
+        if (firstUnit == null) System.out.println("firstUnit IS NULL");
+        final UnitType unitType = firstUnit.getType();
         return (work == null) // No work, improvement does nothing
             ? 0
             : (newType == null) // No tile change, but return the new bonus
