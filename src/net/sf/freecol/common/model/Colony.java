@@ -3053,6 +3053,15 @@ loop:   for (WorkLocation wl : getWorkLocationsForProducing(goodsType)) {
                 result = -1;
             }
         }
+
+        /** fixup the population queue if it got empty **/
+        if (populationQueue.isEmpty()) {
+            for (UnitType unitType : getSpecification().getUnitTypesWithAbility(Ability.BORN_IN_COLONY)) {
+                if (!unitType.needsGoodsToBuild()) continue;
+                populationQueue.add(unitType);
+            }
+        }
+
         List<UnitType> unitTypes = populationQueue.getValues();
         assumeBuilt.clear();
         for (int i = 0; i < unitTypes.size(); i++) {
