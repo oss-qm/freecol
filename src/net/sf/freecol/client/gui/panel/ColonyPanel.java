@@ -487,11 +487,11 @@ public final class ColonyPanel extends PortPanel
         tilesPanel.initialize();
         warehousePanel.initialize();
 
-        add(this.nameBox, "height 42:, grow");
+        add(this.nameBox, "height 36:, grow");
         int tmp = (int)(ImageLibrary.ICON_SIZE.height
             * gui.getImageLibrary().getScaleFactor());
         add(netProductionPanel,
-            "grow, height " + (tmp+10) + ":" + (2*tmp+10) + ":" + (2*tmp+10));
+            "grow, height " + (tmp+5) + ":" + (2*tmp+5) + ":" + (2*tmp+5));
         add(tilesScroll, "width 390!, height 200!, top");
         add(buildingsScroll, "span 1 3, grow");
         add(populationPanel, "grow");
