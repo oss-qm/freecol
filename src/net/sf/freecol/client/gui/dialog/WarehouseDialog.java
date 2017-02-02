@@ -31,6 +31,7 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JSpinner;
 import javax.swing.SpinnerNumberModel;
+import java.awt.Dimension;
 
 import net.miginfocom.swing.MigLayout;
 
@@ -86,11 +87,20 @@ public final class WarehouseDialog extends FreeColConfirmDialog {
         panel.add(Utility.localizedHeader(Messages.nameKey("warehouseDialog"), false),
                   "align center");
         panel.add(scrollPane, "grow");
-        panel.setSize(panel.getPreferredSize());
+
+        setUndecorated(false);
 
         ImageIcon icon = new ImageIcon(
             getImageLibrary().getSmallSettlementImage(colony));
         initializeConfirmDialog(frame, true, panel, icon, "ok", "cancel");
+
+        setResizable(true);
+
+        Dimension sz = getPreferredSize();
+        System.out.println("Dialog size: "+sz.width+":"+sz.height);
+        sz.height -= 100;
+        sz.width += 50;
+        setSize(sz);
     }
 
 
