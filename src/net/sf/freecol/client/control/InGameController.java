@@ -1930,30 +1930,38 @@ public final class InGameController extends FreeColClientHolder {
 
             // At the stop, do the work available.
             lb.mark();
+            System.out.println("A Unit "+unit.getId()+" at "+unit.getLocation().getId()+" "+unit.getMovesLeft()+" moves left");
             unloadUnitAtStop(unit, lb); // Anything to unload?
+            System.out.println("B Unit "+unit.getId()+" at "+unit.getLocation().getId()+" "+unit.getMovesLeft()+" moves left");
             loadUnitAtStop(unit, lb); // Anything to load?
+            System.out.println("C Unit "+unit.getId()+" at "+unit.getLocation().getId()+" "+unit.getMovesLeft()+" moves left");
             lb.grew("\n", Messages.message(stop.getLabelFor("tradeRoute.atStop",
                                                             player)));
 
             // If the un/load consumed the moves, break now before
             // updating the stop.  This allows next turn to retry
             // un/loading, but this time it will not consume the moves.
-            if (unit.getMovesLeft() <= 0) break;
+            if (unit.getMovesLeft() <= 0) {
+                System.out.println("Unit "+unit.getId()+" has no moves left");
+                break;
+            }
 
             // Find the next stop with work to do.
             TradeRouteStop next = null;
             List<TradeRouteStop> moreStops = unit.getCurrentStops();
-            if (unit.atStop(moreStops.get(0))) moreStops.remove(0);
+            if (unit.atStop(moreStops.get(0))) { System.out.println("clearing this stop"); moreStops.remove(0); }
             for (TradeRouteStop trs : moreStops) {
                 if (trs.hasWork(unit, (!checkProduction) ? 0
                                 : unit.getTurnsToReach(trs.getLocation()))) {
                     next = trs;
+                    System.out.println("picking next stop: "+next.getId());
                     break;
                 }
             }
             if (next == null) {
                 // No work was found anywhere on the trade route,
                 // so we should skip this unit.
+                System.out.println("nothing more to do on that route for "+unit.getId()+" at "+unit.getLocation().getId());
                 lb.add(" ", Messages.message("tradeRoute.wait"));
                 changeState(unit, UnitState.SKIPPED);
                 unit.setMovesLeft(0);
@@ -1981,6 +1989,7 @@ public final class InGameController extends FreeColClientHolder {
                 stops.remove(0);
             }
             // Set the new stop, skip on error.
+            System.out.println("setting new stop #"+tr.getIndex(next)+" id "+next.getLocation().getId());
             if (!askServer().setCurrentStop(unit, tr.getIndex(next))) {
                 changeState(unit, UnitState.SKIPPED);
                 break;
@@ -2243,6 +2252,8 @@ public final class InGameController extends FreeColClientHolder {
         final StringTemplate noUnload = StringTemplate.label(", ");
         boolean ret = false;
 
+        System.out.println("traderoue stop of "+unit.getId()+" at "+((Location)trl).getLocationLabel());
+
         // Unload everything that is on the carrier but not listed to
         // be loaded at this stop.
         for (Goods goods : unit.getCompactGoodsList()) {
@@ -2271,6 +2282,7 @@ public final class InGameController extends FreeColClientHolder {
                         .addNamed("%goods%", goods);
                     if (!getGUI().confirm(unit.getTile(), template,
                                      unit, "yes", "no")) {
+                        System.out.println("Only unloading "+atStop+"/"+amount);
                         if (atStop == 0) continue;
                         amount = atStop;
                     }
@@ -2334,6 +2346,8 @@ public final class InGameController extends FreeColClientHolder {
                     .template("tradeRoute.unloadStop.noUnload")
                         .addStringTemplate("%goodsList%", noUnload)));
         }
+
+        System.out.println("traderoue stop of "+unit.getId()+" at "+((Location)trl).getLocationLabel()+", moves left "+unit.getMovesLeft());
 
         return ret;
     }
