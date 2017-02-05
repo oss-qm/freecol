@@ -2340,15 +2340,6 @@ public class Player extends FreeColGameObject implements Nameable {
     }
 
     /**
-     * Get a stream of the connected port settlements.
-     *
-     * @return A stream of connected port {@code Colony}s.
-     */
-    public Stream<Colony> getConnectedPorts() {
-        return getConnectedPortList().stream();
-    }
-
-    /**
      * Does this player own a given settlement.
      *
      * @param settlement The {@code Settlement} to check.
