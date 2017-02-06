@@ -216,7 +216,7 @@ public class ColonyProductionTest extends FreeColTestCase {
         int expectedBellNetProd = expectedBellProd - expectedBellUpkeep;
         assertEquals("Wrong unattended bell net production", expectedBellNetProd,
                      bellsNetProdPerTurn);
-        
+
         Unit unit = colony.getFirstUnit();
         assertTrue(unit.setLocation(townHall));
         colony.invalidateCache();

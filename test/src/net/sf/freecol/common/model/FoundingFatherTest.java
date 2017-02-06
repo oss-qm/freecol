@@ -128,7 +128,7 @@ public class FoundingFatherTest extends FreeColTestCase {
         Game game = getGame();
         for (FoundingFather father : spec().getFoundingFathers()) {
             for (Player player : game.getPlayerList()) {
-                assertEquals(player.getNationId(), player.isEuropean(), 
+                assertEquals(player.getNationId(), player.isEuropean(),
                              father.isAvailableTo(player));
             }
         }

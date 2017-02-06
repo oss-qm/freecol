@@ -199,7 +199,7 @@ public class MissionAssignmentTest extends FreeColTestCase {
 
         // Put one brave outside the camp, but in the settlement tile,
         // so that he may defend the settlement
-        Unit braveOutside = new ServerUnit(game, settlementTile, inca, 
+        Unit braveOutside = new ServerUnit(game, settlementTile, inca,
                                            braveType);
         braveOutside.changeHomeIndianSettlement(camp);
 
@@ -214,7 +214,7 @@ public class MissionAssignmentTest extends FreeColTestCase {
             AIUnit aiUnit = aiMain.getAIUnit(brave);
             assertNotNull("Couldnt get the ai object for the brave", aiUnit);
             new UnitWanderHostileMission(aiMain, aiUnit);
-            assertTrue("Should be UnitWanderHostileMission", 
+            assertTrue("Should be UnitWanderHostileMission",
                 aiUnit.hasMission(UnitWanderHostileMission.class));
             assertEquals("Unit should be candidate for seek+destroy", null,
                 UnitSeekAndDestroyMission.invalidReason(aiUnit));

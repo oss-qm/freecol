@@ -201,7 +201,7 @@ public class AbstractGoods extends FreeColObject implements Named {
     /**
      * Convenience lookup of the goods count in a collection of
      * abstract goods given a goods type.
-     * 
+     *
      * @param type The {@code GoodsType} to look for.
      * @param goods The collection of {@code AbstractGoods} to look in.
      * @return The goods count found, or zero if not found.
@@ -303,7 +303,7 @@ public class AbstractGoods extends FreeColObject implements Named {
      *
      * @param ag The {@code AbstractGoods} to make a string from.
      * @return A string version of the goods.
-     */     
+     */
     public static String toString(AbstractGoods ag) {
         return toString(ag.getType(), ag.getAmount());
     }
@@ -314,7 +314,7 @@ public class AbstractGoods extends FreeColObject implements Named {
      * @param goodsType The {@code GoodsType} to use.
      * @param amount The amount of goods.
      * @return A string version of the goods.
-     */     
+     */
     public static String toString(GoodsType goodsType, int amount) {
         return amount + " "
             + ((goodsType == null) ? "(null)" : goodsType.getSuffix());

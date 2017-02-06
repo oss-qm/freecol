@@ -31,7 +31,7 @@ import javax.swing.JLabel;
  * dragged/dropped to/from Swing components.
  */
 public final class ImageSelection implements Transferable {
-    
+
     @SuppressWarnings("unused")
     private static final Logger logger = Logger.getLogger(ImageSelection.class.getName());
 

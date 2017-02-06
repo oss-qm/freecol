@@ -162,14 +162,14 @@ public final class ImageLibrary {
 
     /**
      * The constructor to use when needing a scaled {@code ImageLibrary}.
-     * 
+     *
      * Please avoid using too many different scaling factors, as this will
      * lead to wasted memory for caching images in ResourceManager!
      * Currently, 0.25, 0.5, ..., 2.0 are used for the map. Colony tiles and
      * the GUI use 1.0 here (maybe also 1.25, 1.5, 1.75 and 2.0 in future),
      * but this gets multiplied for tiny 0.25(rarely, candidate for removal),
      * smaller 0.5, small 0.75 and normal 1.0 image retrieval methods.
-     * 
+     *
      * @param scaleFactor The factor used when scaling. 2 is twice
      *      the size of the original images and 0.5 is half.
      */
@@ -914,7 +914,7 @@ public final class ImageLibrary {
 
     /**
      * Fills a certain rectangle with the image texture.
-     * 
+     *
      * @param g2 The {@code Graphics} used for painting the border.
      * @param img The {@code BufferedImage} to fill the texture.
      * @param x The x-component of the offset.
@@ -934,7 +934,7 @@ public final class ImageLibrary {
 
     /**
      * Creates a buffered image out of a given {@code Image} object.
-     * 
+     *
      * @param image The {@code Image} object.
      * @return The created {@code BufferedImage} object.
      */

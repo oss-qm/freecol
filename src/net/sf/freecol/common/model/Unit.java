@@ -262,7 +262,7 @@ public class Unit extends GoodsLocation
             setEthnicity(owner.getNationId());
         }
     }
-        
+
     /**
      * Get the individual name of this unit.
      *
@@ -429,7 +429,7 @@ public class Unit extends GoodsLocation
             .addName("%chance%", (unknown) ? "??"
                 : String.valueOf((int)(combatOdds.win * 100)));
     }
-    
+
     /**
      * Get a destination label for this unit.
      *
@@ -814,7 +814,7 @@ public class Unit extends GoodsLocation
      * Get the role count.
      *
      * @return The current role count.
-     */    
+     */
     public int getRoleCount() {
         return roleCount;
     }
@@ -823,7 +823,7 @@ public class Unit extends GoodsLocation
      * Set the role count.
      *
      * @param roleCount The new role count.
-     */    
+     */
     public void setRoleCount(int roleCount) {
         this.roleCount = roleCount;
     }
@@ -1341,7 +1341,7 @@ public class Unit extends GoodsLocation
     public UnitChange getUnitChange(String change) {
         return getUnitChange(change, null);
     }
-    
+
     /**
      * Get a unit change for this unit.
      *
@@ -2563,7 +2563,7 @@ public class Unit extends GoodsLocation
             && getState() == UnitState.ACTIVE
             && getMovesLeft() > 0;
     }
-    
+
     /**
      * Is this unit a suitable `next active unit', that is, the unit
      * needs to be currently movable by the player.
@@ -2605,7 +2605,7 @@ public class Unit extends GoodsLocation
             // Trade route code might set destination
     }
 
-    
+
     // Map support routines
 
     /**
@@ -2709,7 +2709,7 @@ public class Unit extends GoodsLocation
             Tile tile = getTile();
             if (tile != null && tile.isOnRiver()
                 && tile.isHighSeasConnected()) {
-                path = search(getLocation(), 
+                path = search(getLocation(),
                     GoalDeciders.getCornerGoalDecider(),
                     CostDeciders.avoidSettlementsAndBlockingUnits(),
                     INFINITY, null);
@@ -2853,7 +2853,7 @@ public class Unit extends GoodsLocation
     public Colony getClosestColony(List<Colony> colonies) {
         return getClosestColony(colonies.stream());
     }
-    
+
     /**
      * Get the colony that can be reached by this unit in the least number
      * of turns.
@@ -2866,7 +2866,7 @@ public class Unit extends GoodsLocation
             (col == null) ? MANY_TURNS-1 : this.getTurnsToReach(col));
         return minimize(concat(Stream.of((Colony)null), colonies), comp);
     }
-    
+
     /**
      * Find a path for this unit to the nearest settlement with the
      * same owner that is reachable without a carrier.
@@ -3133,7 +3133,7 @@ public class Unit extends GoodsLocation
                     }
                     final Predicate<Unit> attackerPred = u -> {
                         PathNode p;
-                        return (u.canAttack(unit) 
+                        return (u.canAttack(unit)
                             && cm.calculateCombatOdds(u, unit).win >= threat
                             && (p = u.findPath(start)) != null
                             && p.getTotalTurns() < range);
@@ -3202,8 +3202,8 @@ public class Unit extends GoodsLocation
         return (tile == null) ? Collections.<Tile>emptySet()
             : new HashSet<Tile>(tile.getSurroundingTiles(0, getLineOfSight()));
     }
-           
-    
+
+
     // Goods handling
 
     /**
@@ -3653,7 +3653,7 @@ public class Unit extends GoodsLocation
         result.addAll(transform(owner.getModifiers(id, fcgot, turn),
                 alwaysTrue(),
                 m -> m.setModifierIndex(Modifier.GENERAL_COMBAT_INDEX)));
-        
+
         // Role modifiers apply
         result.addAll(transform(role.getModifiers(id, fcgot, turn),
                 alwaysTrue(),
@@ -4446,7 +4446,7 @@ public class Unit extends GoodsLocation
             } else if ("model.role.cavalry".equals(role.getId())) {
                 role = spec.getRole("model.role.dragoon");
             }
-        }            
+        }
         // end @compat 0.10.x
 
         roleCount = xr.getAttribute(ROLE_COUNT_TAG,

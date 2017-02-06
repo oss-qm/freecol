@@ -248,7 +248,7 @@ public class ProductionTypeTest extends FreeColTestCase {
                        arctic.getAvailableProductionTypes(false, "veryHigh"));
 
         outputs.put(grain, 1);
-        testProduction(inputs, outputs, 
+        testProduction(inputs, outputs,
                        arctic.getAvailableProductionTypes(true, "high"));
         testProduction(inputs, outputs,
                        arctic.getAvailableProductionTypes(false, "high"));
@@ -636,7 +636,7 @@ public class ProductionTypeTest extends FreeColTestCase {
         outputs.put(bells, 3);
         testProduction(inputs, outputs,
                        townHall.getAvailableProductionTypes(false));
-    }        
+    }
 
     public void testHammerProduction() {
         testProduction(inputs, outputs,
@@ -654,7 +654,7 @@ public class ProductionTypeTest extends FreeColTestCase {
         outputs.put(hammers, 6);
         testProduction(inputs, outputs,
                        lumberMill.getAvailableProductionTypes(false));
-    }        
+    }
 
     public void testToolsProduction() {
         testProduction(inputs, outputs,
@@ -813,14 +813,14 @@ public class ProductionTypeTest extends FreeColTestCase {
     }
 
     public void testCrossProduction() {
-        outputs.put(crosses, 1); 
+        outputs.put(crosses, 1);
         testProduction(inputs, outputs,
                        chapel.getAvailableProductionTypes(true));
 
         testProduction(inputs, outputs,
                        chapel.getAvailableProductionTypes(false));
 
-        outputs.put(crosses, 2); 
+        outputs.put(crosses, 2);
         testProduction(inputs, outputs,
                        church.getAvailableProductionTypes(true));
 
@@ -828,7 +828,7 @@ public class ProductionTypeTest extends FreeColTestCase {
         testProduction(inputs, outputs,
                        church.getAvailableProductionTypes(false));
 
-        outputs.put(crosses, 3); 
+        outputs.put(crosses, 3);
         testProduction(inputs, outputs,
                        cathedral.getAvailableProductionTypes(true));
 

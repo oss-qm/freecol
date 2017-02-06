@@ -60,7 +60,7 @@ public class Connection implements Closeable {
 
     public static final char END_OF_STREAM = '\n';
     public static final int BUFFER_SIZE = 1 << 14;
-    
+
     public static final String NETWORK_REPLY_ID_TAG = "networkReplyId";
     public static final String QUESTION_TAG = "question";
     public static final String REPLY_TAG = "reply";
@@ -287,7 +287,7 @@ public class Connection implements Closeable {
     public String getSocketName() {
         return (isAlive()) ? getHostAddress() + ":" + getPort() : "";
     }
-    
+
     /**
      * Gets the message handler for this connection.
      *
@@ -338,7 +338,7 @@ public class Connection implements Closeable {
     }
 
     // Element processing.  To go away
-    
+
     /**
      * Write an element into a string writer.
      *
@@ -459,7 +459,7 @@ public class Connection implements Closeable {
         log(response, false);
         return response;
     }
-    
+
     /**
      * Main public routine to send a message over this connection.
      *
@@ -584,7 +584,7 @@ public class Connection implements Closeable {
     /**
      * Handle a query (has QUESTION_TAG), with given reply identifier,
      * and send a reply (has REPLY_TAG and the given reply identifier).
-     * 
+     *
      * @param msg The query {@code DOMMessage}.
      * @param replyId The reply identifier.
      * @exception FreeColException if there is a handler problem.
@@ -603,7 +603,7 @@ public class Connection implements Closeable {
 
     /**
      * Handle an ordinary message, and if the response is non-null send it.
-     * 
+     *
      * @param msg The {@code DOMMessage} to handle.
      * @exception FreeColException if there is a handler problem.
      * @exception IOException if sending fails.
@@ -655,7 +655,7 @@ public class Connection implements Closeable {
         }
         if (reply == null) return true;
         final String tag = reply.getTagName();
-        
+
         try {
             Element e = handleElement(reply);
             assert e == null; // client handlers now all return null
@@ -665,7 +665,7 @@ public class Connection implements Closeable {
         }
         return !ErrorMessage.TAG.equals(tag);
     }
-        
+
     /**
      * Client send.
      *
@@ -676,7 +676,6 @@ public class Connection implements Closeable {
     public <T extends DOMMessage> boolean send(T message) {
         return sendElement(message.toXMLElement());
     }
-    
 
     // Implement Closeable
 
@@ -689,7 +688,7 @@ public class Connection implements Closeable {
         closeOutputStream();
         closeInputStream();
         closeSocket();
-        
+
         logger.fine("Connection closed for " + this.name);
     }
 

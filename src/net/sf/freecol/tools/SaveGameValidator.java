@@ -69,8 +69,8 @@ public class SaveGameValidator {
                 saveGameValidator.validate(new StreamSource(mapFile.getSavegameInputStream()));
                 System.out.println("Successfully validated " + file.getName());
             } catch (SAXParseException e) {
-                System.out.println(e.getMessage() 
-                                   + " at line=" + e.getLineNumber() 
+                System.out.println(e.getMessage()
+                                   + " at line=" + e.getLineNumber()
                                    + " column=" + e.getColumnNumber());
                 ret = Math.max(ret, 1);
             } catch (IOException | SAXException e) {
@@ -82,4 +82,3 @@ public class SaveGameValidator {
     }
 
 }
-

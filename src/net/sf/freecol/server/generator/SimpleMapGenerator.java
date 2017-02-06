@@ -97,7 +97,7 @@ public class SimpleMapGenerator implements MapGenerator {
      */
     private static final float MIN_DISTANCE_FROM_POLE = 0.30f;
 
-   
+
     private static class Territory {
         public ServerRegion region;
         public Tile tile;
@@ -262,7 +262,7 @@ public class SimpleMapGenerator implements MapGenerator {
             final Player owner = game
                 .getPlayerByNationId(is.getOwner().getNationId());
             if (owner == null) continue;
-            
+
             final UnitType iSkill = is.getLearnableSkill();
             ServerIndianSettlement sis = new ServerIndianSettlement(game,
                 owner, is.getName(),
@@ -288,7 +288,7 @@ public class SimpleMapGenerator implements MapGenerator {
                     }
                 }
             }
-            
+
             List<Goods> iGoods = is.getCompactGoods();
             if (iGoods.isEmpty()) {
                 sis.addRandomGoods(random);
@@ -300,7 +300,7 @@ public class SimpleMapGenerator implements MapGenerator {
                     }
                 }
             }
-            
+
             sis.setWantedGoods(transform(is.getWantedGoods(), alwaysTrue(),
                     ig -> (ig == null) ? null : spec.getGoodsType(ig.getId()),
                     toListNoNulls()));
@@ -319,14 +319,14 @@ public class SimpleMapGenerator implements MapGenerator {
                     final Player owner = (iOwner == null) ? null
                         : game.getPlayerByNationId(iOwner.getNationId());
                     tile.setOwner(owner);
-                    
+
                     final Settlement iSettlement = iTile.getOwningSettlement();
                     final Settlement settlement = (iSettlement == null) ? null
                         : game.getSettlementByName(iSettlement.getName());
                     tile.setOwningSettlement(settlement);
                 });
         }*/
-        
+
         lb.add("Imported ", newSettlements.size(), " native settlements.\n");
         return !newSettlements.isEmpty();
     }
@@ -345,7 +345,7 @@ public class SimpleMapGenerator implements MapGenerator {
             if (importIndianSettlements(map, lb)) return;
             // Fall through and create them
         }
-        
+
         final Game game = map.getGame();
         float shares = 0f;
         List<IndianSettlement> settlements = new ArrayList<>();
@@ -900,7 +900,7 @@ public class SimpleMapGenerator implements MapGenerator {
                 seas = tile;
             } else if (tile.isLand()) {
                 return (startAtSea) ? seas : tile;
-            } 
+            }
         }
         lb.add("No land in row ", row, ".\n");
         return null;
@@ -922,7 +922,7 @@ public class SimpleMapGenerator implements MapGenerator {
         new ServerUnit(game, galleon, player, unitType);
 
         Tile colonyTile = null;
-        for (Tile tempTile : map.getCircleTiles(startTile, true, 
+        for (Tile tempTile : map.getCircleTiles(startTile, true,
                                                 FreeColObject.INFINITY)) {
             if (tempTile.isPolar()) continue; // No initial polar colonies
             if (player.canClaimToFoundSettlement(tempTile)) {

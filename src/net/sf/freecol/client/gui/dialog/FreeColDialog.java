@@ -270,13 +270,13 @@ public class FreeColDialog<T> extends JDialog implements PropertyChangeListener 
         }
     }
 
-    private static void iterateOverOpaqueLayersComponents(JComponent j){   
-        if (j instanceof JPanel || j instanceof JOptionPane) {            
-           Component[] componentes = j.getComponents();            
+    private static void iterateOverOpaqueLayersComponents(JComponent j){
+        if (j instanceof JPanel || j instanceof JOptionPane) {
+           Component[] componentes = j.getComponents();
            for (Component componente : componentes) {
                setOpaqueLayerRecursive(componente);
            }
-        }    
+        }
     }
 
     private static void setOpaqueLayerRecursive(Component opaqueComponent) {

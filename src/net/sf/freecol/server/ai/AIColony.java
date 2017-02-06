@@ -76,7 +76,7 @@ public class AIColony extends AIObject implements PropertyChangeListener {
     public static final String TAG = "aiColony";
 
     private static final String LIST_ELEMENT = "ListElement";
-    
+
     /**
      * Do not perform tile improvements that would leave less than
      * this amount of forested work locations available to the colony.
@@ -296,7 +296,7 @@ public class AIColony extends AIObject implements PropertyChangeListener {
             return u.isPerson() && !u.hasAbility(Ability.REF_UNIT)
                 && (validAIU = getAIUnit(u)) != null
                 && validAIU.isAvailableForWork(colony);
-        };                
+        };
         for (Unit u : transform(tile.getUnits(), workerPred)) {
             workers.add(u);
             was.add(new UnitWas(u));
@@ -368,7 +368,7 @@ public class AIColony extends AIObject implements PropertyChangeListener {
         // Return any units with the wrong mission
         for (Unit u : colony.getUnitList()) {
             final AIUnit aiu = getAIUnit(u);
-            if (!aiu.tryWorkInsideColonyMission(this, lb)) result.add(aiu); 
+            if (!aiu.tryWorkInsideColonyMission(this, lb)) result.add(aiu);
         }
 
         // Allocate pioneers if possible.
@@ -647,7 +647,7 @@ public class AIColony extends AIObject implements PropertyChangeListener {
      *
      * @param aiGoods The new list of {@code AIGoods}.
      */
-    private void setExportGoods(List<AIGoods> aiGoods) {            
+    private void setExportGoods(List<AIGoods> aiGoods) {
         clearExportGoods();
         synchronized (exportGoods) {
             exportGoods.addAll(aiGoods);
@@ -1015,7 +1015,7 @@ public class AIColony extends AIObject implements PropertyChangeListener {
                              u -> u.getWorkType().getStoredAs(),
                              Collectors.toSet()),
                    comp);
-        
+
         // For every non-expert, request expert replacement.
         // Prioritize by lowest net production among the goods that are
         // being produced by units (note that we have to traverse the work
@@ -1316,7 +1316,7 @@ public class AIColony extends AIObject implements PropertyChangeListener {
         requestRearrange();
 
         // Check for goods party!
-        if (event != null 
+        if (event != null
             && event.getOldValue() instanceof GoodsType) {
             GoodsType goodsType = (GoodsType)event.getOldValue();
             int left = colony.getGoodsCount(goodsType);
@@ -1475,7 +1475,7 @@ public class AIColony extends AIObject implements PropertyChangeListener {
 
         super.readChildren(xr);
         sortExportGoods();
-        
+
         if (getColony() != null) uninitialized = false;
     }
 

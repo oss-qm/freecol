@@ -85,7 +85,7 @@ public final class Specification {
     /** Unit change types backward compatibility fragment. */
     public static final String UNIT_CHANGE_TYPES_COMPAT_FILE_NAME
         = "unit-change-types-compat.xml";
-    
+
     /** The default role. */
     public static final String DEFAULT_ROLE_ID = "model.role.default";
 
@@ -468,7 +468,7 @@ public final class Specification {
         }
         return realGroup;
     }
-                
+
     /**
      * Clean up the specification.
      *
@@ -731,7 +731,7 @@ public final class Specification {
         clean("merged game options (" + who + ")");
         return true;
     }
-        
+
     /**
      * Merge in a new set of map options.
      *
@@ -748,7 +748,7 @@ public final class Specification {
         clean("merged map options (" + who + ")");
         return true;
     }
-        
+
     /**
      * Call this when old style unit changes are seen, so the spec can
      * load the backward compatiblity fragment.
@@ -1370,7 +1370,7 @@ public final class Specification {
         }
         if (uct != null) uct.addUnitChange(from, to, prob, turns);
     }
-        
+
     // -- Units --
 
     public List<UnitType> getUnitTypeList() {
@@ -1389,7 +1389,7 @@ public final class Specification {
         return (player == null) ? getDefaultUnitType()
             : getDefaultUnitType(player.getNationType());
     }
-    
+
     /**
      * Get the most vanilla unit type for a type of nation.
      *
@@ -1415,7 +1415,7 @@ public final class Specification {
                 && !ut.hasAbility(Ability.REF_UNIT);
         return find(defaultUnitTypes, p, getDefaultUnitType());
     }
-    
+
     /**
      * Get the most vanilla unit type.
      *
@@ -1424,7 +1424,7 @@ public final class Specification {
     public UnitType getDefaultUnitType() {
         return getUnitType("model.unit.freeColonist"); // Drop this soon
     }
-    
+
     /**
      * Get the list of buildable unit types.
      *
@@ -1788,7 +1788,7 @@ public final class Specification {
         if (group != null) group.add(difficulty);
         allOptionGroups.put(difficulty.getId(), difficulty);
     }
-            
+
     /**
      * Applies the difficulty level identified by the given String to
      * the current specification.
@@ -1880,7 +1880,7 @@ public final class Specification {
             : (n < ages[1]) ? 0
             : (n < ages[2]) ? 1
             : 2;
-    }        
+    }
 
 
     // General type retrieval
@@ -2042,7 +2042,7 @@ public final class Specification {
             }
         }
     }
-    
+
     // @compat 0.11.0
     /**
      * Handle the reworking of roles that landed in 0.11.0.
@@ -2746,7 +2746,7 @@ public final class Specification {
         }
         return ret;
     }
-        
+
     private UnitListOption checkDifficultyUnitListOption(String id, String gr,
                                                          LogBuilder lb) {
         UnitListOption ulo = null;
@@ -2924,8 +2924,6 @@ public final class Specification {
         addAbstractOption(option);
         return true;
     }
-        
-
 
     // Serialization
 
@@ -3062,17 +3060,17 @@ public final class Specification {
             ChildReader reader = readerMap.get(childName);
             if (reader == null) {
                 logger.warning("No reader found for: " + childName);
-            } else {  
+            } else {
                 reader.readChildren(xr);
             }
         }
         // @compat 0.11.0
         if (roles.isEmpty()) fixRoles();
         // end @compat 0.11.0
-        
+
         if (this.needUnitChangeTypes) {
             this.needUnitChangeTypes = false;
-            File uctf = FreeColDirectories.getCompatibilityFile(UNIT_CHANGE_TYPES_COMPAT_FILE_NAME); 
+            File uctf = FreeColDirectories.getCompatibilityFile(UNIT_CHANGE_TYPES_COMPAT_FILE_NAME);
             try (
                  FileInputStream fis = new FileInputStream(uctf);
                  ) {

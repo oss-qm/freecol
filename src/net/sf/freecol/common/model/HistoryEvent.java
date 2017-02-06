@@ -73,7 +73,7 @@ public class HistoryEvent extends StringTemplate {
         public String getDescriptionKey() {
             return Messages.descriptionKey("model." + getKey());
         }
-        
+
         // Implement Named
 
         /**
@@ -281,7 +281,7 @@ public class HistoryEvent extends StringTemplate {
         hash = 31 * hash + this.score;
         return hash;
     }
-    
+
     /**
      * {@inheritDoc}
      */

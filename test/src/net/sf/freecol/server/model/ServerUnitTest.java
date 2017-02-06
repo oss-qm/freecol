@@ -473,7 +473,7 @@ public class ServerUnitTest extends FreeColTestCase {
         Colony colony = getStandardColony(3);
         ServerPlayer player = (ServerPlayer)colony.getOwner();
         Tile tile = colony.getTile();
-        
+
         // Set up a hardy pioneer to clear the colony tile
         Role pioneerRole = spec().getRole("model.role.pioneer");
         ServerUnit hardyPioneer = new ServerUnit(game, tile, player,
@@ -484,7 +484,7 @@ public class ServerUnitTest extends FreeColTestCase {
         assertEquals(8, hardyPioneer.getWorkLeft());
         assertEquals(savannahForest, tile.getType());
         assertEquals(colony, tile.getOwningSettlement());
-        
+
         // Almost finish clearing
         ServerTestHelper.newTurn();
         ServerTestHelper.newTurn();

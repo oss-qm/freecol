@@ -77,7 +77,7 @@ public class ScopeTest extends FreeColTestCase {
                      testScope.appliesTo(carpenter));
 
     }
-    
+
     public void testMethodScope() {
 
         Scope testScope = new Scope();
@@ -209,7 +209,7 @@ public class ScopeTest extends FreeColTestCase {
 
         Tile unitTile = map.getTile(6, 8);
         UnitType colonistType = spec().getUnitType("model.unit.freeColonist");
-        
+
         Unit unit = new ServerUnit(game, unitTile, dutch, colonistType);
 
         Scope scope = new Scope();
@@ -221,6 +221,4 @@ public class ScopeTest extends FreeColTestCase {
         assertFalse(scope.appliesTo(unit));
 
     }
-        
-
 }

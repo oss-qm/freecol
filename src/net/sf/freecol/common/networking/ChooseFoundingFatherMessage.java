@@ -99,7 +99,7 @@ public class ChooseFoundingFatherMessage extends AttributeMessage {
         return Message.MessagePriority.EARLY;
     }
 
-    
+
     // Public interface
 
     /**

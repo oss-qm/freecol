@@ -55,10 +55,10 @@ public final class ServerListPanel extends FreeColPanel {
 
     private final JButton connect;
 
-    
+
     /**
      * Creates a panel to display the meta-server.
-     * 
+     *
      * @param freeColClient The {@code FreeColClient} for the game.
      * @param connectController The controller responsible for creating new
      *     connections.
@@ -129,7 +129,7 @@ public final class ServerListPanel extends FreeColPanel {
 
     /**
      * Initializes the data that is displayed in this panel.
-     * 
+     *
      * @param servers A list of {@code ServerInfo}-objects to be
      *            displayed.
      */
@@ -151,7 +151,7 @@ public final class ServerListPanel extends FreeColPanel {
     /**
      * Sets whether or not this component is enabled. It also does this for its
      * children.
-     * 
+     *
      * @param enabled 'true' if this component and its children should be
      *            enabled, 'false' otherwise.
      */

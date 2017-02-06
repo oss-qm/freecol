@@ -27,7 +27,7 @@ import static net.sf.freecol.common.util.CollectionUtils.*;
 import net.sf.freecol.common.util.LogBuilder;
 
 
-/** 
+/**
  * Simple container to define where and what a unit is working on.
  */
 public class Occupation {
@@ -100,7 +100,7 @@ public class Occupation {
         final Colony colony = wl.getColony();
         for (ProductionType pt : transform(productionTypes, isNotNull())) {
             lb.add("\n      try=", pt);
-            
+
             for (GoodsType gt : transform(workTypes, isNotNull(g -> pt.getOutput(g)))) {
                 int minInput = min(pt.getInputList(),
                     ag -> Math.max(colony.getNetProductionOf(ag.getType()),
@@ -117,7 +117,7 @@ public class Occupation {
                 }
             }
         }
-        return bestAmount;   
+        return bestAmount;
     }
 
     /**

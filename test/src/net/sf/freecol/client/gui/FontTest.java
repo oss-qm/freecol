@@ -45,8 +45,7 @@ public class FontTest extends FreeColTestCase {
         specialCharacters.put('\u271D', "LATIN CROSS");
         specialCharacters.put('\u271E', "SHADOWED WHITE LATIN CROSS");
     }
-    
-    
+
     public void testLogicalSerif() {
 
         try {

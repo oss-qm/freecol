@@ -59,7 +59,7 @@ public class GotoAdjacentGoal extends Goal {
     protected Iterator<Goal> getSubGoalIterator() {
         return null;
     }
-    
+
     @Override
     protected void removeUnit(AIUnit u) {
         Iterator<AIUnit> uit = availableUnitsList.iterator();
@@ -70,11 +70,11 @@ public class GotoAdjacentGoal extends Goal {
             }
         }
     }
-    
+
     @Override
     protected void plan() {
         isFinished = false;
-        
+
         //Run through available units. For each unit, find a path to the
         //target and move towards it. Return to parent if adjacent to target,
         //or no path can be found.
@@ -85,18 +85,18 @@ public class GotoAdjacentGoal extends Goal {
             PathNode pathNode = u.getUnit().findPath(target);
             if (pathNode==null) {
                 uit.remove();
-                addUnitToParent(u);            
+                addUnitToParent(u);
             } else {
-                while (pathNode.next != null 
+                while (pathNode.next != null
                         && pathNode.getTurns() == 0
                         && pathNode.getTile() != target
                         && (u.getUnit().getMoveType(pathNode.getDirection()) == MoveType.MOVE
                           ||u.getUnit().getMoveType(pathNode.getDirection()) == MoveType.EXPLORE_LOST_CITY_RUMOUR)) {
-                        
+
                             if(u.getUnit().getMoveType(pathNode.getDirection()) == MoveType.EXPLORE_LOST_CITY_RUMOUR) {
                                 logger.warning("Accidental rumour exploration!");
                             }
-                        
+
                             u.move(pathNode.getDirection());
                             if (u.getUnit() == null
                                 || u.getUnit().isDisposed()) {
@@ -111,7 +111,7 @@ public class GotoAdjacentGoal extends Goal {
                 }
             }
         }
-        
+
         if (availableUnitsList.isEmpty()) {
             //we don't have any units left to deal with,
             //signal that we may safely be cancelled now
@@ -129,12 +129,12 @@ public class GotoAdjacentGoal extends Goal {
         }
         return descr;
     }
-    
+
 
     @Override
     public void toXML(FreeColXMLWriter xw) throws XMLStreamException {
     }
-    
+
     @Override
     public void readFromXML(FreeColXMLReader xr) throws XMLStreamException {
     }

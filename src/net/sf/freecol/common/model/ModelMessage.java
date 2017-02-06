@@ -101,7 +101,7 @@ public class ModelMessage extends StringTemplate {
      * Trivial constructor to allow creation with Game.newInstance.
      */
     public ModelMessage() {}
-        
+
     /**
      * Creates a new {@code ModelMessage}.
      *
@@ -407,7 +407,7 @@ public class ModelMessage extends StringTemplate {
 
         displayId = xr.getAttribute(DISPLAY_TAG, (String)null);
 
-        messageType = xr.getAttribute(MESSAGE_TYPE_TAG, 
+        messageType = xr.getAttribute(MESSAGE_TYPE_TAG,
                                       MessageType.class, MessageType.DEFAULT);
 
         beenDisplayed = xr.getAttribute(HAS_BEEN_DISPLAYED_TAG, false);

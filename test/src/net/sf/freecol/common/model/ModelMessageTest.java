@@ -31,10 +31,10 @@ public class ModelMessageTest extends FreeColTestCase {
     public void testHashCode() {
         Game game = getGame();
         game.setMap(getTestMap(true));
-    	
+
         Colony colony = getStandardColony(1);
         GoodsType cotton = spec().getGoodsType("model.goods.cotton");
-        
+
         ModelMessage mm1 = new ModelMessage(MessageType.MISSING_GOODS,
                                             "buildColony.landLocked",
                                             colony, cotton);
@@ -43,7 +43,7 @@ public class ModelMessageTest extends FreeColTestCase {
                                             colony, cotton);
         assertEquals(mm1, mm2);
         assertEquals(mm1.hashCode(), mm2.hashCode());
-        
+
         ModelMessage mm3 = new ModelMessage(MessageType.MISSING_GOODS,
                                             "buildColony.landLocked",
                                             colony, cotton);
@@ -53,22 +53,21 @@ public class ModelMessageTest extends FreeColTestCase {
         assertNotSame(mm3, mm4);
         assertNotSame(mm3.hashCode(), mm4.hashCode());
     }
-    
+
     public void testModelMapSet2() {
         Game game = getGame();
         game.setMap(getTestMap(true));
-    	
+
         Colony colony = getStandardColony(1);
         GoodsType cotton = spec().getGoodsType("model.goods.cotton");
-        
+
         ModelMessage mm1 = new ModelMessage(MessageType.WAREHOUSE_CAPACITY,
                                             "model.building.warehouseSoonFull",
                                             colony, cotton)
             .addNamed("%goods%", cotton)
             .addName("%colony%", colony.getName())
             .addAmount("%amount%", 10);
-                                    
- 
+
         ModelMessage mm2 = new ModelMessage(MessageType.WAREHOUSE_CAPACITY,
                                             "model.building.warehouseSoonFull",
                                             colony, cotton)
@@ -86,7 +85,7 @@ public class ModelMessageTest extends FreeColTestCase {
     public void testDefaultId() {
         Game game = getGame();
         game.setMap(getTestMap(true));
-    	
+
         Player player = game.getPlayerByNationId("model.nation.dutch");
         String realMessageId = "player"; // Must exist
         String fakeMessageId = "no.such.messageId"; // Must no exist

@@ -230,7 +230,7 @@ public abstract class TradeItem extends FreeColGameObject {
         return false;
     }
 
-    
+
     // Serialization
 
     private static final String DESTINATION_TAG = "destination";

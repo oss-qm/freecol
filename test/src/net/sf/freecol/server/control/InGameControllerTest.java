@@ -1018,7 +1018,7 @@ public class InGameControllerTest extends FreeColTestCase {
         final Game game = ServerTestHelper.startServerGame(getTestMap());
         final Map map = game.getMap();
         final InGameController igc = ServerTestHelper.getInGameController();
-        
+
         ServerPlayer dutch = (ServerPlayer)game.getPlayerByNationId("model.nation.dutch");
         ServerPlayer french = (ServerPlayer)game.getPlayerByNationId("model.nation.french");
         igc.changeStance(dutch, Stance.WAR, french, true);
@@ -1473,7 +1473,7 @@ public class InGameControllerTest extends FreeColTestCase {
                      colonistType,
                      spec().getUnitChange(UnitChangeType.CAPTURE,
                                           veteranType).to);
- 
+
         // Soldier loses and loses equipment
         List<CombatResult> crs
             = fakeAttackResult(CombatResult.LOSE, soldier1, soldier2);
@@ -1912,7 +1912,7 @@ public class InGameControllerTest extends FreeColTestCase {
                      father.getEvents().get(0).getValue());
         igc.addFoundingFather(player, father);
         ServerTestHelper.newTurn();
-        assertNull("Colony still should have no stockade", 
+        assertNull("Colony still should have no stockade",
             colony.getBuilding(stockadeType));
 
         // increasing population to 3 should give access to stockade
@@ -2169,7 +2169,7 @@ public class InGameControllerTest extends FreeColTestCase {
         assertEquals(0, colonist.getAttrition());
         ServerTestHelper.newTurn();
         assertEquals(0, colonist.getAttrition());
-        
+
         // Run down the clock on the convert
         while (unit.getAttrition() < unit.getType().getMaximumAttrition()) {
             ServerTestHelper.newTurn();
@@ -2177,5 +2177,5 @@ public class InGameControllerTest extends FreeColTestCase {
         assertFalse(unit.isDisposed());
         ServerTestHelper.newTurn();
         assertTrue(unit.isDisposed());
-    }        
+    }
 }

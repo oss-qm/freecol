@@ -62,7 +62,7 @@ public class UpdateMessage extends DOMMessage {
         this.fcgos.clear();
         this.fields.clear();
     }
-    
+
     /**
      * Create a new {@code UpdateMessage}.
      *
@@ -139,7 +139,7 @@ public class UpdateMessage extends DOMMessage {
         }
         return false;
     }
-              
+
     /**
      * Append another object and optional partial fields to update.
      *
@@ -154,7 +154,7 @@ public class UpdateMessage extends DOMMessage {
         }
     }
 
-            
+
     // Public interface
 
     /**
@@ -175,7 +175,6 @@ public class UpdateMessage extends DOMMessage {
         return this.fields;
     }
 
-    
     // No server handler required.
     // This message is only sent to the client.
 

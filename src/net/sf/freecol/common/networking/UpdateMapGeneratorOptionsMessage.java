@@ -102,7 +102,7 @@ public class UpdateMapGeneratorOptionsMessage extends DOMMessage {
         if (!spec.mergeMapGeneratorOptions(this.options, "server")) {
             return serverPlayer.clientError("Map option merge failed");
         }
-            
+
         UpdateMapGeneratorOptionsMessage message
             = new UpdateMapGeneratorOptionsMessage(spec.getMapGeneratorOptions());
         freeColServer.sendToAll(message, serverPlayer);

@@ -174,7 +174,7 @@ public class BuildingTest extends FreeColTestCase {
         }
         assertEquals(0, b.getUnitCount());
     }
-        
+
     private void productionTest(BuildingType[] buildings, int[][][]values) {
         Game game = getGame();
         game.setMap(getTestMap(true));
@@ -249,8 +249,8 @@ public class BuildingTest extends FreeColTestCase {
                 }
             }
         }
-    }                            
-        
+    }
+
     public void testCanBuildNext() {
         Game game = getGame();
         game.setMap(getTestMap(true));
@@ -424,7 +424,7 @@ public class BuildingTest extends FreeColTestCase {
         assertTrue(unit2.setLocation(smithy));
         unit0.setType(firebrandPreacherType);
         church.setWorkFor(unit0);
-        
+
         assertEquals("Church base cross production, firebrand preacher", 3,
             church.getBaseProduction(church.getProductionType(), crossesType,
                                      unit0.getType()));
@@ -1063,7 +1063,7 @@ public class BuildingTest extends FreeColTestCase {
     public void testCrossProduction() {
         productionTest(crossBuildings, crossProd);
     }
-    
+
     // Factory production data contributed by Lone_Wolf in BR#2979.
     private static int factoryProd[][][] = {
         { // house
@@ -1106,7 +1106,7 @@ public class BuildingTest extends FreeColTestCase {
         productionTest(toolBuildings, factoryProd);
         productionTest(musketBuildings, factoryProd);
     }
-        
+
     public void testToolsMusketProduction() {
         // Test the interaction between tools and muskets
         Game game = getGame();

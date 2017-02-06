@@ -61,7 +61,7 @@ public class DesktopEntry {
             result.append("Exec=freecol\n");
             result.append("Icon=data/freecol.png\n");
             result.append("Categories=Game;StrategyGame;\n");
-            
+
             String[] sourceFiles = SOURCE_DIRECTORY.list(new FilenameFilter() {
                 @Override
                 public boolean accept(File dir, String name) {
@@ -69,18 +69,18 @@ public class DesktopEntry {
                             && name.endsWith(".properties");
                 }
             });
-            
+
             for (String name : sourceFiles) {
-                
+
                 System.out.println("Processing source file: " + name);
-                
+
                 String languageCode = null;
                 if (name.startsWith("FreeColMessages_")) {
                     int index = name.indexOf('.', 16);
                     languageCode = name.substring(16, index)
                             .replace('-', '@');
                 }
-                
+
                 boolean foundGenericName = false;
                 boolean foundComment = false;
                 File sourceFile = new File(SOURCE_DIRECTORY, name);
@@ -117,10 +117,9 @@ public class DesktopEntry {
                     line = bufferedReader.readLine();
                 }
             }
-            
+
             result.flush();
         }
 
     }
 }
-

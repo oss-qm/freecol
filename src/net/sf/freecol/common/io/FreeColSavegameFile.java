@@ -110,7 +110,7 @@ public class FreeColSavegameFile extends FreeColDataFile {
         properties.load(getInputStream(SAVEGAME_PROPERTIES));
         return properties;
     }
-        
+
     /**
      * Gets the save game version from this saved game.
      *

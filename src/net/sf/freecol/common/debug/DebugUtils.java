@@ -109,7 +109,6 @@ public class DebugUtils {
         freeColClient.getConnectController()
             .requestLogout(LogoutReason.RECONNECT);
     }
-        
 
     /**
      * Debug action to add buildings to the user colonies.
@@ -388,10 +387,10 @@ public class DebugUtils {
         final Specification sSpec = sGame.getSpecification();
         final GUI gui = freeColClient.getGUI();
         final Predicate<GoodsType> goodsPred = gt ->
-            !gt.isFoodType() || gt == sSpec.getPrimaryFoodType();            
+            !gt.isFoodType() || gt == sSpec.getPrimaryFoodType();
         final Function<GoodsType, ChoiceItem<GoodsType>> mapper = gt ->
             new ChoiceItem<GoodsType>(Messages.getName(gt), gt);
-            
+
         GoodsType goodsType = gui.getChoice(null,
             StringTemplate.template("prompt.selectGoodsType"), "cancel",
             transform(sSpec.getGoodsTypeList(), goodsPred, mapper,
@@ -516,7 +515,7 @@ public class DebugUtils {
         final Game game = unit.getGame();
         final Function<Player, ChoiceItem<Player>> mapper = p ->
             new ChoiceItem<Player>(Messages.message(p.getCountryLabel()), p);
-            
+
         Player player = gui.getChoice(null,
             StringTemplate.template("prompt.selectOwner"), "cancel",
             transform(game.getLivePlayers(),
@@ -525,7 +524,7 @@ public class DebugUtils {
         if (player == null || unit.getOwner() == player) return;
 
         final Game sGame = server.getGame();
-        ServerUnit sUnit = sGame.getFreeColGameObject(unit.getId(), 
+        ServerUnit sUnit = sGame.getFreeColGameObject(unit.getId(),
                                                       ServerUnit.class);
         ServerPlayer sPlayer = sGame.getFreeColGameObject(player.getId(),
                                                           ServerPlayer.class);
@@ -636,7 +635,7 @@ public class DebugUtils {
             if (cu == null) {
                 lb.add("Unit missing on client-side.\n", "  Server: ",
                     su.getDescription(Unit.UnitLabelType.NATIONAL),
-                    "(", su.getId(), ") from: ", 
+                    "(", su.getId(), ") from: ",
                     su.getLocation().getId(), ".\n");
                 try {
                     lb.add("  Client: ", cTile.getFirstUnit(), "\n");
@@ -669,12 +668,12 @@ public class DebugUtils {
                 ;// OK
             } else {
                 lb.add("Settlements differ.\n  Server: ",
-                    sSettlement.toString(), "\n  Client: ", 
+                    sSettlement.toString(), "\n  Client: ",
                     cSettlement.toString(), "\n");
             }
         }
     }
-        
+
     /**
      * Debug action to display an AI colony plan.
      *
@@ -797,6 +796,7 @@ public class DebugUtils {
         }
         lb.add("\n");
     }
+
     /**
      * Debug action to display a mission.
      *
@@ -1011,12 +1011,12 @@ public class DebugUtils {
         final GUI gui = freeColClient.getGUI();
         final Function<MonarchAction, ChoiceItem<MonarchAction>> mapper = a ->
             new ChoiceItem<MonarchAction>(a);
-        
+
         MonarchAction action = gui.getChoice(null, monarchTitle, "cancel",
             transform(MonarchAction.values(), alwaysTrue(), mapper,
                       Comparator.naturalOrder()));
         if (action == null) return;
-        
+
         server.getInGameController().setMonarchAction(sPlayer, action);
     }
 
@@ -1038,7 +1038,7 @@ public class DebugUtils {
             r != RumourType.NO_SUCH_RUMOUR;
         final Function<RumourType, ChoiceItem<RumourType>> mapper = r ->
             new ChoiceItem<RumourType>(r.toString(), r);
-            
+
         RumourType rumourChoice = freeColClient.getGUI().getChoice(null,
             StringTemplate.template("prompt.selectLostCityRumour"), "cancel",
             transform(RumourType.values(), realRumourPred, mapper,
@@ -1162,7 +1162,7 @@ public class DebugUtils {
             lb.add(Messages.getName(g.getType()), " ", g.getAmount(),
                 " = ", sis.getPriceToSell(g.getType(), g.getAmount()), "\n");
         }
-        
+
         lb.add("\nPrices (buy 1/100 / sell 1/100)\n");
         List<GoodsType> wanted = sis.getWantedGoods();
         for (GoodsType type : sSpec.getStorableGoodsTypeList()) {

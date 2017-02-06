@@ -47,7 +47,7 @@ public class SoundController {
 
     /**
      * Prepare the sound system.
-     * 
+     *
      * @param freeColClient The {@code FreeColClient} for the game.
      * @param sound Enable sound if true.
      */

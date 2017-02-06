@@ -283,7 +283,7 @@ public class IndianSettlement extends Settlement implements TradeLocation {
                 : learnableSkill.getNameKey())
             : "model.indianSettlement.skillUnknown");
     }
-            
+
     /**
      * Gets the missionary from this settlement.
      *
@@ -331,7 +331,7 @@ public class IndianSettlement extends Settlement implements TradeLocation {
      * @return The missionary line of sight.
      */
     public int getMissionaryLineOfSight() {
-        final boolean enhanced = getSpecification() 
+        final boolean enhanced = getSpecification()
             .getBoolean(GameOptions.ENHANCED_MISSIONARIES);
         return (enhanced) ? getLineOfSight() : 1;
     }
@@ -363,7 +363,7 @@ public class IndianSettlement extends Settlement implements TradeLocation {
     private boolean validWantedGoodsIndex(int index) {
         return 0 <= index && index < WANTED_GOODS_COUNT;
     }
-    
+
     /**
      * Gets the goods wanted by this settlement.
      *
@@ -443,8 +443,8 @@ public class IndianSettlement extends Settlement implements TradeLocation {
         ret.add(lab);
         if (tip != null) ret.add(tip);
         return ret;
-    }                
-            
+    }
+
     /**
      * Gets the most hated nation of this settlement.
      *
@@ -480,7 +480,7 @@ public class IndianSettlement extends Settlement implements TradeLocation {
                 : mostHated.getCountryLabel())
             : StringTemplate.key("model.indianSettlement.mostHatedUnknown");
     }
-            
+
     /**
      * Gets the contact level between this settlement and a player.
      *
@@ -823,7 +823,7 @@ public class IndianSettlement extends Settlement implements TradeLocation {
         if (type.getMilitary()) { // Retain enough goods to fully arm
             return sum(getOwnedUnitList(),
                        u -> !militaryRoles.contains(u.getRole()),
-                       u -> AbstractGoods.getCount(type, 
+                       u -> AbstractGoods.getCount(type,
                            u.getGoodsDifference(first(militaryRoles), 1)));
         }
 
@@ -1188,7 +1188,7 @@ public class IndianSettlement extends Settlement implements TradeLocation {
         return getName();
     }
 
-    
+
     // UnitLocation
     // Inherits
     //   UnitLocation.getSpaceTaken
@@ -1489,7 +1489,7 @@ public class IndianSettlement extends Settlement implements TradeLocation {
 
         if (missionary != null) {
             xw.writeStartElement(MISSIONARY_TAG);
-            
+
             missionary.toXML(xw);
 
             xw.writeEndElement();

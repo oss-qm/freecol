@@ -161,6 +161,5 @@ public class SpySettlementMessage extends DOMMessage {
                               UNIT_TAG, this.unitId,
                               SETTLEMENT_TAG, this.settlementId)
             .add(this.spyTile).toXMLElement();
-        
     }
 }

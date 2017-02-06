@@ -910,7 +910,7 @@ public class ChangeSet {
         private boolean fullRemoval(ServerPlayer serverPlayer) {
             FreeColGameObject fcgo = getMainObject();
             return fcgo instanceof Ownable && serverPlayer.owns((Ownable)fcgo);
-        }            
+        }
 
 
         /**
@@ -1581,7 +1581,7 @@ public class ChangeSet {
 
 
     // Convenience functions to create change sets
-    
+
     /**
      * Convenience function to create an i18n client error message and
      * wrap it into a change set.
@@ -1668,7 +1668,7 @@ public class ChangeSet {
         cs.add((see == null) ? See.all() : see, message);
         return cs;
     }
-    
+
     /**
      * Get a new ChangeSet that changes a player AI state.
      *

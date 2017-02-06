@@ -154,5 +154,5 @@ public class TrivialMessage extends DOMMessage {
         default:
             return super.serverHandler(freeColServer, serverPlayer);
         }
-    }        
+    }
 }

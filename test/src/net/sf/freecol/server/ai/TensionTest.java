@@ -100,7 +100,7 @@ public class TensionTest extends FreeColTestCase {
 
         // the european player steals 1 tile from the indians
         assertEquals(indian, tile2.getOwner());
-        
+
         igc.claimLand(european, tile2, null, Constants.STEAL_LAND);
         assertEquals(european, tile2.getOwner());
 

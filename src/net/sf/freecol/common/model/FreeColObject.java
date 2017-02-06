@@ -116,7 +116,7 @@ public abstract class FreeColObject
         logger.warning("getFreeColObjectClass could not find: " + type);
         return null;
     }
-        
+
 
     // Identifier handling
 
@@ -241,7 +241,7 @@ public abstract class FreeColObject
     // FreeColSpecObjects do, and FreeColGameObjects have access to
     // the Specification in the Game.  Noop implementations here, to
     // be overridden by subclasses.
-    
+
     /**
      * Get the specification.
      *
@@ -252,7 +252,7 @@ public abstract class FreeColObject
     }
 
     /**
-     * Sets the specification for this object. 
+     * Sets the specification for this object.
      *
      * @param specification The {@code Specification} to use.
      */
@@ -262,7 +262,7 @@ public abstract class FreeColObject
     // Game handling.
     // Base FreeColObjects do not contain a Game, but several subclasses
     // (like FreeColGameObject) do.
-    
+
     /**
      * Gets the game this object belongs to.
      *
@@ -278,7 +278,7 @@ public abstract class FreeColObject
      * @param game The {@code Game} to set.
      */
     public void setGame(@SuppressWarnings("unused") Game game) {}
-        
+
 
     // Property change support
 
@@ -982,7 +982,7 @@ public abstract class FreeColObject
      * created objects.  Thus if you copy a tile, an internal colony
      * on the tile will also be copied, and the copied tile will refer
      * to the copied colony and the copied colony refer to the copied
-     * tile, but both will refer to the original uncopied owning player. 
+     * tile, but both will refer to the original uncopied owning player.
      *
      * @param <T> The actual return type.
      * @param game The {@code Game} to add the object to.
@@ -1165,7 +1165,7 @@ public abstract class FreeColObject
                        + theClass.getName(), e);
         }
     }
-    
+
 
     /**
      * Initializes this object from an XML-representation of this object,

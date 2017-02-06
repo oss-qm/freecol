@@ -113,7 +113,7 @@ public final class InfoPanel extends FreeColPanel {
     public class TileInfoPanel extends MigPanel {
 
         private static final int PRODUCTION = 4;
-        
+
         private Tile tile;
 
         // TODO: Find a way of removing the need for an extremely tiny font.

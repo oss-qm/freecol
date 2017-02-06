@@ -279,7 +279,7 @@ public class ServerColony extends Colony implements TurnTaker {
                             .addName("%colony%", getName()));
                 }
                 return null;
-                
+
             case POPULATION_TOO_SMALL:
                 cs.addMessage(owner,
                     new ModelMessage(MessageType.WARNING,
@@ -350,7 +350,7 @@ public class ServerColony extends Colony implements TurnTaker {
                         Function.identity(), Collectors.toSet());
 
         for (Tile t : owned) t.cacheUnseen(newOwner);//+til
-        
+
         if (reassign) {
             // Allow other neighbouring settlements a chance to claim
             // this colony's tiles except for the center.
@@ -365,7 +365,7 @@ public class ServerColony extends Colony implements TurnTaker {
             }
             owned.add(tile);
         }
-        
+
         changeOwner(newOwner);//-vis(both),-til
 
         String change = (newOwner.isUndead()) ? UnitChangeType.UNDEAD
@@ -471,7 +471,7 @@ public class ServerColony extends Colony implements TurnTaker {
         if (brave == null) return;
         ServerPlayer newOwner = (ServerPlayer)getOwner();
         ServerPlayer oldOwner = (ServerPlayer)brave.getOwner();
-        if (oldOwner.csChangeOwner(brave, newOwner, UnitChangeType.CONVERSION, 
+        if (oldOwner.csChangeOwner(brave, newOwner, UnitChangeType.CONVERSION,
                                    getTile(), cs)) { //-vis(other)
             brave.changeRole(getSpecification().getDefaultRole(), 0);
             for (Goods g : brave.getGoods()) brave.removeGoods(g);

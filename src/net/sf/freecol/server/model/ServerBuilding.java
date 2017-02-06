@@ -78,7 +78,7 @@ public class ServerBuilding extends Building implements TurnTaker {
      */
     private void csTeach(ChangeSet cs) {
         final ServerPlayer owner = (ServerPlayer)getColony().getOwner();
-        
+
         for (Unit teacher : getUnitList()) {
             Unit student = teacher.getStudent();
 
@@ -130,7 +130,7 @@ public class ServerBuilding extends Building implements TurnTaker {
         }
         return false;
     }
-        
+
     /**
      * Train a student.
      *

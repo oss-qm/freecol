@@ -44,7 +44,7 @@ public class HighScoreMessage extends DOMMessage {
 
     /** The high scores. */
     private final List<HighScore> scores = new ArrayList<>();
-    
+
 
     /**
      * Create a new {@code HighScoreMessage} in request form (no
@@ -112,7 +112,7 @@ public class HighScoreMessage extends DOMMessage {
         return this;
     }
 
-    
+
     /**
      * {@inheritDoc}
      */
