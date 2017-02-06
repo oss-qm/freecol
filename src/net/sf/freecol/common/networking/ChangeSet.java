@@ -730,7 +730,7 @@ public class ChangeSet {
         public UpdateMessage toMessage(ServerPlayer serverPlayer) {
             return (!isNotifiable(serverPlayer)) ? null
                 : new UpdateMessage(serverPlayer,
-                    Collections.singletonList(this.fcgo));
+                    Collections.singletonList((FreeColObject)this.fcgo));
         }
 
 
