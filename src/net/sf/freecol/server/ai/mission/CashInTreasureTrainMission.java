@@ -181,7 +181,7 @@ public class CashInTreasureTrainMission extends Mission {
         GoalDecider gd = new GoalDecider() {
                 private PathNode bestPath = null;
                 private int bestValue = Integer.MIN_VALUE;
-                
+
                 @Override
                 public PathNode getGoal() { return bestPath; }
                 @Override
@@ -251,7 +251,7 @@ public class CashInTreasureTrainMission extends Mission {
      * @param deferOK Enables deferring to a fallback colony.
      * @return A {@code PathNode} to the target, or null if none found.
      */
-    public static Location findTarget(AIUnit aiUnit, int range, 
+    public static Location findTarget(AIUnit aiUnit, int range,
                                       boolean deferOK) {
         PathNode path = findTargetPath(aiUnit, range, deferOK);
         return (path != null) ? extractTarget(aiUnit, path)
@@ -285,7 +285,7 @@ public class CashInTreasureTrainMission extends Mission {
      */
     private static String invalidFullColonyReason(AIUnit aiUnit,
                                                   Colony colony) {
-        String reason = invalidTargetReason(colony, 
+        String reason = invalidTargetReason(colony,
             aiUnit.getUnit().getOwner());
         return (reason != null)
             ? reason
@@ -476,7 +476,7 @@ public class CashInTreasureTrainMission extends Mission {
     @Override
     protected void readAttributes(FreeColXMLReader xr) throws XMLStreamException {
         super.readAttributes(xr);
-        
+
         target = xr.getLocationAttribute(getGame(), TARGET_TAG, false);
     }
 

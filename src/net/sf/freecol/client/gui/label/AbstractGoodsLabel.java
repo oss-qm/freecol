@@ -63,7 +63,7 @@ public class AbstractGoodsLabel extends FreeColLabel {
 
     /**
      * Has the SHIFT-ALT been pressed on drag?
-     * 
+     *
      * @return True if this label was dragged with SHIFT-ALT
      */
     public boolean isSuperFullChosen() {
@@ -72,9 +72,9 @@ public class AbstractGoodsLabel extends FreeColLabel {
 
     /**
      * Set DRAG-ALL functionality when SHIFT+ALT used on drag from {@code DragListener}
-     * 
+     *
      * @param superFullChosen
-     *            The new state of drag-all 
+     *            The new state of drag-all
      */
     public void setSuperFullChosen(boolean superFullChosen) {
         this.superFullChosen = superFullChosen;

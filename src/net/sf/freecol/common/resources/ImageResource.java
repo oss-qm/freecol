@@ -141,7 +141,7 @@ public class ImageResource extends Resource
 
     /**
      * Gets the image using the specified scale.
-     * 
+     *
      * @param scale The size of the requested image (with 1 being
      *     normal size, 2 twice the size, 0.5 half the size etc).
      * @return The scaled {@code BufferedImage}.
@@ -156,7 +156,7 @@ public class ImageResource extends Resource
 
     /**
      * Gets the image using the specified dimension.
-     * 
+     *
      * @param d The {@code Dimension} of the requested
      *      image.  Rescaling will be performed if necessary.
      * @return The {@code BufferedImage} with the required dimension.
@@ -164,7 +164,7 @@ public class ImageResource extends Resource
     public BufferedImage getImage(Dimension d) {
         BufferedImage im = getImage();
         if (im == null) return null;
-        
+
         int wNew = d.width;
         int hNew = d.height;
         if (wNew < 0 && hNew < 0) return im;
@@ -228,7 +228,7 @@ public class ImageResource extends Resource
 
     /**
      * Gets a grayscale version of the image of the given size.
-     * 
+     *
      * @param d The requested size.
      * @return The {@code BufferedImage}.
      */
@@ -255,7 +255,7 @@ public class ImageResource extends Resource
 
     /**
      * Returns the image using the specified scale.
-     * 
+     *
      * @param scale The size of the requested image (with 1 being normal size,
      *      2 twice the size, 0.5 half the size etc). Rescaling
      *      will be performed unless using 1.

@@ -72,7 +72,7 @@ public final class SaveDialog extends FreeColDialog<File> {
                 setValue((JFileChooser.APPROVE_SELECTION
                         .equals(ae.getActionCommand()))
                     ? fileChooser.getSelectedFile() : cancelFile));
-        
+
         List<ChoiceItem<File>> c = choices();
         initializeDialog(frame, DialogType.QUESTION, true, fileChooser, null, c);
     }

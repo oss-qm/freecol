@@ -81,7 +81,7 @@ public class CollectionUtils {
     public static final Comparator<List<?>> descendingListLengthComparator
         = ascendingListLengthComparator.reversed();
 
-    
+
     /**
      * Make an unmodifiable set with specified members.
      *
@@ -309,7 +309,7 @@ public class CollectionUtils {
     public static <T> boolean listEquals(List<T> one, List<T> two) {
         if (one == null) return two == null;
         if (two == null) return false;
-        
+
         Iterator<T> oneI = one.iterator();
         Iterator<T> twoI = two.iterator();
         for (;;) {
@@ -324,7 +324,7 @@ public class CollectionUtils {
             }
         }
         return false;
-    }                
+    }
 
     /**
      * Get the entries in a map in a sorted order.
@@ -588,7 +588,7 @@ public class CollectionUtils {
     public static <T> int count(T[] array) {
         return (array == null) ? 0 : array.length;
     }
-        
+
     /**
      * Count the number of members of an array that match a predicate.
      *
@@ -601,7 +601,7 @@ public class CollectionUtils {
                                 Predicate<? super T> predicate) {
         return count_internal(Arrays.stream(array), predicate);
     }
-        
+
     /**
      * Count the number of members of a collection that match a predicate.
      *
@@ -612,7 +612,7 @@ public class CollectionUtils {
     public static <T> int count(Collection<T> c) {
         return (c == null) ? 0 : c.size();
     }
-        
+
     /**
      * Count the number of members of a collection that match a predicate.
      *
@@ -625,7 +625,7 @@ public class CollectionUtils {
                                 Predicate<? super T> predicate) {
         return count_internal(c.stream(), predicate);
     }
-        
+
     /**
      * Count the number of members of a stream.
      *
@@ -702,7 +702,7 @@ public class CollectionUtils {
      */
     private static void dump_internal(String header, Stream<?> stream) {
         if (header != null) System.err.print(header);
-        System.err.print("[ ");                       
+        System.err.print("[ ");
         forEach(stream, (v) -> {
                 System.err.print(v);
                 System.err.print(' ');
@@ -718,7 +718,7 @@ public class CollectionUtils {
      */
     public static void dump(String header, Map<?,?> map) {
         if (header != null) System.err.print(header);
-        System.err.print("[ ");                       
+        System.err.print("[ ");
         forEachMapEntry(map, (e) -> {
                 System.err.print(e.getKey());
                 System.err.print(',');
@@ -727,7 +727,7 @@ public class CollectionUtils {
             });
         System.err.println(']');
     }
-    
+
     /**
      * Create a stream of files from a directory.
      *
@@ -1013,7 +1013,7 @@ public class CollectionUtils {
             forEach_internal(map.entrySet().stream(), alwaysTrue(), consumer);
         }
     }
-    
+
     /**
      * Apply a consumer to the entries of a map that match a predicate.
      *
@@ -1030,7 +1030,7 @@ public class CollectionUtils {
             forEach_internal(map.entrySet().stream(), predicate, consumer);
         }
     }
-    
+
     /**
      * Apply a consumer to the members of an array.
      *
@@ -1044,7 +1044,7 @@ public class CollectionUtils {
             forEach_internal(Arrays.stream(array), alwaysTrue(), consumer);
         }
     }
-    
+
     /**
      * Apply a consumer to the members of an array that match a predicate.
      *
@@ -1074,7 +1074,7 @@ public class CollectionUtils {
             forEach_internal(c.stream(), alwaysTrue(), consumer);
         }
     }
-    
+
     /**
      * Apply a consumer to the members of a collection that match a predicate.
      *
@@ -1104,7 +1104,7 @@ public class CollectionUtils {
             forEach_internal(stream, alwaysTrue(), consumer);
         }
     }
-    
+
     /**
      * Apply a consumer to the members of a stream that match a predicate.
      *
@@ -1134,7 +1134,7 @@ public class CollectionUtils {
                                              Consumer<? super T> consumer) {
         stream.filter(predicate).forEach(consumer);
     }
-        
+
     /**
      * Create a predicate for a type that returns true if the argument is
      * not null.
@@ -1802,7 +1802,7 @@ public class CollectionUtils {
     public static <T> double product(T[] array, ToDoubleFunction<T> tdf) {
         return product_internal(Arrays.stream(array), alwaysTrue(), tdf);
     }
-            
+
     /**
      * Take the product of an array.
      *
@@ -1816,7 +1816,7 @@ public class CollectionUtils {
                                      ToDoubleFunction<T> tdf) {
         return product_internal(Arrays.stream(array), predicate, tdf);
     }
-            
+
     /**
      * Take the product of a collection.
      *
@@ -1829,7 +1829,7 @@ public class CollectionUtils {
                                      ToDoubleFunction<T> tdf) {
         return product_internal(c.stream(), alwaysTrue(), tdf);
     }
-            
+
     /**
      * Take the product of a collection.
      *
@@ -1844,7 +1844,7 @@ public class CollectionUtils {
                                      ToDoubleFunction<T> tdf) {
         return product_internal(c.stream(), predicate, tdf);
     }
-            
+
     /**
      * Take the product of the members of a stream.
      *
@@ -1858,7 +1858,7 @@ public class CollectionUtils {
         return (stream == null) ? PRODUCT_DEFAULT
             : product_internal(stream, alwaysTrue(), tdf);
     }
-            
+
     /**
      * Take the product of the members of a stream.
      *
@@ -1874,7 +1874,7 @@ public class CollectionUtils {
         return (stream == null) ? PRODUCT_DEFAULT
             : product_internal(stream, predicate, tdf);
     }
-            
+
     /**
      * Take the product of the members of a stream.
      *
@@ -1934,7 +1934,7 @@ public class CollectionUtils {
         }
         return ret;
     }
-    
+
     /**
      * Convenience function to convert an array to a sorted list.
      *
@@ -2208,7 +2208,7 @@ public class CollectionUtils {
         return (stream == null) ? SUM_DOUBLE_DEFAULT
             : sumDouble_internal(stream, predicate, tdf);
     }
-  
+
     /**
      * Take the sum of the members of a stream.
      *
@@ -2235,7 +2235,7 @@ public class CollectionUtils {
             (l1.isEmpty()) ? l2 : (l1.addAll(l2)) ? l1 : l1;
         return Collectors.reducing(Collections.<T>emptyList(), squash);
     }
-        
+
     /**
      * Convenience function to convert an array to a list.
      *
@@ -2269,7 +2269,7 @@ public class CollectionUtils {
         return (stream == null) ? Collections.<T>emptyList()
             : toList_internal(stream);
     }
-    
+
     /**
      * Implement toList.
      *
@@ -2316,7 +2316,7 @@ public class CollectionUtils {
     public static <T> Stream<T> toStream(Iterable<T> iterable) {
         return StreamSupport.stream(iterable.spliterator(), false);
     }
-    
+
     /**
      * Transform the contents of an array.
      *

@@ -40,7 +40,7 @@ public interface Location extends ObjectWithId {
     public static final int LOCATION_RANK_NOWHERE = -3;
     public static final int LOCATION_RANK_EUROPE = -2;
     public static final int LOCATION_RANK_HIGHSEAS = -1;
-    
+
     /**
      * Gets the identifier of this {@code Location}.
      *
@@ -178,7 +178,7 @@ public interface Location extends ObjectWithId {
      * @return A suitable integer.
      */
     public int getRank();
-        
+
     /**
      * Get a short description of this location.
      *

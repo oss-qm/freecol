@@ -3064,7 +3064,7 @@ public class Colony extends Settlement implements Nameable, TradeLocation {
 
 
     // Override Object
-    
+
     /**
      * {@inheritDoc}
      */

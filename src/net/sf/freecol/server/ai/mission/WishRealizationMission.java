@@ -216,7 +216,7 @@ public class WishRealizationMission extends Mission {
                 } else {
                     lbFail(lb, true, "unable to defend");
                 }
-            } else {                
+            } else {
                 aiColony.requestRearrange();
                 if (owner.getWorkInsideColonyMission(aiUnit, aiColony)!=null) {
                     lbDone(lb, true, "ready to work ", colony);

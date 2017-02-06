@@ -234,7 +234,7 @@ public class Role extends BuildableType {
                    ag -> market.getBidPrice(ag.getType(),
                                             ag.getAmount() * getMaximumCount()));
     }
-        
+
     /**
      * Get the role changes that can allow a unit to assume this role.
      *
@@ -409,7 +409,7 @@ public class Role extends BuildableType {
         return Colony.NoBuildReason.NONE;
     }
 
-        
+
     // Serialization
 
     private static final String CAPTURE_TAG = "capture";

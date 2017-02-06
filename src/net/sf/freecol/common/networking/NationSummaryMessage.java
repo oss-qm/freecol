@@ -110,8 +110,7 @@ public class NationSummaryMessage extends DOMMessage {
         this.summary = ns;
         return this;
     }
-    
-    
+
     /**
      * {@inheritDoc}
      */

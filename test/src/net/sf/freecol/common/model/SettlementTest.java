@@ -157,7 +157,7 @@ public class SettlementTest extends FreeColTestCase {
         // Colony has no equipment for the unit
         Unit colonist = colony.getUnitList().get(0);
         assertNull(colony.canImproveUnitMilitaryRole(colonist));
-        
+
         // Colony has some equipment, but not enough
         colony.addGoods(musketsType, 40);
         assertNull(colony.canImproveUnitMilitaryRole(colonist));
@@ -194,7 +194,7 @@ public class SettlementTest extends FreeColTestCase {
 
         Unit brave = is.getUnitList().get(0);
         assertNull(is.canImproveUnitMilitaryRole(brave));
-        
+
         is.addGoods(horsesType, 20);
         assertNull(is.canImproveUnitMilitaryRole(brave));
 

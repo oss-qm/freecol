@@ -31,7 +31,7 @@ import net.sf.freecol.common.util.Utils;
  * A trade item consisting of a unit.
  */
 public class UnitTradeItem extends TradeItem {
-    
+
     public static final String TAG = "unitTradeItem";
 
     /** The unit to change hands. */
@@ -84,7 +84,7 @@ public class UnitTradeItem extends TradeItem {
     public boolean isUnique() {
         return false;
     }
-    
+
     /**
      * {@inheritDoc}
      */

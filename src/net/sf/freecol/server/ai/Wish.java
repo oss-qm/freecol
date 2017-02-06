@@ -157,7 +157,7 @@ public abstract class Wish extends ValuedAIObject {
     public int checkIntegrity(boolean fix) {
         int result = super.checkIntegrity(fix);
         if (transportable != null) {
-            result = Math.min(result, 
+            result = Math.min(result,
                               transportable.checkIntegrity(fix));
         }
         if (destination == null

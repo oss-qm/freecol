@@ -197,7 +197,7 @@ public class PrivateerMission extends Mission {
      * @param deferOK Not implemented in this mission.
      * @return A path to the new target.
      */
-    public static PathNode findTargetPath(AIUnit aiUnit, int range, 
+    public static PathNode findTargetPath(AIUnit aiUnit, int range,
                                           boolean deferOK) {
         if (invalidAIUnitReason(aiUnit) != null) return null;
         final Unit unit = aiUnit.getUnit();
@@ -222,7 +222,7 @@ public class PrivateerMission extends Mission {
         PathNode path = findTargetPath(aiUnit, range, deferOK);
         return (path != null) ? extractTarget(aiUnit, path)
             : null;
-    }        
+    }
 
     /**
      * Why would a PrivateeringMission be invalid with the given unit.
@@ -358,7 +358,7 @@ public class PrivateerMission extends Mission {
     public Location findTarget() {
         return findTarget(getAIUnit(), 8, true);
     }
-    
+
     /**
      * {@inheritDoc}
      */
@@ -410,7 +410,7 @@ public class PrivateerMission extends Mission {
 
         case MOVE_HIGH_SEAS: case MOVE_NO_MOVES: case MOVE_ILLEGAL:
             return lbWait(lb);
-            
+
         case MOVE_NO_REPAIR:
             return lbFail(lb, false, AIUNITDIED);
 

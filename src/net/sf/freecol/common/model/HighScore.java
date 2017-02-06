@@ -138,7 +138,7 @@ public class HighScore extends FreeColObject {
 
     /** The date for this score. */
     private Date date;
-    
+
     /** The turn when the player retired. */
     private int retirementTurn;
 
@@ -530,7 +530,7 @@ public class HighScore extends FreeColObject {
             } catch (Exception e) {
                 logger.log(Level.WARNING, "Bad float date", e);
             }
-        } 
+        }
         // @compat 0.10.x
         // Serializing the long as of 0.11.x
         if (date == null) {
@@ -543,7 +543,7 @@ public class HighScore extends FreeColObject {
         }
         // end @compat
         if (date == null) date = new Date(); // Give up
-        
+
         retirementTurn = xr.getAttribute(RETIREMENT_TURN_TAG, 0);
 
         independenceTurn = xr.getAttribute(INDEPENDENCE_TURN_TAG, 0);
@@ -570,7 +570,7 @@ public class HighScore extends FreeColObject {
         nationName = xr.getAttribute(NATION_NAME_TAG, "Freedonia");
 
         newLandName = xr.getAttribute(NEW_LAND_NAME_TAG, "New World");
-        
+
         difficulty = xr.getAttribute(DIFFICULTY_TAG,
                                      FreeCol.getDifficulty());
 

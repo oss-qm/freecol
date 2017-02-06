@@ -187,7 +187,7 @@ public class MapTest extends FreeColTestCase {
                 allTiles.add(tile);
             }
         }
-        
+
         int i = 0;
         for (Tile t : toList(map.getAllTiles())) {
             i++;

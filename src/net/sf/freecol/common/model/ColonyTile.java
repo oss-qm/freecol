@@ -72,7 +72,7 @@ public class ColonyTile extends WorkLocation {
      */
     protected ColonyTile(Game game, Colony colony, Tile workTile) {
         super(game);
-        
+
         this.colony = colony;
         this.workTile = workTile;
         updateProductionType();
@@ -201,7 +201,7 @@ public class ColonyTile extends WorkLocation {
 
         final TileType oldType = tile.getType();
         if (!ti.isTileTypeAllowed(oldType)) return 0; // Impossible
-        
+
         final ProductionType productionType = getProductionType();
         if (productionType == null) return 0; // Not using the tile
 
@@ -258,7 +258,7 @@ public class ColonyTile extends WorkLocation {
                 - resource.applyBonus(work, unitType,
                     oldType.getPotentialProduction(work, unitType));
     }
-        
+
     /**
      * Evaluate this work location for a given player.
      *
@@ -365,7 +365,7 @@ public class ColonyTile extends WorkLocation {
     public boolean isAvailable() {
         return isCurrent() || getOwner().canClaimForSettlement(getWorkTile());
     }
-    
+
     /**
      * {@inheritDoc}
      */
@@ -373,7 +373,7 @@ public class ColonyTile extends WorkLocation {
     public boolean isCurrent() {
         return getWorkTile().getOwningSettlement() == getColony();
     }
-    
+
     /**
      * {@inheritDoc}
      */

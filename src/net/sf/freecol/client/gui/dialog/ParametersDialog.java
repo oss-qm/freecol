@@ -41,7 +41,7 @@ import net.sf.freecol.common.i18n.Messages;
  * A dialog for editing parameters.
  */
 public class ParametersDialog extends FreeColDialog<Parameters> {
-    
+
     private static final int COLUMNS = 5;
 
     private static final int DEFAULT_distToLandFromHighSeas = 4;
@@ -67,13 +67,13 @@ public class ParametersDialog extends FreeColDialog<Parameters> {
          *
          *        Add a panel containing information about
          *        the scaling (old size, new size etc).
-         */        
+         */
 
         MigPanel panel = new MigPanel(new MigLayout("wrap 1, center"));
         JPanel widthPanel = new JPanel(new FlowLayout());
         JPanel heightPanel = new JPanel(new FlowLayout());
         String str;
-        
+
         str = Integer.toString(DEFAULT_distToLandFromHighSeas);
         inputD = new JTextField(str, COLUMNS);
         str = Integer.toString(DEFAULT_maxDistanceToEdge);
@@ -96,7 +96,7 @@ public class ParametersDialog extends FreeColDialog<Parameters> {
         panel.add(widthPanel);
         panel.add(heightPanel);
         panel.setSize(panel.getPreferredSize());
-        
+
         final ActionListener al = (ActionEvent ae) -> {
             ParametersDialog.this.checkFields();
         };

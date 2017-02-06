@@ -41,15 +41,13 @@ public class MarketTest extends FreeColTestCase {
         Market dm = p.getMarket();
 
         Specification s = spec();
-        
 
         for (GoodsType good : s.getStorableGoodsTypeList()) {
             assertEquals(good.toString(), good.getInitialBuyPrice(), dm.getCostToBuy(good));
             assertEquals(good.toString(), good.getInitialSellPrice(), dm.getPaidForSale(good));
         }
     }
-    
-    
+
     public void testEuropeMarketPricing(){
          Game g = getStandardGame();
 
@@ -70,20 +68,16 @@ public class MarketTest extends FreeColTestCase {
             assertEquals(buyCost, priceGoods);
          }
     }
-    
-    
 
     /**
      * Serialization and deserialization?
      */
     public void testSerialization() {
-        //fail();
     }
 
     /**
      * Do the transaction listeners work?
      */
     public void testTransactionListeners() {
-        //fail("Not yet implemented");
     }
 }

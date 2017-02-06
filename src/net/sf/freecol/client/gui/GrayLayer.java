@@ -58,7 +58,7 @@ public class GrayLayer extends Component {
 
     /** The client for this FreeCol game */
     private final FreeColClient freeColClient;
-    
+
     /** Player object or {@code null} */
     private Player player;
 
@@ -90,7 +90,7 @@ public class GrayLayer extends Component {
             // we are done - the picture is OK
             return;
         }
-        
+
         if (!freeColClient.getClientOptions().getBoolean(ClientOptions.DISABLE_GRAY_LAYER)) {
             g.setColor(MASK_COLOR);
             g.fillRect(clipArea.x, clipArea.y, clipArea.width, clipArea.height);

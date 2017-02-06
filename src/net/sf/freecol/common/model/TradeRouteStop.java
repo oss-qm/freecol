@@ -173,7 +173,7 @@ public class TradeRouteStop extends FreeColGameObject implements TradeLocation {
         }
         return result;
     }
-        
+
     /**
      * Create a template for this trade route stop.
      *
@@ -209,7 +209,7 @@ public class TradeRouteStop extends FreeColGameObject implements TradeLocation {
         // Look for goods to load.
         // If there is space on the unit to load some more of this goods
         // type and there is some available at the stop, return true.
-        
+
         final Predicate<AbstractGoods> loadPred = ag ->
             unit.getGoodsCount(ag.getType()) < ag.getAmount()
                 && getExportAmount(ag.getType(), turns) > 0;
@@ -298,7 +298,7 @@ public class TradeRouteStop extends FreeColGameObject implements TradeLocation {
         for (GoodsType cargoType : cargo) {
 
             xw.writeStartElement(CARGO_TAG);
-            
+
             xw.writeAttribute(FreeColObject.ID_ATTRIBUTE_TAG, cargoType);
 
             xw.writeEndElement();
@@ -363,6 +363,6 @@ public class TradeRouteStop extends FreeColGameObject implements TradeLocation {
             sb.append(' ').append(goodsType);
         }
         sb.append(']');
-        return sb.toString();            
+        return sb.toString();
     }
 }

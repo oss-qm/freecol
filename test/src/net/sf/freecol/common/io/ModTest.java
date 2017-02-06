@@ -46,7 +46,7 @@ public class ModTest extends FreeColTestCase {
             assertNotNull("Null identifier for " + tc, tc.getId());
             ids.add(tc.getId());
         }
-            
+
         assertTrue(ids.contains("freecol"));
         assertTrue(ids.contains("classic"));
         // Testing has no mod descriptor

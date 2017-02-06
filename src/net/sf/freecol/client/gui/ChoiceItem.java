@@ -50,7 +50,7 @@ public class ChoiceItem<T> implements Comparable<ChoiceItem<T>> {
      *
      * @param text The text that should be used to represent this choice.
      * @param object The object contained by this choice.
-     * @param enable Sets if the option should be enabled or not       
+     * @param enable Sets if the option should be enabled or not
      */
     public ChoiceItem(String text, T object, boolean enable) {
         this.text = text;
@@ -79,7 +79,7 @@ public class ChoiceItem<T> implements Comparable<ChoiceItem<T>> {
      */
     public ChoiceItem(T object) {
         this(Messages.message(object.toString()), object, true);
-        
+
         // Check to see if we can improve upon object.toString()
         if (object instanceof AbstractGoods) {
             this.text = Messages.message(((AbstractGoods)object).getLabel());
@@ -110,7 +110,7 @@ public class ChoiceItem<T> implements Comparable<ChoiceItem<T>> {
     public int getChoice() {
         return ((Integer) object);
     }
-    
+
     /**
      * Should this item be enabled or not?
      *
@@ -199,7 +199,7 @@ public class ChoiceItem<T> implements Comparable<ChoiceItem<T>> {
 
     // Interface Comparable
 
-    /** 
+    /**
      * {@inheritDoc}
      */
     @Override

@@ -39,7 +39,7 @@ public class ServerInfo {
 
     /** Timestamp used by the meta-server. */
     private long lastUpdated = -1L;
-    
+
 
     /**
      * Create a new server infomation holder.
@@ -62,9 +62,9 @@ public class ServerInfo {
 
 
     /**
-     * Get the name of the server that is beeing represented 
+     * Get the name of the server that is beeing represented
      * by this object.
-     * 
+     *
      * @return The server name.
      */
     public String getName() {
@@ -116,7 +116,7 @@ public class ServerInfo {
     public boolean getIsGameStarted() {
         return this.isGameStarted;
     }
-    
+
     /**
      * Get the FreeCol version of the server.
      *
@@ -129,7 +129,7 @@ public class ServerInfo {
 
     /**
      * Gets the current state of the game.
-     * 
+     *
      * @return The current state of the game.
      */
     public int getGameState() {
@@ -144,7 +144,7 @@ public class ServerInfo {
     public long getLastUpdated() {
         return this.lastUpdated;
     }
-    
+
     /**
      * Update this server.
      *

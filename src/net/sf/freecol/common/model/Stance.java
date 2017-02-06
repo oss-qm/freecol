@@ -154,7 +154,7 @@ public enum Stance implements Named {
         }
         return false;
     }
-            
+
     /**
      * Get the stem key.
      *
@@ -172,7 +172,7 @@ public enum Stance implements Named {
     public String getStanceChangeKey() {
         return "model.player." + getKey() + ".declared";
     }
-    
+
     /**
      * Get the message key to use for player messages when stance
      * changes between other players.
@@ -182,7 +182,7 @@ public enum Stance implements Named {
     public String getOtherStanceChangeKey() {
         return "model.player." + getKey() + ".others";
     }
-    
+
     // Implement Named
 
     /**

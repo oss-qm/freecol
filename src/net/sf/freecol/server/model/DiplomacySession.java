@@ -130,7 +130,7 @@ public class DiplomacySession extends TimedSession {
     public void setAgreement(DiplomaticTrade agreement) {
         this.agreement = agreement;
     }
-    
+
     /**
      * Get the initiating unit.
      *
@@ -188,7 +188,7 @@ public class DiplomacySession extends TimedSession {
         ServerPlayer other = getOwner();
         return (other != serverPlayer) ? other : getOtherPlayer();
     }
-        
+
     /**
      * Utility to create a message using the current session parameters and
      * trade agreement, given a desired destination player.
@@ -222,7 +222,7 @@ public class DiplomacySession extends TimedSession {
                 && (fcgo1 == (FreeColGameObject)this.settlement
                     || fcgo1 == (FreeColGameObject)this.otherUnit));
     }
-    
+
     /**
      * Find any contact session already underway between the owners of
      * the given units.
@@ -236,7 +236,7 @@ public class DiplomacySession extends TimedSession {
     }
 
     /**
-     * Find any contact session already underway between the owners of a 
+     * Find any contact session already underway between the owners of a
      * given unit and settlement.
      *
      * @param unit The {@code Unit}.
@@ -312,7 +312,7 @@ public class DiplomacySession extends TimedSession {
 
 
     // Implement TimedSession
-    
+
     /**
      * {@inheritDoc}
      */

@@ -30,7 +30,7 @@ import net.sf.freecol.common.io.sza.SimpleZippedAnimation;
 
 /**
  * A {@code Resource} wrapping a {@code SimpleZippedAnimation}.
- * 
+ *
  * @see Resource
  * @see SimpleZippedAnimation
  */
@@ -90,7 +90,7 @@ public class SZAResource extends Resource implements Resource.Preloadable {
     /**
      * Get the {@code SimpleZippedAnimation} using the specified
      * scale.
-     * 
+     *
      * @param scale The size of the requested animation (with 1 being normal
      *      size, 2 twice the size, 0.5 half the size etc). Rescaling
      *      will be performed unless using 1.

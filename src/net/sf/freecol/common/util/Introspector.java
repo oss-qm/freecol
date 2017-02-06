@@ -42,7 +42,7 @@ public class Introspector {
             super(err, cause);
         }
     }
-    
+
     /** The class whose field we are to operate on. */
     private final Class<?> theClass;
 
@@ -302,7 +302,7 @@ public class Introspector {
         } catch (ClassNotFoundException ex) {
             return null;
         }
-    }       
+    }
 
     /**
      * Get a constructor for a given class and arguments.

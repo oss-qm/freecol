@@ -155,7 +155,7 @@ public class UnitChangeType extends FreeColSpecObjectType {
                 .append('/').append(this.probability);
             if (this.turns > 0) sb.append('/').append(this.turns);
             return sb.toString();
-        }            
+        }
     };
 
     /** The individual unit changes valid for this change type. */
@@ -331,7 +331,7 @@ public class UnitChangeType extends FreeColSpecObjectType {
 
 
     // Override Object
-    
+
     /**
      * {@inheritDoc}
      */

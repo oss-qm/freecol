@@ -39,7 +39,7 @@ import org.w3c.dom.Element;
 public class VacantPlayersMessage extends AttributeMessage {
 
     public static final String TAG = "vacantPlayers";
-    
+
 
     /**
      * Create a new {@code VacantPlayersMessage}.

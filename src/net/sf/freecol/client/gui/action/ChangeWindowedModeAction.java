@@ -67,7 +67,7 @@ public class ChangeWindowedModeAction extends SelectableAction {
         return super.shouldBeEnabled()
             && !(gui == null || gui.isShowingSubPanel());
     }
-    
+
 
     // Interface ActionListener
 

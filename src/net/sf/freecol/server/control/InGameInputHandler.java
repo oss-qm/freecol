@@ -100,7 +100,7 @@ public final class InGameInputHandler extends ServerInputHandler {
      *
      * Note: all the handler lamdbas call getGame() because the game
      * is not necessarily available when the constructor is called.
-     * 
+     *
      * @param freeColServer The main server object.
      */
     public InGameInputHandler(final FreeColServer freeColServer) {

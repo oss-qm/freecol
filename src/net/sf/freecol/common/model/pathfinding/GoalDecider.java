@@ -27,16 +27,16 @@ import net.sf.freecol.common.model.Unit;
 /**
  * Used by {@link net.sf.freecol.common.model.Map#search} in order to
  * determine a goal.
- * 
+ *
  * The method {@link #check(Unit, PathNode)} will be called by {@link
  * net.sf.freecol.common.model.Map#search} until:
- * 
+ *
  * <ol>
  *   <li>The method returns {@code true} and there is
  *       {@link #hasSubGoals() no sub goals}.</li>
  *   <li>The maximum distance of the search has been reached.</li>
  * </ol>
- * 
+ *
  * The method {@link #getGoal()} will get called after this.
  */
 public interface GoalDecider {
@@ -48,20 +48,20 @@ public interface GoalDecider {
      *     returned by {@code pathNode.getTile()} is the goal.
      */
     public PathNode getGoal();
-    
+
     /**
      * Determines whether this {@code GoalDecider} has any
      * sub goals.
-     * 
+     *
      * @return {@code true} if there are any sub goals
      *     and {@code false} otherwise.
      */
     public boolean hasSubGoals();
-    
+
     /**
      * Checks whether the given {@code PathNode} is a
      * goal/sub-goal.
-     * 
+     *
      * @param u The {@code Unit} which we are trying
      *     to find a path for.
      * @param pathNode The {@code PathNode} where the

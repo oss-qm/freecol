@@ -431,12 +431,12 @@ public final class SelectDestinationDialog extends FreeColDialog<Location>
         final Predicate<Settlement> canReach = s ->
             (unit.isNaval()) ? s.isConnectedPort()
                 : Map.isSameContiguity(unit.getLocation(), s.getTile());
-       
+
         if (this.destinationComparator == null) {
             this.destinationComparator = new DestinationComparator(player);
         }
         List<Destination> td = new ArrayList<>();
-        
+
         // Add Europe or "New World" (the map) depending where the unit is
         if (unit.isInEurope()) {
             td.add(new Destination(map, unit.getSailTurns(), unit, goodsTypes));
@@ -546,7 +546,7 @@ public final class SelectDestinationDialog extends FreeColDialog<Location>
 
 
     // Interface ListSelectionListener
-    
+
     /**
      * {@inheritDoc}
      */

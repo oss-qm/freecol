@@ -179,7 +179,7 @@ public final class EuropePanel extends PortPanel {
                     dest = getGUI().showSelectDestinationDialog(unit);
                     if (dest == null) return null; // user aborted
                 }
-                
+
                 final ClientOptions co = getClientOptions();
                 if (!co.getBoolean(ClientOptions.AUTOLOAD_EMIGRANTS)
                     && unit.isInEurope()

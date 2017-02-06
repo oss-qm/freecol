@@ -106,7 +106,7 @@ public final class CornerMapControls extends MapControls {
 
         miniMapPanel = new MiniMapPanel();
         miniMapPanel.setFocusable(false);
-        
+
         /**
          * In order to make the setLocation setup work, we need to set
          * the layout to null first, then set the size of the minimap,
@@ -142,7 +142,7 @@ public final class CornerMapControls extends MapControls {
             miniMapPanel.setOpaque(true);
             miniMap.setBorder(new BevelBorder(BevelBorder.RAISED));
             miniMap.setLocation(width/2, GAP);
-            miniMapZoomInButton.setLocation(GAP, 
+            miniMapZoomInButton.setLocation(GAP,
                 MAP_HEIGHT + GAP - miniMapZoomInButton.getHeight());
             miniMapZoomOutButton.setLocation(
                 miniMapZoomInButton.getWidth() + MAP_WIDTH + 3 * GAP,

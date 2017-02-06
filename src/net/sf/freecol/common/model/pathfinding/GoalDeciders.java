@@ -146,7 +146,7 @@ public final class GoalDeciders {
     public static GoalDecider getHighSeasGoalDecider() {
         return new GoalDecider() {
             private PathNode best = null;
-            
+
             @Override
             public PathNode getGoal() { return best; }
             @Override
@@ -267,7 +267,7 @@ public final class GoalDeciders {
     public static GoalDecider getEnemySettlementGoalDecider(final Collection<Player> enemies) {
         return new GoalDecider() {
             private PathNode best = null;
-                        
+
             @Override
             public PathNode getGoal() { return best; }
             @Override
@@ -303,7 +303,7 @@ public final class GoalDeciders {
      */
     public static GoalDecider getDisembarkGoalDecider(final Tile target) {
         final double NO_DANGER_BONUS = 1000.0;
-        
+
         return new GoalDecider() {
             private double bestScore = -1.0;
             private PathNode goal = null;
@@ -347,7 +347,7 @@ public final class GoalDeciders {
             }
         };
     }
-        
+
     /**
      * Get a goal decider to find tiles that an enemy player can not see.
      *

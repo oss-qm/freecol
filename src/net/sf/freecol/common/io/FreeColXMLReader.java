@@ -130,8 +130,8 @@ public class FreeColXMLReader extends StreamReaderDelegate
     public FreeColXMLReader(File file) throws IOException {
         this(new FileInputStream(file));
     }
-    
-    
+
+
     /**
      * Creates a new {@code FreeColXMLReader}.
      *
@@ -266,7 +266,7 @@ public class FreeColXMLReader extends StreamReaderDelegate
             }
         }
         // @compat 0.11.x
-        
+
         return id;
     }
     // end @compat 0.11.x
@@ -318,7 +318,7 @@ public class FreeColXMLReader extends StreamReaderDelegate
         }
         return tag;
     }
-             
+
     /**
      * Is the stream at the given tag?
      *
@@ -396,8 +396,8 @@ public class FreeColXMLReader extends StreamReaderDelegate
      */
     public void swallowTag(String tag) throws XMLStreamException {
         while (moreTags() || !tag.equals(getLocalName()));
-    }            
-        
+    }
+
     /**
      * Extract the current tag and its attributes from an input stream.
      * Useful for error messages.
@@ -697,7 +697,7 @@ public class FreeColXMLReader extends StreamReaderDelegate
 
         List<T> list = new ArrayList<>(length);
         for (int x = 0; x < length; x++) {
-            T value = getType(spec, FreeColObject.arrayKey(x), type, (T)null); 
+            T value = getType(spec, FreeColObject.arrayKey(x), type, (T)null);
             if (value == null) logger.warning("Null list value(" + x + ")");
             list.add(value);
         }
@@ -815,7 +815,7 @@ public class FreeColXMLReader extends StreamReaderDelegate
     private <T extends FreeColObject> T internedRead(Game game,
         Class<T> returnClass) throws XMLStreamException {
 
-        T ret = makeFreeColObject(game, FreeColObject.ID_ATTRIBUTE_TAG, 
+        T ret = makeFreeColObject(game, FreeColObject.ID_ATTRIBUTE_TAG,
                                   returnClass, false);
         if (ret != null) ret.readFromXML(this);
         return ret;
@@ -943,9 +943,9 @@ public class FreeColXMLReader extends StreamReaderDelegate
                             + returnClass.getName() + " for " + id
                             + ": " + currentTag());
                     }
-                } catch (NoSuchMethodException | SecurityException 
-                        | InstantiationException | IllegalAccessException 
-                        | IllegalArgumentException | InvocationTargetException 
+                } catch (NoSuchMethodException | SecurityException
+                        | InstantiationException | IllegalAccessException
+                        | IllegalArgumentException | InvocationTargetException
                         | XMLStreamException e) {
                     if (required) {
                         throw new XMLStreamException(e);
@@ -981,7 +981,7 @@ public class FreeColXMLReader extends StreamReaderDelegate
      * @param attributeName the name of the attribute identifying the
      *     {@code FreeColSpecObjectType}.
      * @param returnClass The expected class of the return value.
-     * @param defaultValue A default value to return if the attributeName 
+     * @param defaultValue A default value to return if the attributeName
      *     attribute is not present.
      * @return The {@code FreeColSpecObjectType} found, or the
      *     {@code defaultValue}.

@@ -44,7 +44,7 @@ public class NativeDemandSession extends TimedSession {
     private GoodsType type;
     private int amount;
 
-    
+
     /**
      * Creates a new {@code NativeDemandSession}.
      *
@@ -72,7 +72,7 @@ public class NativeDemandSession extends TimedSession {
     private ServerPlayer getUnitOwner() {
         return (ServerPlayer)this.unit.getOwner();
     }
-    
+
     /**
      * Get the game.
      *
@@ -91,7 +91,7 @@ public class NativeDemandSession extends TimedSession {
     private void completeInternal(boolean result, ChangeSet cs) {
         final ServerPlayer demandPlayer = getUnitOwner();
         final ServerPlayer colonyPlayer = getColonyOwner();
-        
+
         colonyPlayer.csCompleteNativeDemand(demandPlayer,
             this.unit, this.colony, this.type, this.amount, result, cs);
     }
@@ -113,7 +113,7 @@ public class NativeDemandSession extends TimedSession {
 
 
     // Implement TimedSession
-    
+
     /**
      * {@inheritDoc}
      */

@@ -36,7 +36,7 @@ import net.sf.freecol.server.ai.mission.TransportMission;
 /**
  * A single item in a carrier's transport list.  Any {@link Locatable}
  * which should be able to be transported by a carrier using the
- * {@link net.sf.freecol.server.ai.mission.TransportMission}, 
+ * {@link net.sf.freecol.server.ai.mission.TransportMission},
  * should extend this class.
  *
  * @see net.sf.freecol.server.ai.mission.TransportMission

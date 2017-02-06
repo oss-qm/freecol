@@ -93,7 +93,7 @@ public class AssignTradeRouteMessage extends AttributeMessage {
             tradeRoute = null;
         } else {
             try {
-                tradeRoute = serverPlayer.getOurFreeColGameObject(tradeRouteId, 
+                tradeRoute = serverPlayer.getOurFreeColGameObject(tradeRouteId,
                     TradeRoute.class);
             } catch (Exception e) {
                 return serverPlayer.clientError(e.getMessage());

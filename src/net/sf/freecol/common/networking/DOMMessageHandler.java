@@ -29,7 +29,7 @@ import org.w3c.dom.Element;
  * Handles complete incoming DOM messages.
  */
 public interface DOMMessageHandler {
-    
+
     /**
      * Handles the main element of an XML message.
      *

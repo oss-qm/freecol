@@ -32,13 +32,13 @@ import net.sf.freecol.common.util.Utils;
  * A trade item consisting of a player to incite war against.
  */
 public class InciteTradeItem extends TradeItem {
-    
+
     public static final String TAG = "inciteTradeItem";
 
     /** The victim player. */
     private Player victim;
 
-    
+
     /**
      * Creates a new {@code InciteTradeItem} inincite.
      *
@@ -119,7 +119,7 @@ public class InciteTradeItem extends TradeItem {
         // FIXME: magic#, needs rebalancing
         return (int)Math.round(50.0 / player.getStrengthRatio(victim, false));
     }
-    
+
 
     // Serialization
 
@@ -135,7 +135,7 @@ public class InciteTradeItem extends TradeItem {
 
         xw.writeAttribute(VICTIM_TAG, this.victim);
     }
-    
+
     /**
      * {@inheritDoc}
      */

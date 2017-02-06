@@ -150,7 +150,7 @@ public final class LoadingSavegameDialog extends FreeColConfirmDialog {
 
     /**
      * Get all important information at once.
-     * 
+     *
      * @return A LoadingSavegameInfo.
      */
     public LoadingSavegameInfo getInfo() {

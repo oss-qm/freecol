@@ -253,7 +253,7 @@ public class IndianBringGiftMission extends Mission {
 
             case MOVE_NO_TILE:
                 return this;
-            
+
             case ATTACK_SETTLEMENT: case ATTACK_UNIT: // A blockage!
                 Location blocker = resolveBlockage(aiUnit, getTarget());
                 if (blocker != null
@@ -295,7 +295,7 @@ public class IndianBringGiftMission extends Mission {
 
             case MOVE_NO_TILE:
                 return this;
-            
+
             case MOVE: case ATTACK_SETTLEMENT: // Arrived (do not attack!)
                 break;
 
@@ -308,11 +308,11 @@ public class IndianBringGiftMission extends Mission {
                 }
                 moveRandomly(tag, null);
                 continue;
-            
+
             default:
                 return lbMove(lb, mt);
             }
-        
+
             // Deliver the goods.
             lbAt(lb);
             boolean result = AIMessage.askNativeGift(aiUnit, this.colony);

@@ -220,7 +220,6 @@ public class Force extends FreeColSpecObject {
             (naval) ? this.navalUnits : this.landUnits);
     }
 
-                    
     // Serialization
 
     // @compat 0.10.5

@@ -117,7 +117,7 @@ public final class ServerTestHelper {
                                             String name) {
         stopServer();
         try {
-            server = new FreeColServer(new FreeColSavegameFile(file), 
+            server = new FreeColServer(new FreeColSavegameFile(file),
                                        null, port, name);
         } catch (Exception e) {
             fail(e.getMessage());

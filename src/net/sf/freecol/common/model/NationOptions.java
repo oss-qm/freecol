@@ -119,7 +119,7 @@ public class NationOptions extends FreeColSpecObject {
      */
     public NationOptions(Specification specification) {
         super(specification);
-        
+
         this.nationalAdvantages = FreeCol.getAdvantages();
         if (specification != null) {
             int counter = 0, maxEuropeans = FreeCol.getEuropeanCount();
@@ -149,7 +149,7 @@ public class NationOptions extends FreeColSpecObject {
     public NationOptions(FreeColXMLReader xr,
                          Specification specification) throws XMLStreamException {
         this(specification);
-        
+
         readFromXML(xr);
     }
 
@@ -230,7 +230,7 @@ public class NationOptions extends FreeColSpecObject {
             xw.writeAttribute(ID_ATTRIBUTE_TAG, nation);
 
             xw.writeAttribute(STATE_TAG, nations.get(nation));
-            
+
             xw.writeEndElement();
         }
     }

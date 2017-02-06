@@ -62,7 +62,7 @@ import static net.sf.freecol.common.util.StringUtils.*;
 
 /**
  * TileViewer is a private helper class of MapViewer and SwingGUI.
- * 
+ *
  * This class is responsible for drawing map tiles
  * for MapViewer and some GUI-panels.
  */
@@ -142,7 +142,7 @@ public final class TileViewer extends FreeColClientHolder {
 
     /**
      * Gets the contained {@code ImageLibrary}.
-     * 
+     *
      * @return The image library;
      */
     ImageLibrary getImageLibrary() {
@@ -281,7 +281,7 @@ public final class TileViewer extends FreeColClientHolder {
 
     /**
      * Displays the 3x3 tiles for the TilesPanel in ColonyPanel.
-     * 
+     *
      * @param g The {@code Graphics2D} object on which to draw
      *      the {@code Tile}.
      * @param tiles The array containing the {@code Tile} objects to draw.

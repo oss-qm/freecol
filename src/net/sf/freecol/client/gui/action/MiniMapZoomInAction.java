@@ -51,7 +51,7 @@ public class MiniMapZoomInAction extends MapboardAction {
      */
     public MiniMapZoomInAction(FreeColClient freeColClient, boolean b) {
         super(freeColClient, id + ".secondary");
- 
+
         addImageIcons("zoom_in");
     }
 

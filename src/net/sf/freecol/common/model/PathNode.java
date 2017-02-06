@@ -190,7 +190,7 @@ public class PathNode {
         for (PathNode temp = this; temp != null; temp = temp.next) n++;
         return n;
     }
-        
+
     /**
      * Gets the direction to move in order to get to this path node.
      *
@@ -281,7 +281,7 @@ public class PathNode {
             ? FreeColObject.INFINITY
             : TURN_FACTOR * turns + (TURN_FACTOR - movesLeft);
     }
-        
+
     /**
      * Gets the cost of moving to this {@code PathNode}.
      *
@@ -351,7 +351,7 @@ public class PathNode {
                                   p, null);
         }
     }
-           
+
 
     // Override Object
 

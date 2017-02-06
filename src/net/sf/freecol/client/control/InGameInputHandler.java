@@ -251,7 +251,7 @@ public final class InGameInputHandler extends ClientInputHandler {
     private void invokeAndWait(Runnable runnable) {
         getGUI().invokeNowOrWait(runnable);
     }
-    
+
     /**
      * Shorthand to run in the EDT eventually.
      *
@@ -260,7 +260,6 @@ public final class InGameInputHandler extends ClientInputHandler {
     private void invokeLater(Runnable runnable) {
         getGUI().invokeNowOrLater(runnable);
     }
-    
 
     // Override ClientInputHandler
 
@@ -395,7 +394,7 @@ public final class InGameInputHandler extends ClientInputHandler {
     private void chooseFoundingFather(ChooseFoundingFatherMessage message) {
         final Game game = getGame();
         final List<FoundingFather> fathers = message.getFathers(game);
-        
+
         invokeLater(() ->
             igc().chooseFoundingFather(fathers));
     }
@@ -516,7 +515,7 @@ public final class InGameInputHandler extends ClientInputHandler {
                     logger.warning("Feature change NYI: "
                         + parent + "/" + add + "/" + fco);
                 }
-            } else {        
+            } else {
                 logger.warning("featureChange unrecognized: " + fco);
             }
         }
@@ -585,7 +584,7 @@ public final class InGameInputHandler extends ClientInputHandler {
         }
         FreeColDebugger.finishDebugRun(getFreeColClient(), true);
         if (winner != getMyPlayer()) return;
-        
+
         invokeLater(() ->
             igc().victory(highScore));
     }
@@ -601,7 +600,7 @@ public final class InGameInputHandler extends ClientInputHandler {
         invokeLater(() ->
             igc().displayHighScores(message.getKey(), message.getScores()));
     }
-        
+
     /**
      * Handle an "incite"-message.
      *
@@ -614,11 +613,11 @@ public final class InGameInputHandler extends ClientInputHandler {
         final IndianSettlement is = message.getSettlement(unit);
         final Player enemy = message.getEnemy(game);
         final int gold = message.getGold();
-        
+
         invokeLater(() ->
             igc().incite(unit, is, enemy, gold));
     }
-    
+
     /**
      * Handle an "indianDemand"-message.
      *
@@ -631,7 +630,7 @@ public final class InGameInputHandler extends ClientInputHandler {
         final Colony colony = message.getColony(game);
         final GoodsType goodsType = message.getType(game);
         final int amount = message.getAmount();
-        
+
         if (unit == null) {
             logger.warning("IndianDemand with null unit.");
             return;
@@ -688,7 +687,7 @@ public final class InGameInputHandler extends ClientInputHandler {
         final Game game = getGame();
         final StringTemplate template = message.getTemplate();
         final String key = message.getMonarchKey();
-        
+
         invokeLater(() ->
             igc().monarch(message.getAction(), template, key));
     }
@@ -782,7 +781,7 @@ public final class InGameInputHandler extends ClientInputHandler {
 
         if (player != null && tr != null) player.addTradeRoute(tr);
     }
-        
+
     /**
      * Handle a "newTurn"-message.
      *

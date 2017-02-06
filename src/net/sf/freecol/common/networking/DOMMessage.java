@@ -41,7 +41,7 @@ import static net.sf.freecol.common.util.StringUtils.*;
 import net.sf.freecol.common.util.Introspector;
 import net.sf.freecol.server.FreeColServer;
 import net.sf.freecol.server.model.ServerPlayer;
-    
+
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NamedNodeMap;
@@ -72,7 +72,7 @@ public class DOMMessage extends Message {
     private DOMMessage(String tag) {
         super(tag);
     }
-        
+
     /**
      * Constructs a new DOMMessage with data from the given InputStream. The
      * constructor to use if this is an INCOMING message.
@@ -94,10 +94,9 @@ public class DOMMessage extends Message {
      */
     public DOMMessage(String tag, String... attributes) {
         this(tag);
-        
         setStringAttributes(attributes);
     }
-    
+
     /**
      * Create a DOMMessage with given tag and attributes.
      *
@@ -242,7 +241,7 @@ public class DOMMessage extends Message {
     public Map<String,String> getStringAttributes() {
         return DOMUtils.getAttributeMap(getElement());
     }
-    
+
     /**
      * {@inheritDoc}
      */
@@ -254,7 +253,7 @@ public class DOMMessage extends Message {
 
     // Useful utilities for subclass *class*(Game,Element) constructors
     // Temporarily duplicated from DOMUtils
-    
+
     /**
      * Get a boolean attribute value from an element.
      *
@@ -337,7 +336,7 @@ public class DOMMessage extends Message {
         Element element, int index, Class<T> returnClass) {
         return DOMUtils.getChild(game, element, index, returnClass);
     }
-    
+
     // Override Object
 
     /**

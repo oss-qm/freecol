@@ -52,7 +52,7 @@ public class RemoveMessage extends AttributeMessage {
     public RemoveMessage(String divertId,
                          List<? extends FreeColGameObject> objects) {
         super(TAG, DIVERT_TAG, divertId);
-        
+
         setArrayAttributes(transform(objects, alwaysTrue(),
                            FreeColObject::getId));
     }
@@ -106,8 +106,7 @@ public class RemoveMessage extends AttributeMessage {
         }
         return ret;
     }
-    
-            
+
     /**
      * {@inheritDoc}
      */

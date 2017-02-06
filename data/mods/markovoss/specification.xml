@@ -9,8 +9,8 @@
         delete="true" />
     </resource-type>
   </resource-types>
-  <!-- Change available resources - remove ore from every tile except mountains 
-    and hills - remove silver from every tile and let it only appear as a special 
+  <!-- Change available resources - remove ore from every tile except mountains
+    and hills - remove silver from every tile and let it only appear as a special
     resource - allow production of cotton on desert-tiles only -->
   <tile-types>
     <tile-type id="model.tile.plains" basic-move-cost="3"
@@ -380,7 +380,7 @@
           value="1800" minimumValue="1492" maximumValue="1900" />
       </optionGroup>
     </optionGroup>
-    <!-- Increase map size to support more room for random resource placing. 
+    <!-- Increase map size to support more room for random resource placing.
       NOTE: You should start the game with -Xmx1024M or more. -->
     <optionGroup id="mapGeneratorOptions">
       <optionGroup id="mapGeneratorOptions.landGenerator">

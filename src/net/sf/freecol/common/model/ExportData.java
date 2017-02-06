@@ -36,7 +36,7 @@ public class ExportData extends FreeColObject {
     private static final int HIGH_LEVEL_DEFAULT = 90;
     private static final int LOW_LEVEL_DEFAULT = 10;
     private static final int EXPORT_LEVEL_DEFAULT = 50;
-    
+
     /** The high water mark for the goods type. */
     private int highLevel = HIGH_LEVEL_DEFAULT;
 
@@ -139,7 +139,7 @@ public class ExportData extends FreeColObject {
      *
      * @param capacity The warehouse capacity.
      * @return The effective import level.
-     */     
+     */
     public final int getEffectiveImportLevel(int capacity) {
         return (this.importLevel >= 0) ? this.importLevel : capacity;
     }

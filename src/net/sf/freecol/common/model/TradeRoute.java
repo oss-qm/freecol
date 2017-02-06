@@ -392,7 +392,7 @@ public class TradeRoute extends FreeColGameObject
 
         if (TradeRouteStop.TAG.equals(tag)) {
             addStop(new TradeRouteStop(getGame(), xr));
-            
+
         } else {
             super.readChild(xr);
         }

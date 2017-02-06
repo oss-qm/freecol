@@ -125,7 +125,7 @@ public final class WarehouseDialog extends FreeColConfirmDialog {
         private final JSpinner highLevel;
 
         private final JSpinner importLevel;
-        
+
         private final JSpinner exportLevel;
 
 
@@ -139,7 +139,7 @@ public final class WarehouseDialog extends FreeColConfirmDialog {
             this.goodsType = goodsType;
             final int capacity = colony.getWarehouseCapacity();
             final int maxCapacity = 300; // TODO: magic number
-            
+
             setLayout(new MigLayout("wrap 2", "", ""));
             setOpaque(false);
             setBorder(Utility.localizedBorder(goodsType, new Color(0)));

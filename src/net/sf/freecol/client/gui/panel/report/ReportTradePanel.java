@@ -103,7 +103,7 @@ public final class ReportTradePanel extends ReportPanel {
         JLabel emptyLabel = new JLabel();
         emptyLabel.setBorder(Utility.TOPLEFTCELLBORDER);
         goodsHeader.add(emptyLabel, "cell 0 0");
-        
+
         /**
          * Total Units Sold by Player
          */

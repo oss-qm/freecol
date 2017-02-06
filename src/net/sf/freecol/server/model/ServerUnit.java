@@ -419,7 +419,7 @@ public class ServerUnit extends Unit implements TurnTaker {
         Tile tile = getTile();
         ServerPlayer indianPlayer = (ServerPlayer)tile.getOwner();
         serverPlayer.csContact(indianPlayer, cs);
-        indianPlayer.csModifyTension(serverPlayer, 
+        indianPlayer.csModifyTension(serverPlayer,
             Tension.Level.HATEFUL.getLimit(), cs);//+til
         serverPlayer.csChangeStance(Stance.WAR, indianPlayer, true, cs);
         cs.addMessage(serverPlayer,
@@ -723,7 +723,7 @@ public class ServerUnit extends Unit implements TurnTaker {
                     logger.finest("First contact between "
                         + contactPlayer.getId()
                         + " and " + is + " at " + newTile);
-                }                   
+                }
             }
             csActivateSentries(t, cs);
         }
@@ -874,7 +874,7 @@ public class ServerUnit extends Unit implements TurnTaker {
             }
             setMovesLeft(0);
         }
-                
+
         // Check for slowing units.
         Unit slowedBy = getSlowedBy(newTile, random);
         if (slowedBy != null) {

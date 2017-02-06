@@ -119,7 +119,7 @@ public final class PlayersTable extends JTable {
         /** The national advantages type. */
         private final Advantages advantages;
 
- 
+
         /**
          * The default constructor.
          *
@@ -567,7 +567,7 @@ public final class PlayersTable extends JTable {
                     return nation.getType() instanceof EuropeanNationType
                         && ownRow;
                 case COLOR_COLUMN:
-                    // Allow a player to change all the colors. 
+                    // Allow a player to change all the colors.
                     // This is an accessibility issue for users with a
                     // colour vision deficiency.  Better to support them
                     // and just admit that if someone wants to be a pain
@@ -682,7 +682,7 @@ public final class PlayersTable extends JTable {
         header.addMouseListener(new HeaderListener(header, renderer));
 
         final TableColumnModel tcm = getColumnModel();
-        
+
         TableColumn nationColumn = tcm.getColumn(NATION_COLUMN);
         nationColumn.setCellRenderer(new NationCellRenderer());
         nationColumn.setHeaderRenderer(renderer);

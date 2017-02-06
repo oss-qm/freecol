@@ -63,7 +63,7 @@ public class PathfindingTest extends FreeColTestCase {
         IndianSettlement is = new FreeColTestCase.IndianSettlementBuilder(game)
             .settlementTile(nativeTile).build();
         assertTrue(nativeTile.isShore());
-            
+
         GoalDecider settlementGD = new GoalDecider() {
                 private PathNode goal = null;
                 public PathNode getGoal() { return goal; }

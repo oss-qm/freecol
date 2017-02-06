@@ -39,7 +39,7 @@ import net.sf.freecol.common.util.Utils;
  * Merge some translation updates.
  */
 public class MergeTranslations {
-    
+
     public static void main(String[] args) throws Exception {
 
         File sourceDirectory = new File(args[0]);
@@ -59,7 +59,7 @@ public class MergeTranslations {
                     return name.matches("FreeColMessages_" + localeKey + ".*\\.properties");
                 }
             });
-        
+
         for (String name : sourceFiles) {
 
             System.out.println("Processing source file: " + name);
@@ -109,7 +109,7 @@ public class MergeTranslations {
         Map<String, String> result = new HashMap<>();
         try (
             Reader reader = Utils.getFileUTF8Reader(file);
-            BufferedReader bufferedReader = new BufferedReader(reader); 
+            BufferedReader bufferedReader = new BufferedReader(reader);
         ) {
             String line = bufferedReader.readLine();
             while (line != null) {

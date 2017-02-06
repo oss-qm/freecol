@@ -1666,11 +1666,11 @@
                         to="model.unit.undead" probability="100"/>
     </unit-change-type>
   </unit-change-types>
-   
+
   <unit-types>
     <!-- ATTENTION: skill-taught can NOT be inherited because it
          defaults to the unit type itself! -->
-    <unit-type id="colonist" abstract="true" 
+    <unit-type id="colonist" abstract="true"
                offence="0" defence="1" movement="3" line-of-sight="1"
                priority="1000">
       <ability id="model.ability.person"
@@ -1872,7 +1872,7 @@
       <modifier id="model.goods.hammers" index="30" type="additive" value="-2"/>
       <modifier id="model.goods.tools"   index="30" type="additive" value="-2"/>
     </unit-type>
-    <unit-type id="model.unit.indianConvert" 
+    <unit-type id="model.unit.indianConvert"
                skill="0" offence="0" defence="1" movement="3" line-of-sight="1"
                maximum-attrition="8" score-value="3">
       <consumes id="model.goods.food" value="2"/>

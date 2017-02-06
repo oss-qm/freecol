@@ -34,20 +34,20 @@ public class MockPseudoRandom extends Random {
     public MockPseudoRandom() {
         this(new ArrayList<Integer>(), false);
     }
-    
+
     public MockPseudoRandom(List<Integer> setNumbers, boolean toCycle) {
         pos = 0;
         setNumberList = setNumbers;
         cycleNumbers = toCycle;
         random = null;
     }
-    
+
     public void setNextNumbers(List<Integer> setNumbers, boolean toCycle) {
         pos = 0;
         setNumberList = setNumbers;
         cycleNumbers = toCycle;
     }
-    
+
     private int getNext() {
         if (pos < setNumberList.size()) {
             int number = setNumberList.get(pos);

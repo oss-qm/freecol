@@ -32,7 +32,7 @@ public class GameOptions {
     /** Map game option group. */
     public static final String GAMEOPTIONS_MAP
         = "gameOptions.map";
-    
+
     /** The number of turns to sail between Europe and the New World. */
     public static final String TURNS_TO_SAIL
         = "model.option.turnsToSail";
@@ -284,15 +284,14 @@ public class GameOptions {
     /** The number of seasons. */
     public static final String SEASONS
         = "model.option.seasons";
-    
-    
+
     /**
      * Prices game option group.
      * This group is synthesized at game initialization.
      */
     public static final String GAMEOPTIONS_PRICES
         = "gameOptions.prices";
-    
+
 
     // Difficulty options are effectively special multi-valued game options.
 

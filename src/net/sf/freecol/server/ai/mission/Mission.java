@@ -426,7 +426,7 @@ public abstract class Mission extends AIObject {
     protected Mission lbDodge(LogBuilder lb) {
         final Unit unit = getUnit();
         lb.add(", dodging at ", unit.getLocation());
-        unit.setMovesLeft(0);        
+        unit.setMovesLeft(0);
         return this;
     }
 
@@ -479,7 +479,7 @@ public abstract class Mission extends AIObject {
      * @param lb A {@code LogBuilder} to log to.
      * @param mt The bad {@code MoveType}.
      * @return This {@code Mission}.
-     */     
+     */
     protected Mission lbMove(LogBuilder lb, Unit.MoveType mt) {
         lb.add(", bad move type at ", getUnit().getLocation(), ": ", mt);
         return this;
@@ -789,7 +789,7 @@ public abstract class Mission extends AIObject {
                     aiCarrier = null;
                     useTransport = false;
 
-                } else if ((ownPath = unit.findPath(unit.getLocation(), 
+                } else if ((ownPath = unit.findPath(unit.getLocation(),
                             target, null, costDecider)) == null
                     || (ownTurns = ownPath.getTotalTurns())
                     > (pathTurns = path.getTotalTurns())) {
@@ -846,7 +846,7 @@ public abstract class Mission extends AIObject {
                 + path.fullPathToString()
                 + " from " + unit.getLocation() + " to target " + target
                 + " result=" +  unit.isAtLocation(target));
-        }            
+        }
         return followMapPath(path.next, lb);
     }
 
@@ -925,7 +925,7 @@ public abstract class Mission extends AIObject {
     // Mission interface to be implemented/overridden by descendants.
     // TransportableAIObject delegates some functionality here when
     // a mission is available.
- 
+
     /**
      * Disposes this mission by removing any references to it.
      */
@@ -942,7 +942,7 @@ public abstract class Mission extends AIObject {
     public int getBaseTransportPriority() {
         return 0;
     }
-        
+
     /**
      * Gets the destination of a required transport.
      *
@@ -1001,7 +1001,7 @@ public abstract class Mission extends AIObject {
      *
      * Mission subclasses must implement this routine, which probably
      * should start by checking invalidAIUnitReason.
-     * 
+     *
      * A mission can be invalid for a number of subclass-specific
      * reasons.  For example: a seek-and-destroy mission could be
      * invalid because of a improved stance towards the targeted

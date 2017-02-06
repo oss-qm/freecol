@@ -112,7 +112,7 @@ public class FreeColDirectories {
     private static final String TC_FILE_SUFFIX = ".ftc";
 
     private static final String ZIP_FILE_SUFFIX = ".zip";
-    
+
     private static final String XDG_CONFIG_HOME_ENV = "XDG_CONFIG_HOME";
     private static final String XDG_CONFIG_HOME_DEFAULT = ".config";
     private static final String XDG_DATA_HOME_ENV = "XDG_DATA_HOME";
@@ -157,7 +157,6 @@ public class FreeColDirectories {
             || Utils.directoryAllPresent(f, MOD_DESCRIPTOR_FILE_NAME,
                                          SPECIFICATION_FILE_NAME);
 
-    
     /**
      * The directory containing automatically created save games.  At
      * program start, the path of this directory is based on the path
@@ -763,7 +762,7 @@ public class FreeColDirectories {
         if (validDays <= 0L) return null;
         final long validMS = 1000L * 24L * 60L * 60L * validDays; // days to ms
         final long timeNow = System.currentTimeMillis();
-        final Predicate<File> outdatedPred = f -> 
+        final Predicate<File> outdatedPred = f ->
             f.lastModified() + validMS < timeNow;
         final String extension = "." + FreeCol.FREECOL_SAVE_EXTENSION;
         final List<String> ex = transform(excludeSuffixes, alwaysTrue(),
@@ -772,14 +771,14 @@ public class FreeColDirectories {
             ex.stream().noneMatch(suf -> f.getName().endsWith(suf + extension));
 
         List<File> files = getAutosaveFiles(sanitize(prefix),
-                                            outdatedPred.and(suffixPred)); 
+                                            outdatedPred.and(suffixPred));
         if (files.isEmpty()) return null;
         Utils.deleteFiles(files);
         StringBuilder sb = new StringBuilder();
         sb.append("Deleted outdated (> ").append(validDays)
             .append(" old) autosave/s: ");
         for (File f : files) sb.append(" ").append(f.getPath());
-        return sb.toString();        
+        return sb.toString();
     }
 
     /**
@@ -795,7 +794,7 @@ public class FreeColDirectories {
         StringBuilder sb = new StringBuilder();
         sb.append("Deleted autosave/s: ");
         for (File f : files) sb.append(" ").append(f.getPath());
-        return sb.toString();        
+        return sb.toString();
     }
 
     /**
@@ -935,7 +934,7 @@ public class FreeColDirectories {
         return (files == null) ? Collections.<String>emptyList()
             : transform(files, f -> f.canRead(), f -> getLanguageId(f));
     }
-    
+
     /**
      * If this a messages file, work out which language identifier it
      * belongs to.

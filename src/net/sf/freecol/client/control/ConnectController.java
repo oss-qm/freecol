@@ -28,7 +28,7 @@ import java.util.logging.Logger;
 
 import javax.swing.SwingUtilities;
 
-import net.sf.freecol.FreeCol; 
+import net.sf.freecol.FreeCol;
 import net.sf.freecol.client.ClientOptions;
 import net.sf.freecol.client.FreeColClient;
 import net.sf.freecol.client.control.FreeColClientHolder;
@@ -130,7 +130,7 @@ public final class ConnectController extends FreeColClientHolder {
                 }
             }
         }
-            
+
         logger.info("Logout begin for client " + player.getName()
             + ": " + reason.toString());
         return askServer().logout(player, reason);
@@ -479,7 +479,7 @@ public final class ConnectController extends FreeColClientHolder {
         }
         while (fcc.getServerState() == null) Utils.delay(1000, null);
         askServer().disconnect();
-        
+
         switch (fcc.getServerState()) {
         case PRE_GAME: case LOAD_GAME:
             // Name is good
@@ -522,7 +522,7 @@ public final class ConnectController extends FreeColClientHolder {
      */
     public void mainTitle() {
         final FreeColClient fcc = getFreeColClient();
-        
+
         if (fcc.isMapEditor()) fcc.setMapEditor(false);
 
         if (fcc.isLoggedIn()) {
@@ -531,12 +531,12 @@ public final class ConnectController extends FreeColClientHolder {
             }
             return;
         }
-            
+
         fcc.stopServer();
         getGUI().removeInGameComponents();
         getGUI().mainTitle();
     }
-    
+
     /**
      * Reset to the NewPanel (except in the map editor).
      */

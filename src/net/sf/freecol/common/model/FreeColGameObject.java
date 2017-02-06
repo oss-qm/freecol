@@ -68,7 +68,7 @@ public abstract class FreeColGameObject extends FreeColObject {
      */
     public FreeColGameObject(Game game) {
         initialize(game);
-    }        
+    }
 
     /**
      * Creates a new {@code FreeColGameObject}.
@@ -100,7 +100,7 @@ public abstract class FreeColGameObject extends FreeColObject {
         this.initialized = getId() != null;
         this.disposed = false;
     }
-        
+
     /**
      * Sets the unique identifier of this object and registers it in its
      * {@code Game} with that identifier, i.e. "intern" this object.

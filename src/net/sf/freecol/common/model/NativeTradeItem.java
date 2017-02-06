@@ -56,7 +56,7 @@ public class NativeTradeItem extends GoodsTradeItem {
 
     /** The number of haggling rounds. */
     private int haggleCount;
-    
+
 
     /**
      * Creates a new {@code NativeTradeItem} instance.

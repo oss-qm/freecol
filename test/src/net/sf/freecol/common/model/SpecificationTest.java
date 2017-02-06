@@ -426,15 +426,15 @@ public final class SpecificationTest extends FreeColTestCase {
         assertNotNull("No European nation type", europeanNationType);
         assertNotNull("No native nation type", nativeNationType);
         assertNotNull("No REF nation type", refNationType);
-                
+
         assertEquals("Should find free colonist", freeColonistType,
                      spec().getDefaultUnitType(europeanNationType));
         assertEquals("Should find brave", braveType,
                      spec().getDefaultUnitType(nativeNationType));
         assertEquals("Should find kings regular", kingsRegularType,
                      spec().getDefaultUnitType(refNationType));
-    }        
-        
+    }
+
     public void testLoadMods() {
         try {
             Specification spec = FreeColTcFile.getFreeColTcFile("freecol")

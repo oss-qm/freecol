@@ -58,7 +58,7 @@ import net.sf.freecol.common.networking.MultipleMessage;
 import static net.sf.freecol.common.util.CollectionUtils.*;
 import static net.sf.freecol.common.util.StringUtils.*;
 import net.sf.freecol.common.util.Introspector;
-    
+
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NamedNodeMap;
@@ -75,7 +75,7 @@ import org.xml.sax.SAXException;
 public class DOMUtils {
 
     protected static final Logger logger = Logger.getLogger(DOMUtils.class.getName());
-    
+
     private static DocumentBuilder builder = null, parser = null;
     static {
         try {
@@ -164,7 +164,7 @@ public class DOMUtils {
 
 
     // Public interface
-    
+
     /**
      * Creates and returns a new XML-document.
      *
@@ -203,10 +203,10 @@ public class DOMUtils {
         forEachMapEntry(map, e -> root.setAttribute(e.getKey(), e.getValue()));
         return document;
     }
-    
+
     /**
      * Read a Document from an input source.
-     * 
+     *
      * @param inputSource An {@code InputSource} to read from.
      * @return The resulting {@code Document}.
      * @exception IOException if thrown by the input stream.
@@ -309,7 +309,7 @@ public class DOMUtils {
                 logger.log(Level.WARNING, "Instantiation fail for:" + tag, ex);
                 message = null;
             }
-        }            
+        }
         return message;
     }
 
@@ -357,8 +357,8 @@ public class DOMUtils {
             i++;
         }
         return collapseElements(results);
-    }    
-    
+    }
+
     /**
      * Extract a child FreeColObject from an element given the
      * expected class.
@@ -445,7 +445,7 @@ public class DOMUtils {
         }
         return ret;
     }
-    
+
     /**
      * Convenience method to map a function over the children of an Element.
      *
@@ -480,7 +480,7 @@ public class DOMUtils {
         }
         return map;
     }
-    
+
     /**
      * Get an array of string attributes from an element.
      *

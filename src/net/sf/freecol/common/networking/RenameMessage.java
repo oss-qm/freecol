@@ -78,7 +78,7 @@ public class RenameMessage extends AttributeMessage {
     public ChangeSet serverHandler(FreeColServer freeColServer,
                                    ServerPlayer serverPlayer) {
         final String nameableId = getStringAttribute(NAMEABLE_TAG);
-        
+
         FreeColGameObject fcgo;
         try {
             fcgo = serverPlayer.getOurFreeColGameObject(nameableId, FreeColGameObject.class);

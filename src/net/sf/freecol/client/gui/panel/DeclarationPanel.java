@@ -54,7 +54,7 @@ public final class DeclarationPanel extends FreeColPanel {
     private static final Logger logger = Logger.getLogger(DeclarationPanel.class.getName());
 
     private final int SIGNATURE_Y = 450;
-    
+
     private final String ANIMATION_STOPPED = "AnimationStopped";
 
     private final int START_DELAY = 2000; // 2s before signing
@@ -94,7 +94,7 @@ public final class DeclarationPanel extends FreeColPanel {
         signaturePanel.addActionListener(this);
 
         add(signaturePanel);
-    
+
         Timer t = new Timer(START_DELAY, (ActionEvent ae) -> {
                 signaturePanel.startAnimation();
             });
@@ -137,7 +137,7 @@ public final class DeclarationPanel extends FreeColPanel {
 
     /**
      * A panel for displaying an animated signature.
-     * 
+     *
      * The panel should be {@link #initialize(String) initialized} with a name
      * before the animation is {@link #startAnimation() started}.
      */
@@ -160,7 +160,7 @@ public final class DeclarationPanel extends FreeColPanel {
 
         /**
          * Gets an abbreviated version of the given name.
-         * 
+         *
          * @param name The name to be abbreviated
          * @return The abbreviated version of the given name.  The name
          *     is made small enough to fit within the bounds the
@@ -201,7 +201,7 @@ public final class DeclarationPanel extends FreeColPanel {
         /**
          * Checks if the given string is to large to be displayed within this
          * panel.
-         * 
+         *
          * @param name The string to be tested.
          * @return {@code true} if the given string was to large to be
          *     fully displayed.
@@ -213,7 +213,7 @@ public final class DeclarationPanel extends FreeColPanel {
 
         /**
          * Initializes this panel with the given name.
-         * 
+         *
          * @param name The name to be used when making the signature.
          */
         public void initialize(String name) {
@@ -228,7 +228,7 @@ public final class DeclarationPanel extends FreeColPanel {
          * Adds an {@code ActionListener} to this
          * {@code SignaturePanel}.  An event gets fired when the
          * animation is stopped.
-         * 
+         *
          * @param al The {@code ActionListener}.
          * @see #startAnimation()
          */
@@ -249,7 +249,7 @@ public final class DeclarationPanel extends FreeColPanel {
          * Starts the animation of the signature.  An
          * {@code ActionEvent} gets sent to the registered
          * listeners when the animation has stopped.
-         * 
+         *
          * @see #addActionListener(ActionListener)
          */
         public void startAnimation() {
@@ -273,7 +273,7 @@ public final class DeclarationPanel extends FreeColPanel {
 
 
         // Override JComponent
-        
+
         /**
          * {@inheritDoc}
          */

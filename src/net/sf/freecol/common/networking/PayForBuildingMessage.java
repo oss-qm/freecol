@@ -74,7 +74,7 @@ public class PayForBuildingMessage extends AttributeMessage {
     public ChangeSet serverHandler(FreeColServer freeColServer,
                                    ServerPlayer serverPlayer) {
         final String colonyId = getStringAttribute(COLONY_TAG);
-        
+
         Colony colony;
         try {
             colony = serverPlayer.getOurFreeColGameObject(colonyId, Colony.class);

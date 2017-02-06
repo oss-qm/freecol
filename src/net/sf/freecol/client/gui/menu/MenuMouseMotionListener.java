@@ -33,7 +33,7 @@ import net.sf.freecol.client.gui.Canvas;
  * bar to make it scroll up.  This is the MouseMotionListener added to
  * the menu bar, allowing you to scroll by just moving the mouse all
  * the way to the top of the screen.
- * 
+ *
  * Note: This doesn't cause it to scroll down when you reach the
  * bottom of the menu bar, because the performAutoScrollIfActive will
  * compare the Y coordinate to the size of the entire canvas (which
@@ -60,7 +60,7 @@ public class MenuMouseMotionListener extends AbstractCanvasListener
     public void mouseDragged(MouseEvent e) {
         //Do nothing
     }
-    
+
     /**
      * {@inheritDoc}
      */

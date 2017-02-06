@@ -242,7 +242,7 @@ public final class TilePopup extends JPopupMenu {
      * @param freeColClient The {@code FreeColClient} for the game.
      * @param tile The {@code Tile} to build menu items for.
      */
-    public void addDebugItems(final FreeColClient freeColClient, 
+    public void addDebugItems(final FreeColClient freeColClient,
                               final Tile tile) {
         addSeparator();
 
@@ -352,7 +352,7 @@ public final class TilePopup extends JPopupMenu {
                         null, lb);
                     gui.showInformationMessage(lb.toString());
                     canvas.setCurrentPath(path);
-                    gui.refresh();                        
+                    gui.refresh();
                 });
             add(menuItem);
         }

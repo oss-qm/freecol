@@ -42,7 +42,7 @@ public class AbstractUnitOption extends AbstractOption<AbstractUnit> {
     public static final String TAG = "unitOption";
 
     private static final TypeSelector DEFAULT_SELECTOR = TypeSelector.UNITS;
-    
+
     /** The value of this option. */
     private AbstractUnit value = null;
 

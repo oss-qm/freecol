@@ -62,7 +62,7 @@ public class OptionGroup extends AbstractOption<OptionGroup> {
 
     /** Should this option group be visible? */
     private boolean visible = true;
-    
+
 
     /**
      * Creates a new {@code OptionGroup}.
@@ -242,7 +242,7 @@ public class OptionGroup extends AbstractOption<OptionGroup> {
                     continue;
                 }
                 // end @compat 0.11.6
-                
+
                 // Merge from the top level, so that the new
                 // option will end up in the group inherited
                 // from the standard client-options.xml.
@@ -255,7 +255,7 @@ public class OptionGroup extends AbstractOption<OptionGroup> {
                 + " contents into " + this.getId());
             return result;
         }
-                
+
         if (!optionMap.containsKey(id)) {
             logger.warning("Ignoring unknown option " + id);
             return false;
@@ -282,7 +282,7 @@ public class OptionGroup extends AbstractOption<OptionGroup> {
         logger.warning("Option " + id + " registered but not found!");
         return false;
     }
-        
+
     /**
      * Helper function to recursively add option group members to the
      * optionMap.
@@ -332,7 +332,7 @@ public class OptionGroup extends AbstractOption<OptionGroup> {
         readFromXML(xr);
         return true;
     }
-    
+
     /**
      * Loads the options from the given file.
      *
@@ -672,7 +672,7 @@ public class OptionGroup extends AbstractOption<OptionGroup> {
             + ((ret) ? " succeeded" : " failed"));
         return ret;
     }
-    
+
 
     // Serialization
 
@@ -751,7 +751,7 @@ public class OptionGroup extends AbstractOption<OptionGroup> {
 
 
     // Override Object
-    
+
     /**
      * {@inheritDoc}
      */

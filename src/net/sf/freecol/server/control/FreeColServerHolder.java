@@ -25,7 +25,7 @@ import net.sf.freecol.server.model.ServerGame;
 
 /**
  * This base class provides thread-safe access to a
- * {@link net.sf.freecol.server.FreeColServer} for several subclasses. 
+ * {@link net.sf.freecol.server.FreeColServer} for several subclasses.
  */
 public class FreeColServerHolder {
 
@@ -35,7 +35,7 @@ public class FreeColServerHolder {
 
     /**
      * Constructor.
-     * 
+     *
      * @param server The initial value for the server.
      */
     protected FreeColServerHolder(FreeColServer server) {
@@ -44,7 +44,7 @@ public class FreeColServerHolder {
 
     /**
      * Returns the main server object.
-     * 
+     *
      * @return The main server object.
      */
     protected FreeColServer getFreeColServer() {

@@ -15,14 +15,14 @@ If we encode directions like this
 
 protected static final int N = 0, NE = 1, E = 2, SE = 3, S = 4, SW = 5, W = 6, NW = 7;
 
-and we want to write a function that returns the opposite direction. Usually we would 
+and we want to write a function that returns the opposite direction. Usually we would
 write the implementation
 
 public static int getOppositeDirection(int direction) {
   return (direction < 4) ? direction + 4 : direction - 4;
 }
 
-and then manually check that the method works correctly by either testing the compiled code 
+and then manually check that the method works correctly by either testing the compiled code
 within the application itself (in FreeCol this would mean verifying that each direction is
 properly made opposite via the GUI output) or for a console-based application performing a
 series of calls to the System.out.println function to output whether or not each case worked
@@ -41,9 +41,9 @@ Instead we can write source code that verifies whether the function behaves corr
 		assertEquals(Map.SE, Map.getOppositeDirection(Map.NW));
 	}
 
-Each assert statement will check whether the given condition holds true. If all assert 
-statements succeed, the test passes (this may be indicated by a green bar in some IDEs) 
-otherwise the test fails (this may be indicated with a red bar), telling you which line 
+Each assert statement will check whether the given condition holds true. If all assert
+statements succeed, the test passes (this may be indicated by a green bar in some IDEs)
+otherwise the test fails (this may be indicated with a red bar), telling you which line
 did not pass the assertion.
 
 2. Why write tests?
@@ -54,14 +54,14 @@ did not pass the assertion.
 
 3. What are the benefits?
 
-* Be able to run all the tests after a change to see if one broke existing functionality 
-  ("regression test"), thus after enough tests have been written, it is easier to be 
+* Be able to run all the tests after a change to see if one broke existing functionality
+  ("regression test"), thus after enough tests have been written, it is easier to be
   confident about changing the code.
-  
-* A test describes what a piece of code is supposed to do and often can help to understand 
+
+* A test describes what a piece of code is supposed to do and often can help to understand
   how it is supposed to be used.
-  
-* Since the test is written in source code it is much faster to run than manual tests in 
+
+* Since the test is written in source code it is much faster to run than manual tests in
   the application.
 
 4. Drawbacks?
@@ -119,13 +119,13 @@ for instance
 
 ant -lib test/lib/junit.jar -Dtest=AllTests test
 
-7. FAQ 
+7. FAQ
 
 Q: What is the difference between unit and integration testing?
-A: In unit testing the goal is to test small units in relative isolation, while integration 
-   testing tries to figure out whether parts of the system work if put together. Both approaches 
+A: In unit testing the goal is to test small units in relative isolation, while integration
+   testing tries to figure out whether parts of the system work if put together. Both approaches
    have their purpose and their strengths. In general one should try to first test code that has little
-   dependencies to other code or remove the dependencies by using mock objects and later see 
+   dependencies to other code or remove the dependencies by using mock objects and later see
    whether the code integrates with the rest of the system.
 
 8. References:

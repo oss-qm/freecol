@@ -149,10 +149,10 @@ public final class MapEditorController extends FreeColClientHolder {
      * @throws IOException on failure to find the spec.
      */
     public Specification getDefaultSpecification() throws IOException {
-        return FreeCol.loadSpecification(FreeCol.getTCFile(), 
+        return FreeCol.loadSpecification(FreeCol.getTCFile(),
             FreeCol.getAdvantages(), FreeCol.getDifficulty());
     }
-        
+
     /**
      * Sets the currently chosen {@code MapTransform}.
      *

@@ -141,7 +141,7 @@ public class WorkerWish extends Wish {
      *     or at least matches in a land/naval sense if not.
      */
     public boolean satisfiedBy(Unit unit) {
-        return (expertNeeded) 
+        return (expertNeeded)
             ? unit.getType() == unitType
             : unit.getType().isNaval() == unitType.isNaval();
     }
@@ -201,7 +201,7 @@ public class WorkerWish extends Wish {
 
         unitType = xr.getType(spec, UNIT_TYPE_TAG,
                               UnitType.class, (UnitType)null);
-        
+
         expertNeeded = xr.getAttribute(EXPERT_NEEDED_TAG, false);
     }
 

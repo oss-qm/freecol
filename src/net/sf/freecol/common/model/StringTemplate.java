@@ -199,7 +199,7 @@ public class StringTemplate extends FreeColObject {
         } catch (ClassCastException cce) {
             logger.log(Level.WARNING, "Invalid class " + this.getClass() + " referenced.", cce);
         }
-        return null;            
+        return null;
     }
 
 
@@ -215,7 +215,7 @@ public class StringTemplate extends FreeColObject {
 
     /**
      * Add a key.
-     * 
+     *
      * @param key The key to add.
      */
     private void addKey(String key) {
@@ -242,7 +242,7 @@ public class StringTemplate extends FreeColObject {
     public boolean isEmpty() {
         return this.replacements == null || this.replacements.isEmpty();
     }
-    
+
     /**
      * Add a replacement.
      *
@@ -546,7 +546,7 @@ public class StringTemplate extends FreeColObject {
 
         } else if (StringTemplate.TAG.equals(tag)) {
             addReplacement(new StringTemplate(xr));
-        
+
         } else {
             super.readChild(xr);
         }

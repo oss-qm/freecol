@@ -83,7 +83,7 @@ public abstract class FreeColMenuBar extends JMenuBar {
         setOpaque(false);
 
         this.freeColClient = f;
-        
+
         this.am = f.getActionManager();
 
         setBorder(FreeColImageBorder.imageBorder);

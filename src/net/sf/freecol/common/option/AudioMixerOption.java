@@ -209,7 +209,7 @@ public class AudioMixerOption extends AbstractOption<AudioMixerOption.MixerWrapp
 
     // Override AbstractOption
     // generateChoices() is effectively done in the audioMixers initialization.
-    
+
     /**
      * {@inheritDoc}
      */

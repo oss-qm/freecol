@@ -29,14 +29,14 @@ import java.util.logging.Logger;
  * message data and a Color.
  */
 public final class GUIMessage {
-    
+
     @SuppressWarnings("unused")
     private static final Logger logger = Logger.getLogger(GUIMessage.class.getName());
-    
+
     private final String    message;
     private final Color     color;
     private final Date      creationTime;
-    
+
 
     /**
      * The constructor to use.
@@ -50,7 +50,7 @@ public final class GUIMessage {
         this.color = color;
         this.creationTime = new Date();
     }
-    
+
     /**
      * Get the message data.
      *
@@ -59,7 +59,7 @@ public final class GUIMessage {
     public String getMessage() {
         return message;
     }
-    
+
     /**
      * Gets the message's Color.
      *
@@ -68,7 +68,7 @@ public final class GUIMessage {
     public Color getColor() {
         return color;
     }
-    
+
     /**
      * Get the time at which this message was created.
      *

@@ -172,7 +172,7 @@ public class BuildingPanel extends MigPanel implements PropertyChangeListener {
 
         ImageLibrary lib = freeColClient.getGUI().getImageLibrary();
         Image buildingImage = lib.getBuildingImage(building);
-        setPreferredSize(new Dimension(buildingImage.getWidth(null), 
+        setPreferredSize(new Dimension(buildingImage.getWidth(null),
                                        buildingImage.getHeight(null)));
         revalidate();
         repaint();

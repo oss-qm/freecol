@@ -261,7 +261,7 @@ public class FreeColTestCase extends TestCase {
         int totalWidth = 20;
         int totalHeight = 15;
         final TileType oceanType = spec().getTileType("model.tile.ocean");
-        
+
         MapBuilder builder = new MapBuilder(getGame());
         builder.setDimensions(totalWidth, totalHeight).setBaseTileType(oceanType);
         if (explored) {
@@ -698,7 +698,7 @@ public class FreeColTestCase extends TestCase {
             err += " " + cr;
         }
         fail(err);
-    }               
+    }
 
     /**
      * Check a list of goods.

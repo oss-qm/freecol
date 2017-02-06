@@ -317,7 +317,7 @@ public class PioneeringMission extends Mission {
             c.getTileImprovementPlans().size());
         final EuropeanAIPlayer owner = (EuropeanAIPlayer)aiUnit.getAIOwner();
         AIColony bestColony = maximize(owner.getAIColonies(), comp);
-            
+
         PathNode path;
         Colony colony;
         return (bestColony == null)
@@ -509,7 +509,7 @@ public class PioneeringMission extends Mission {
     public Location findTarget() {
         return findTarget(getAIUnit(), 10, true);
     }
-    
+
     /**
      * {@inheritDoc}
      */
@@ -683,16 +683,16 @@ public class PioneeringMission extends Mission {
             switch (mt) {
             case MOVE: // Arrived
                 break;
-                
+
             case MOVE_HIGH_SEAS:
                 return lbWait(lb);
-                
+
             case MOVE_NO_REPAIR:
                 return lbFail(lb, false, AIUNITDIED);
 
             case MOVE_NO_MOVES: case MOVE_NO_TILE: case MOVE_ILLEGAL:
                 return this;
-                
+
             case MOVE_NO_ATTACK_CIVILIAN:
                 // Might be a temporary blockage due to an occupying
                 // unit at the target.  Move randomly and retry if

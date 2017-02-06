@@ -98,7 +98,7 @@ public class ProductionInfo {
                 : agMax.getAmount() - ag.getAmount();
             return (amount <= 0) ? null
                 : new AbstractGoods(ag.getType(), amount);
-        };            
+        };
         return (this.maximumProduction.isEmpty()) ? WorkLocation.EMPTY_LIST
             : transform(this.production, alwaysTrue(), mapper,
                         toListNoNulls());

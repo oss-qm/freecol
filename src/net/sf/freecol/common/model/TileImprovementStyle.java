@@ -150,7 +150,7 @@ public class TileImprovementStyle {
         return result;
     }
 
-        
+
     // Override Object
 
     /**

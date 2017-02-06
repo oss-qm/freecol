@@ -105,7 +105,7 @@ public class NativeTradeMessage extends DOMMessage {
         return this.nt;
     }
 
-    
+
     /**
      * {@inheritDoc}
      */
@@ -116,7 +116,7 @@ public class NativeTradeMessage extends DOMMessage {
         if (nt == null) {
             return serverPlayer.clientError("Null native trade");
         }
-        
+
         final Unit unit = nt.getUnit();
         if (unit == null) {
             return serverPlayer.clientError("Null unit");

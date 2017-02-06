@@ -121,7 +121,7 @@ public final class CompactLabourReport extends ReportPanel {
         if (!unitData.isSummary()) {
             /*
             int unitIndex = unitData.getUnitType().getIndex();
-            
+
             int skillLevel = Unit.getSkillLevel(unitIndex);
             if (skillLevel <= 0 && skillLevel > -2) {
             //settlers and servants can be trained anywwhere a farmer can

@@ -297,7 +297,7 @@ public class Messages {
         }
         if (lb.grew()) lb.log(logger, Level.FINE);
     }
-    
+
     /**
      * Get the {@code Locale} corresponding to a given language name.
      *
@@ -484,7 +484,7 @@ public class Messages {
     public static final Predicate<Named> matchesNamed(String key) {
         return matchKeyEquals(key, (Named k) -> Messages.getName(k));
     }
-    
+
 
     // Special purpose unit labelling
 

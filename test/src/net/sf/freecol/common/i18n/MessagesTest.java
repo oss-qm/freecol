@@ -559,7 +559,7 @@ public class MessagesTest extends FreeColTestCase {
             unit.getDescription(UnitLabelType.FULL));
 
         // Jesuit Missionaries
-        unit = new ServerUnit(game, null, dutch, jesuitMissionary, 
+        unit = new ServerUnit(game, null, dutch, jesuitMissionary,
                               missionaryRole);
         assertEquals("Jesuit Missionary",
             unit.getDescription());

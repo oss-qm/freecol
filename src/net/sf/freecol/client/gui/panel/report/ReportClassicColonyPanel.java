@@ -80,7 +80,7 @@ public final class ReportClassicColonyPanel extends ReportPanel
      */
     public ReportClassicColonyPanel(FreeColClient freeColClient) {
         super(freeColClient, "reportColonyAction");
-        
+
         this.colonies.addAll(freeColClient.getMySortedColonies());
         update();
     }
@@ -88,11 +88,11 @@ public final class ReportClassicColonyPanel extends ReportPanel
     private void update() {
         final Specification spec = getSpecification();
         final ImageLibrary lib = getImageLibrary();
-        
+
         reportPanel.removeAll();
-        
+
         reportPanel.setLayout(new MigLayout("fill")); // Set the layout
-        
+
         for (Colony colony : this.colonies) {
             // Name
             JButton button = Utility.getLinkButton(colony.getName(), null,
@@ -100,7 +100,7 @@ public final class ReportClassicColonyPanel extends ReportPanel
             button.addActionListener(this);
             reportPanel.add(button, "newline, split 2");
             reportPanel.add(new JSeparator(JSeparator.HORIZONTAL), "growx");
-            
+
             // Currently building
             BuildableType currentType = colony.getCurrentlyBuilding();
             JLabel buildableLabel = null;
@@ -111,7 +111,7 @@ public final class ReportClassicColonyPanel extends ReportPanel
                     currentType.getCurrentlyBuildingLabel());
                 buildableLabel.setIcon(buildableLabel.getDisabledIcon());
             }
-            
+
             // Units
             JPanel colonistsPanel
                 = new JPanel(new GridLayout(0, COLONISTS_PER_ROW));
@@ -133,7 +133,7 @@ public final class ReportClassicColonyPanel extends ReportPanel
             }
             reportPanel.add(colonistsPanel, "newline, growx");
             reportPanel.add(unitsPanel, "newline, growx");
-            
+
             // Production
             int count = 0;
             for (GoodsType gt : sort(spec.getGoodsTypeList(),
@@ -157,7 +157,7 @@ public final class ReportClassicColonyPanel extends ReportPanel
                     count++;
                 }
             }
-            
+
             // Buildings
             JPanel buildingsPanel
                 = new JPanel(new GridLayout(0, BUILDINGS_PER_ROW));

@@ -59,7 +59,7 @@ public class NationDetailPanel extends ColopediaGameObjectTypePanel<Nation> {
 
 
     // Implement ColopediaDetailPanel
-    
+
     /**
      * {@inheritDoc}
      */

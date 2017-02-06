@@ -142,7 +142,7 @@ public final class EndTurnDialog extends FreeColConfirmDialog {
 
     /**
      * The constructor to use.
-     * 
+     *
      * @param freeColClient The freecol client.
      * @param frame The owner frame.
      * @param units The unit list.

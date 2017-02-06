@@ -95,7 +95,7 @@ public class SelectOption extends IntegerOption {
     public void clearItemValues() {
         itemValues.clear();
     }
-    
+
     /**
      * Whether the labels of this option need to be localized.  This is
      * not the case when the labels are just numeric values.
@@ -118,7 +118,7 @@ public class SelectOption extends IntegerOption {
     }
 
     // Interface Option
-    
+
     /**
      * {@inheritDoc}
      */
@@ -196,7 +196,7 @@ public class SelectOption extends IntegerOption {
 
         // Clear containers.
         clearItemValues();
-        
+
         super.readChildren(xr);
 
         // Now we can correctly set the value.

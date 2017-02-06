@@ -25,7 +25,7 @@ import java.net.URI;
 
 /**
  * A {@code Resource} wrapping a {@code Video}.
- * 
+ *
  * @see Resource
  * @see Video
  */
@@ -33,7 +33,7 @@ public class VideoResource extends Resource {
 
     private final Video video;
 
-    
+
     /**
      * Do not use directly.
      *
@@ -43,7 +43,7 @@ public class VideoResource extends Resource {
      */
     public VideoResource(URI resourceLocator) throws IOException {
         super(resourceLocator);
-        
+
         this.video = new Video(resourceLocator.toURL());
     }
 

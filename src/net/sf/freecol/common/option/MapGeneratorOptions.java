@@ -38,23 +38,23 @@ public class MapGeneratorOptions {
         = "mapGeneratorOptions.import";
 
     /** Option for setting a file to be imported (map etc). */
-    public static final String IMPORT_FILE 
+    public static final String IMPORT_FILE
         = "model.option.importFile";
 
     /** Option for using the terrain imported from a file. */
-    public static final String IMPORT_TERRAIN 
+    public static final String IMPORT_TERRAIN
         = "model.option.importTerrain";
 
     /** Option for using the bonuses imported from a file. */
-    public static final String IMPORT_BONUSES 
+    public static final String IMPORT_BONUSES
         = "model.option.importBonuses";
 
     /** Option for using the lost city rumours imported from a file. */
-    public static final String IMPORT_RUMOURS 
+    public static final String IMPORT_RUMOURS
         = "model.option.importRumours";
 
     /** Option for using the settlements imported from a file. */
-    public static final String IMPORT_SETTLEMENTS 
+    public static final String IMPORT_SETTLEMENTS
         = "model.option.importSettlements";
 
 
@@ -75,7 +75,7 @@ public class MapGeneratorOptions {
         = "model.option.landMass";
 
     /** Option for setting the type of land generator to be used. */
-    public static final String LAND_GENERATOR_TYPE 
+    public static final String LAND_GENERATOR_TYPE
         = "model.option.landGeneratorType";
     public static final int LAND_GENERATOR_CLASSIC     = 0,
                             LAND_GENERATOR_CONTINENT   = 1,
@@ -100,11 +100,11 @@ public class MapGeneratorOptions {
         = "mapGeneratorOptions.terrainGenerator";
 
     /** The minimum latitude of the map. */
-    public static final String MINIMUM_LATITUDE 
+    public static final String MINIMUM_LATITUDE
         = "model.option.minimumLatitude";
 
     /** The maximum latitude of the map. */
-    public static final String MAXIMUM_LATITUDE 
+    public static final String MAXIMUM_LATITUDE
         = "model.option.maximumLatitude";
 
     /** Option for setting the number of rivers on the map. */
@@ -120,19 +120,19 @@ public class MapGeneratorOptions {
         = "model.option.rumourNumber";
 
     /** Option for setting the percentage of forests on the map. */
-    public static final String FOREST_NUMBER 
+    public static final String FOREST_NUMBER
         = "model.option.forestNumber";
 
     /** Option for setting the percentage of bonus tiles on the map. */
-    public static final String BONUS_NUMBER 
+    public static final String BONUS_NUMBER
         = "model.option.bonusNumber";
 
     /** Option for setting the humidity of the map. */
-    public static final String HUMIDITY 
+    public static final String HUMIDITY
         = "model.option.humidity";
 
     /** Option for setting the temperature of the map. */
-    public static final String TEMPERATURE 
+    public static final String TEMPERATURE
         = "model.option.temperature";
 
     /** One of the settings used by {@link #TEMPERATURE}. */

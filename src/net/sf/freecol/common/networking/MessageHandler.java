@@ -29,7 +29,7 @@ import net.sf.freecol.common.model.Game;
  * Read and handle incoming messages.
  */
 public interface MessageHandler {
-    
+
     /**
      * Handle an incoming message.
      *

@@ -292,7 +292,7 @@ public class ServerBuildingTest extends FreeColTestCase {
         assertNotNull(lumberjack.getStudent());
         blacksmith.setLocation(college);
         assertNotNull(blacksmith.getStudent());
-        
+
         assertEquals(4, getUnitList(colony, freeColonistType).size());
         assertEquals(1, getUnitList(colony, expertLumberJackType).size());
         assertEquals(1, getUnitList(colony, masterBlacksmithType).size());

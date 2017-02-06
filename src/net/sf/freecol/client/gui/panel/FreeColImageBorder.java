@@ -33,7 +33,7 @@ import net.sf.freecol.common.resources.ResourceManager;
 
 
 /**
- * A border created from a set of images. 
+ * A border created from a set of images.
  */
 public class FreeColImageBorder extends AbstractBorder {
 
@@ -103,7 +103,7 @@ public class FreeColImageBorder extends AbstractBorder {
      *
      * @param c The {@code Component} having the border.
      * @return The {@code Insets}.
-     */    
+     */
     @Override
     public Insets getBorderInsets(Component c) {
         return getBorderInsets(c, null);
@@ -118,7 +118,7 @@ public class FreeColImageBorder extends AbstractBorder {
      *      {@code null}, or a new instance otherwise.
      */
     @Override
-    public Insets getBorderInsets(Component c, Insets insets) {        
+    public Insets getBorderInsets(Component c, Insets insets) {
         int top = Math.max(Math.max(getHeight(topImage), getHeight(topLeftCornerImage)), getHeight(topRightCornerImage));
         int left = Math.max(Math.max(getWidth(leftImage), getWidth(topLeftCornerImage)), getWidth(bottomLeftCornerImage));
         int bottom = Math.max(Math.max(getHeight(bottomImage), getHeight(bottomLeftCornerImage)), getHeight(bottomRightCornerImage));
@@ -167,7 +167,7 @@ public class FreeColImageBorder extends AbstractBorder {
         int topHeight = getHeight(topImage);
         int leftWidth = getWidth(leftImage);
         int bottomHeight = getHeight(bottomImage);
-        int rightWidth = getWidth(rightImage);  
+        int rightWidth = getWidth(rightImage);
         int topLeftCornerWidth = getWidth(topLeftCornerImage);
         int topLeftCornerHeight = getHeight(topLeftCornerImage);
         int topRightCornerWidth = getWidth(topRightCornerImage);
@@ -252,6 +252,6 @@ public class FreeColImageBorder extends AbstractBorder {
      */
     private static int getWidth(Image im) {
         return (im == null) ? 0 : im.getWidth(null);
-    }        
+    }
 
 }

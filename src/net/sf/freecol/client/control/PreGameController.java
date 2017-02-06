@@ -116,7 +116,7 @@ public final class PreGameController extends FreeColClientHolder {
      */
     public void setNation(Nation nation) {
         getMyPlayer().setNation(nation);
-        
+
         askServer().setNation(nation);
     }
 
@@ -127,7 +127,6 @@ public final class PreGameController extends FreeColClientHolder {
      */
     public void setNationType(NationType nationType) {
         getMyPlayer().changeNationType(nationType);
-
         askServer().setNationType(nationType);
     }
 
@@ -139,7 +138,6 @@ public final class PreGameController extends FreeColClientHolder {
      */
     public void setReady(boolean ready) {
         getMyPlayer().setReady(ready);
-        
         askServer().setReady(ready);
     }
 

@@ -504,7 +504,7 @@ public class ColonyTest extends FreeColTestCase {
         assertEquals(ct.getId(), oct.getId());
         assertEquals(ct.getUnitCount(), oct.getUnitCount());
         assertEquals(ct.getType(), oct.getType());
-        
+
         assertEquals(oct.getColony(), copied);
         assertEquals(oct.getOwningSettlement(), copied);
 

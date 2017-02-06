@@ -5,7 +5,7 @@
 <shortcuts>
     <skipIfNotSupported/>
     <programGroup defaultName="FreeCol" location="applications"/>
-    
+
     <shortcut name="FreeCol"
               target="$INSTALL_PATH\freecol.exe"
               commandLine="--windowed"
@@ -21,7 +21,7 @@
               startMenu="no"
               startup="no"
     />
-    
+
     <shortcut name="FreeCol (full screen)"
               target="$INSTALL_PATH\freecol.exe"
               commandLine="--full-screen"
@@ -37,7 +37,7 @@
               startMenu="no"
               startup="no"
     />
-    
+
     <shortcut name="Uninstaller"
               target="$INSTALL_PATH\Uninstaller\uninstaller.exe"
               commandLine=""
@@ -53,7 +53,7 @@
               startMenu="no"
               startup="no"
     />
-    
+
     <shortcut name="FreeCol Website"
               target="http://www.freecol.org"
               description="The FreeCol Website"
@@ -65,6 +65,5 @@
               applications="no"
               startMenu="no"
               startup="no"
-    />  
+    />
 </shortcuts>
-              

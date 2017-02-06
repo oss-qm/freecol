@@ -57,7 +57,7 @@ public class ServerPlayerTest extends FreeColTestCase {
 
     private static final TileType plains
         = spec().getTileType("model.tile.plains");
-    
+
     private static final UnitType colonistType
         = spec().getUnitType("model.unit.freeColonist");
     private static final UnitType wagonTrainType
@@ -151,7 +151,7 @@ public class ServerPlayerTest extends FreeColTestCase {
 
     public void testHasExploredTile() {
         Game game = ServerTestHelper.startServerGame(getTestMap());
-        
+
         Map map = game.getMap();
         ServerPlayer dutch = (ServerPlayer) game.getPlayerByNationId("model.nation.dutch");
         ServerPlayer french = (ServerPlayer) game.getPlayerByNationId("model.nation.french");
@@ -180,7 +180,7 @@ public class ServerPlayerTest extends FreeColTestCase {
         Game game = ServerTestHelper.startServerGame(getTestMap());
         Map map = game.getMap();
         InGameController igc = ServerTestHelper.getInGameController();
-        
+
         Colony colony = getStandardColony();
         colony.addGoods(cottonType, 200);
         ServerPlayer dutch

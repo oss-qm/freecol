@@ -59,7 +59,7 @@ public enum Direction implements Named {
     public static final List<Direction> corners
         = makeUnmodifiableList(Direction.N, Direction.E,
                                Direction.S, Direction.W);
-    
+
     /** The direction increments. */
     private final int oddDX;
     private final int oddDY;
@@ -187,7 +187,7 @@ public enum Direction implements Named {
      * entry 1+2 will be those immediately to the left and right
      * of it (chosen randomly), and so on until the last entry
      * will be the complete reverse of the supplied direction.
-     * 
+     *
      * Useful if we want to travel in a particular direction, but
      * if this fails to be able to try the closest other
      * directions to the original one in order.

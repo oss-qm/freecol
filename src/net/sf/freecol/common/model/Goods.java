@@ -41,7 +41,7 @@ public class Goods extends AbstractGoods implements Locatable, Ownable {
 
     public static final String TAG = "goods";
 
-    /** 
+    /**
      * The game containing these goods.  It would be nice to make this
      * a FreeColGameObject, but then it could not extend AbstractGoods.
      */
@@ -65,7 +65,7 @@ public class Goods extends AbstractGoods implements Locatable, Ownable {
         if (game == null) throw new RuntimeException("Null game");
         this.game = game;
     }
-    
+
     /**
      * Creates a standard {@code Goods}-instance given the place where
      * the goods is.
@@ -78,7 +78,7 @@ public class Goods extends AbstractGoods implements Locatable, Ownable {
     public Goods(Game game, @SuppressWarnings("unused") String id) {
         this(game);
     }
-    
+
     /**
      * Creates a standard {@code Goods}-instance given the place
      * where the goods is.
@@ -219,7 +219,7 @@ public class Goods extends AbstractGoods implements Locatable, Ownable {
     public void setSpecification(Specification specification) {
         throw new RuntimeException("Can not set specification");
     }
-    
+
     /**
      * {@inheritDoc}
      */
@@ -235,8 +235,8 @@ public class Goods extends AbstractGoods implements Locatable, Ownable {
     public void setGame(Game game) {
         throw new RuntimeException("Can not set game");
     }
-    
-    
+
+
     // Serialization
 
     private static final String AMOUNT_TAG = "amount";

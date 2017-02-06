@@ -38,4 +38,4 @@ public interface TurnTaker {
      * @param cs A {@code ChangeSet} to update.
      */
     public void csNewTurn(Random random, LogBuilder lb, ChangeSet cs);
-} 
+}

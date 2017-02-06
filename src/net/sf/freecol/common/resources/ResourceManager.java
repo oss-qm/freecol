@@ -46,7 +46,7 @@ public class ResourceManager {
     // TODO: There are no obvious flaws currently, but this could still
     // profit from deeper verification, including checking ResourceMapping and
     // all Resource classes another time, by someone knowledgeable
-    // in thread safety issues in Java. 
+    // in thread safety issues in Java.
     // It is currently assumed changing of mappings can happen on any thread,
     // but Resources are only retrieved or cleaned from the AWT thread.
 
@@ -144,7 +144,7 @@ public class ResourceManager {
 
     /**
      * Updates the resource mappings after making changes.
-     * 
+     *
      * @param newItems If new items have been added.
      */
     private static void update(boolean newItems) {
@@ -212,7 +212,7 @@ public class ResourceManager {
      * this method for checking beforehand.
      * Other metods below are specializations running faster or
      * allowing to check for many keys at once.
-     * 
+     *
      * @param key The resource to check for.
      * @return true when the resource exists.
      */
@@ -524,7 +524,7 @@ public class ResourceManager {
      * Gets the {@code Video} represented by the given resource.
      * This can return null as there is only one video in FreeCol.
      * FIXME: Consider calling FreeColClient.fatal on error.
-     * 
+     *
      * @param key The name of the resource to return.
      * @return The {@code Video} in it's original size.
      */

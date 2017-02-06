@@ -381,7 +381,7 @@ public class ServerIndianSettlement extends IndianSettlement
         tile.cacheUnseen(newOwner);//+til
 
         if (old != null) {
-            final ServerPlayer oldOwner = (ServerPlayer)old.getOwner(); 
+            final ServerPlayer oldOwner = (ServerPlayer)old.getOwner();
             setMissionary(null);//-vis(oldOwner),-til
             tile.updateIndianSettlement(oldOwner);
             ((ServerUnit)old).csRemove(See.only(oldOwner),
@@ -402,7 +402,7 @@ public class ServerIndianSettlement extends IndianSettlement
             setConvertProgress(0);
             csChangeAlarm(newOwner, ALARM_NEW_MISSIONARY, true, cs);//-til
             tile.updateIndianSettlement(newOwner);
-            
+
             int radius = getMissionaryLineOfSight();
             for (Tile t : transform(tile.getSurroundingTiles(1, radius),
                     t2 -> newOwner.exploreTile(t2) || !newOwner.canSee(t2))) {
@@ -424,7 +424,7 @@ public class ServerIndianSettlement extends IndianSettlement
         Unit missionary = getMissionary();
         if (missionary == null) return;
         csChangeMissionary(null, cs);
-        
+
         // Inform the enemy of loss of mission
         ServerPlayer missionaryOwner = (ServerPlayer)missionary.getOwner();
         if (destroy != null) {
@@ -498,7 +498,7 @@ public class ServerIndianSettlement extends IndianSettlement
                 .addStringTemplate("%enemy%", enemy.getNationLabel())
                 .addName("%settlement%", getName()));
     }
-        
+
     // Implement TurnTaker
 
     /**

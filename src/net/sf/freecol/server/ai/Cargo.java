@@ -161,7 +161,7 @@ public class Cargo {
                     + "/" + carrier.toShortString()
                     + " at " + this.cwait.toShortString();
             }
-                
+
             // Where is the transportable dropped?  At the drop node,
             // or at its predecessor from the carrier point of view.
             PathNode drop = pick.getTransportDropNode();
@@ -394,7 +394,7 @@ public class Cargo {
         return transportable != null
             && transportable.getLocation() == carrier;
     }
-        
+
     /**
      * Is this cargo collectable?  That is, is it and the carrier
      * at their collection points, and in a collectable mode.
@@ -406,7 +406,7 @@ public class Cargo {
         return Map.isSameLocation(plan.twait, transportable.getLocation())
             && Map.isSameLocation(plan.cwait, carrier.getLocation());
     }
-            
+
     /**
      * Is this cargo deliverable?  That is, has it arrived at the target
      * on board the carrier in a deliverable mode.
@@ -525,7 +525,7 @@ public class Cargo {
         wrapped = null;
         return result;
     }
-            
+
     /**
      * Should this {@code Cargo} be retried after encountering
      * a blockage?  For now, just tries three times.
@@ -570,7 +570,7 @@ public class Cargo {
         } else if (transportable.isDisposed()) {
             return "disposed transportable";
         }
-            
+
         Locatable l = transportable.getTransportLocatable();
         if (l == null) {
             return "null locatable: " + transportable;
@@ -578,7 +578,7 @@ public class Cargo {
             && ((FreeColGameObject)l).isDisposed()) {
             return "locatable disposed";
         }
-            
+
         Location tLoc = l.getLocation();
         if (tLoc instanceof Unit && tLoc != carrier) {
             return "carrier usurped"; // On another carrier!
@@ -704,9 +704,9 @@ public class Cargo {
                                        Unit.class, (Unit)null);
 
         this.tries = xr.getAttribute(TRIES_TAG, 0);
-        
+
         this.spaceLeft = xr.getAttribute(SPACELEFT_TAG, -1);
-            
+
         this.wrapped = null;
 
         this.plan = new CargoPlan();
@@ -718,10 +718,10 @@ public class Cargo {
         this.plan.cdst = xr.getLocationAttribute(game, CDST_TAG, false);
 
         this.plan.tdst = xr.getLocationAttribute(game, TDST_TAG, false);
-            
+
         this.plan.turns = xr.getAttribute(TURNS_TAG, -1);
 
-        this.plan.mode = xr.getAttribute(MODE_TAG, 
+        this.plan.mode = xr.getAttribute(MODE_TAG,
                                          CargoMode.class, (CargoMode)null);
 
         this.plan.fallback = xr.getAttribute(FALLBACK_TAG, false);
@@ -757,5 +757,5 @@ public class Cargo {
         }
         lb.add(" ", plan.fallback, "]");
         return lb.toString();
-    }            
+    }
 }

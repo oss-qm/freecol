@@ -43,7 +43,7 @@ public class MetaServerUtils {
 
     /** Error message type. */
     public static final String NO_ROUTE_TO_SERVER = "noRouteToServer";
-    
+
     /** Client timer update interval. */
     private static final int UPDATE_INTERVAL = 60000;
 

@@ -198,11 +198,11 @@ public class ClientOptions extends OptionGroup {
     /** Whether to draw the fog of war on the minimap. */
     public static final String MINIMAP_TOGGLE_FOG_OF_WAR
         = "model.option.miniMapToggleFogOfWar";
-    
+
     /** Whether to draw the borders on the minimap. */
     public static final String MINIMAP_TOGGLE_BORDERS
         = "model.option.miniMapToggleBorders";
-    
+
     /** Style of map controls. */
     public static final String MAP_CONTROLS
         = "model.option.mapControls";
@@ -398,7 +398,7 @@ public class ClientOptions extends OptionGroup {
     /** Option to autoload sentried units. */
     public static final String AUTOLOAD_SENTRIES
         = "model.option.autoloadSentries";
-    
+
     /** Automatically end the turn when no units can be * made active. */
     public static final String AUTO_END_TURN
         = "model.option.autoEndTurn";
@@ -702,7 +702,7 @@ public class ClientOptions extends OptionGroup {
         // end @compat 0.10.7
         // @compact 0.11.0
         addBooleanOption(MINIMAP_TOGGLE_BORDERS,
-            "clientOptions.gui", true);    
+            "clientOptions.gui", true);
         addBooleanOption(MINIMAP_TOGGLE_FOG_OF_WAR,
             "clientOptions.gui", true);
         addTextOption(AUTO_SAVE_PREFIX,

@@ -29,5 +29,4 @@ public interface GoalConstants {
 
     //Maximum allowed radius for (omniscient) searches
     public static final int MAX_SEARCH_RADIUS = 8;
-    
 }

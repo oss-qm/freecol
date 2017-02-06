@@ -110,7 +110,7 @@ public class ScoutingMissionTest extends FreeColTestCase {
                       aiUnit.getMission().invalidReason());
         assertNotNull("Scouting mission should be impossible for this unit",
                       ScoutingMission.invalidReason(aiUnit));
-        
+
         // Restore the horses.
         scout.changeRole(scoutRole, 1);
         assertTrue("Scouting mission should be valid again",

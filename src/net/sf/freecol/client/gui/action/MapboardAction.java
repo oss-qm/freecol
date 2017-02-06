@@ -46,8 +46,8 @@ public abstract class MapboardAction extends FreeColAction {
      * {@inheritDoc}
      */
     @Override
-    protected boolean shouldBeEnabled() { 
-        return super.shouldBeEnabled()  
+    protected boolean shouldBeEnabled() {
+        return super.shouldBeEnabled()
             && getGUI().isMapboardActionsEnabled()
             && (getGame() == null
                 || freeColClient.isMapEditor()

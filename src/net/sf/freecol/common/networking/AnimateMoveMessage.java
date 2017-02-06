@@ -119,7 +119,6 @@ public class AnimateMoveMessage extends DOMMessage {
                                          Tile.class);
     }
 
-    
     /**
      * {@inheritDoc}
      */

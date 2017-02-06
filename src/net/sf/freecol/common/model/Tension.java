@@ -64,15 +64,15 @@ public class Tension implements Named {
     /** Tension level to set when surrendering. */
     public static final int SURRENDERED
         = (Level.CONTENT.limit + Level.HAPPY.limit) / 2;
-    
-    /** 
+
+    /**
      * Constants for describing alarm levels.
      */
-    public static enum Level { 
+    public static enum Level {
         HAPPY(100),
-        CONTENT(600), 
+        CONTENT(600),
         DISPLEASED(700),
-        ANGRY(800), 
+        ANGRY(800),
         HATEFUL(1000);
 
         private final int limit;
@@ -94,7 +94,7 @@ public class Tension implements Named {
             return getEnumKey(this);
         }
     }
-    
+
     private int value;
 
 
@@ -175,7 +175,7 @@ public class Tension implements Named {
     public String getNameKey() {
         return Messages.nameKey("model." + getKey());
     }
-    
+
 
     // Override Object
 
@@ -185,5 +185,5 @@ public class Tension implements Named {
     @Override
     public String toString() {
         return getLevel().toString();
-    }    
+    }
 }

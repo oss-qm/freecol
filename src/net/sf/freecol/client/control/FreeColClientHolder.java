@@ -43,7 +43,7 @@ public class FreeColClientHolder {
 
     /**
      * Simple constructor.
-     * 
+     *
      * @param freeColClient The {@code FreeColClient} to hold.
      */
     protected FreeColClientHolder(FreeColClient freeColClient) {
@@ -89,7 +89,7 @@ public class FreeColClientHolder {
 
     /**
      * Get the main client object.
-     * 
+     *
      * @return The {@code FreeColClient} held by this object.
      */
     protected FreeColClient getFreeColClient() {

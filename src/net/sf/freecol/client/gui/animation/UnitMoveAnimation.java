@@ -65,7 +65,7 @@ final class UnitMoveAnimation extends FreeColClientHolder {
         this.sourceTile = sourceTile;
         this.destinationTile = destinationTile;
     }
-    
+
 
     /**
      * Do the animation.
@@ -76,7 +76,7 @@ final class UnitMoveAnimation extends FreeColClientHolder {
         final SwingGUI gui = (SwingGUI)getGUI();
         final Point srcP = gui.getTilePosition(sourceTile);
         final Point dstP = gui.getTilePosition(destinationTile);
-        
+
         if (srcP == null || dstP == null || movementSpeed <= 0) return;
 
         float scale = gui.getMapScale();
@@ -120,7 +120,7 @@ final class UnitMoveAnimation extends FreeColClientHolder {
                     if (dropFrames <= 0) {
                         unitLabel.setLocation(point);
                         gui.paintImmediatelyCanvasIn(bounds);
-                            
+
                         int timeTaken = (int)(System.currentTimeMillis() - time);
                         final int waitTime = ANIMATION_DELAY - timeTaken;
                         if (waitTime > 0) {

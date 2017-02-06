@@ -156,7 +156,7 @@ public abstract class OptionsDialog extends FreeColDialog<OptionGroup> {
             JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,
             JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
         this.scrollPane.getVerticalScrollBar().setUnitIncrement(16);
-        
+
         this.panel = new MigPanel(new MigLayout("wrap 1, fill"));
         this.panel.add(Utility.localizedHeader(Messages.nameKey(headerKey),
                                                false), "span, center");
@@ -164,7 +164,7 @@ public abstract class OptionsDialog extends FreeColDialog<OptionGroup> {
 
     /**
      * Initialize this dialog.
-     * 
+     *
      * @param frame The owner frame.
      * @param c Extra choices to add beyond the default ok and cancel.
      */
@@ -176,7 +176,7 @@ public abstract class OptionsDialog extends FreeColDialog<OptionGroup> {
         c.add(new ChoiceItem<>(Messages.message("ok"), this.group).okOption());
         c.add(new ChoiceItem<>(Messages.message("cancel"), (OptionGroup)null,
                                isEditable()).cancelOption().defaultOption());
-        
+
         initializeDialog(frame, DialogType.PLAIN, true, this.panel, null, c);
     }
 

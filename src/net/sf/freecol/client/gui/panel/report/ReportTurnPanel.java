@@ -105,7 +105,7 @@ public final class ReportTurnPanel extends ReportPanel {
         if (messages != null) this.messages.addAll(messages);
         displayMessages();
     }
-        
+
     private void displayMessages() {
         final Game game = getFreeColClient().getGame();
         final ClientOptions options = getClientOptions();
@@ -139,7 +139,7 @@ public final class ReportTurnPanel extends ReportPanel {
             default:
                 break;
             }
-            
+
             JComponent component = new JLabel();
             FreeColObject messageDisplay = game.getMessageDisplay(message);
             final ImageLibrary lib = getImageLibrary();
@@ -178,7 +178,7 @@ public final class ReportTurnPanel extends ReportPanel {
             switch (message.getMessageType()) {
             case WAREHOUSE_CAPACITY:
                 JButton ignoreButton = new JButton("x");
-                Utility.localizeToolTip(ignoreButton, 
+                Utility.localizeToolTip(ignoreButton,
                     StringTemplate.copy("report.turn.ignore", message));
                 final ModelMessage m = message;
                 ignoreButton.addActionListener((ActionEvent ae) -> {
@@ -193,7 +193,7 @@ public final class ReportTurnPanel extends ReportPanel {
             default:
                 break;
             }
-            
+
             // Fill the message maps so that we can iterate through
             // them by message identifier in the ActionListeners.
             String id = message.getId();
@@ -207,7 +207,7 @@ public final class ReportTurnPanel extends ReportPanel {
                 labelsByMessage.put(id,
                     components = new ArrayList<JComponent>());
             components.add(label);
-            
+
             // Add filter button if option present.
             final BooleanOption filterOption = options.getBooleanOption(message);
             if (filterOption != null) {

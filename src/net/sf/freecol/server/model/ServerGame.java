@@ -143,7 +143,7 @@ public class ServerGame extends Game implements TurnTaker {
     public void sendToAll(ChangeSet cs, ServerPlayer... serverPlayers) {
         sendToList(getConnectedPlayers(), cs);
     }
-    
+
     /**
      * Send a change set to all players, optionally excluding one.
      *
@@ -233,7 +233,7 @@ public class ServerGame extends Game implements TurnTaker {
 
     /**
      * Get a unique identifier to identify a {@code FreeColGameObject}.
-     * 
+     *
      * @return A unique identifier.
      */
     @Override
@@ -346,7 +346,7 @@ public class ServerGame extends Game implements TurnTaker {
             // Human players can trigger the event, but we only
             // transfer assets between AI players.
             if (!player.isAI()) continue;
-            
+
             final int score = player.getSpanishSuccessionScore();
             lb.add("=", score, sep);
             if (strongAI == null || strongScore < score) {
@@ -421,7 +421,7 @@ public class ServerGame extends Game implements TurnTaker {
                 ((ServerUnit)u).csNewContactCheck(u.getTile(), false, cs);
             }
         }
-        
+
         StringTemplate loser = weakAI.getNationLabel();
         StringTemplate winner = strongAI.getNationLabel();
         cs.addGlobalMessage(this, null,
@@ -439,7 +439,7 @@ public class ServerGame extends Game implements TurnTaker {
             "spanishSuccession", Boolean.TRUE.toString());
         tiles.removeAll(updated);
         cs.add(See.perhaps(), tiles);
-        
+
         weakest.csKill(cs);//+vis(weakest)
         strongest.invalidateCanSeeTiles();//+vis(strongest)
 
@@ -473,7 +473,7 @@ public class ServerGame extends Game implements TurnTaker {
         final ServerPlayer srcPlayer = (ServerPlayer)agreement.getSender();
         final ServerPlayer dstPlayer = (ServerPlayer)agreement.getRecipient();
         boolean visibilityChange = false;
-        
+
         // Check trade carefully before committing.
         boolean fail = false;
         for (TradeItem tradeItem : agreement.getTradeItems()) {
@@ -606,7 +606,7 @@ public class ServerGame extends Game implements TurnTaker {
                 } else {
                     logger.warning("Incite trade failure: " + victim);
                 }
-            }                
+            }
             ServerUnit newUnit = (ServerUnit)tradeItem.getUnit();
             if (newUnit != null && settlement != null) {
                 ServerPlayer former = (ServerPlayer)newUnit.getOwner();

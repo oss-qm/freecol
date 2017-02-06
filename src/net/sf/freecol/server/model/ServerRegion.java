@@ -97,7 +97,7 @@ public class ServerRegion extends Region {
         this.setClaimable(type.getClaimable());
         this.setDiscoverable(true);
     }
-    
+
     /**
      * Create a new fixed server region.
      *
@@ -222,7 +222,7 @@ public class ServerRegion extends Region {
     public void csDiscover(Player player, Turn turn, String newName,
                            ChangeSet cs) {
         if (!getDiscoverable()) return;
-        final int score = (getSpecification().getBoolean(GameOptions.EXPLORATION_POINTS)) 
+        final int score = (getSpecification().getBoolean(GameOptions.EXPLORATION_POINTS))
             ? this.scoreValue
             : 0;
         if (!hasName()) this.name = newName;
@@ -242,7 +242,7 @@ public class ServerRegion extends Region {
      * @param map The {@code Map} to check.
      * @param lb A {@code LogBuilder} to log to.
      * @return A list of fixed server regions.
-     */     
+     */
     public static List<ServerRegion> requireFixedRegions(Map map, LogBuilder lb) {
         final java.util.Map<String, Region> fixed = map.getFixedRegions();
         List<ServerRegion> result = new ArrayList<>();
@@ -465,7 +465,7 @@ public class ServerRegion extends Region {
                 if (tSP != null && tSA != null) break;
             }
             int nNP = 0, nSP = 0, nNA = 0, nSA = 0;
-            
+
             Rectangle rNP = new Rectangle(0,0,       midx,midy);
             Rectangle rSP = new Rectangle(0,midy,    midx,maxy-midy);
             Rectangle rNA = new Rectangle(midx,0,    maxx-midx,midy);

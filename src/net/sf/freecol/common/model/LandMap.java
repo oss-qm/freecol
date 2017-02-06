@@ -165,7 +165,7 @@ public class LandMap {
         this.numberOfLandTiles++;
         return true;
     }
-        
+
     /**
      * Sets a given map position to land and grow outward.
      *

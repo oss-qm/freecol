@@ -84,7 +84,7 @@ public class ChatDisplay {
 
     /**
      * Displays the list of messages.
-     * 
+     *
      * @param g The Graphics2D the messages should be displayed on.
      * @param lib The imageLibrary to use.
      * @param size The size of the space for displaying in.

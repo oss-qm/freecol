@@ -166,7 +166,7 @@ public class AIUnit extends TransportableAIObject {
     }
 
     /**
-     * Assigns a mission to unit. 
+     * Assigns a mission to unit.
      *
      * @param mission The new {@code Mission}.
      */
@@ -368,7 +368,7 @@ public class AIUnit extends TransportableAIObject {
             if (!(aiPlayer instanceof EuropeanAIPlayer) ||
                     ((EuropeanAIPlayer)aiPlayer)
                     .getWorkInsideColonyMission(this, aiColony) == null) {
-                return false; 
+                return false;
             }
             lb.add(", ", getMission());
             dropTransport();
@@ -511,7 +511,7 @@ public class AIUnit extends TransportableAIObject {
             : 500 + 100 * unit.getSkillLevel();
         if (unit.hasTile()) ret += 50;
         return ret;
-    }        
+    }
 
     /**
      * Score this AI unit with its suitability for pioneering.
@@ -533,7 +533,7 @@ public class AIUnit extends TransportableAIObject {
         return (unit == null) ? -1000 : unit.getScoutScore();
     }
 
-    
+
     // Implement TransportableAIObject
 
     /**

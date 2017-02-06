@@ -75,7 +75,7 @@ public class OggVorbisDecoderFactory {
         private int bufCount = 0;
         // The position in the buffer of the data.
         private int offset = 0;
-        
+
         // PCM index and data.
         private int[] pcmi;
         private float[][][] pcmData;
@@ -215,16 +215,16 @@ public class OggVorbisDecoderFactory {
                 case 1:
                     oggStreamState.init(oggPage.serialno());
                     oggStreamState.reset();
-                    
+
                     // Initializes the Info and Comment objects.
                     orbisInfo.init();
                     orbisComment.init();
-                    
+
                     // Check the page (serial number and stuff).
                     if (oggStreamState.pagein(oggPage) == -1) {
                         return "Error on header page";
                     }
-                    
+
                     // Extract first packets.
                     if (oggStreamState.packetout(oggPacket) != 1) {
                         return "Error on first packet";
@@ -287,7 +287,7 @@ public class OggVorbisDecoderFactory {
         private String getPage() {
             String input;
             for (;;) {
-                switch (oggSyncState.pageout(oggPage)) { 
+                switch (oggSyncState.pageout(oggPage)) {
                 case 0:
                     if ((input = getInput()) != null) return input;
                     break;
@@ -299,7 +299,7 @@ public class OggVorbisDecoderFactory {
                 }
             }
         }
-        
+
         /**
          * Refills the conversion buffer.
          *

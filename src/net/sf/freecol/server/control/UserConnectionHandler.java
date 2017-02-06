@@ -66,7 +66,7 @@ public final class UserConnectionHandler extends ServerInputHandler {
 
     /**
      * Special handler for login.
-     * 
+     *
      * Logging in is a very special case as it is the point where a
      * player is created.
      *

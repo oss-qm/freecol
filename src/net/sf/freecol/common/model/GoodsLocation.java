@@ -144,7 +144,7 @@ public abstract class GoodsLocation extends UnitLocation {
             invalidateCache();
         }
     }
-        
+
     /**
      * Gets a list of all the goods in this location.  Each list member is
      * limited to a maximum amount of CARGO_SIZE, thus there may be multiple
@@ -183,7 +183,6 @@ public abstract class GoodsLocation extends UnitLocation {
         if (dst != null) dst.addGoods(goodsType, amount);
     }
 
-    
     // Interface Location (from UnitLocation)
     // Inheriting
     //    FreeColObject.getId()
@@ -212,7 +211,7 @@ public abstract class GoodsLocation extends UnitLocation {
      */
     @Override
     public boolean remove(Locatable locatable) {
-        return (locatable instanceof Goods) 
+        return (locatable instanceof Goods)
             ? removeGoods((Goods)locatable) != null
             : super.remove(locatable);
     }
@@ -267,7 +266,7 @@ public abstract class GoodsLocation extends UnitLocation {
      * Invalidate any cache dependent on the goods levels.
      */
     public abstract void invalidateCache();
-    
+
     /**
      * Gets the maximum number of {@code Goods} this Location
      * can hold.

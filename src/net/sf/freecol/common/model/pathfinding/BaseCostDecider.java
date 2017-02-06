@@ -27,10 +27,10 @@ import net.sf.freecol.common.model.Unit;
 
 /**
  * Class for determining the cost of a single move.
- * 
+ *
  * This {@link CostDecider} is used as a default by
- * {@link net.sf.freecol.common.model.Map#findPath} and 
- * {@link net.sf.freecol.common.model.Map#search} 
+ * {@link net.sf.freecol.common.model.Map#findPath} and
+ * {@link net.sf.freecol.common.model.Map#search}
  * if no other {@code CostDecider} has been specified.
  */
 class BaseCostDecider implements CostDecider {
@@ -44,20 +44,20 @@ class BaseCostDecider implements CostDecider {
 
     /**
      * Determines the cost of a single move.
-     * 
+     *
      * @param unit The {@code Unit} making the move.
      * @param oldLocation The {@code Location} we are moving from.
      * @param newLocation The {@code Location} we are moving to.
      * @param movesLeftBefore The moves left before making the move.
      * @return The cost of moving the given unit from the
      *      {@code oldLocation} to the {@code newLocation}.
-     */    
+     */
     @Override
     public int getCost(final Unit unit, final Location oldLocation,
                        final Location newLocation, int movesLeftBefore) {
         int cost = 0;
         newTurns = 0;
-              
+
         Tile oldTile = oldLocation.getTile();
         Tile newTile = newLocation.getTile();
         if (oldLocation instanceof Europe) { // Coming from Europe
@@ -126,24 +126,24 @@ class BaseCostDecider implements CostDecider {
         }
         return cost;
     }
-    
+
     /**
      * Gets the number of moves left after the proposed move.
      * This method should be called after invoking {@link #getCost}.
-     * 
+     *
      * @return The number of moves left.
      */
     @Override
     public int getMovesLeft() {
         return movesLeft;
     }
-    
+
     /**
      * Gets the number of turns consumed by the proposed move.
      * This method should be called after invoking {@link #getCost}.
-     * 
+     *
      * @return The number of turns consumed.
-     */      
+     */
     @Override
     public int getNewTurns() {
         return newTurns;

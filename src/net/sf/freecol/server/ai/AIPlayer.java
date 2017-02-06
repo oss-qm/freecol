@@ -77,7 +77,7 @@ public abstract class AIPlayer extends AIObject {
     /** The wrapper for the server. */
     private AIServerAPI serverAPI;
 
-    
+
     /**
      * Creates a new AI player.
      *
@@ -107,7 +107,7 @@ public abstract class AIPlayer extends AIObject {
     public AIPlayer(AIMain aiMain,
                     FreeColXMLReader xr) throws XMLStreamException {
         super(aiMain, xr);
-        
+
         this.serverAPI = new AIServerAPI(this);
         uninitialized = player == null;
     }
@@ -174,7 +174,7 @@ public abstract class AIPlayer extends AIObject {
     public AIServerAPI askServer() {
         return this.serverAPI;
     }
-        
+
     /**
      * Gets the AI colony corresponding to a given colony, if any.
      *
@@ -297,7 +297,6 @@ public abstract class AIPlayer extends AIObject {
         thread.start();
     }
 
-    
     // AI behaviour interface to be implemented by subclasses
 
     /**
@@ -344,7 +343,7 @@ public abstract class AIPlayer extends AIObject {
      */
     public abstract NativeTradeAction handleTrade(NativeTradeAction action,
                                                   NativeTrade nt);
-    
+
     /**
      * Decides to accept a tax raise or not.
      * Overridden by the European player.

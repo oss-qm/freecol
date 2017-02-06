@@ -136,7 +136,7 @@ public class AIMessage {
         return aiPlayer.askServer()
             .chooseFoundingFather(fathers, father);
     }
-                                  
+
     /**
      * Claims a tile for a colony.
      *
@@ -173,7 +173,7 @@ public class AIMessage {
         return aiUnit.getAIOwner().askServer()
             .clearSpeciality(aiUnit.getUnit());
     }
- 
+
     /**
      * Do some diplomacy.
      *

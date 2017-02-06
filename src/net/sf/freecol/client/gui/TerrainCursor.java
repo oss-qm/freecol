@@ -44,11 +44,11 @@ public class TerrainCursor implements ActionListener  {
      */
     public TerrainCursor() {
         active = true;
-        
+
         final int blinkDelay = 500; // Milliseconds
-        
+
         blinkTimer = new Timer(blinkDelay,this);
-        
+
         listenerList = new EventListenerList();
     }
 
@@ -104,7 +104,7 @@ public class TerrainCursor implements ActionListener  {
         active = !active;
         int eventId = active? ON : OFF;
         ActionEvent blinkEvent = new ActionEvent(this,eventId,"blink");
-        
+
         fireActionEvent(blinkEvent);
     }
 }

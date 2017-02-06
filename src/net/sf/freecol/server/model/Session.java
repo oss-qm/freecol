@@ -102,7 +102,7 @@ public abstract class Session {
             return allSessions.get(key);
         }
     }
-    
+
     /**
      * Is this session complete?
      *
@@ -113,7 +113,7 @@ public abstract class Session {
             return this.completed;
         }
     }
-    
+
     /**
      * All transaction types must implement a completion action.
      *

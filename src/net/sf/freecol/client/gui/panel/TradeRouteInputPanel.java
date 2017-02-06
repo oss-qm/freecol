@@ -76,7 +76,7 @@ import static net.sf.freecol.common.util.CollectionUtils.*;
 /**
  * Allows the user to edit trade routes.
  */
-public final class TradeRouteInputPanel extends FreeColPanel 
+public final class TradeRouteInputPanel extends FreeColPanel
     implements ListSelectionListener {
 
     private static final Logger logger = Logger.getLogger(TradeRouteInputPanel.class.getName());
@@ -719,7 +719,7 @@ public final class TradeRouteInputPanel extends FreeColPanel
      * otherwise.
      */
     public void updateButtons() {
-        this.addStopButton.setEnabled(this.stopListModel.getSize() 
+        this.addStopButton.setEnabled(this.stopListModel.getSize()
             < this.destinationSelector.getItemCount() - 1);
         this.removeStopButton.setEnabled(this.stopList.getSelectedIndices()
             .length > 0);

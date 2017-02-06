@@ -88,7 +88,7 @@ public class ServerListMessage extends DOMMessage {
         this.servers.add(si);
     }
 
-    
+
     /**
      * Convert this ServerListMessage to XML.
      *

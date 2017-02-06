@@ -25,7 +25,7 @@
   <goods-types>
     <goods-type id="model.goods.horses" is-farmed="false"
                 breeding-number="2"
-                made-from="model.goods.grain"> <!-- changed from food --> 
+                made-from="model.goods.grain"> <!-- changed from food -->
       <market initial-amount="1000"  initial-price="1"  price-difference="2" />
     </goods-type>
   </goods-types>
@@ -163,7 +163,7 @@
           <integerOption id="model.option.crossesIncrement" value="3"/>
         </optionGroup>
       </optionGroup>
-      <optionGroup id="model.difficulty.medium" editable="false"> 
+      <optionGroup id="model.difficulty.medium" editable="false">
         <optionGroup id="model.difficulty.immigration" editable="false">
           <integerOption id="model.option.crossesIncrement" value="4"/>
         </optionGroup>

@@ -44,13 +44,13 @@ import static net.sf.freecol.common.util.CollectionUtils.*;
  */
 public final class ReportLabourDetailPanel extends ReportPanel
     implements ActionListener {
-    
+
     private final Map<UnitType, Map<Location, Integer>> data;
     private final TypeCountMap<UnitType> unitCount;
     private final List<Colony> colonies;
     private final UnitType unitType;
 
-    
+
     /**
      * Creates the detail portion of a labour report.
      *
@@ -62,7 +62,7 @@ public final class ReportLabourDetailPanel extends ReportPanel
      */
     public ReportLabourDetailPanel(FreeColClient freeColClient,
                                    UnitType unitType,
-                                   Map<UnitType, Map<Location, Integer>> data,  
+                                   Map<UnitType, Map<Location, Integer>> data,
                                    TypeCountMap<UnitType> unitCount,
                                    List<Colony> colonies) {
         super(freeColClient, "report.labour.details");

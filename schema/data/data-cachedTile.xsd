@@ -2,7 +2,6 @@
 <xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified">
   <xs:annotation>
     <xs:documentation>
-      
       Copyright (C) 2002-2017  The FreeCol Team
 
       This file is part of FreeCol.

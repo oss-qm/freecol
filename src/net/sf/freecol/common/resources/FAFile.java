@@ -33,7 +33,7 @@ import java.util.StringTokenizer;
 
 /**
  * Represents the data within a Font Animation File.
- * 
+ *
  * @see net.sf.freecol.client.gui.panel.DeclarationPanel
  */
 public class FAFile {
@@ -46,19 +46,18 @@ public class FAFile {
     /**
      * Reads data from the given {@code InputStream} and
      * creates an object to represent this data.
-     * 
+     *
      * @param is The {@code InputStream}
-     * @throws IOException gets thrown if the data is invalid. 
+     * @throws IOException gets thrown if the data is invalid.
      */
     public FAFile(InputStream is) throws IOException {
         load(new CREatingInputStream(is));
     }
 
-    
     /**
      * Gets the {@code Dimension} of the given
      * {@code String} when rendered.
-     * 
+     *
      * @param text The {@code String}.
      * @return The {@code Dimension}.
      */
@@ -81,7 +80,7 @@ public class FAFile {
             if (p.x < firstMinX) {
                 firstMinX = p.x;
             }
-        }  
+        }
 
         width += firstMinX;
         int lastMaxX = 0;
@@ -92,9 +91,9 @@ public class FAFile {
             if (p.x > lastMaxX) {
                 lastMaxX = p.x;
             }
-        }        
+        }
 
-        width += lastMaxX;        
+        width += lastMaxX;
 
         return new Dimension(width, maxHeight);
     }
@@ -102,9 +101,9 @@ public class FAFile {
     /**
      * Gets the points to display the given text as an
      * animation.
-     * 
+     *
      * @param text The text to get the points for.
-     * @return The points in the order in which they 
+     * @return The points in the order in which they
      *      should be drawn.
      */
     public Point[] getPoints(String text) {
@@ -156,22 +155,22 @@ public class FAFile {
             if ((line = in.readLine()) == null) break;
             st = new StringTokenizer(line);
             for (int i=0; i<numberOfPoints; i++) {
-                xs[i] = Integer.parseInt(st.nextToken());               
+                xs[i] = Integer.parseInt(st.nextToken());
             }
 
             if ((line = in.readLine()) == null) break;
-            st = new StringTokenizer(line);         
+            st = new StringTokenizer(line);
             for (int i=0; i<numberOfPoints; i++) {
-                ys[i] = Integer.parseInt(st.nextToken());               
-            }   
+                ys[i] = Integer.parseInt(st.nextToken());
+            }
 
             FAName newLetter = new FAName();
             newLetter.width = width;
             newLetter.height = height;
             newLetter.points = new Point[numberOfPoints];
             for (int i=0; i<numberOfPoints; i++) {
-                newLetter.points[i] = new Point(xs[i], ys[i]);                
-            }                       
+                newLetter.points[i] = new Point(xs[i], ys[i]);
+            }
             letters.put(name, newLetter);
             line = in.readLine();
         }
@@ -188,21 +187,21 @@ public class FAFile {
             if ((line = in.readLine()) == null) break;
             st = new StringTokenizer(line);
             for (int i = 0; i < numberOfPoints; i++) {
-                xs[i] = Integer.parseInt(st.nextToken());               
+                xs[i] = Integer.parseInt(st.nextToken());
             }
 
             if ((line = in.readLine()) == null) break;
-            st = new StringTokenizer(line);         
+            st = new StringTokenizer(line);
             for (int i = 0; i < numberOfPoints; i++) {
-                ys[i] = Integer.parseInt(st.nextToken());               
-            }   
+                ys[i] = Integer.parseInt(st.nextToken());
+            }
 
             FALetter newLetter = new FALetter();
             newLetter.advance = advance;
             newLetter.points = new Point[numberOfPoints];
             for (int i = 0; i < numberOfPoints; i++) {
-                newLetter.points[i] = new Point(xs[i], ys[i]);                
-            }           
+                newLetter.points[i] = new Point(xs[i], ys[i]);
+            }
             letters.put(letter, newLetter);
             line = in.readLine();
         }
@@ -236,16 +235,16 @@ public class FAFile {
     private static class CREatingInputStream extends InputStream {
         /**
          * Constructor.
-         * 
+         *
          * @param in The input stream to wrap.
          */
         CREatingInputStream(InputStream in) {
             this.in = in;
         }
-        
+
         /**
          * Read a character, override to eat all CR:s.
-         * 
+         *
          * @return next character or -1 on end of file.
          * @throws IOException if wrapped stream throws it.
          */
@@ -257,8 +256,7 @@ public class FAFile {
             } while(c == '\r');
             return c;
         }
-        
+
         private final InputStream in;
     }
 }
-

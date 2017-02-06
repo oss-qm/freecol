@@ -32,11 +32,11 @@ import net.sf.freecol.common.io.FreeColXMLWriter;
 public class GoldTradeItem extends TradeItem {
 
     public static final String TAG = "goldTradeItem";
-    
+
     /** The amount of gold to change hands. */
     private int gold;
 
-        
+
     /**
      * Creates a new {@code GoldTradeItem} instance.
      *
@@ -129,7 +129,7 @@ public class GoldTradeItem extends TradeItem {
 
         xw.writeAttribute(GOLD_TAG, gold);
     }
-    
+
     /**
      * {@inheritDoc}
      */

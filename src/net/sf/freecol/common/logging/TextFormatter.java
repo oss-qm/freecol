@@ -39,7 +39,7 @@ final class TextFormatter extends Formatter {
 
     /**
      * Formats the given log record's data into human-readable text.
-     * 
+     *
      * @param record The log record whose data needs to be formatted.
      * @return The log record's data as a string.
      */

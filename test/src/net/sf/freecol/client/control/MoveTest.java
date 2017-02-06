@@ -64,15 +64,15 @@ public class MoveTest extends FreeColTestCase {
             plain1.setExplored(dutch, true);
             Tile plain2 = map.getTile(5, 7);
             plain2.setExplored(dutch, true);
-    
+
             Unit hardyPioneer = new ServerUnit(game, plain1, dutch,
                                                pioneerType);
-    
+
             client.getPreGameController().startGame();
             assertEquals(plain1.getNeighbourOrNull(Direction.NE), plain2);
             client.getInGameController().moveDirection(hardyPioneer,
                 Direction.NE, false);
-            
+
         } finally {
             if (client != null) ClientTestHelper.stopClient(client);
         }
