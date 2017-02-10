@@ -143,6 +143,17 @@ public class ProductionType extends FreeColSpecObject {
         readFromXML(xr);
     }
 
+    /**
+     * Get the first of input goods - lock protected
+     *
+     * @return The first input {@code AbstractGoods} or null if list is empty
+     */
+    public final AbstractGoods getFirstInput() {
+        if (inputs == null) return null;
+        synchronized (inputs) {
+            return first(inputs);
+        }
+    }
 
     /**
      * Get the input goods.

@@ -284,7 +284,7 @@ public final class BuildingType extends BuildableType
      */
     private GoodsType getConsumedGoodsType() {
         if (productionTypes.isEmpty()) return null;
-        AbstractGoods ag = first(first(productionTypes).getInputs());
+        AbstractGoods ag = first(productionTypes).getFirstInput();
         return (ag == null) ? null : ag.getType();
     }
     // end @compat
