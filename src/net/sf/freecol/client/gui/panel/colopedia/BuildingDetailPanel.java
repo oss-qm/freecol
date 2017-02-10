@@ -203,7 +203,7 @@ public class BuildingDetailPanel
                 panel.add(Utility.localizedLabel("colopedia.buildings.production"), "newline");
                 // for the moment, we assume only a single input
                 // and output type
-                AbstractGoods input = first(pt.getInputs());
+                AbstractGoods input = pt.getFirstInput();
                 if (input != null) {
                     panel.add(getGoodsButton(input), "span, split 3");
                     JLabel arrow = new JLabel("\u2192");
