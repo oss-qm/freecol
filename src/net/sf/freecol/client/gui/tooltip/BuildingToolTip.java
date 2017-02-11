@@ -63,7 +63,7 @@ public class BuildingToolTip extends JToolTip {
         final Game game = building.getGame();
         final int workplaces = building.getUnitCapacity();
         // FIXME: consider several outputs
-        final AbstractGoods output = first(building.getOutputs());
+        final AbstractGoods output = building.getFirstOutput();
         final GoodsType outputType = (output == null) ? null : output.getType();
 
         StringBuilder sb = new StringBuilder(64);

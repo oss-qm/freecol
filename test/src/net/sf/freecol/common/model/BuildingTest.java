@@ -196,7 +196,7 @@ public class BuildingTest extends FreeColTestCase {
         assertNotNull(pt);
         for (AbstractGoods ag : pt.getInputList()) colony.addGoods(ag.getType(), 50);
 
-        GoodsType outputType = first(pt.getOutputs()).getType();
+        GoodsType outputType = pt.getFirstOutput().getType();
         UnitType[] unitTypes = new UnitType[] {
             indianConvertType, pettyCriminalType, indenturedServantType,
             freeColonistType, building.getExpertUnitType() };
