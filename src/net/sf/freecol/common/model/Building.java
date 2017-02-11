@@ -260,8 +260,8 @@ public class Building extends WorkLocation
         // First, calculate the nominal production ratios.
         if (canAutoProduce()) {
             // Autoproducers are special
-            for (AbstractGoods output : transform(getOutputs(),
-                                                  AbstractGoods::isPositive)) {
+            for (AbstractGoods output : getOutputList()) {
+                if (!output.isPositive()) continue;
                 final GoodsType goodsType = output.getType();
                 int available = getColony().getGoodsCount(goodsType);
                 if (available >= capacity) {
@@ -281,7 +281,7 @@ public class Building extends WorkLocation
                 }
             }
         } else {
-            for (AbstractGoods output : iterable(getOutputs())) {
+            for (AbstractGoods output : getOutputList()) {
                 final GoodsType goodsType = output.getType();
                 float production = sum(getUnits(),
                                        u -> getUnitProduction(u, goodsType));
@@ -328,7 +328,7 @@ public class Building extends WorkLocation
         // Check whether there is space enough to store the goods
         // produced in order to avoid excess production.
         if (avoidOverflow) {
-            for (AbstractGoods output : iterable(getOutputs())) {
+            for (AbstractGoods output : getOutputList()) {
                 double production = output.getAmount() * minimumRatio;
                 if (production <= 0) continue;
                 double headroom = (double)capacity
@@ -359,7 +359,7 @@ public class Building extends WorkLocation
                 result.addMaximumConsumption(new AbstractGoods(type, maximumConsumption));
             }
         }
-        for (AbstractGoods output : iterable(getOutputs())) {
+        for (AbstractGoods output : getOutputList()) {
             GoodsType type = output.getType();
             // minimize production, but add a magic little something
             // to counter rounding errors
