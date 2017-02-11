@@ -439,15 +439,6 @@ public abstract class WorkLocation extends UnitLocation
     }
 
     /**
-     * Does this work location have any inputs.
-     *
-     * @return True if there are any inputs.
-     */
-    public boolean hasInputs() {
-        return any(getInputs());
-    }
-
-    /**
      * Does this work location have any outputs.
      *
      * @return True if there are any outputs.
