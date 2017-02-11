@@ -418,6 +418,16 @@ public abstract class WorkLocation extends UnitLocation
     }
 
     /**
+     * Get the {@code AbstractGoods} consumed by this work location - threadsafe
+     *
+     * @return A list of {@code AbstractGoods} consumed.
+     */
+    public final List<AbstractGoods> getInputList() {
+        return (productionType == null) ? Collections.<AbstractGoods>emptyList()
+            : productionType.getInputList();
+    }
+
+    /**
      * Get the {@code AbstractGoods} produced by this work location.
      *
      * @return A stream of {@code AbstractGoods} produced.

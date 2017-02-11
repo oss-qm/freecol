@@ -299,7 +299,7 @@ public class Building extends WorkLocation
         }
 
         // Then reduce the minimum ratio if some input is in short supply.
-        for (AbstractGoods input : iterable(getInputs())) {
+        for (AbstractGoods input : getInputList()) {
             long required = (long)Math.floor(input.getAmount() * minimumRatio);
             long available = getAvailable(input.getType(), inputs);
             // Do not allow auto-production to go negative.
@@ -347,7 +347,7 @@ public class Building extends WorkLocation
         }
 
         final double epsilon = 0.0001;
-        for (AbstractGoods input : iterable(getInputs())) {
+        for (AbstractGoods input : getInputList()) {
             GoodsType type = input.getType();
             // maximize consumption
             int consumption = (int)Math.floor(input.getAmount()
@@ -613,7 +613,7 @@ public class Building extends WorkLocation
      */
     @Override
     public List<AbstractGoods> getConsumedGoods() {
-        return toList(getInputs());
+        return getInputList();
     }
 
     /**

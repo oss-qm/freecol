@@ -1111,7 +1111,7 @@ public class AIColony extends AIObject implements PropertyChangeListener {
         // Add raw materials for buildings.
         forEach(map(flatten(colony.getCurrentWorkLocations(),
                             wl -> !wl.getProductionInfo().hasMaximumProduction(),
-                            WorkLocation::getInputs),
+                            WorkLocation::getInputList),
                     AbstractGoods::getType),
             // FIXME: find better heuristic
             gt -> required.incrementCount(gt, 100));
