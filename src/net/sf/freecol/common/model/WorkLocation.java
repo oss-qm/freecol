@@ -438,6 +438,15 @@ public abstract class WorkLocation extends UnitLocation
     }
 
     /**
+     * Get the first {@code AbstractGoods} produced by this work location.
+     *
+     * @return the first {@code AbstractGoods} produced.
+     */
+    public AbstractGoods getFirstOutput() {
+        return (productionType == null) ? null : productionType.getFirstOutput();
+    }
+
+    /**
      * Does this work location produce a given type of goods?
      *
      * @param goodsType The {@code GoodsType} to check.

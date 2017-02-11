@@ -211,7 +211,7 @@ public class BuildingDetailPanel
                         FontLibrary.FontSize.SMALL, Font.BOLD));
                     panel.add(arrow);
                 }
-                AbstractGoods output = first(pt.getOutputs());
+                AbstractGoods output = pt.getFirstOutput();
                 if (output != null) {
                     panel.add(getGoodsButton(output));
                 }

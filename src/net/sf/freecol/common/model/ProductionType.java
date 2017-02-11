@@ -199,6 +199,19 @@ public class ProductionType extends FreeColSpecObject {
     }
 
     /**
+     * Get the first of ouput goods - lock protected
+     *
+     * @return The first output {@code AbstractGoods} or null if list is empty
+     */
+    public final AbstractGoods getFirstOutput() {
+        List<AbstractGoods> o = this.outputs; // dont rely on caching
+        if (o == null) return null;
+        synchronized (o) {
+            return first(o);
+        }
+    }
+
+    /**
      * Get the output goods.
      *
      * @return A stream of the output {@code AbstractGoods}.
