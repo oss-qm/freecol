@@ -199,13 +199,26 @@ public class ProductionType extends FreeColSpecObject {
     }
 
     /**
-     * Check whether we have at least one output - lock protected
+     * Check whether we have at least one output
      *
      * @return True if at least one output
      */
     public final boolean hasOutputs() {
         List<AbstractGoods> o = this.outputs; // dont rely on caching
         return ((o != null) && (o.size() != 0));
+    }
+
+    /**
+     * Check whether we have at an output of given {@code GoodsType} - lock protected
+     *
+     * @return True if at least one found
+     */
+    public final boolean hasOutput(GoodsType goodsType) {
+        List<AbstractGoods> o = this.outputs; // dont rely on caching
+        if (o == null) return false;
+        synchronized (o) {
+            return AbstractGoods.anyIsType(o, goodsType);
+        }
     }
 
     /**
