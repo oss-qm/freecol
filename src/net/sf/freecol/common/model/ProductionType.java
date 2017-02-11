@@ -199,6 +199,16 @@ public class ProductionType extends FreeColSpecObject {
     }
 
     /**
+     * Check whether we have at least one output - lock protected
+     *
+     * @return True if at least one output
+     */
+    public final boolean hasOutputs() {
+        List<AbstractGoods> o = this.outputs; // dont rely on caching
+        return ((o != null) && (o.size() != 0));
+    }
+
+    /**
      * Get the first of ouput goods - lock protected
      *
      * @return The first output {@code AbstractGoods} or null if list is empty
