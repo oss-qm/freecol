@@ -412,7 +412,7 @@ public abstract class WorkLocation extends UnitLocation
      *
      * @return A stream of {@code AbstractGoods} consumed.
      */
-    public Stream<AbstractGoods> getInputs() {
+    public final Stream<AbstractGoods> getInputs() {
         return (productionType == null) ? Stream.<AbstractGoods>empty()
             : productionType.getInputs();
     }
