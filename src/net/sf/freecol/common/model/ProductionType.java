@@ -21,6 +21,7 @@ package net.sf.freecol.common.model;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 import java.util.function.Predicate;
@@ -152,6 +153,18 @@ public class ProductionType extends FreeColSpecObject {
         if (inputs == null) return null;
         synchronized (inputs) {
             return first(inputs);
+        }
+    }
+
+    /**
+     * Get the list of input goods - lock protected
+     *
+     * @return A list of the input {@code AbstractGoods}.
+     */
+    public final List<AbstractGoods> getInputList() {
+        if (inputs == null) return Collections.<AbstractGoods>emptyList();
+        synchronized (inputs) {
+            return new ArrayList<>(inputs); // return a copy to avoid conflicts
         }
     }
 

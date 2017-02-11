@@ -102,7 +102,7 @@ public class Occupation {
             lb.add("\n      try=", pt);
             
             for (GoodsType gt : transform(workTypes, isNotNull(g -> pt.getOutput(g)))) {
-                int minInput = min(pt.getInputs(),
+                int minInput = min(pt.getInputList(),
                     ag -> Math.max(colony.getNetProductionOf(ag.getType()),
                                    colony.getGoodsCount(ag.getType())));
                 int potential = wl.getPotentialProduction(gt, unitType);
