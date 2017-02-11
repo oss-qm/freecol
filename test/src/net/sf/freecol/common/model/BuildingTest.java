@@ -194,7 +194,8 @@ public class BuildingTest extends FreeColTestCase {
         // Add goods so production is viable
         ProductionType pt = building.getBestProductionType(false, null);
         assertNotNull(pt);
-        forEach(pt.getInputs(), ag -> colony.addGoods(ag.getType(), 50));
+        for (AbstractGoods ag : pt.getInputList()) colony.addGoods(ag.getType(), 50);
+
         GoodsType outputType = first(pt.getOutputs()).getType();
         UnitType[] unitTypes = new UnitType[] {
             indianConvertType, pettyCriminalType, indenturedServantType,

@@ -331,7 +331,7 @@ public abstract class WorkLocation extends UnitLocation
         // Do we have a chance of satisfying the inputs?
         final ToIntFunction<AbstractGoods> prod = ag ->
             colony.getNetProductionOf(ag.getType());
-        delta = Math.min(delta, min(productionType.getInputs(), prod));
+        delta = Math.min(delta, min(productionType.getInputList(), prod));
         if (delta <= 0) return null;
 
         // Is the production actually a good idea?  Not if we are independent
