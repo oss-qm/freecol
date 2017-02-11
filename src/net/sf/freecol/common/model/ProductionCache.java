@@ -152,7 +152,7 @@ public class ProductionCache {
                         + getGoodsCount(outputType));
                     return newOutput;
                 };
-                List<AbstractGoods> outputs = transform(building.getOutputs(),
+                List<AbstractGoods> outputs = transform(building.getOutputList(),
                                                         alwaysTrue(), mapper);
                 goodsUsed.addAll(transform(outputs, alwaysTrue(),
                                            AbstractGoods::getType));

@@ -447,6 +447,16 @@ public abstract class WorkLocation extends UnitLocation
     }
 
     /**
+     * Get the {@code AbstractGoods} produced by this work location - threadsafe
+     *
+     * @return A list of {@code AbstractGoods} produced.
+     */
+    public final List<AbstractGoods> getOutputList() {
+        return (productionType == null) ? Collections.<AbstractGoods>emptyList()
+            : productionType.getOutputList();
+    }
+
+    /**
      * Does this work location produce a given type of goods?
      *
      * @param goodsType The {@code GoodsType} to check.

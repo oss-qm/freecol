@@ -249,7 +249,7 @@ public class ColonyProductionTest extends FreeColTestCase {
         Unit unit = colony.getFirstUnit();
         unit.setLocation(colony.getWorkLocationFor(unit, bellsType));
 
-        List<AbstractGoods> outputs = toList(pasture.getOutputs());
+        List<AbstractGoods> outputs = pasture.getOutputList();
         assertEquals(1, outputs.size());
         assertEquals(horsesType, outputs.get(0).getType());
 

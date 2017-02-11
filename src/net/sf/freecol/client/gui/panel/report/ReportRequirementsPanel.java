@@ -161,7 +161,7 @@ public final class ReportRequirementsPanel extends ReportPanel {
         }
 
         for (Building building : colony.getBuildings()) {
-            for (AbstractGoods output : iterable(building.getOutputs())) {
+            for (AbstractGoods output : building.getOutputList()) {
                 GoodsType goodsType = output.getType();
                 UnitType expert = spec.getExpertForProducing(goodsType);
 

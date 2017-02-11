@@ -2233,7 +2233,7 @@ public class Colony extends Settlement implements Nameable, TradeLocation {
             final Function<AbstractGoods, StringTemplate> gMapper = ag ->
                     getInsufficientProductionMessage(info,
                             wl.getProductionDeficit(ag.getType()));
-            return transform(wl.getOutputs(), AbstractGoods::isStorable,
+            return transform(wl.getOutputList(), AbstractGoods::isStorable,
                     gMapper, toListNoNulls());
         };
         result.addAll(transform(getWorkLocationsForConsuming(goodsType),

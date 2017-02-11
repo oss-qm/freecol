@@ -210,7 +210,7 @@ public class REFAIPlayer extends EuropeanAIPlayer {
         for (TargetTuple t : targets) {
             final ToDoubleFunction<Building> bdf = b ->
                 ((b.hasAbility(Ability.REPAIR_UNITS)) ? 1.5 : 1.0)
-                * product(b.getOutputs(), ag ->
+                * product(b.getOutputList(), ag ->
                     (ag.getType().getMilitary()) ? 2.0
                     : (ag.getType().isBuildingMaterial()
                         && ag.getType().isRefined()) ? 1.5
