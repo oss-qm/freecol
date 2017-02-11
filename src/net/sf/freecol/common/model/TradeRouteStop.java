@@ -219,7 +219,7 @@ public class TradeRouteStop extends FreeColGameObject implements TradeLocation {
         // For all goods the unit has loaded, and if the type of goods
         // is not to be loaded here, and there is demand here, return true.
         final Predicate<Goods> unloadPred = g ->
-            !any(stopGoods, AbstractGoods.matches(g.getType()))
+            !AbstractGoods.anyIsType(stopGoods, g.getType())
                 && getImportAmount(g.getType(), turns) > 0;
         if (any(unit.getCompactGoodsList(), unloadPred)) return true;
 

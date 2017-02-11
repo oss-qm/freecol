@@ -435,7 +435,7 @@ public abstract class WorkLocation extends UnitLocation
      *     given {@code GoodsType}.
      */
     public boolean produces(GoodsType goodsType) {
-        return any(getOutputs(), AbstractGoods.matches(goodsType));
+        return AbstractGoods.anyIsType(getOutputs(), goodsType);
     }
 
     /**

@@ -474,7 +474,7 @@ public class Building extends WorkLocation
                 return true;
             } else if (colony.getTotalProductionOf(goodsType) == 0
                     && (bt = colony.getCurrentlyBuilding()) != null
-                    && any(bt.getRequiredGoods(), AbstractGoods.matches(goodsType))) {
+                    && AbstractGoods.anyIsType(bt.getRequiredGoods(), goodsType)) {
                 return true;
             }
         }

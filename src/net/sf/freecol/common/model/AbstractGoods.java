@@ -233,7 +233,18 @@ public class AbstractGoods extends FreeColObject implements Named {
     public static final Predicate<? super AbstractGoods> matches(final GoodsType key) {
         return matchKey(key, AbstractGoods::getType);
     }
-    
+
+    /**
+     * Check whether any in the list is of given {@link GoodsType}
+     */
+    public static boolean anyIsType(List<AbstractGoods> l, GoodsType gt) {
+        if (l != null)
+            for (AbstractGoods ag : l)
+                if (ag.isType(gt))
+                    return true;
+
+        return false;
+    }
 
     // Interface Named
 
