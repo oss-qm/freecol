@@ -703,7 +703,7 @@ public class Colony extends Settlement implements Nameable, TradeLocation {
      */
     public List<WorkLocation> getWorkLocationsForConsuming(GoodsType goodsType) {
         return transform(getCurrentWorkLocations(),
-                wl -> AbstractGoods.anyIsType(wl.getInputs(), goodsType));
+                wl -> AbstractGoods.anyIsType(wl.getInputList(), goodsType));
     }
 
     /**
@@ -2023,7 +2023,7 @@ public class Colony extends Settlement implements Nameable, TradeLocation {
                 // positive generic production potential and all inputs satisfied?
                 : any(getWorkLocationsForProducing(goodsType),
                 wl -> wl.getGenericPotential(goodsType) > 0
-                        && all(wl.getInputs(), ag -> canProduce(ag.getType())));
+                        && all(wl.getInputList(), ag -> canProduce(ag.getType())));
     }
 
 

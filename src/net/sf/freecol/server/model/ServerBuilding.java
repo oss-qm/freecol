@@ -223,7 +223,7 @@ public class ServerBuilding extends Building implements TurnTaker {
         List<AbstractGoods> production = pi.getProduction();
         if (!production.isEmpty()
             && all(production, ag -> ag.getAmount() == 0)) {
-            for (GoodsType gt : transform(getInputs(),
+            for (GoodsType gt : transform(getInputList(),
                                           ag -> ag.getAmount() > 0,
                                           AbstractGoods::getType)) {
                 cs.addMessage(getOwner(),
