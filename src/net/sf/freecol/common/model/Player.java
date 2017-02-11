@@ -3350,7 +3350,6 @@ public class Player extends FreeColGameObject implements Nameable {
             int bestValue = 0;
             for (ProductionType productionType : t.getType()
                      .getAvailableProductionTypes(true)) {
-                if (productionType.getOutputs() != null) {
                     int newValue = 0;
                     for (AbstractGoods output: productionType.getOutputs()) {
                         newValue += market.getSalePrice(output.getType(),
@@ -3359,7 +3358,6 @@ public class Player extends FreeColGameObject implements Nameable {
                     if (newValue > bestValue) {
                         bestValue = newValue;
                     }
-                }
             }
             value += bestValue;
             if (nearbyTileIsOcean) {
