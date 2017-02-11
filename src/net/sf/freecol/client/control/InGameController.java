@@ -2003,7 +2003,7 @@ public final class InGameController extends FreeColClientHolder {
                     turns += unit.getTurnsToReach(start, trs.getLocation());
                     int amountIn = trs.getImportAmount(type, turns),
                         amountOut = trs.getExportAmount(type, turns);
-                    if (none(trs.getCompactCargo(), AbstractGoods.matches(type))
+                    if (!AbstractGoods.anyIsType(trs.getCompactCargo(), type)
                         || amountIn > amountOut) {
                         importAmount = amountIn;
                         unload = trs;

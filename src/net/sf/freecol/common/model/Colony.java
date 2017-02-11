@@ -703,7 +703,7 @@ public class Colony extends Settlement implements Nameable, TradeLocation {
      */
     public List<WorkLocation> getWorkLocationsForConsuming(GoodsType goodsType) {
         return transform(getCurrentWorkLocations(),
-                wl -> any(wl.getInputs(), AbstractGoods.matches(goodsType)));
+                wl -> AbstractGoods.anyIsType(wl.getInputs(), goodsType));
     }
 
     /**

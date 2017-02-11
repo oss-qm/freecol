@@ -216,7 +216,7 @@ public class GoodsDetailPanel extends ColopediaGameObjectTypePanel<GoodsType> {
         boolean result = false;
         for (T bt : input) {
             if (bt.needsGoodsToBuild()
-                && any(bt.getRequiredGoods(), AbstractGoods.matches(type))) {
+                && AbstractGoods.anyIsType(bt.getRequiredGoods(), type)) {
                 output.add(bt);
                 result = true;
             }
