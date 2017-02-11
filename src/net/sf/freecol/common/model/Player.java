@@ -3351,7 +3351,7 @@ public class Player extends FreeColGameObject implements Nameable {
             for (ProductionType productionType : t.getType()
                      .getAvailableProductionTypes(true)) {
                     int newValue = 0;
-                    for (AbstractGoods output: productionType.getOutputs()) {
+                    for (AbstractGoods output: productionType.getOutputList()) {
                         newValue += market.getSalePrice(output.getType(),
                                                         t.getPotentialProduction(output.getType(), null));
                     }

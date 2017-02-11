@@ -235,6 +235,19 @@ public class ProductionType extends FreeColSpecObject {
     }
 
     /**
+     * Get the list of output goods - lock protected
+     *
+     * @return A list of the outputs {@code AbstractGoods}.
+     */
+    public final List<AbstractGoods> getOutputList() {
+        List<AbstractGoods> o = this.outputs; // dont rely on caching
+        if (o == null) return Collections.<AbstractGoods>emptyList();
+        synchronized (o) {
+            return new ArrayList<>(o); // return a copy to avoid conflicts
+        }
+    }
+
+    /**
      * Get the output goods.
      *
      * @return A stream of the output {@code AbstractGoods}.
@@ -363,7 +376,7 @@ public class ProductionType extends FreeColSpecObject {
      */
     public static boolean canProduce(final GoodsType goodsType,
                                      Collection<ProductionType> types) {
-        return any(flatten(types, ProductionType::getOutputs),
+        return any(flatten(types, ProductionType::getOutputList),
             ag -> goodsType == ag.getType() && ag.getAmount() > 0);
     }
 
@@ -394,7 +407,7 @@ public class ProductionType extends FreeColSpecObject {
     public AbstractGoods getBestOutputFor(GoodsType goodsType) {
         final Predicate<AbstractGoods> typePred = ag ->
             goodsType == null || ag.getType() == goodsType;
-        return maximize(getOutputs(), typePred,
+        return maximize(getOutputList(), typePred,
                         AbstractGoods.ascendingAmountComparator);
     }
 

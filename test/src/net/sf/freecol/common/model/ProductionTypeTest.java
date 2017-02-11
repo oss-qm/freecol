@@ -223,7 +223,7 @@ public class ProductionTypeTest extends FreeColTestCase {
                     i.intValue(), ag.getAmount());
                 inputs.remove(ag.getType());
             }
-            for (AbstractGoods ag : toList(productionType.getOutputs())) {
+            for (AbstractGoods ag : productionType.getOutputList()) {
                 Integer i = outputs.get(ag.getType());
                 assertNotNull("Output expected for " + ag.getType(), i);
                 assertEquals("Output amount mismatch for " + ag.getType(),
