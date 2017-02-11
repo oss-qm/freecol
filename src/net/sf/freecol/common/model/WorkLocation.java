@@ -406,16 +406,6 @@ public abstract class WorkLocation extends UnitLocation
         }
         return result;
     }
-            
-    /**
-     * Get the {@code AbstractGoods} consumed by this work location.
-     *
-     * @return A stream of {@code AbstractGoods} consumed.
-     */
-    public final Stream<AbstractGoods> getInputs() {
-        return (productionType == null) ? Stream.<AbstractGoods>empty()
-            : productionType.getInputs();
-    }
 
     /**
      * Get the {@code AbstractGoods} consumed by this work location - threadsafe
@@ -425,16 +415,6 @@ public abstract class WorkLocation extends UnitLocation
     public final List<AbstractGoods> getInputList() {
         return (productionType == null) ? Collections.<AbstractGoods>emptyList()
             : productionType.getInputList();
-    }
-
-    /**
-     * Get the {@code AbstractGoods} produced by this work location.
-     *
-     * @return A stream of {@code AbstractGoods} produced.
-     */
-    public Stream<AbstractGoods> getOutputs() {
-        return (productionType == null) ? Stream.<AbstractGoods>empty()
-            : productionType.getOutputs();
     }
 
     /**
