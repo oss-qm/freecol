@@ -1786,7 +1786,7 @@ public final class Tile extends UnitLocation implements Named, Ownable {
             = Comparator.comparingInt(ag ->
                 getPotentialProduction(ag.getType(), null));
         return maximize(flatten(getType().getAvailableProductionTypes(true),
-                                pt -> pt.getOutputs()),
+                                pt -> pt.getOutputList()),
                         AbstractGoods::isFoodType, goodsComp);
     }
 

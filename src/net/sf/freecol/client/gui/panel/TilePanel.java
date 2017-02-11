@@ -139,7 +139,7 @@ public final class TilePanel extends FreeColPanel {
             boolean first = true;
             for (AbstractGoods output
                      : iterable(flatten(tileType.getAvailableProductionTypes(false),
-                                        ProductionType::getOutputs))) {
+                                        ProductionType::getOutputList))) {
                 GoodsType gt = output.getType();
                 int amount = output.getAmount();
                 if (tile.getTileItemContainer() != null) {
