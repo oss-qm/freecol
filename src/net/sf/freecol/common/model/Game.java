@@ -553,17 +553,17 @@ public class Game extends FreeColGameObject {
     }
 
     /**
-     * Get a list of all the {@code FreeColGameObjects}.
+     * Get a array of all the {@code FreeColGameObjects}.
      *
      * @return A suitable list.
      */
-    public List<FreeColGameObject> getFreeColGameObjectList() {
-        List<FreeColGameObject> ret = new ArrayList<>();
+    public FreeColGameObject[] getFreeColGameObjectList() {
+        ArrayList<FreeColGameObject> ret = new ArrayList<>();
         synchronized (freeColGameObjects) {
             Iterator<FreeColGameObject> iter = getFreeColGameObjectIterator();
             while (iter.hasNext()) ret.add(iter.next());
         }
-        return ret;
+        return ret.toArray(new FreeColGameObject[ret.size()]);
     }
 
     /**
