@@ -573,7 +573,18 @@ public class Colony extends Settlement implements Nameable, TradeLocation {
      * @return The list of available {@code WorkLocation}s.
      */
     public List<WorkLocation> getAvailableWorkLocationsList() {
-        return transform(getAllWorkLocations(), WorkLocation::isAvailable);
+        List<WorkLocation> result = new ArrayList<>();
+        synchronized (this.colonyTiles) {
+            for (ColonyTile walk : this.colonyTiles)
+                if (walk.isAvailable())
+                    result.add(walk);
+        }
+        synchronized (this.buildingMap) {
+            for (Building walk : this.buildingMap.values())
+                if (walk.isAvailable())
+                    result.add(walk);
+        }
+        return result;
     }
 
     /**
