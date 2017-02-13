@@ -742,8 +742,18 @@ public class Colony extends Settlement implements Nameable, TradeLocation {
      *     the given type of goods.
      */
     public List<WorkLocation> getWorkLocationsForConsuming(GoodsType goodsType) {
-        return transform(getCurrentWorkLocations(),
-                wl -> AbstractGoods.anyIsType(wl.getInputList(), goodsType));
+        List<WorkLocation> ret = new ArrayList<>();
+        synchronized (this.colonyTiles) {
+            for (WorkLocation walk : this.colonyTiles)
+                if (walk.isCurrent() && AbstractGoods.anyIsType(walk.getInputList(), goodsType))
+                    ret.add(walk);
+        }
+        synchronized (this.buildingMap) {
+            for (WorkLocation walk : this.buildingMap.values())
+                if (walk.isCurrent() && AbstractGoods.anyIsType(walk.getInputList(), goodsType))
+                    ret.add(walk);
+        }
+        return ret;
     }
 
     /**
