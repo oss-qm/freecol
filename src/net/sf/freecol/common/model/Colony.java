@@ -651,6 +651,29 @@ public class Colony extends Settlement implements Nameable, TradeLocation {
     }
 
     /**
+     * Gets a list of all freely available work locations
+     * in this colony, that can add given unit.
+     *
+     * @param unit The {@code Unit} about to be added.
+     * @param skip An optional WorkLocation to skip
+     * @return The list of available {@code WorkLocation}s.
+     */
+    public int getAvailableWorkLocationsCanAdd(Unit unit, WorkLocation skip) {
+        int result = 0;
+        synchronized (this.colonyTiles) {
+            for (ColonyTile walk : this.colonyTiles)
+                if (walk != skip && walk.isAvailable() && walk.canAdd(unit))
+                    result++;
+        }
+        synchronized (this.buildingMap) {
+            for (Building walk : this.buildingMap.values())
+                if (walk != skip && walk.isAvailable() && walk.canAdd(unit))
+                    result++;
+        }
+        return result;
+    }
+
+    /**
      * Add a Building to this Colony.
      *
      * Lower level routine, do not use directly in-game (use buildBuilding).
