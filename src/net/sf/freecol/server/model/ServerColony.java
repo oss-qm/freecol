@@ -195,10 +195,11 @@ public class ServerColony extends Colony implements TurnTaker {
     public boolean ejectUnits(WorkLocation workLocation, List<Unit> units) {
         if (units == null || units.isEmpty()) return false;
         unit: for (Unit u : units) {
-            for (WorkLocation wl : transform(getAvailableWorkLocations(),
-                                             w -> w != workLocation && w.canAdd(u))) {
-                u.setLocation(wl);//-vis: safe/colony
-                continue unit;
+            for (WorkLocation wl : getAvailableWorkLocationsList()) {
+                if ((wl != workLocation) && wl.canAdd(u)) {
+                    u.setLocation(wl);//-vis: safe/colony
+                    continue unit;
+                }
             }
             u.setLocation(getTile());//-vis: safe/colony
         }

@@ -47,6 +47,7 @@ import static net.sf.freecol.common.util.CollectionUtils.*;
 import net.sf.freecol.common.option.GameOptions;
 import net.sf.freecol.common.util.LogBuilder;
 import net.sf.freecol.common.util.RandomChoice;
+import net.sf.freecol.common.util.Utils;
 
 
 /**
@@ -555,22 +556,6 @@ public class Colony extends Settlement implements Nameable, TradeLocation {
     }
 
     /**
-     * Gets a stream of every work location in this colony.
-     *
-     * @return The stream of work locations.
-     */
-    public Stream<WorkLocation> getAllWorkLocations() {
-        Stream<WorkLocation> ret = Stream.<WorkLocation>empty();
-        synchronized (this.colonyTiles) {
-            ret = concat(ret, map(this.colonyTiles, ct -> (WorkLocation)ct));
-        }
-        synchronized (this.buildingMap) {
-            ret = concat(ret, map(this.buildingMap.values(), b -> (WorkLocation)b));
-        }
-        return ret;
-    }
-
-    /**
      * Gets a list of all freely available work locations
      * in this colony.
      *
@@ -589,16 +574,6 @@ public class Colony extends Settlement implements Nameable, TradeLocation {
                     result.add(walk);
         }
         return result;
-    }
-
-    /**
-     * Get a stream of all freely available work locations in this
-     * colony.
-     *
-     * @return The stream of available {@code WorkLocation}s.
-     */
-    public Stream<WorkLocation> getAvailableWorkLocations() {
-        return getAvailableWorkLocationsList().stream();
     }
 
     /**
@@ -641,13 +616,30 @@ public class Colony extends Settlement implements Nameable, TradeLocation {
         return result;
     }
 
+
+
+
     /**
-     * Get a stream of all current work locations in this colony.
+     * Gets a list of all freely available work locations
+     * in this colony, that can add given unit.
      *
-     * @return The stream of current {@code WorkLocation}s.
+     * @param unit The {@code Unit} about to be added.
+     * @param skip An optional WorkLocation to skip
+     * @return The list of available {@code WorkLocation}s.
      */
-    public Stream<WorkLocation> getCurrentWorkLocations() {
-        return getCurrentWorkLocationsList().stream();
+    public int getAvailableWorkLocationsCanAdd(Unit unit, WorkLocation skip) {
+        int result = 0;
+        synchronized (this.colonyTiles) {
+            for (ColonyTile walk : this.colonyTiles)
+                if (walk != skip && walk.isAvailable() && walk.canAdd(unit))
+                    result++;
+        }
+        synchronized (this.buildingMap) {
+            for (Building walk : this.buildingMap.values())
+                if (walk != skip && walk.isAvailable() && walk.canAdd(unit))
+                    result++;
+        }
+        return result;
     }
 
     /**
@@ -2549,7 +2541,7 @@ loop:   for (WorkLocation wl : getWorkLocationsForProducing(goodsType)) {
      */
     @Override
     public Stream<FreeColGameObject> getDisposables() {
-        return concat(flatten(getAllWorkLocations(),
+        return concat(flatten(getAllWorkLocationsList(),
                 WorkLocation::getDisposables),
                 super.getDisposables());
     }
@@ -2615,7 +2607,7 @@ loop:   for (WorkLocation wl : getWorkLocationsForProducing(goodsType)) {
     @Override
     public boolean contains(Locatable locatable) {
         if (locatable instanceof Unit) {
-            return any(getAvailableWorkLocations(),
+            return any(getAvailableWorkLocationsList(),
                     wl -> wl.contains(locatable));
         }
         return super.contains(locatable);
@@ -2637,7 +2629,7 @@ loop:   for (WorkLocation wl : getWorkLocationsForProducing(goodsType)) {
      */
     @Override
     public Stream<Unit> getUnits() {
-        return flatten(getCurrentWorkLocations(), WorkLocation::getUnits);
+        return flatten(getCurrentWorkLocationsList(), WorkLocation::getUnits);
     }
 
     /**
