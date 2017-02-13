@@ -3112,9 +3112,9 @@ loop:   for (WorkLocation wl : getWorkLocationsForProducing(goodsType)) {
                 e.getValue().toXML(xw);
             }
 
-            for (WorkLocation wl : sort(getAllWorkLocations())) {
-                wl.toXML(xw);
-            }
+            List<WorkLocation> wll = getAllWorkLocationsList();
+            Collections.sort(wll);
+            for (WorkLocation wl : wll) wl.toXML(xw);
 
             for (BuildableType item : buildQueue.getValues()) { // In order!
                 xw.writeStartElement(BUILD_QUEUE_TAG);
