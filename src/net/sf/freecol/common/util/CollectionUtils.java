@@ -853,8 +853,18 @@ public class CollectionUtils {
      * @return The first item, or null on failure.
      */
     public static <T> T first(T[] array) {
-        return (array == null || array.length == 0) ? null
-            : first_internal(Arrays.stream(array), null);
+        return (array == null || array.length == 0) ? null : array[0];
+    }
+
+    /**
+     * Get the first item of a list.
+     *
+     * @param <T> Generic type T
+     * @param c The {@code Collection} to search.
+     * @return The first item, or null on failure.
+     */
+    public static <T> T first(List<T> l) {
+        return (l == null || l.isEmpty()) ? null : l.get(0);
     }
 
     /**
@@ -865,8 +875,9 @@ public class CollectionUtils {
      * @return The first item, or null on failure.
      */
     public static <T> T first(Collection<T> c) {
-        return (c == null || c.isEmpty()) ? null
-            : first_internal(c.stream(), null);
+        if (c == null || c.isEmpty()) return null;
+        Iterator<T> it = c.iterator();
+        return it.hasNext() ? it.next() : null;
     }
 
     /**
@@ -877,21 +888,9 @@ public class CollectionUtils {
      * @return The first item, or null on failure.
      */
     public static <T> T first(Stream<T> stream) {
-        return (stream == null) ? null : first_internal(stream, null);
+        return (stream == null) ? null : stream.findFirst().orElse(fail);
     }
 
-    /**
-     * Implement first().
-     *
-     * @param <T> Generic type T
-     * @param stream The {@code Stream} to search.
-     * @param fail The value to return on failure.
-     * @return The first item, or fail on failure.
-     */
-    private static <T> T first_internal(Stream<T> stream, T fail) {
-        return stream.findFirst().orElse(fail);
-    }
-    
     /**
      * Flatten an array into a stream derived from its component streams.
      *
