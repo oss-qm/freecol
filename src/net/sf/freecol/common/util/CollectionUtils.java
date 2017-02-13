@@ -763,7 +763,10 @@ public class CollectionUtils {
      * @return The item found, or null if not found.
      */
     public static <T> T find(T[] array, Predicate<? super T> predicate) {
-        return find_internal(Arrays.stream(array), predicate, null);
+        if (array != null && array.length > 0)
+            for (int x=0; x<array.length; x++)
+                if (predicate.test(array[x]) return array[x];
+        return null;
     }
 
     /**
@@ -777,7 +780,10 @@ public class CollectionUtils {
      */
     public static <T> T find(T[] array, Predicate<? super T> predicate,
                              T fail) {
-        return find_internal(Arrays.stream(array), predicate, fail);
+        if (array != null && array.length > 0)
+            for (int x=0; x<array.length; x++)
+                if (predicate.test(array[x]) return array[x];
+        return fail;
     }
 
     /**
@@ -789,7 +795,10 @@ public class CollectionUtils {
      * @return The item found, or null if not found.
      */
     public static <T> T find(Collection<T> c, Predicate<? super T> predicate) {
-        return find_internal(c.stream(), predicate, (T)null);
+        if (c != null && !c.isEmpty())
+            for (T e : c)
+                if (predicate.test(e)) return e;
+        return null;
     }
 
     /**
@@ -803,7 +812,10 @@ public class CollectionUtils {
      */
     public static <T> T find(Collection<T> c, Predicate<? super T> predicate,
                              T fail) {
-        return find_internal(c.stream(), predicate, fail);
+        if (c != null && !c.isEmpty())
+            for (T e : c)
+                if (predicate.test(e)) return e;
+        return fail;
     }
 
     /**
@@ -816,7 +828,7 @@ public class CollectionUtils {
      */
     public static <T> T find(Stream<T> stream,
                              Predicate<? super T> predicate) {
-        return (stream == null) ? null : find_internal(stream, predicate, null);
+        return (stream == null) ? null : stream.filter(predicate).findFirst().get();
     }
 
     /**
@@ -830,24 +842,9 @@ public class CollectionUtils {
      */
     public static <T> T find(Stream<T> stream, Predicate<? super T> predicate,
                              T fail) {
-        return (stream == null) ? fail : find_internal(stream, predicate, fail);
+        return (stream == null) ? fail : stream.filter(predicate).findFirst().orElse(fail);
     }
 
-    /**
-     * Implement find().
-     *
-     * @param <T> The stream member type.
-     * @param stream A {@code Stream} to search.
-     * @param predicate A {@code Predicate} to match with.
-     * @param fail The value to return if nothing is found.
-     * @return The item found, or fail if not found.
-     */
-    private static <T> T find_internal(Stream<T> stream,
-                                       Predicate<? super T> predicate,
-                                       T fail) {
-        return first_internal(stream.filter(predicate), fail);
-    }
-   
     /**
      * Get the first item of an array.
      *
