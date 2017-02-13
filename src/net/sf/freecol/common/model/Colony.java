@@ -532,6 +532,25 @@ public class Colony extends Settlement implements Nameable, TradeLocation {
     }
 
     /**
+     * Find {@code WorkLocation} by id.
+     *
+     * @return The WorkLocation if found, else null.
+     */
+    public WorkLocation findWorkLocationById(String id) {
+        synchronized (this.colonyTiles) {
+            for (ColonyTile walk : this.colonyTiles)
+                if (Utils.equals(id, walk.getId()))
+                    return walk;
+        }
+        synchronized (this.buildingMap) {
+            for (Building walk : this.buildingMap.values())
+                if (Utils.equals(id, walk.getId()))
+                    return walk;
+        }
+        return null;
+    }
+
+    /**
      * Gets a stream of every work location in this colony.
      *
      * @return The stream of work locations.
@@ -2459,8 +2478,7 @@ loop:   for (WorkLocation wl : getWorkLocationsForProducing(goodsType)) {
     public <T extends FreeColObject> T getCorresponding(T fco) {
         final String id = fco.getId();
         return (fco instanceof WorkLocation)
-                ? (T)find(getAllWorkLocations(),
-                matchKeyEquals(id, WorkLocation::getId))
+                ? (T)findWorkLocationById(id)
                 : (fco instanceof Tile)
                 ? (T)((getTile().getId().equals(id)) ? getTile()
                 : find(map(getColonyTiles(), ColonyTile::getWorkTile),
