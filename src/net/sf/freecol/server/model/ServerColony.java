@@ -549,7 +549,7 @@ public class ServerColony extends Colony implements TurnTaker {
         container.saveState();
 
         // Check for learning by experience
-        for (WorkLocation wl : getCurrentWorkLocationsList()) {
+        for (WorkLocation wl : getCurrentWorkLocations()) {
             if (wl instanceof TurnTaker) {
                 ((TurnTaker)wl).csNewTurn(random, lb, cs);
             }
