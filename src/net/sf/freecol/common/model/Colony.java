@@ -748,7 +748,17 @@ public class Colony extends Settlement implements Nameable, TradeLocation {
      *      the given type of goods, or null if not found.
      */
     public WorkLocation getWorkLocationForProducing(GoodsType goodsType) {
-        return first(getWorkLocationsForProducing(goodsType));
+        synchronized (this.colonyTiles) {
+            for (WorkLocation walk : this.colonyTiles)
+                if (walk.isCurrent() && walk.produces(goodsType))
+                    return walk;
+        }
+        synchronized (this.buildingMap) {
+            for (WorkLocation walk : this.buildingMap.values())
+                if (walk.isCurrent() && walk.produces(goodsType))
+                    return walk;
+        }
+        return null;
     }
 
     /**
