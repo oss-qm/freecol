@@ -705,7 +705,17 @@ public class Colony extends Settlement implements Nameable, TradeLocation {
      *     {@code Modifier}, or null if not found.
      */
     public WorkLocation getWorkLocationWithModifier(String modifier) {
-        return find(getCurrentWorkLocations(), wl -> wl.hasModifier(modifier));
+        synchronized (this.colonyTiles) {
+            for (WorkLocation walk : this.colonyTiles)
+                if (walk.isCurrent() && walk.hasModifier(modifier))
+                    return walk;
+        }
+        synchronized (this.buildingMap) {
+            for (WorkLocation walk : this.buildingMap.values())
+                if (walk.isCurrent() && walk.hasModifier(modifier))
+                    return walk;
+        }
+        return null;
     }
 
     /**
