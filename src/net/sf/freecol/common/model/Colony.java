@@ -666,7 +666,17 @@ public class Colony extends Settlement implements Nameable, TradeLocation {
      *     {@code Ability}, or null if not found.
      */
     public WorkLocation getWorkLocationWithAbility(String ability) {
-        return find(getCurrentWorkLocations(), wl -> wl.hasAbility(ability));
+        synchronized (this.colonyTiles) {
+            for (ColonyTile ct : this.colonyTiles)
+                if (ct.isCurrent() && ct.hasAbility(ability))
+                    return ct;
+        }
+        synchronized (this.buildingMap) {
+            for (Building b : this.buildingMap.values())
+                if (b.isCurrent() && b.hasAbility(ability))
+                    return b;
+        }
+        return null;
     }
 
     /**
