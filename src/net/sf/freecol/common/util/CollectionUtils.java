@@ -383,9 +383,10 @@ public class CollectionUtils {
     }
 
     // Stream-based routines from here on
-    
+
     /**
      * Do all members of an array match a predicate?
+     * If the array is null, also return true.
      *
      * @param <T> The array member type.
      * @param array The array to test.
@@ -393,8 +394,10 @@ public class CollectionUtils {
      * @return True if all members pass the predicate test.
      */
     public static <T> boolean all(T[] array, Predicate<? super T> predicate) {
-        return (array == null) ? true
-            : all_internal(Arrays.stream(array), predicate);
+        if (array != null && array.length > 0)
+            for (int x=0; x<array.length; x++)
+                if (!predicate.test(array[x])) return false;
+        return true;
     }
 
     /**
@@ -407,7 +410,10 @@ public class CollectionUtils {
      */
     public static <T> boolean all(Collection<T> c,
                                   Predicate<? super T> predicate) {
-        return (c == null) ? true : all_internal(c.stream(), predicate);
+        if (c != null)
+            for (T e : c)
+                if (!predicate.test(e)) return false;
+        return true;
     }
 
     /**
@@ -420,20 +426,7 @@ public class CollectionUtils {
      */
     public static <T> boolean all(Stream<T> stream,
                                   Predicate<? super T> predicate) {
-        return (stream == null) ? true : all_internal(stream, predicate);
-    }
-
-    /**
-     * Implementation of all().
-     *
-     * @param <T> The stream member type.
-     * @param stream The {@code Stream} to test.
-     * @param predicate The {@code Predicate} to test with.
-     * @return True if all members pass the predicate test.
-     */
-    private static <T> boolean all_internal(Stream<T> stream,
-                                            Predicate<? super T> predicate) {
-        return stream.allMatch(predicate);
+        return (stream == null) ? true : stream.allMatch(predicate);
     }
 
     /**
@@ -466,7 +459,10 @@ public class CollectionUtils {
      * @return True if any member passes the predicate test.
      */
     public static <T> boolean any(T[] array, Predicate<? super T> predicate) {
-        return any_internal(Arrays.stream(array), predicate);
+        if (array != null && array.length > 0)
+            for (int x=0; x<array.length; x++)
+                if (predicate.test(array[x])) return true;
+        return false;
     }
 
     /**
@@ -490,7 +486,10 @@ public class CollectionUtils {
      */
     public static <T> boolean any(Collection<T> c,
                                   Predicate<? super T> predicate) {
-        return (c == null) ? false : any_internal(c.stream(), predicate);
+        if (c != null)
+            for (T e : c)
+                if (predicate.test(e)) return true;
+        return false;
     }
 
     /**
@@ -514,20 +513,7 @@ public class CollectionUtils {
      */
     public static <T> boolean any(Stream<T> stream,
                                   Predicate<? super T> predicate) {
-        return (stream == null) ? false : any_internal(stream, predicate);
-    }
-
-    /**
-     * Implementation of any().
-     *
-     * @param <T> The stream member type.
-     * @param stream The {@code Stream} to test.
-     * @param predicate The {@code Predicate} to test with.
-     * @return True if any member passes the predicate test.
-     */
-    private static <T> boolean any_internal(Stream<T> stream,
-                                            Predicate<? super T> predicate) {
-        return stream.anyMatch(predicate);
+        return (stream == null) ? false : stream.anyMatch(predicate);
     }
 
     /**
@@ -1752,7 +1738,10 @@ public class CollectionUtils {
      * @return True if no member passes the predicate test.
      */
     public static <T> boolean none(T[] array, Predicate<? super T> predicate) {
-        return none_internal(Arrays.stream(array), predicate);
+        if (array != null && array.length > 0)
+            for (int x=0; x<array.length; x++)
+                if (predicate.test(array[x])) return false;
+        return true;
     }
 
     /**
@@ -1776,7 +1765,10 @@ public class CollectionUtils {
      */
     public static <T> boolean none(Collection<T> c,
                                    Predicate<? super T> predicate) {
-        return none_internal(c.stream(), predicate);
+        if (c != null && !c.isEmpty())
+            for (T e : c)
+                if (predicate.test(e)) return false;
+        return true;
     }
 
     /**
@@ -1800,20 +1792,7 @@ public class CollectionUtils {
      */
     public static <T> boolean none(Stream<T> stream,
                                    Predicate<? super T> predicate) {
-        return (stream == null) ? true : none_internal(stream, predicate);
-    }
-
-    /**
-     * Implementation of none().
-     *
-     * @param <T> The stream member type.
-     * @param stream The {@code Stream} to test.
-     * @param predicate The {@code Predicate} to test with.
-     * @return True if no member passes the predicate test.
-     */
-    private static <T> boolean none_internal(Stream<T> stream,
-                                             Predicate<? super T> predicate) {
-        return stream.noneMatch(predicate);
+        return (stream == null) ? true : stream.noneMatch(predicate);
     }
 
     /**
