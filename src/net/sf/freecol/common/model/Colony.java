@@ -2627,7 +2627,18 @@ loop:   for (WorkLocation wl : getWorkLocationsForProducing(goodsType)) {
      */
     @Override
     public List<Unit> getUnitList() {
-        return toList(getUnits());
+        List<Unit> result = new ArrayList<>();
+        synchronized (this.colonyTiles) {
+            for (ColonyTile walk : this.colonyTiles)
+                if (walk.isCurrent())
+                    result.addAll(walk.getUnitList());
+        }
+        synchronized (this.buildingMap) {
+            for (Building walk : this.buildingMap.values())
+                if (walk.isCurrent())
+                    result.addAll(walk.getUnitList());
+        }
+        return result;
     }
 
     /**
