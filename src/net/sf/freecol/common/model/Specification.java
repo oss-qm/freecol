@@ -2008,7 +2008,7 @@ public final class Specification {
      */
     private void fixOrphanOptions() {
         Collection<AbstractOption> allO = new HashSet<>(allOptions.values());
-        Collection<AbstractOption> allG = new HashSet<>(allOptionGroups.values());
+        Collection<AbstractOption> allG = new HashSet<AbstractOption>(allOptionGroups.values());
         for (String id : coreOptionGroups) {
             dropOptions(allOptionGroups.get(id), allO);
             dropOptions(allOptionGroups.get(id), allG);
