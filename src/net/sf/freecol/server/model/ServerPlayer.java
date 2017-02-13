@@ -3737,7 +3737,7 @@ outer:  for (Effect effect : effects) {
             building.dispose();
             // Have any abilities been removed that gate other production,
             // e.g. removing docks should shut down fishing.
-            for (WorkLocation wl : colony.getAllWorkLocations()) {
+            for (WorkLocation wl : colony.getAllWorkLocationsList()) {
                 if (!(!wl.isEmpty() && !wl.canBeWorked())) continue;
 
                 changed |= colony.ejectUnits(wl, wl.getUnits());//-til

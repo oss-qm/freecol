@@ -2687,12 +2687,12 @@ loop:   for (WorkLocation wl : getWorkLocationsForProducing(goodsType)) {
         synchronized (this.colonyTiles) {
             for (ColonyTile walk : this.colonyTiles)
                 if (walk.isCurrent())
-                    result.addAll(walk.getUnitList());
+                    result.addAll(walk.getUnits());
         }
         synchronized (this.buildingMap) {
             for (Building walk : this.buildingMap.values())
                 if (walk.isCurrent())
-                    result.addAll(walk.getUnitList());
+                    result.addAll(walk.getUnits());
         }
         return result;
     }

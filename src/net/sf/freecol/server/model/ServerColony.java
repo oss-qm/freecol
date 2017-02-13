@@ -549,7 +549,7 @@ public class ServerColony extends Colony implements TurnTaker {
         container.saveState();
 
         // Check for learning by experience
-        for (WorkLocation wl : getCurrentWorkLocations()) {
+        for (WorkLocation wl : getCurrentWorkLocationsList()) {
             if (wl instanceof TurnTaker) {
                 ((TurnTaker)wl).csNewTurn(random, lb, cs);
             }
@@ -875,7 +875,7 @@ loop:   for (BuildQueue<?> q : queues) {
         // before checking for completion of training.  This is a rare
         // case so it is not worth reordering the work location calls
         // to csNewTurn.
-        for (WorkLocation wl : getCurrentWorkLocations()) {
+        for (WorkLocation wl : getCurrentWorkLocationsList()) {
             if (!wl.canTeach()) continue;
             ServerBuilding building = (ServerBuilding)wl;
             for (Unit teacher : building.getUnits()) {

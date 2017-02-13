@@ -222,7 +222,7 @@ public final class ReportCompactColonyPanel extends ReportPanel
             // FIXME: this needs to be merged with the requirements
             // checking code, but that in turn should be opened up
             // so the AI can use it...
-            for (WorkLocation wl : colony.getAvailableWorkLocations()) {
+            for (WorkLocation wl : colony.getAvailableWorkLocationsList()) {
                 if (!wl.canBeWorked())
                     continue;
 

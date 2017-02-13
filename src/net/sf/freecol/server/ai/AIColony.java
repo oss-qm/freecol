@@ -600,7 +600,7 @@ public class AIColony extends AIObject implements PropertyChangeListener {
 
         out: for (Unit u : colony.getTile().getUnits()) {
             if (!u.isPerson()) continue;
-            for (WorkLocation wl : colony.getAvailableWorkLocations()) {
+            for (WorkLocation wl : colony.getAvailableWorkLocationsList()) {
                 if (!wl.canAdd(u)) continue;
                 for (GoodsType type : libertyGoods) {
                     if (wl.getPotentialProduction(type, u.getType()) > 0
@@ -1054,7 +1054,7 @@ public class AIColony extends AIObject implements PropertyChangeListener {
             };
 
         Set<GoodsType> prod = new HashSet<>();
-        for (WorkLocation wl : colony.getAvailableWorkLocations())
+        for (WorkLocation wl : colony.getAvailableWorkLocationsList())
             for (Unit u : wl.getUnits()) {
                 GoodsType gt = u.getWorkType();
                 if (gt != null)
@@ -1157,7 +1157,7 @@ public class AIColony extends AIObject implements PropertyChangeListener {
         }
 
         // Add raw materials for buildings.
-        for (WorkLocation wl : colony.getCurrentWorkLocations()) {
+        for (WorkLocation wl : colony.getCurrentWorkLocationsList()) {
             if (wl.getProductionInfo().hasMaximumProduction())
                 continue;
 
@@ -1263,7 +1263,7 @@ public class AIColony extends AIObject implements PropertyChangeListener {
      */
     public void updateTileImprovementPlans(LogBuilder lb) {
         List<TileImprovementPlan> newPlans = new ArrayList<>();
-        for (WorkLocation wl : colony.getAvailableWorkLocations()) {
+        for (WorkLocation wl : colony.getAvailableWorkLocationsList()) {
             if (!(wl instanceof ColonyTile)) continue;
 
             Tile workTile = wl.getWorkTile();
@@ -1304,7 +1304,7 @@ public class AIColony extends AIObject implements PropertyChangeListener {
             TileType change = plan.getType().getChange(workTile.getType());
 
             int cnt = 0;
-            for (WorkLocation cwl : colony.getAvailableWorkLocations())
+            for (WorkLocation cwl : colony.getAvailableWorkLocationsList())
                 if (cwl instanceof ColonyTile
                     && !((ColonyTile)cwl).isColonyCenterTile()
                     && cwl.getWorkTile().isForested()) cnt++;

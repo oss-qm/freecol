@@ -1861,7 +1861,7 @@ public final class Tile extends UnitLocation implements Named, Ownable {
      */
     private void updateColonyTiles() {
         for (Colony c : getGame().getAllColonies(null))
-            for (WorkLocation wl : c.getAvailableWorkLocations())
+            for (WorkLocation wl : c.getAvailableWorkLocationsList())
                 if (wl.getWorkTile() == this) {
                     wl.updateProductionType();
                     break;
