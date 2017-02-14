@@ -2618,7 +2618,10 @@ loop:   for (WorkLocation wl : getWorkLocationsForProducing(goodsType)) {
      */
     @Override
     public int getUnitCount() {
-        return sum(getCurrentWorkLocations(), UnitLocation::getUnitCount);
+        int ret = 0;
+        for (WorkLocation wl : getCurrentWorkLocationsList())
+            ret += wl.getUnitCount();
+        return ret;
     }
 
     /**
