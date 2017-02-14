@@ -2848,8 +2848,10 @@ loop:   for (WorkLocation wl : getWorkLocationsForProducing(goodsType)) {
      */
     @Override
     public int getTotalProductionOf(GoodsType goodsType) {
-        return sum(getCurrentWorkLocations(),
-                wl -> wl.getTotalProductionOf(goodsType));
+        int ret = 0;
+        for (WorkLocation wl : getCurrentWorkLocationsList())
+            ret += wl.getTotalProductionOf(goodsType);
+        return ret;
     }
 
     /**
