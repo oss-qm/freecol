@@ -1158,12 +1158,15 @@ public class Colony extends Settlement implements Nameable, TradeLocation {
      * @see net.sf.freecol.client.control.InGameController#payForBuilding
      */
     public int priceGoodsForBuilding(List<AbstractGoods> required) {
+        if (required == null || required.size() == 0) return 0;
         final Market market = getOwner().getMarket();
         // FIXME: magic number!
-        return sum(required,
-                ag -> (ag.getType().isStorable())
+        int ret = 0;
+        for (AbstractGoods ag : required)
+            ret += (ag.getType().isStorable()
                         ? (market.getBidPrice(ag.getType(), ag.getAmount()) * 110)/100
                         : ag.getType().getPrice() * ag.getAmount());
+        return ret;
     }
 
     /**
