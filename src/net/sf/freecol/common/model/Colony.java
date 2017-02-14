@@ -2017,8 +2017,10 @@ public class Colony extends Settlement implements Nameable, TradeLocation {
      * @return an {@code int} value
      */
     public int getFoodProduction() {
-        return sum(getSpecification().getFoodGoodsTypeList(),
-                ft -> getTotalProductionOf(ft));
+        int ret = 0;
+        for (GoodsType ft : getSpecification().getFoodGoodsTypeList())
+            ret += getTotalProductionOf(ft);
+        return ret;
     }
 
     /**
