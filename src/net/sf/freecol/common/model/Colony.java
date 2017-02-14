@@ -2835,7 +2835,12 @@ loop:   for (WorkLocation wl : getWorkLocationsForProducing(goodsType)) {
      */
     @Override
     public int getUpkeep() {
-        return sum(getBuildings(), b -> b.getType().getUpkeep());
+        int ret = 0;
+        synchronized (buildingMap) {
+            for (Building b : buildingMap.values())
+                ret += b.getType().getUpkeep();
+        }
+        return ret;
     }
 
     /**
