@@ -2099,6 +2099,11 @@ public class Colony extends Settlement implements Nameable, TradeLocation {
                 && info.getProduction().get(0).getAmount() > 0;
     }
 
+    private static final getNetProdOfQueue(GoodsType gt, BuildQueue q) {
+        ProductionInfo pi = productionCache.getProductionInfo(q);
+        return (pi == null) ? 0 : AbstractGoods.getCount(gt, pi.getConsumption());
+    }
+
     /**
      * Returns the net production of the given GoodsType adjusted by
      * the possible consumption of BuildQueues.
@@ -2107,13 +2112,9 @@ public class Colony extends Settlement implements Nameable, TradeLocation {
      * @return an {@code int} value
      */
     public int getAdjustedNetProductionOf(final GoodsType goodsType) {
-        final ToIntFunction<BuildQueue> consumes = q -> {
-            ProductionInfo pi = productionCache.getProductionInfo(q);
-            return (pi == null) ? 0
-                    : AbstractGoods.getCount(goodsType, pi.getConsumption());
-        };
         return productionCache.getNetProductionOf(goodsType)
-                + sum(Stream.of(buildQueue, populationQueue), consumes);
+                + getNetProdOfQueue(goodsType, buildQueue)
+                + getNetProdOfQueue(goodsType, populationQueue);
     }
 
     /**
