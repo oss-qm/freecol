@@ -237,7 +237,11 @@ public class Colony extends Settlement implements Nameable, TradeLocation {
      * @return The corresponding {@code ColonyTile}, or null if not found.
      */
     public ColonyTile getColonyTile(Tile tile) {
-        return find(getColonyTiles(), matchKey(tile, ColonyTile::getWorkTile));
+        synchronized (colonyTiles) {
+            for (ColonyTile ct : colonyTiles)
+                if (ct.getWorkTile() == tile) return ct;
+        }
+        return null;
     }
 
     /**
