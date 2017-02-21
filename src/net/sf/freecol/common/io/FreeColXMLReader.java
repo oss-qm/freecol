@@ -275,7 +275,7 @@ public class FreeColXMLReader extends StreamReaderDelegate
             }
         }
         // @compat 0.11.x
-        
+
         return id;
     }
     // end @compat 0.11.x

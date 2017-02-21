@@ -64,7 +64,7 @@ public class ChangeSet {
         INVISIBLE,
         SPECIAL;
     }
-    
+
     /** The changes to send. */
     private final List<Change> changes;
 
