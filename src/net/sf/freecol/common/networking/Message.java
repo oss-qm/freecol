@@ -36,7 +36,6 @@ import net.sf.freecol.common.io.FreeColXMLReader;
 import net.sf.freecol.common.model.FreeColObject;
 import net.sf.freecol.common.model.Game;
 import static net.sf.freecol.common.util.CollectionUtils.*;
-import net.sf.freecol.common.util.Introspector;
 import static net.sf.freecol.common.util.StringUtils.*;
 
 import org.xml.sax.SAXException;
@@ -48,14 +47,6 @@ import org.xml.sax.SAXException;
 public abstract class Message {
 
     protected static final Logger logger = Logger.getLogger(Message.class.getName());
-
-    /**
-     * A map of message name to message constructors, built on the fly
-     * as new messages are encountered and suitable constructors found.
-     */
-    private final static Map<String, Constructor<? extends Message>> builders
-        = Collections.synchronizedMap(new HashMap<String,
-            Constructor<? extends Message>>());
 
     // Convenient way to specify the relative priorities of the messages
     // types in one place.
@@ -362,6 +353,108 @@ public abstract class Message {
         return MessagePriority.NORMAL;
     }
 
+    /** construct a message object by its tag name **/
+    private static Message constructByTag(String name, Game game, FreeColXMLReader xr)
+        throws FreeColException {
+        switch (name) {
+            case "AbandonColony":               return new AbandonColonyMessage(game, xr);
+            case "AddPlayer":                   return new AddPlayerMessage(game, xr);
+            case "AnimateAttack":               return new AnimateAttackMessage(game, xr);
+            case "AnimateMove":                 return new AnimateMoveMessage(game, xr);
+            case "AskSkill":                    return new AskSkillMessage(game, xr);
+            case "AssignTeacher":               return new AssignTeacherMessage(game, xr);
+            case "AssignTradeRoute":            return new AssignTradeRouteMessage(game, xr);
+            case "Attack":                      return new AttackMessage(game, xr);
+            case "Attribute":                   return new AttributeMessage(game, xr);
+            case "BuildColony":                 return new BuildColonyMessage(game, xr);
+            case "CashInTreasureTrain":         return new CashInTreasureTrainMessage(game, xr);
+            case "ChangeState":                 return new ChangeStateMessage(game, xr);
+            case "ChangeWorkImprovementType":   return new ChangeWorkImprovementTypeMessage(game, xr);
+            case "ChangeWorkType":              return new ChangeWorkTypeMessage(game, xr);
+            case "Chat":                        return new ChatMessage(game, xr);
+            case "ChooseFoundingFather":        return new ChooseFoundingFatherMessage(game, xr);
+            case "ClaimLand":                   return new ClaimLandMessage(game, xr);
+            case "ClearSpeciality":             return new ClearSpecialityMessage(game, xr);
+            case "DeclareIndependence":         return new DeclareIndependenceMessage(game, xr);
+            case "DeclineMounds":               return new DeclineMoundsMessage(game, xr);
+            case "DeleteTradeRoute":            return new DeleteTradeRouteMessage(game, xr);
+            case "DeliverGift":                 return new DeliverGiftMessage(game, xr);
+            case "DemandTribute":               return new DemandTributeMessage(game, xr);
+            case "Diplomacy":                   return new DiplomacyMessage(game, xr);
+            case "DisbandUnit":                 return new DisbandUnitMessage(game, xr);
+            case "Disembark":                   return new DisembarkMessage(game, xr);
+            case "DOM":                         return new DOMMessage(game, xr);
+            case "Embark":                      return new EmbarkMessage(game, xr);
+            case "EmigrateUnit":                return new EmigrateUnitMessage(game, xr);
+            case "EquipForRole":                return new EquipForRoleMessage(game, xr);
+            case "Error":                       return new ErrorMessage(game, xr);
+            case "FeatureChange":               return new FeatureChangeMessage(game, xr);
+            case "FirstContact":                return new FirstContactMessage(game, xr);
+            case "FountainOfYouth":             return new FountainOfYouthMessage(game, xr);
+            case "GameEnded":                   return new GameEndedMessage(game, xr);
+            case "GameState":                   return new GameStateMessage(game, xr);
+            case "HighScore":                   return new HighScoreMessage(game, xr);
+            case "Incite":                      return new InciteMessage(game, xr);
+            case "IndianDemand":                return new IndianDemandMessage(game, xr);
+            case "JoinColony":                  return new JoinColonyMessage(game, xr);
+            case "LearnSkill":                  return new LearnSkillMessage(game, xr);
+            case "LoadGoods":                   return new LoadGoodsMessage(game, xr);
+            case "Login":                       return new LoginMessage(game, xr);
+            case "Logout":                      return new LogoutMessage(game, xr);
+            case "LootCargo":                   return new LootCargoMessage(game, xr);
+            case "Missionary":                  return new MissionaryMessage(game, xr);
+            case "MonarchAction":               return new MonarchActionMessage(game, xr);
+            case "Move":                        return new MoveMessage(game, xr);
+            case "MoveTo":                      return new MoveToMessage(game, xr);
+            case "Multiple":                    return new MultipleMessage(game, xr);
+            case "NationSummary":               return new NationSummaryMessage(game, xr);
+            case "NativeGift":                  return new NativeGiftMessage(game, xr);
+            case "NativeTrade":                 return new NativeTradeMessage(game, xr);
+            case "NewLandName":                 return new NewLandNameMessage(game, xr);
+            case "NewRegionName":               return new NewRegionNameMessage(game, xr);
+            case "NewTradeRoute":               return new NewTradeRouteMessage(game, xr);
+            case "NewTurn":                     return new NewTurnMessage(game, xr);
+            case "PayArrears":                  return new PayArrearsMessage(game, xr);
+            case "PayForBuilding":              return new PayForBuildingMessage(game, xr);
+            case "PutOutsideColony":            return new PutOutsideColonyMessage(game, xr);
+            case "Ready":                       return new ReadyMessage(game, xr);
+            case "RearrangeColony":             return new RearrangeColonyMessage(game, xr);
+            case "RegisterServer":              return new RegisterServerMessage(game, xr);
+            case "Remove":                      return new RemoveMessage(game, xr);
+            case "RemoveServer":                return new RemoveServerMessage(game, xr);
+            case "Rename":                      return new RenameMessage(game, xr);
+            case "ScoutIndianSettlement":       return new ScoutIndianSettlementMessage(game, xr);
+            case "ScoutSpeakToChief":           return new ScoutSpeakToChiefMessage(game, xr);
+            case "ServerInfo":                  return new ServerInfoMessage(game, xr);
+            case "ServerList":                  return new ServerListMessage(game, xr);
+            case "SetAI":                       return new SetAIMessage(game, xr);
+            case "SetAvailable":                return new SetAvailableMessage(game, xr);
+            case "SetBuildQueue":               return new SetBuildQueueMessage(game, xr);
+            case "SetColor":                    return new SetColorMessage(game, xr);
+            case "SetCurrentPlayer":            return new SetCurrentPlayerMessage(game, xr);
+            case "SetCurrentStop":              return new SetCurrentStopMessage(game, xr);
+            case "SetDead":                     return new SetDeadMessage(game, xr);
+            case "SetDestination":              return new SetDestinationMessage(game, xr);
+            case "SetGoodsLevels":              return new SetGoodsLevelsMessage(game, xr);
+            case "SetNation":                   return new SetNationMessage(game, xr);
+            case "SetNationType":               return new SetNationTypeMessage(game, xr);
+            case "SetStance":                   return new SetStanceMessage(game, xr);
+            case "SpySettlement":               return new SpySettlementMessage(game, xr);
+            case "TrainUnitInEurope":           return new TrainUnitInEuropeMessage(game, xr);
+            case "Trivial":                     return new TrivialMessage(game, xr);
+            case "UnloadGoods":                 return new UnloadGoodsMessage(game, xr);
+            case "UpdateGameOptions":           return new UpdateGameOptionsMessage(game, xr);
+            case "UpdateMapGeneratorOptions":   return new UpdateMapGeneratorOptionsMessage(game, xr);
+            case "Update":                      return new UpdateMessage(game, xr);
+            case "UpdateServer":                return new UpdateServerMessage(game, xr);
+            case "UpdateTradeRoute":            return new UpdateTradeRouteMessage(game, xr);
+            case "VacantPlayers":               return new VacantPlayersMessage(game, xr);
+            case "Work":                        return new WorkMessage(game, xr);
+            default:
+                throw new FreeColException("No class for: " + name);
+        }
+    }
+
     /**
      * Read a new message from a stream.
      *
@@ -371,21 +464,6 @@ public abstract class Message {
      */
     public static Message read(Game game, FreeColXMLReader xr)
         throws FreeColException {
-        final String tag = xr.getLocalName();
-        Constructor<? extends Message> mb = builders.get(tag);
-        if (mb == null) {
-            final String className = "net.sf.freecol.common.networking."
-                + capitalize(tag) + "Message";
-            @SuppressWarnings("unchecked")
-            final Class<? extends Message> cl
-                = (Class<? extends Message>)Introspector.getClassByName(className);
-            if (cl == null) throw new FreeColException("No class for: " + tag);
-
-            final Class[] types = { Game.class, FreeColXMLReader.class };
-            mb = Introspector.getConstructor(cl, types);
-            if (mb == null) throw new FreeColException("No constructor for: " + tag);
-            builders.put(tag, mb);
-        }
-        return Introspector.construct(mb, new Object[] { game, xr });
+        return constructByTag(capitalize(xr.getLocalName()));
     }
 }
