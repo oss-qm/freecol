@@ -41,9 +41,6 @@ public abstract class Session {
     /** A map of all active sessions. */
     private static final Map<String, Session> allSessions = new HashMap<>();
 
-    /** Lock for access to allSessions. */
-    private static final Object sessionLock = new Object();
-
     /** The key to this session. */
     private String key;
 
@@ -86,7 +83,7 @@ public abstract class Session {
      * @param session The associated {@code Session}.
      */
     private static void addSession(String key, Session session) {
-        synchronized (sessionLock) {
+        synchronized (allSessions) {
             allSessions.put(key, session);
         }
     }
@@ -98,7 +95,7 @@ public abstract class Session {
      * @return The {@code session} found.
      */
     private static Session getSession(String key) {
-        synchronized (sessionLock) {
+        synchronized (allSessions) {
             return allSessions.get(key);
         }
     }
@@ -175,7 +172,7 @@ public abstract class Session {
      */
     public static void completeAll(ChangeSet cs) {
         List<Session> sessions;
-        synchronized (sessionLock) {
+        synchronized (allSessions) {
             sessions = transform(allSessions.values(), s -> !s.isComplete());
             allSessions.clear();
         }
@@ -186,7 +183,7 @@ public abstract class Session {
      * Clear all sessions.
      */
     public static void clearAll() {
-        synchronized (sessionLock) {
+        synchronized (allSessions) {
             allSessions.clear();
         }
     }
@@ -198,7 +195,7 @@ public abstract class Session {
      * @return The {@code Session} found if any.
      */
     public static Session findSession(Predicate<Session> pred) {
-        synchronized (sessionLock) {
+        synchronized (allSessions) {
             return find(allSessions.values(), pred);
         }
     }
@@ -233,7 +230,7 @@ public abstract class Session {
         String key = makeSessionKey(type, s1, s2);
         Session ts = getSession(key);
         if (ts != null && ts.isComplete()) {
-            synchronized (sessionLock) {
+            synchronized (allSessions) {
                 allSessions.remove(key);
             }
             ts = null;
