@@ -2,7 +2,6 @@
 <xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified">
   <xs:annotation>
     <xs:documentation>
-      
       Copyright (C) 2002-2017  The FreeCol Team
 
       This file is part of FreeCol.
@@ -66,15 +65,15 @@
       <xs:attribute name="settlementType" type="xs:string"/>
 
       <xs:attribute name="convertProgress" type="xs:int" use="optional"
-		                default="0"/>
+                    default="0"/>
       <xs:attribute name="lastTribute" type="xs:int" use="optional"
-		                default="0"/>
+                    default="0"/>
       <xs:attribute name="isCapital" type="xs:boolean" use="optional"
-		                default="false"/>
+                    default="false"/>
       <xs:attribute name="learnableSkill" type="UnitTypeId"
-		                use="optional"/>
+                    use="optional"/>
       <xs:attribute name="mostHated" type="PlayerId" use="optional"/>
-     
+
       <xs:attribute name="wantedGoods0" type="GoodsTypeId" use="optional"/>
       <xs:attribute name="wantedGoods1" type="GoodsTypeId" use="optional"/>
       <xs:attribute name="wantedGoods2" type="GoodsTypeId" use="optional"/>
@@ -90,6 +89,5 @@
       <xs:enumeration value="scouted" />
     </xs:restriction>
   </xs:simpleType>
-
 
 </xs:schema>

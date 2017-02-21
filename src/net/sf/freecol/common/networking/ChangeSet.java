@@ -1576,7 +1576,7 @@ public class ChangeSet {
             ret = mm;
             break;
         }
-            
+
         // Merge in the diverted messages.
         if (!diverted.isEmpty()) {
             if (ret == null) ret = new UpdateMessage(null, (FreeColObject)null);
@@ -1585,7 +1585,6 @@ public class ChangeSet {
 
         return ret;
     }
-
 
     // Convenience functions to create change sets
 
