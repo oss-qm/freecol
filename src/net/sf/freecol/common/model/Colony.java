@@ -2133,7 +2133,7 @@ public class Colony extends Settlement implements Nameable, TradeLocation {
                 && info.getProduction().get(0).getAmount() > 0;
     }
 
-    private static final getNetProdOfQueue(GoodsType gt, BuildQueue q) {
+    private static final int getNetProdOfQueue(GoodsType gt, BuildQueue q) {
         ProductionInfo pi = productionCache.getProductionInfo(q);
         return (pi == null) ? 0 : AbstractGoods.getCount(gt, pi.getConsumption());
     }
