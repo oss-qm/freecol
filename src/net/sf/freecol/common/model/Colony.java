@@ -1785,7 +1785,7 @@ public class Colony extends Settlement implements Nameable, TradeLocation {
      * @return A list of burnable buildings.
      */
     public List<Building> getBurnableBuildings() {
-        List<Building> result = ArrayList<>();
+        List<Building> result = new ArrayList<>();
         synchronized (buildingMap) {
             for (Building b : buildingMap.values())
                 if (b.canBeDamaged()) result.add(b);
