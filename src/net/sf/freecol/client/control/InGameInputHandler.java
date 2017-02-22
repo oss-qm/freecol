@@ -420,7 +420,7 @@ public final class InGameInputHandler extends ClientInputHandler {
         // actually change unit positions, which happens in an "update".
         invokeAndWait(new Runnable() {
             public void run() {
-                igc().animateMove(unit, oldTile, newTile));
+                igc().animateMove(unit, oldTile, newTile);
             }});
     }
 
