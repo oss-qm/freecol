@@ -2616,8 +2616,10 @@ loop:   for (WorkLocation wl : getWorkLocationsForProducing(goodsType)) {
     @Override
     public boolean contains(Locatable locatable) {
         if (locatable instanceof Unit) {
-            return any(getAvailableWorkLocations(),
-                    wl -> wl.contains(locatable));
+            for (WorkLocation wl : getAvailableWorkLocationsList())
+                if (wl.contains(locatable))
+                    return true;
+            return false;
         }
         return super.contains(locatable);
     }
