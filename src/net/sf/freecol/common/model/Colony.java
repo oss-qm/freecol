@@ -614,15 +614,6 @@ public class Colony extends Settlement implements Nameable, TradeLocation {
     }
 
     /**
-     * Get a stream of all current work locations in this colony.
-     *
-     * @return The stream of current {@code WorkLocation}s.
-     */
-    public Stream<WorkLocation> getCurrentWorkLocations() {
-        return getCurrentWorkLocationsList().stream();
-    }
-
-    /**
      * Add a Building to this Colony.
      *
      * Lower level routine, do not use directly in-game (use buildBuilding).
