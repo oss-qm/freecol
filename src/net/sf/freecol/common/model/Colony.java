@@ -552,22 +552,6 @@ public class Colony extends Settlement implements Nameable, TradeLocation {
     }
 
     /**
-     * Gets a stream of every work location in this colony.
-     *
-     * @return The stream of work locations.
-     */
-    public Stream<WorkLocation> getAllWorkLocations() {
-        Stream<WorkLocation> ret = Stream.<WorkLocation>empty();
-        synchronized (this.colonyTiles) {
-            ret = concat(ret, map(this.colonyTiles, ct -> (WorkLocation)ct));
-        }
-        synchronized (this.buildingMap) {
-            ret = concat(ret, map(this.buildingMap.values(), b -> (WorkLocation)b));
-        }
-        return ret;
-    }
-
-    /**
      * Gets a list of all freely available work locations
      * in this colony.
      *
