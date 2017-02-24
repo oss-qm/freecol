@@ -573,16 +573,6 @@ public class Colony extends Settlement implements Nameable, TradeLocation {
     }
 
     /**
-     * Get a stream of all freely available work locations in this
-     * colony.
-     *
-     * @return The stream of available {@code WorkLocation}s.
-     */
-    public Stream<WorkLocation> getAvailableWorkLocations() {
-        return getAvailableWorkLocationsList().stream();
-    }
-
-    /**
      * Count the freely available work locations in this colony.
      *
      * @return amount of available {@code WorkLocation}s.
